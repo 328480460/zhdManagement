@@ -27,11 +27,12 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
+              type="text"
               @click="handleEdit">编辑</el-button>
               <!--@click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
             <el-button
               size="mini"
-              type="danger"
+              type="text"
               @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -144,7 +145,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' scoped>
 #cpymb {
   margin: 10px;
   padding: 10px;
