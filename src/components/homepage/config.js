@@ -21,11 +21,6 @@ export const menu = [
                         name: '产品分类',
                         disabled: false,
                         page: 'ProductType'
-                    }, {
-                        id: '010103',
-                        name: '产品页模板',
-                        disabled: false,
-                        page: 'ProductTemplate'
                     }
                 ]
             }, {
