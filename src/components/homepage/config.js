@@ -18,21 +18,26 @@ export const menu = [
                         page: 'productInfo'
                     }, {
                         id: '010102',
-                        name: '产品分类',
+                        name: '自定义分类',
                         disabled: false,
-                        page: 'ProductType'
+                        page: 'productType'
                     }
                 ]
             }, {
                 id: '0102',
-                name: '文件上传',
+                name: '批量导入',
                 disabled: false,
                 children: [
                     {
                         id: '010201',
-                        name: '文件上传',
+                        name: '批量导入',
                         disabled: false,
-                        page: 'FileUpload'
+                        page: 'batchImportPro'
+                    },{
+                        id: '010202',
+                        name: '历史记录',
+                        disabled: false,
+                        page: 'historiesPro'
                     }
                 ]
             }, {
@@ -42,14 +47,14 @@ export const menu = [
                 children: [
                   {
                     id: '010301',
-                    name: '产品页模板',
+                    name: '产品模板页',
                     disabled: false,
-                    page: 'ProductTemplate'
+                    page: 'productTemplate'
                   },{
                     id: '010302',
                     name: '素材管理',
                     disabled: false,
-                    page: 'MetarialManagement'
+                    page: 'metarialManagement'
                   }
                 ]
               }
@@ -73,24 +78,24 @@ export const menu = [
                         page: 'nodeInfo'
                     }
                 ]
-            }, {
-                id: '0202',
-                name: '批量导入',
-                disabled: false,
-                children: [
-                    {
-                        id: '020201',
-                        name: '产品库',
-                        disabled: false,
-                        page: 'nodeInfo'
-                    }, {
-                        id: '020202',
-                        name: '历史记录',
-                        disabled: false,
-                        page: 'productInfo'
-                    }
-                ]
-            }
+              }, {
+                  id: '0202',
+                  name: '批量导入',
+                  disabled: false,
+                  children: [
+                      {
+                          id: '020201',
+                          name: '批量导入',
+                          disabled: false,
+                          page: 'batchImportNode'
+                      }, {
+                          id: '020202',
+                          name: '历史记录',
+                          disabled: false,
+                          page: 'historiesNode'
+                      }
+                  ]
+              }
         ]
     }, {
         id: '03',
