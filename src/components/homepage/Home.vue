@@ -120,7 +120,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' scoped>
 #home {
   color: #282828;
   .left-menu {

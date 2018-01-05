@@ -19,7 +19,12 @@ export const menu = [
                         id: '010102',
                         name: '产品分类',
                         disabled: false,
-                        page: 'ProdectType'
+                        page: 'ProductType'
+                    }, {
+                        id: '010103',
+                        name: '产品页模板',
+                        disabled: false,
+                        page: 'ProductTemplate'
                     }
                 ]
             }, {
@@ -31,10 +36,27 @@ export const menu = [
                         id: '010201',
                         name: '文件上传',
                         disabled: false,
-                        page: 'CPFL'
+                        page: 'FileUpload'
                     }
                 ]
-            }
+            }, {
+                id: '0103',
+                name: '产品页模板',
+                disabled: false,
+                children: [
+                  {
+                    id: '010301',
+                    name: '产品页模板',
+                    disabled: false,
+                    page: 'ProductTemplate'
+                  },{
+                    id: '010302',
+                    name: '素材管理',
+                    disabled: false,
+                    page: 'MetarialManagement'
+                  }
+                ]
+              }
         ]
     }, {
         id: '02',

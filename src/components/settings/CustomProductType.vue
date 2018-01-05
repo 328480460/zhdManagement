@@ -1,5 +1,5 @@
 <template>
-  <div id="invitation">
+  <div id="producttype">
     <div class="default-info-wrapper">
       <div class="section-content">
         <el-form ref="form" label-width="120px">
@@ -16,7 +16,7 @@
 <script type="text/ecmascript-6">
 import axios from "axios";
 export default {
-    name: "invitation",
+    name: "producttype",
     created() {
     },
     data() {
@@ -30,10 +30,11 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang='less' scoped>
-#invitation {
+<style rel="stylesheet/less" lang='less' scoped>
+#producttype {
   margin: 10px;
   padding: 10px;
+  height: 100%;
   background-color: #fff;
   .default-info-wrapper {
     .section-content {

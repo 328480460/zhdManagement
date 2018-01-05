@@ -3,8 +3,12 @@ import Router from 'vue-router'
 import Login from '@/components/login/Login'
 import Home from '@/components/homepage/Home'
 import ProductInfo from '@/components/production/ProductInfo'
-import ProdectType from '@/components/production/ProdectType'
-import NewProduct from '@/components/commonComponents/NewProduct.vue'
+import EditProduct from '@/components/production/EditProduct'
+import ProductType from '@/components/production/ProductType'
+import FileUpload from '@/components/production/FileUpload'
+import ProductTemplate from '@/components/production/ProductTemplate'
+import MetarialManagement from '@/components/production/MetarialManagement'
+import NewProduct from '@/components/commonComponents/NewProduct'
 import EnterpriseInfo from '@/components/settings/EnterpriseInfo'
 import NodeInfo from '@/components/node/NodeInfo'
 import AccountSetting from '@/components/settings/AccountSetting'
@@ -31,15 +35,26 @@ export default new Router({
       children: [
         //产品
         {
-          path: 'prodectType',
-          component: ProdectType
+          path: 'productType',
+          component: ProductType
         }, {
-          path: 'newProduct',
-          component: NewProduct
-        },
-        {
           path: 'productInfo',
           component: ProductInfo
+        },{
+          path: 'newProduct',
+          component: NewProduct
+        },{
+          path: 'editProduct',
+          component: EditProduct
+        },{
+          path: 'fileUpload',
+          component: FileUpload
+        },{
+          path: 'productTemplate',
+          component: ProductTemplate
+        },{
+          path: 'metarialManagement',
+          component: MetarialManagement
         },
         //节点
         {

@@ -89,7 +89,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' scoped>
 #login {
   background-attachment: fixed;
   background-size: cover;

@@ -1,12 +1,17 @@
 <template>
-  <div id="cpfl">
+  <div id="fileupload">
     文件上传！
   </div>
 </template>
 
 <script>
 export default {
-  name: 'cpfl'
+  name: 'fileupload',
+  data(){
+    return{
+
+    }
+  }
 
 }
 </script>
