@@ -28,8 +28,7 @@
             size="mini"
             type="text"
             style="margin-right: 50px"
-            @click="handleEdit">编辑</el-button>
-          <!--@click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+            @click="editProduct">编辑</el-button>
           <el-button
             size="mini"
             type="text"
@@ -93,7 +92,7 @@
 //          console.log(res);
 //        });
       },
-      handleEdit() {
+      editProduct() {
         this.$prompt('自定义分类名称：', '编辑自定义分类', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
