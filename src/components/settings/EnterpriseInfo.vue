@@ -109,10 +109,11 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' scoped>
 #enterprise {
   margin: 10px;
   padding: 10px;
+  height: 100%;
   background-color: #fff;
   .default-info-wrapper {
     .section-content {

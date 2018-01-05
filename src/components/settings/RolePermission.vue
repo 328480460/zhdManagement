@@ -1,13 +1,11 @@
 <template>
   <div id="role">
     <div class="btn-list">
-      <el-button type="primary" size="medium"  @click="newProductType">添加角色</el-button>
+      <el-button type="primary" size="medium">添加角色</el-button>
     </div>
 
     <el-table class="el-table"
               border
-              :data="tableData"
-
     >
       <el-table-column class="table-column"
                        prop="name"
@@ -21,11 +19,11 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="text"
             @click="handleEdit">编辑</el-button>
-          <!--@click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
           <el-button
             size="mini"
-            type="danger"
+            type="text"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -51,10 +49,11 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' scoped>
 #role {
   margin: 10px;
   padding: 10px;
+  height: 100%;
   background-color: #fff;
   .el-table{
     width: 100%;

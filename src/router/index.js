@@ -3,7 +3,11 @@ import Router from 'vue-router'
 import Login from '@/components/login/Login'
 import Home from '@/components/homepage/Home'
 import ProductInfo from '@/components/production/ProductInfo'
-import productType from '@/components/production/productType'
+import EditProduct from '@/components/production/EditProduct'
+import ProductType from '@/components/production/ProductType'
+import FileUpload from '@/components/production/FileUpload'
+import ProductTemplate from '@/components/production/ProductTemplate'
+import MetarialManagement from '@/components/production/MetarialManagement'
 import NewProduct from '@/components/commonComponents/NewProduct'
 import EnterpriseInfo from '@/components/settings/EnterpriseInfo'
 import NodeInfo from '@/components/node/NodeInfo'
@@ -20,25 +24,52 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    // 登录页
     {
       path: '/',
       name: 'Login',
       component: Login
-    }, {
+    }, 
+    // home页
+    {
       path: '/home',
       name: 'Home',
       component: Home,
       children: [
-        //产品
+        //产品-产品分类页
         {
           path: 'production/productType',
-          component: productType
-        }, {
+          component: ProductType
+        }, 
+        //产品-新建产品页
+        {
           path: 'production/newProduct',
           component: NewProduct
-        }, {
+        }, 
+        //产品-产品信息页
+        {
           path: 'production/productInfo',
           component: ProductInfo
+        },
+        //产品-编辑产品页
+        {
+          path: 'production/editProduct',
+          component: EditProduct
+        },
+        //产品-文件上传页
+        {
+          path: 'production/fileUpload',
+          component: FileUpload
+        },
+        //产品-产品页模板页
+        {
+          path: 'production/productTemplate',
+          component: ProductTemplate
+        },
+        //产品-产品页模板页
+        {
+          path: 'production/metarialManagement',
+          component: MetarialManagement
         },
         //节点
         {

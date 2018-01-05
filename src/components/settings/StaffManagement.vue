@@ -69,10 +69,11 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/sass" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' scoped>
 #staff {
   margin: 10px;
   padding: 10px;
+  height: 100%;
   background-color: #fff;
   .el-table{
     width: 100%;
