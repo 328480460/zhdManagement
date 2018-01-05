@@ -22,6 +22,20 @@ import CustomProductType from '@/components/settings/CustomProductType'
 import CustomNodeType from '@/components/settings/CustomNodeType'
 import CustomBusinessType from '@/components/settings/CustomBusinessType'
 import CustomDocumentType from '@/components/settings/CustomDocumentType'
+import ChainSynthesis from '@/components/trace/ChainSynthesis'
+import TraceCodeApplay from '@/components/trace/TraceCodeApplay'
+import TraceCodeQuery from '@/components/trace/TraceCodeQuery'
+import FTPSync from '@/components/business/FTPSync'
+import GetGoodsInfo from '@/components/business/GetGoodsInfo'
+import MultiImport from '@/components/business/MultiImport'
+import ProductGoodsInfo from '@/components/business/ProductGoodsInfo'
+import SendGoodsInfo from '@/components/business/SendGoodsInfo'
+import SystemInsert from '@/components/business/SystemInsert'
+import ImportHistoryBusiness from '@/components/business/ImportHistoryBusiness'
+import FTPHistoryBusiness from '@/components/business/FTPHistoryBusiness'
+import DocumentAdministration from '@/components/document/DocumentAdministration'
+import QualityAdministration from '@/components/quality/QualityAdministration'
+import RecallAdministration from '@/components/quality/RecallAdministration'
 
 Vue.use(Router)
 
@@ -138,7 +152,72 @@ export default new Router({
         {
           path: 'settings/customDocumentType',
           component: CustomDocumentType
-        }
+        },
+        //追溯-链条合成
+        {
+          path: 'trace/chainSynthesis',
+          component: ChainSynthesis
+        },
+        //追溯-溯源查询
+        {
+          path: 'trace/traceCodeQuery',
+          component: TraceCodeQuery
+        },
+        //业务-收货信息
+        {
+          path: 'business/getGoodsInfo',
+          component: GetGoodsInfo
+        },
+        //业务-生产信息
+        {
+          path: 'business/productGoodsInfo',
+          component: ProductGoodsInfo
+        },
+        //业务-发货信息
+        {
+          path: 'business/sendGoodsInfo',
+          component: SendGoodsInfo
+        },
+        //业务-批量导入-批量导入
+        {
+          path: 'business/multiImport',
+          component: MultiImport
+        },
+        //业务-批量导入-历史记录
+        {
+          path: 'business/importHistoryBusiness',
+          component: ImportHistoryBusiness
+        },
+        //业务-FTP同步-FTP配置
+        {
+          path: 'business/FTPSync',
+          component: FTPSync
+        },
+        //业务-FTP同步-历史记录
+        {
+          path: 'business/FTPHistoryBusiness',
+          component: FTPHistoryBusiness
+        },
+        //业务-系统对接
+        {
+          path: 'business/systemInsert',
+          component: SystemInsert
+        },
+        //文档-文档管理
+        {
+          path: 'document/documentAdministration',
+          component: DocumentAdministration
+        },
+        //质量-质量问题管理
+        {
+          path: 'quality/qualityAdministration',
+          component: QualityAdministration
+        },
+        //质量-召回管理
+        {
+          path: 'quality/recallAdministration',
+          component: RecallAdministration
+        },
       ]
     }
 

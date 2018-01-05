@@ -193,7 +193,7 @@ export const menu = [
                 id: '040101',
                 name: '链条合成',
                 disabled: false,
-                page: 'productInfo'
+                page: 'chainSynthesis'
             }]
         },{
             id: '0402',
@@ -203,17 +203,155 @@ export const menu = [
                 id: '040201',
                 name: '溯源查询',
                 disabled: false,
-                page: 'productInfo'
+                page: 'traceCodeQuery'
             }]
         },{
             id: '0403',
-            name: '溯源码申请',
+            name: '溯源码管理',
             disabled: false,
             children: [{
                 id: '040301',
                 name: '溯源码申请',
                 disabled: false,
-                page: 'productInfo'
+                page: 'traceCodeApplay'
+            }]
+        },]
+    }, {
+        id: '05',
+        name: '业务',
+        icon: 'el-icon-menu',
+        disabled: false,
+        node: 'business',
+        children: [{
+            id: '0501',
+            name: '收货信息',
+            disabled: false,
+            children: [
+                {
+                    id: '050101',
+                    name: '收货信息',
+                    disabled: false,
+                    page: 'getGoodsInfo'
+                }
+            ]
+        },
+        {
+            id: '0502',
+            name: '生产信息',
+            disabled: false,
+            children: [
+                {
+                    id: '050201',
+                    name: '生产信息',
+                    disabled: false,
+                    page: 'productGoodsInfo'
+                }
+            ]
+        },
+        {
+            id: '0503',
+            name: '发货信息',
+            disabled: false,
+            children: [
+                {
+                    id: '050301',
+                    name: '发货信息',
+                    disabled: false,
+                    page: 'sendGoodsInfo'
+                }
+            ]
+        },
+        {
+            id: '0504',
+            name: '批量导入',
+            disabled: false,
+            children: [
+                {
+                    id: '050401',
+                    name: '批量导入',
+                    disabled: false,
+                    page: 'multiImport'
+                },{
+                    id: '050402',
+                    name: '历史记录',
+                    disabled: false,
+                    page: 'importHistoryBusiness'
+                }
+            ]
+        },
+        {
+            id: '0505',
+            name: 'FTP同步',
+            disabled: false,
+            children: [
+                {
+                    id: '050501',
+                    name: 'FTP同步',
+                    disabled: false,
+                    page: 'FTPSync'
+                },{
+                    id: '050502',
+                    name: 'FTP同步',
+                    disabled: false,
+                    page: 'FTPHistoryBusiness'
+                }
+            ]
+        },
+        {
+            id: '0506',
+            name: '系统对接',
+            disabled: false,
+            children: [
+                {
+                    id: '050501',
+                    name: '系统对接',
+                    disabled: false,
+                    page: 'systemInsert'
+                }
+            ]
+        }]
+    }, {
+        id: '06',
+        name: '文档',
+        icon: 'el-icon-menu',
+        disabled: false,
+        node: 'document',
+        children: [{
+            id: '0601',
+            name: '文档管理',
+            disabled: false,
+            children: [{
+                id: '060101',
+                name: '文档管理',
+                disabled: false,
+                page: 'documentAdministration'
+            }]
+        }]
+    }, {
+        id: '07',
+        name: '质量',
+        icon: 'el-icon-menu',
+        disabled: false,
+        node: 'quality',
+        children: [{
+            id: '0701',
+            name: '质量问题管理',
+            disabled: false,
+            children: [{
+                id: '070101',
+                name: '质量问题管理',
+                disabled: false,
+                page: 'qualityAdministration'
+            }]
+        },{
+            id: '0702',
+            name: '召回管理',
+            disabled: false,
+            children: [{
+                id: '070202',
+                name: '召回管理',
+                disabled: false,
+                page: 'recallAdministration'
             }]
         },]
     }
