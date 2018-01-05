@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import Login from '@/components/login/Login'
 import Home from '@/components/homepage/Home'
 import ProductInfo from '@/components/production/ProductInfo'
-import ProdectType from '@/components/production/ProdectType'
-import NewProduct from '@/components/commonComponents/NewProduct.vue'
+import productType from '@/components/production/productType'
+import NewProduct from '@/components/commonComponents/NewProduct'
 import EnterpriseInfo from '@/components/settings/EnterpriseInfo'
 import NodeInfo from '@/components/node/NodeInfo'
 import AccountSetting from '@/components/settings/AccountSetting'
@@ -31,63 +31,57 @@ export default new Router({
       children: [
         //产品
         {
-          path: 'prodectType',
-          component: ProdectType
+          path: 'production/productType',
+          component: productType
         }, {
-          path: 'newProduct',
+          path: 'production/newProduct',
           component: NewProduct
-        },
-        {
-          path: 'productInfo',
+        }, {
+          path: 'production/productInfo',
           component: ProductInfo
         },
         //节点
         {
-          path: 'nodeInfo',
+          path: 'node/nodeInfo',
           component: NodeInfo
-        }
+        },
         //设置-企业信息
-        , {
-          path: 'enterpriseInfo',
+        {
+          path: 'settings/enterpriseInfo',
           component: EnterpriseInfo
         },
         //设置-账号信息
         {
-          path: 'accountSetting',
+          path: 'settings/accountSetting',
           component: AccountSetting
         },
         //设置-员工设置-员工管理
         {
-          path: 'staffManagement',
+          path: 'settings/staffManagement',
           component: StaffManagement
         },
         //设置-员工设置-角色权限
         {
-          path: 'rolePermission',
+          path: 'settings/rolePermission',
           component: RolePermission
         },
         //设置-员工设置-待定邀请
         {
-          path: 'invitation',
+          path: 'settings/invitation',
           component: Invitation
-        },
-        {
-          path: 'customProductType',
+        }, {
+          path: 'settings/customProductType',
           component: CustomProductType
-        },
-        {
-          path: 'customNodeType',
+        }, {
+          path: 'settings/customNodeType',
           component: CustomNodeType
-        },
-        {
-          path: 'customBusinessType',
+        }, {
+          path: 'settings/customBusinessType',
           component: CustomBusinessType
-        },
-        {
-          path: 'customDocumentType',
+        }, {
+          path: 'settings/customDocumentType',
           component: CustomDocumentType
-        },
-
+        }
       ]
     }
 

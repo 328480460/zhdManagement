@@ -170,7 +170,8 @@ export default {
   methods: {
     newProduct() {
       this.$emit("openExtraPage", {
-        page: "NewProduct",
+        node: 'production',
+        page: "newProduct",
         name: "新建产品",
         id: "01010101"
       });

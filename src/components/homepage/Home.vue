@@ -99,13 +99,13 @@ export default {
       this.curretPage = this.menu[mainId - 1]["children"][secId - 1][
         "children"
       ][thdId - 1]["page"];
-      this.$router.push({ path: "/home/" + this.curretPage });
+      this.$router.push({ path: "/home/" + this.menu[mainId - 1]['node'] + '/' + this.curretPage });
     },
     openExtraPage(extraPageInfo) {
       this.trunPage(extraPageInfo.id);
       this.extraTabInfo.thirdTab = this.currentTabInfo.third;
       this.extraTabInfo.extraTab = extraPageInfo;
-      this.$router.push({ path: "/home/" + extraPageInfo.page });
+      this.$router.push({ path: `/home/${extraPageInfo.node}/${extraPageInfo.page}` });
     }
   },
   watch: {

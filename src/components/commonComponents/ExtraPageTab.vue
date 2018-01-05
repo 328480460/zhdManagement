@@ -11,6 +11,7 @@ export default {
   name: "extraPageTab",
   methods: {
     turnPage() {
+      console.log(this.tabInfo);
       this.$emit('turnPage',this.tabInfo.thirdTab.id);
     }
   },

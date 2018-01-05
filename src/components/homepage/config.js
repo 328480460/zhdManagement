@@ -4,6 +4,7 @@ export const menu = [
         name: '产品',
         icon: 'el-icon-menu',
         disabled: false,
+        node: 'production',
         children: [
             {
                 id: '0101',
@@ -14,12 +15,12 @@ export const menu = [
                         id: '010101',
                         name: '产品信息',
                         disabled: false,
-                        page: 'ProductInfo'
+                        page: 'productInfo'
                     }, {
                         id: '010102',
                         name: '产品分类',
                         disabled: false,
-                        page: 'ProdectType'
+                        page: 'productType'
                     }
                 ]
             }, {
@@ -41,6 +42,7 @@ export const menu = [
         name: '节点',
         icon: 'el-icon-menu',
         disabled: false,
+        node: 'node',
         children: [
             {
                 id: '0201',
@@ -51,7 +53,7 @@ export const menu = [
                         id: '020101',
                         name: '节点管理',
                         disabled: false,
-                        page: 'NodeInfo'
+                        page: 'nodeInfo'
                     }
                 ]
             }, {
@@ -63,12 +65,12 @@ export const menu = [
                         id: '020201',
                         name: '产品库',
                         disabled: false,
-                        page: 'NodeInfo'
+                        page: 'nodeInfo'
                     }, {
                         id: '020202',
                         name: '历史记录',
                         disabled: false,
-                        page: 'ProductInfo'
+                        page: 'productInfo'
                     }
                 ]
             }
@@ -78,6 +80,7 @@ export const menu = [
         name: '设置',
         icon: 'el-icon-menu',
         disabled: false,
+        node: 'settings',
         children: [
             {
                 id: '0301',
@@ -88,7 +91,7 @@ export const menu = [
                         id: '030101',
                         name: '企业信息',
                         disabled: false,
-                        page: 'EnterpriseInfo'
+                        page: 'enterpriseInfo'
                     }
                 ]
             }, {
@@ -100,7 +103,7 @@ export const menu = [
                         id: '030201',
                         name: '账号信息',
                         disabled: false,
-                        page: 'AccountSetting'
+                        page: 'accountSetting'
                     }
                 ]
             }, {
@@ -112,17 +115,17 @@ export const menu = [
                         id: '030301',
                         name: '员工管理',
                         disabled: false,
-                        page: 'StaffManagement'
+                        page: 'staffManagement'
                     }, {
                         id: '030302',
                         name: '角色权限',
                         disabled: false,
-                        page: 'RolePermission'
+                        page: 'rolePermission'
                     }, {
                         id: '030303',
                         name: '待定邀请',
                         disabled: false,
-                        page: 'Invitation'
+                        page: 'invitation'
                     }
                 ]
             }, {
@@ -134,25 +137,62 @@ export const menu = [
                         id: '030401',
                         name: '产品类型',
                         disabled: false,
-                        page: 'CustomProductType'
+                        page: 'customProductType'
                     }, {
                         id: '030402',
                         name: '节点类型',
                         disabled: false,
-                        page: 'CustomNodeType'
+                        page: 'customNodeType'
                     }, {
                         id: '030403',
                         name: '业务类型',
                         disabled: false,
-                        page: 'CustomBusinessType'
+                        page: 'customBusinessType'
                     }, {
                         id: '030404',
                         name: '文档类型',
                         disabled: false,
-                        page: 'CustomDocumentType'
+                        page: 'customDocumentType'
                     }
                 ]
             }
         ]
+    }, {
+        id: '04',
+        name: '追溯',
+        icon: 'el-icon-menu',
+        disabled: false,
+        node: 'trace',
+        children: [{
+            id: '0401',
+            name: '链条合成',
+            disabled: false,
+            children: [{
+                id: '040101',
+                name: '链条合成',
+                disabled: false,
+                page: 'productInfo'
+            }]
+        },{
+            id: '0402',
+            name: '溯源查询',
+            disabled: false,
+            children: [{
+                id: '040201',
+                name: '溯源查询',
+                disabled: false,
+                page: 'productInfo'
+            }]
+        },{
+            id: '0403',
+            name: '溯源码申请',
+            disabled: false,
+            children: [{
+                id: '040301',
+                name: '溯源码申请',
+                disabled: false,
+                page: 'productInfo'
+            }]
+        },]
     }
 ]
