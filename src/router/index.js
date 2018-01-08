@@ -22,6 +22,7 @@ import CustomProductType from '@/components/settings/CustomProductType'
 import CustomNodeType from '@/components/settings/CustomNodeType'
 import CustomBusinessType from '@/components/settings/CustomBusinessType'
 import CustomDocumentType from '@/components/settings/CustomDocumentType'
+import QualityProblem from '@/components/settings/QualityProblem'
 import ChainSynthesis from '@/components/trace/ChainSynthesis'
 import TraceCodeApplay from '@/components/trace/TraceCodeApplay'
 import TraceCodeQuery from '@/components/trace/TraceCodeQuery'
@@ -147,6 +148,11 @@ export default new Router({
         {
           path: 'settings/customBusinessType',
           component: CustomBusinessType
+        },
+        //设置-自定义属性-质量问题
+        {
+          path: 'settings/qualityProblem',
+          component: QualityProblem
         },
         //设置-自定义属性-文档类型
         {

@@ -2,6 +2,7 @@
   <div id="productinfo">
     <div class="btn-list">
       <el-button type="primary" size="medium"  @click="newProduct">新建产品</el-button>
+      <el-button type="primary" size="medium" class="btn-search">导出</el-button>
     </div>
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
@@ -311,6 +312,12 @@ export default {
     margin-top: 24px;
     .table-column{
     }
+  }
+  .btn-search{
+    background-color: transparent;
+    color: #03b150;
+    margin-left: 15px;
+    margin-top: 2px;
   }
 }
 </style>

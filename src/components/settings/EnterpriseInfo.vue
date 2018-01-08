@@ -6,12 +6,10 @@
           <el-form-item label="企业名称：">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item label="机构类型：">未提交认证
-            <!--<span class="amend_logo" >立即认证</span>-->
-            <el-button type="text" class="br_text">立即认证</el-button>
+          <el-form-item label="机构类型：">生产企业
           </el-form-item>
-          <el-form-item label="主体信息：">
-            <el-input v-model="form.msg"></el-input>
+          <el-form-item label="主体信息：">未提交认证
+            <el-button type="text" class="br_text">立即认证</el-button>
           </el-form-item>
           <el-form-item label="所在地区：">
             <el-input v-model="form.area"></el-input>
