@@ -255,8 +255,8 @@ export default {
           product_name:'',
         })
         .then(function (response) {
-          console.log("查询产品列表==="+JSON.stringify(response.data));
-          console.log(response.data.data);
+          // console.log("查询产品列表==="+JSON.stringify(response.data));
+          // console.log(response.data.data);
           that.totalcount = response.data.data.totalcount ;
           that.productList = response.data.data.productList;
         })
