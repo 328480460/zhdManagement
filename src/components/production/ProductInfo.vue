@@ -256,16 +256,8 @@ export default {
           pagesize: 10,
         })
         .then(function (response) {
-<<<<<<< HEAD
-          // console.log("查询产品列表==="+JSON.stringify(response.data));
-          // console.log(response.data.data);
           that.totalcount = response.data.data.totalcount ;
           that.productList = response.data.data.productList;
-=======
-          that.totalcount = response.data.data.totalcount;
-          that.customTypeList = response.data.data.customTypeList;
-
->>>>>>> 81f3c99abeec6e7454c0c2575ed208a6cb67b5b0
         })
         .catch(function (error) {
           console.log(error);
