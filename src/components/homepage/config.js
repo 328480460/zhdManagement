@@ -148,7 +148,12 @@ export const menu = [
                         name: '待定邀请',
                         disabled: false,
                         page: 'invitation'
-                    }
+                    }, {
+                        id: '030304',
+                        name: '待定邀请',
+                        disabled: false,
+                        page: 'qualityProblem'
+                     }
                 ]
             }, {
                 id: '0304',
