@@ -165,7 +165,7 @@ export default {
 //      }
 //    return date;
 //  },
-  newProduct() {
+    newProduct() {
         this.$emit("openExtraPage", {
           node: 'production',
           page: "newProduct",
@@ -236,7 +236,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-
     },
     clearConditions(){
       console.log("清空筛选条件");
@@ -268,7 +267,6 @@ export default {
       this.searchConditions()
       //查询分类列表
       this.selectTypes()
-
     }
   }
 };
