@@ -73,6 +73,7 @@
           <el-button
             size="mini"
             type="text"
+            style="margin-left: 50px"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -191,7 +192,8 @@ export default {
     },
     editProduct() {
       this.$emit("openExtraPage", {
-        page: "EditProduct",
+        node:"production",
+        page: "editProduct",
         name: "编辑产品",
         id: "01010102"
       });
