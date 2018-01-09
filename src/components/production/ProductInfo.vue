@@ -256,9 +256,8 @@ export default {
           pagesize: 10,
         })
         .then(function (response) {
-          that.totalcount = response.data.data.totalcount;
-          that.customTypeList = response.data.data.customTypeList;
-
+          that.totalcount = response.data.data.totalcount ;
+          that.productList = response.data.data.productList;
         })
         .catch(function (error) {
           console.log(error);
