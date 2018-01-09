@@ -5,7 +5,7 @@ import BatchImportPro from '@/components/production/BatchImportPro'
 import HistoriesPro from '@/components/production/HistoriesPro'
 import ProductTemplate from '@/components/production/ProductTemplate'
 import MetarialManagement from '@/components/production/MetarialManagement'
-import NewProduct from '@/components/commonComponents/NewProduct'
+import NewProduct from '@/components/production/NewProduct'
 
 export default[
     { //产品-产品分类
