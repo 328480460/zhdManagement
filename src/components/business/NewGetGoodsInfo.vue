@@ -1,11 +1,12 @@
 <template>
-    <div id="getGoodsInfoDetail" v-if='dataInfo'>
+    <div id="getGoodsInfoDetail" v-if='detailDataInfo'>
         <GetGoodsInfoDetailTemplate 
-            :productList='dataInfo.productList' 
-            :thisNodeId='dataInfo.this_node_id' 
-            :sourceNodedId='dataInfo.source_noded_id' 
-            :receiptDate='dataInfo.receipt_date' 
-            :customFields='dataInfo.customFields' 
+            :productList='detailDataInfo.productList' 
+            :thisNodeId='detailDataInfo.this_node_id' 
+            :sourceNodedId='detailDataInfo.source_noded_id' 
+            :receiptDate='detailDataInfo.receipt_date' 
+            :customFields='detailDataInfo.customFields'
+            :customMouldId='detailDataInfo.custom_mould_id'
             >
             <div slot="infoNo">
                 <div class="demo-input-suffix">
@@ -24,18 +25,22 @@ import GetGoodsInfoDetailTemplate from "../commonComponents/GetGoodsInfoDetailTe
 export default {
   name: "getGoodsInfoDetail",
   created() {
-    let params = { id: "1232131" };
-    getInvoiceDetail(params)
-      .then(res => {
-        this.dataInfo = res.data.receipt;
-        console.log(this.dataInfo);
-      })
-      .catch(() => {
-        this.$message.error("出错啦!");
-      });
+    this.getDetailDataInfo();
   },
   data() {
-    return { dataInfo: "" };
+    return { detailDataInfo: "" };
+  },
+  methods: {
+    getDetailDataInfo() {
+      let params = { id: "1232131" };
+      getInvoiceDetail(params)
+        .then(res => {
+          this.detailDataInfo = res.data.receipt;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    }
   },
   components: {
     GetGoodsInfoDetailTemplate
@@ -44,11 +49,17 @@ export default {
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
-    .demo-input-suffix {
-        display: flex;
-        .infoNo {
-            flex: 0 0 100px;
-        }
-    }
+#getGoodsInfoDetail {
+  margin: 10px;
+  padding: 10px;
+  min-height: 92%;
+  background-color: #fff;
+}
+.demo-input-suffix {
+  display: flex;
+  .infoNo {
+    flex: 0 0 100px;
+  }
+}
 </style>
 
