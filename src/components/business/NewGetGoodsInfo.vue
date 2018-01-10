@@ -1,19 +1,6 @@
 <template>
     <div id="getGoodsInfoDetail" v-if='detailDataInfo'>
-        <GetGoodsInfoDetailTemplate 
-            :productList='detailDataInfo.productList' 
-            :thisNodeId='detailDataInfo.this_node_id' 
-            :sourceNodedId='detailDataInfo.source_noded_id' 
-            :receiptDate='detailDataInfo.receipt_date' 
-            :customFields='detailDataInfo.customFields'
-            :customMouldId='detailDataInfo.custom_mould_id'
-            >
-            <div slot="infoNo">
-                <div class="demo-input-suffix">
-                   <div class="infoNo">信息编号</div>
-                   <div class="infoNo-code">xxxxxxx</div>
-                </div>
-            </div>
+        <GetGoodsInfoDetailTemplate :edit= true @saveData= "saveData" >
         </GetGoodsInfoDetailTemplate>
     </div>
 </template>
@@ -40,6 +27,9 @@ export default {
         .catch(() => {
           this.$message.error("出错啦!");
         });
+    },
+    saveData(data) {
+      console.log(data)
     }
   },
   components: {
@@ -58,7 +48,7 @@ export default {
 .demo-input-suffix {
   display: flex;
   .infoNo {
-    flex: 0 0 100px;
+    flex: 0 0 120px;
   }
 }
 </style>

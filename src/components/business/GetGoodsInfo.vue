@@ -19,14 +19,14 @@
         <el-col :span="2"><div class="sub-title">当前节点</div></el-col>
         <el-col :span="4">
           <el-select v-model="search.currentNode" clearable  placeholder="请选择" width="50px" >
-            <el-option  v-for="item in currentNode" :key="item.value" :label="item.label"  :value="item.value" >
+            <el-option  v-for="item in thisNodeOption" :key="item.id" :label="item.node_name"  :value="item.id" >
             </el-option>
           </el-select>
         </el-col>
         <el-col :span="2"><div class="sub-title">来源节点</div></el-col>
         <el-col :span="4">
           <el-select v-model="search.resourceNode" clearable  placeholder="请选择" width="50px" >
-            <el-option  v-for="item in resourceNode" :key="item.value" :label="item.label"  :value="item.value" >
+            <el-option  v-for="item in sourceNodedOption" :key="item.id" :label="item.node_name"  :value="item.id" >
             </el-option>
           </el-select>
         </el-col>
@@ -77,7 +77,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="getGoodsInfoDetail">编辑</el-button>
+            @click="getGoodsInfoDetail">详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -95,13 +95,12 @@
       :current-page= search.pageNum
       :total= totalcount>
     </el-pagination>
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import axios from "axios";
-import { getReceiptList } from "../../assets/js/business/ajax.js";
+import { getReceiptList, getListNode } from "../../assets/js/business/ajax.js";
 
 export default {
   data() {
@@ -148,50 +147,8 @@ export default {
           }
         ]
       },
-      currentNode: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
-      resourceNode: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ]
+      thisNodeOption: [],
+      sourceNodedOption: []
     };
   },
   mounted() {
@@ -216,10 +173,10 @@ export default {
         id: "05010101"
       });
     },
-
     getGoodsInfoDetail() {
       this.$emit("openExtraPage", {
         page: "getGoodsInfoDetail",
+        node: 'business',
         name: "收货信息详情",
         id: "05010102"
       });
@@ -275,6 +232,25 @@ export default {
     },
     initData(params) {
       this.getDataAjax(params);
+      this.loadNodeData();
+    },
+    loadNodeData() {
+      // 请求来源节点
+      getListNode({ node_type_id: 1 })
+        .then(res => {
+          this.thisNodeOption = res.data.nodeList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+      // 请求当前节点
+      getListNode({ node_type_id: 2 })
+        .then(res => {
+          this.sourceNodedOption = res.data.nodeList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
     },
     getDataAjax(params) {
       getReceiptList(params)
