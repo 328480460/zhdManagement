@@ -100,6 +100,7 @@ export default {
     return {
       totalcount: 0,
       productList: [],
+      customTypeList:[],
       search: {
         productName: "",
         time: "",
@@ -108,8 +109,6 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-
-      customTypeList:[],
       pickerOptions2: {
         shortcuts: [
           {
@@ -220,7 +219,7 @@ export default {
       let that = this
       axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductList', {params})
         .then(function (response) {
-          console.log("getProductList获取的产品列表参数信息=="+JSON.stringify(params));
+//          console.log("getProductList获取的产品列表参数信息=="+JSON.stringify(params));
           that.totalcount = response.data.data.totalcount;
           that.productList = response.data.data.productList;
         })
@@ -298,8 +297,7 @@ export default {
   .el-table{
     width: 100%;
     margin-top: 24px;
-    .table-column{
-    }
+
   }
   .btn-search{
     background-color: transparent;

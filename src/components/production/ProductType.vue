@@ -98,7 +98,6 @@
       },
       /*"搜索"---查询产品分类列表接口*/
       searchProductType(current){
-        console.log("搜索分类名称");
         this.search.pageNum = typeof current === 'number' ? current : 1;
         let params = {
           typeName: this.search.typeName,
@@ -112,7 +111,6 @@
         let that = this
         axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {params})
           .then(function (response) {
-            console.log("产品分类列表参数信息==="+JSON.stringify(params));
             that.totalcount = response.data.data.totalcount;
             that.customTypeList = response.data.data.customTypeList;
           })
