@@ -7,24 +7,24 @@
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">产品名称</div></el-col>
-        <el-col :span="4"><el-input placeholder="请输入产品名称"  v-model="productName" :fetch-suggestions="querySearch" ></el-input></el-col>
+        <el-col :span="4"><el-input placeholder="请输入产品名称" v-model="search.productName" ></el-input></el-col>
         <el-col :span="3"><div class="sub-title">创建日期</div></el-col>
         <el-col :span="6">
-          <el-date-picker v-model="time" type="daterange"
+          <el-date-picker v-model="search.time" type="daterange"
                           align="right" unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
-                          :picker-options="pickerOptions2"  ></el-date-picker>
+                          :picker-options="pickerOptions2" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"></el-date-picker>
         </el-col>
       </el-row>
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">自定义分类</div></el-col>
         <el-col :span="4">
-          <el-select v-model="customType" clearable  placeholder="请选择" width="50px" >
+          <el-select v-model="search.customType" clearable  placeholder="请选择" width="50px" >
             <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
             </el-option>
           </el-select>
         </el-col>
         <el-col :span="3"><div class="sub-title">产品编码</div></el-col>
-        <el-col :span="4"><el-input v-model="productCode" placeholder="请输入内容" :fetch-suggestions="queryCode"></el-input></el-col>
+        <el-col :span="4"><el-input v-model="search.productCode" placeholder="请输入内容" ></el-input></el-col>
       </el-row>
       <el-row class="demo-autocomplete">
         <el-button type="primary" size="medium"  @click="searchConditions" class="btn-search" >搜索</el-button>
@@ -83,7 +83,7 @@
       background
       style="margin-top: 15px"
       layout="total,prev, pager, next"
-      @size-change="handleSizeChange"
+      :current-page= search.pageNum
       @current-change="handleCurrentChange"
       :page-size=10
       :total= totalcount>
@@ -100,11 +100,14 @@ export default {
     return {
       totalcount: 0,
       productList: [],
-      pagenum:1,
-      productName: '',
-      time: '',
-      productCode: '',
-      customType:'',
+      search: {
+        productName: "",
+        time: "",
+        customType: "",
+        productCode: "",
+        pageNum: 1,
+        pageSize: 10
+      },
 
       customTypeList:[],
       pickerOptions2: {
@@ -144,28 +147,19 @@ export default {
 
   },
   mounted() {
-    this.loadAll();
+    let params = {
+      productName: "",
+      time: "",
+      customType: "",
+      productCode: "",
+      pageNum: 1,
+      pageSize: 10,
+      receiptdate_start: "",
+      receiptdate_end: ""
+    };
+    this.initData(params);
   },
   methods: {
-//    datePicker(val){
-//      var dateSelected = this.parseISO8601(val); //转换格式
-//      console.log("选择的时间====="+dateSelected)
-//    },
-//    //转换日期格式
-//    parseISO8601(dateStringInRange) {
-//      var isoExp = /^s*(d{4})-(dd)-(dd)s*$/,
-//        date = new Date(NaN), month,
-//        parts = isoExp.exec(dateStringInRange);
-//
-//      if(parts) {
-//        month = +parts[2];
-//        date.setFullYear(parts[1], month - 1, parts[3]);
-//        if(month != date.getMonth() + 1) {
-//          date.setTime(NaN);
-//        }
-//      }
-//    return date;
-//  },
     newProduct() {
         this.$emit("openExtraPage", {
           node: 'production',
@@ -174,21 +168,9 @@ export default {
           id: "01010101"
         });
       },
-    //监听输入框“产品名称”内容
-    querySearch(queryString, cb) {
-      this.productName = queryString
-    },
     //监听输入框“产品编码”内容
     queryCode(queryString, cb) {
       this.productCode = queryString
-    },
-    createFilter(queryString) {
-//      return restaurant => {
-//        return (
-//          restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
-//          0
-//        );
-//      };
     },
     editProduct() {
       this.$emit("openExtraPage", {
@@ -220,35 +202,43 @@ export default {
       });
     },
     /*"搜索"---查询产品列表接口*/
-    searchConditions(){
+    searchConditions(current){
+      this.search.pageNum = typeof current === 'number' ? current : 1;
+      let params = {
+        productName: this.search.productName,
+        customType: this.search.customType,
+        productCode: this.search.productCode,
+        pagenum: this.search.pageNum,
+        pagesize: this.search.pageSize,
+        receiptdate_start: this.search.time[0],
+        receiptdate_end: this.search.time[1]
+      };
+      this.getProductList(params);
+    },
+    //产品列表查询
+    getProductList(params){
       let that = this
-      axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductList', {
-          pagenum: that.pagenum,
-          pagesize: 10,
-          product_code:that.productCode,
-          product_name:that.productName,
-        })
+      axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductList', {params})
         .then(function (response) {
-          console.log("产品名称==="+that.productName+"产品编码==="+that.productName);
-
+          console.log("getProductList获取的产品列表参数信息=="+JSON.stringify(params));
           that.totalcount = response.data.data.totalcount;
           that.productList = response.data.data.productList;
-
         })
         .catch(function (error) {
-          console.log(error);
+          this.$message({type: 'error', message: '出错啦!'});
         });
     },
     clearConditions(){
-      console.log("清空筛选条件");
+      this.search.productName = "";
+      this.search.time = "";
+      this.search.customType = "";
+      this.search.productCode = "";
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
+    // 分页跳转
     handleCurrentChange(val) {
-      this.pagenum = val
-      console.log(`当前页: ${this.pagenum}`);
+      this.searchConditions(val);
     },
+    //产品分类列表查询
     selectTypes(){
       let that = this
       axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {
@@ -257,15 +247,15 @@ export default {
         })
         .then(function (response) {
           that.totalcount = response.data.data.totalcount ;
-          that.productList = response.data.data.productList;
+          that.customTypeList = response.data.data.customTypeList;
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    loadAll() {
+    initData(params) {
       //查询产品列表
-      this.searchConditions()
+      this.searchConditions(params)
       //查询分类列表
       this.selectTypes()
     }
@@ -307,7 +297,6 @@ export default {
   }
   .el-table{
     width: 100%;
-    text-align: center;
     margin-top: 24px;
     .table-column{
     }
