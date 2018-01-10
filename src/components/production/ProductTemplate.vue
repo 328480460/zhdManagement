@@ -69,7 +69,6 @@
 //            id: "01010101"
 //          });
         },
-
         handleDelete(index, row) {
           this.delete()
         },

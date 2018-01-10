@@ -6,13 +6,14 @@
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">自定义分类名称</div></el-col>
-        <el-col :span="4"><el-input placeholder="请输入自定义分类名称" style="padding-left: 20px"></el-input></el-col>
+        <el-col :span="4"><el-input placeholder="请输入自定义分类名称" v-model="search.typeName" style="padding-left: 20px"></el-input></el-col>
         <el-button type="primary" size="medium"  @click="searchProductType" class="btn-search" >搜索</el-button>
       </el-row>
     </div>
 
     <el-table class="el-table"
               border
+              stripe
               :data="customTypeList"
     >
       <el-table-column class="table-column"
@@ -36,14 +37,15 @@
         </template>
       </el-table-column>
     </el-table>
+
     <el-pagination
-      background
-      style="margin-top: 15px"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      layout="total,prev, pager, next"
-      :page-size=10
-      :total=totalcount>
+        background
+        style="margin-top: 15px"
+        layout="total,prev, pager, next"
+        :current-page= search.pageNum
+        @current-change="handleCurrentChange"
+        :page-size=10
+        :total=totalcount>
     </el-pagination>
   </div>
 </template>
@@ -55,12 +57,21 @@
     data(){
       return{
         totalcount:0,
-        pagenum:1,
         customTypeList:[],
+        search: {
+          typeName:'',
+          pageNum: 1,
+          pageSize: 10,
+        },
       }
     },
     mounted() {
-      this.restaurants = this.loadAll();
+      let params = {
+        typeName: '',
+        pageNum: 1,
+        pageSize: 10,
+      };
+      this.getTypeList(params);
     },
     methods:{
       newProductType() {
@@ -85,12 +96,27 @@
           });
         });
       },
-      searchProductType(){
-        console.log("搜索分类名称");
-        /*搜索接口*/
-        //        axios.get("/api/").then(res => {
-//          console.log(res);
-//        });
+      /*"搜索"---查询产品分类列表接口*/
+      searchProductType(current){
+        this.search.pageNum = typeof current === 'number' ? current : 1;
+        let params = {
+          typeName: this.search.typeName,
+          pagenum: this.search.pageNum,
+          pagesize: this.search.pageSize,
+        };
+        this.getTypeList(params);
+      },
+      //产品分类列表查询
+      getTypeList(params){
+        let that = this
+        axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {params})
+          .then(function (response) {
+            that.totalcount = response.data.data.totalcount;
+            that.customTypeList = response.data.data.customTypeList;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       },
       editProduct() {
         this.$prompt('自定义分类名称：', '编辑自定义分类', {
@@ -140,29 +166,12 @@
           });
         });
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
       handleCurrentChange(val) {
         this.pagenum = val
         console.log(`当前页: ${this.pagenum}`);
       },
       loadAll(){
-        let that = this
-        axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {
-            pagenum: that.pagenum,
-            pagesize: 10,
-          })
-          .then(function (response) {
-            console.log("产品分类列表==="+JSON.stringify(response.data.data));
 
-            that.totalcount = response.data.data.totalcount;
-            that.customTypeList = response.data.data.customTypeList;
-
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
       }
     },
   }
@@ -197,11 +206,7 @@
 
     .el-table{
       width: 100%;
-      text-align: center;
       margin-top: 25px;
-    }
-    .el-table--border th:first-child .cell{
-      text-align: center;
     }
 
   }
