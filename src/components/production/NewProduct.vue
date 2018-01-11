@@ -1,7 +1,7 @@
 <template>
   <div id="newProduct">
-    <div class="default-info-wrapper">
-      <div class="section-title">产品信息</div>
+    <div class="receive-info">
+      <h6 class="title">产品信息</h6>
       <div class="section-content">
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="*产品编号">
@@ -13,8 +13,9 @@
           <el-form-item label="*产品分类">
             <el-cascader :options="productType" change-on-select ></el-cascader>
           </el-form-item>
-          <el-form-item label="*包装单位">
-            <el-select v-model="form.productPackaging" placeholder="请选择包装单位">
+          <el-form-item label="*包装规格">
+            <el-input style="width: 100px;" type="number"></el-input>
+            <el-select v-model="form.productPackaging" placeholder="未选择">
               <el-option label="袋" value="袋"></el-option>
               <el-option label="件" value="件"></el-option>
               <el-option label="箱" value="箱"></el-option>
@@ -25,7 +26,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="自定义分类">
-            <el-select v-model="form.productUserDefineType" placeholder="请选择自定义分类">
+            <el-select v-model="form.custom_type_id" placeholder="未选择">
               <el-option label="牛肉" value="牛肉"></el-option>
               <el-option label="羊肉" value="羊肉"></el-option>
             </el-select>
@@ -36,12 +37,19 @@
           <el-form-item label="品牌名称">
             <el-input v-model="form.productBrand"></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">立即创建</el-button>
-            <el-button>取消</el-button>
-          </el-form-item>
         </el-form>
       </div>
+      <h6 class="title">自定义属性</h6>
+      <div class="section-content">
+      <el-form ref="form" :model="form" label-width="120px">
+        <el-form-item label="自定义属性">
+          <el-select v-model="form.custom_mould_id" placeholder="无">
+            <el-option label="肉类产品" value="肉类产品"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      </div>
+      <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
     </div>
   </div>
 </template>
@@ -55,11 +63,12 @@ export default {
         productCode: "",
         productName: "",
         productType: "",
-        productUserDefineType: "",
+        custom_type_id: "",
         productPackaging: "袋",
         productPackagingUnit: "",
         productDesc: "",
-        productBrand: ""
+        productBrand: "",
+        custom_mould_id:"",
       },
       productType: [
         {
@@ -343,12 +352,25 @@ export default {
 #newProduct {
   margin: 10px;
   padding: 10px;
-  height: 100%;
+  height: auto;
   background-color: #fff;
-  .default-info-wrapper {
-    .section-content {
-      width: 600px;
+  .receive-info {
+    width: 96%;
+    margin: 0 auto;
+    .title {
+      font-size: 15px;
+      border-bottom: 1px solid #c0c4cc;
+      padding-bottom: 5px;
+      color: #c0c4cc;
     }
+    .section-content {
+      width: 500px;
+      margin-top: 20px;
+      margin-left: 190px;
+    }
+  }
+  .bt-save{
+    margin-left: 400px;
   }
 }
 </style>

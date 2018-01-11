@@ -148,12 +148,7 @@ export const menu = [
                         name: '待定邀请',
                         disabled: false,
                         page: 'invitation'
-                    }, {
-                        id: '030304',
-                        name: '待定邀请',
-                        disabled: false,
-                        page: 'qualityProblem'
-                     }
+                    }
                 ]
             }, {
                 id: '0304',
@@ -180,6 +175,11 @@ export const menu = [
                         name: '文档类型',
                         disabled: false,
                         page: 'customDocumentType'
+                    }, {
+                        id: '030405',
+                        name: '质量问题',
+                        disabled: false,
+                        page: 'qualityProblem'
                     }
                 ]
             }

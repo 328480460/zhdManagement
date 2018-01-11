@@ -1,7 +1,7 @@
 <template>
   <div id="setting">
     <div class="btn-list">
-      <el-button type="primary" size="medium" >添加节点</el-button>
+      <el-button type="primary" size="medium" @click="newNode">添加节点</el-button>
       <el-button type="primary" size="medium" class="btn-search">导出</el-button>
     </div>
     <div class="option-wrapper">
@@ -174,6 +174,14 @@ export default {
       }
     },
     methods: {
+      newNode() {
+        this.$emit("openExtraPage", {
+          node: 'node',
+          page: "newNode",
+          name: "添加节点",
+          id: "02010101"
+        });
+      },
       /*"搜索"---查询节点列表接口*/
       searchConditions(current){
         this.search.pageNum = typeof current === 'number' ? current : 1;
@@ -205,13 +213,12 @@ export default {
         this.searchConditions(val);
       },
       nodeDetails() {
-        console.log("查看该节点详情")
-//            this.$emit("openExtraPage", {
-//              node:"node",
-//              page: "editProduct",
-//              name: "节点详情",
-//              id: "01010102"
-//            });
+            this.$emit("openExtraPage", {
+              node:"node",
+              page: "nodeDetails",
+              name: "节点详情",
+              id: "02010102"
+            });
       },
       handleDelete(index, row) {
         this.delete()

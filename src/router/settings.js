@@ -3,6 +3,7 @@ import AccountSetting from '@/components/settings/AccountSetting'
 import StaffManagement from '@/components/settings/StaffManagement'
 import RolePermission from '@/components/settings/RolePermission'
 import Invitation from '@/components/settings/Invitation'
+import QualityProblem from '@/components/settings/QualityProblem'
 import CustomProductType from '@/components/settings/CustomProductType'
 import CustomNodeType from '@/components/settings/CustomNodeType'
 import CustomBusinessType from '@/components/settings/CustomBusinessType'
@@ -43,5 +44,10 @@ export default[
     //设置-自定义属性-文档类型
     {
     path : 'settings/customDocumentType', component : CustomDocumentType
+    },
+    //设置-自定义属性-质量问题
+    {
+      path : 'settings/qualityProblem', component : QualityProblem
     }
+
 ]
