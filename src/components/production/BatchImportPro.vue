@@ -4,7 +4,7 @@
       <div class="title-bg">第一步：下载产品模板</div>
       <div class="module-container">
         选择文件类型
-        <el-select v-model="value" clearable placeholder="请选择" style="width: auto">
+        <el-select v-model="value" disabled placeholder="产品模板" style="width: auto">
           <el-option
             v-for="item in templatespro"
             :key="item.value"
@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 export default {
   name: 'batchimport',
   data(){
@@ -49,12 +49,6 @@ export default {
       templatespro: [{
         value: '1',
         label: '产品模板'
-      }, {
-        value: '2',
-        label: '节点模板'
-      }, {
-        value: '3',
-        label: '追溯模板'
       }],
       value: ''
 
@@ -62,10 +56,10 @@ export default {
   },
   methods:{
     downloadyemplate(){
-      console.log("下载产品模板")
+      console.log("“下载产品模板”")
     },
     update(){
-      console.log("上传文件保存")
+      console.log("上传文件“保存”")
     }
   }
 

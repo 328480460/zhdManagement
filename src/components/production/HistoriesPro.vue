@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 export default {
   name: 'histories',
   data(){
@@ -75,26 +75,22 @@ export default {
     }
   },
   mounted() {
-    this.loadAll();
+    this.searchHistories();
   },
   methods: {
-    loadAll() {
-      //查询产品列表
-//      this.searchHistories()
-    },
     /*"产品"---查询历史记录接口*/
     searchHistories(){
-      let that = this
-      axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductList', {
-          pagenum: that.pagenum,
-          pagesize: 10,
-        })
-        .then(function (response) {
-          console.log("查询历史记录接口==="+response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+//      let that = this
+//      axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductList', {
+//          pagenum: that.pagenum,
+//          pagesize: 10,
+//        })
+//        .then(function (response) {
+//          console.log("查询历史记录接口==="+response.data);
+//        })
+//        .catch(function (error) {
+//          console.log(error);
+//        });
     },
     details(){
       console.log("历史记录详情查看");
