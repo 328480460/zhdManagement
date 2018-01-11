@@ -29,7 +29,7 @@
       </el-row>
       <el-row class="demo-autocomplete">
         <el-button type="primary" size="medium" @click="searchConditions" class="btn-search" >搜索</el-button>
-        <span class="span-clear">清空筛选条件</span>
+        <span @click="clearConditions" class="span-clear">清空筛选条件</span>
       </el-row>
     </div>
 
@@ -182,6 +182,12 @@ export default {
           id: "02010101"
         });
       },
+      clearConditions(){
+        this.search.nodeNumber = "";
+        this.search.nodeName = "";
+        this.search.nodeSplitting = "";
+        this.search.nodeType = "";
+      },
       /*"搜索"---查询节点列表接口*/
       searchConditions(current){
         this.search.pageNum = typeof current === 'number' ? current : 1;
@@ -200,7 +206,7 @@ export default {
         let that = this
         axios.post('http://47.92.149.109:7108/mockjsdata/2/Node/getListNode', {params})
           .then(function (response) {
-          console.log("getNodeList获取的节点列表参数信息=="+JSON.stringify(params));
+//          console.log("getNodeList获取的节点列表参数信息=="+JSON.stringify(params));
             that.totalcount = response.data.data.totalcount;
             that.nodeList = response.data.data.nodeList;
           })

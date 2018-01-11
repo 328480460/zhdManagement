@@ -3,66 +3,57 @@
     <div class="receive-info">
       <h6 class="title">节点信息</h6>
       <div class="section-content">
-        <el-form ref="form" label-width="120px">
-          <el-form-item label="*产品编号">
-            <el-input ></el-input>
+        <el-form ref="form" :model="form" label-width="120px">
+          <el-form-item label="*节点编号">
+            <el-input v-model="form.nodeNumber"></el-input>
           </el-form-item>
-          <el-form-item label="*产品名称">
-            <el-input ></el-input>
+          <el-form-item label="*节点名称">
+            <el-input v-model="form.nodeName"></el-input>
           </el-form-item>
-          <el-form-item label="*产品分类">
-            <el-cascader change-on-select ></el-cascader>
-          </el-form-item>
-          <el-form-item label="*包装单位">
-            <el-select placeholder="请选择包装单位">
-              <el-option label="袋" value="袋"></el-option>
-              <el-option label="件" value="件"></el-option>
-              <el-option label="箱" value="箱"></el-option>
-            </el-select>
-            <el-radio-group >
-              <el-radio label="标件"></el-radio>
-              <el-radio label="称重"></el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="自定义分类">
-            <el-select  placeholder="请选择自定义分类">
-              <el-option label="牛肉" value="牛肉"></el-option>
-              <el-option label="羊肉" value="羊肉"></el-option>
+          <el-form-item label="节点分类">
+            <el-select v-model="form.nodeSplitting" clearable  placeholder="选择节点分类" width="50px" >
+              <el-option  v-for="item in nodeSplittings" :key="item.id" :label="item.name"  :value="item.id" >
+              </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="产品描述">
-            <el-input type="textarea" ></el-input>
+          <el-form-item label="节点类型">
+            <el-checkbox-group v-model="nodeTypes" :min="1">
+              <el-checkbox label="来源节点"></el-checkbox>
+              <el-checkbox label="当前节点"></el-checkbox>
+              <el-checkbox label="流向节点"></el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="品牌名称">
-            <el-input ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary">立即创建</el-button>
-            <el-button>取消</el-button>
+          <el-form-item label="节点描述">
+            <el-input type="textarea" v-model="form.nodeDepict"></el-input>
           </el-form-item>
         </el-form>
       </div>
-      <!--<div class="content">-->
-        <!--<div class="demo-input-suffix">-->
-          <!--<div class="lable">节点编码</div>-->
-          <!--<div ><el-input placeholder="请输入节点编码"  ></el-input></div>-->
-        <!--</div>-->
-        <!--<div class="demo-input-suffix">-->
-          <!--<div class="lable">节点名称</div>-->
-          <!--<div ><el-input placeholder="请输入节点名称"  ></el-input></div>-->
-        <!--</div>-->
-        <!--<slot name="infoNo"></slot>-->
-        <!--<div class="demo-input-suffix">-->
-          <!--<div class="lable">当前节点</div>-->
-          <!--<el-select v-model="thisNodeId" placeholder="请选择">-->
-          <!--</el-select>-->
-        <!--</div>-->
-        <!--<div class="demo-input-suffix">-->
-          <!--<div class="lable">来源节点</div>-->
-          <!--<el-select v-model="sourceNodedId" placeholder="请选择">-->
-          <!--</el-select>-->
-        <!--</div>-->
-      <!--</div>-->
+      <h6 class="title">联系人信息</h6>
+      <div class="section-content">
+        <el-form label-width="120px">
+          <el-form-item label="*节点地址：">
+            <el-input v-model="form.nodeAddress"></el-input>
+            <el-input style="margin-top: 20px"></el-input>
+          </el-form-item>
+          <el-form-item label="联系人：">
+            <el-input v-model="form.contacts"></el-input>
+          </el-form-item>
+          <el-form-item label="联系电话：">
+            <el-input v-model="form.contactsPhone"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <h6 class="title">自定义属性</h6>
+      <div class="section-content">
+        <el-form label-width="120px">
+          <el-form-item label="自定义属性">
+            <el-select v-model="form.customMouldName" placeholder="无">
+              <el-option v-for="item in customMouldNames" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+      <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
 
     </div>
   </div>
@@ -73,8 +64,36 @@ export default {
   name: 'newNode',
   data(){
     return{
-
+      form: {
+        nodeNumber: "",
+        nodeName: "",
+        nodeSplitting: "",
+        nodeType: "",
+        nodeDepict: "",
+        nodeAddress: "",
+        contacts: "",
+        contactsPhone: "",
+        customMouldName: "",
+      },
+      nodeTypes:['来源节点'],
+      nodeSplittings: [{
+        id: '1',
+        name: '(test)养殖场',
+      }, {
+        id: '2',
+        name: '批发商',
+      }],
+      customMouldNames: [{
+        id: '1',
+        name: '(test)自定义节点信息',
+      }],
     }
+  },
+  methods:{
+    onSubmit() {
+      console.log("submit!添加节点");
+    },
+
   }
 
 }
@@ -84,7 +103,7 @@ export default {
 #newNode{
   margin: 10px;
   padding: 10px;
-  height: 100%;
+  height: auto;
   background-color: #fff;
   .section-content {
     width: 500px;
@@ -116,6 +135,8 @@ export default {
       }
     }
   }
-
+  .bt-save{
+    margin-left: 400px;
+  }
 }
 </style>
