@@ -6,27 +6,27 @@
                 <slot name="infoNo"></slot> 
                 <div class="demo-input-suffix">
                     <div class="lable">请选择日期</div>
-                    <el-date-picker :disabled="true" v-model="receiptDate" type="date" placeholder="选择日期"></el-date-picker>
+                    <el-date-picker :disabled="!edit" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
                 </div>
                 <div class="demo-input-suffix">
                     <div class="lable">当前节点</div>
-                        <el-select v-model="thisNodeId" placeholder="请选择">
+                        <el-select :disabled="!edit" v-model="currnetNode" placeholder="请选择">
                             <el-option
                             v-for="item in thisNodeOption"
-                            :key="item.node_number"
-                            :label="item.node_address"
-                            :value="item.node_number">
+                            :key="item.id"
+                            :label="item.node_name"
+                            :value="item.id">
                             </el-option>
                         </el-select>
                 </div>
                 <div class="demo-input-suffix">
                     <div class="lable">来源节点</div>
-                    <el-select v-model="sourceNodedId" placeholder="请选择">
+                    <el-select :disabled="!edit" v-model="sourceNode" placeholder="请选择">
                         <el-option
                         v-for="item in sourceNodedOption"
-                        :key="item.node_number"
-                        :label="item.node_address"
-                        :value="item.node_number">
+                        :key="item.id"
+                        :label="item.node_name"
+                        :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
@@ -37,7 +37,7 @@
           <div class="content">
             <div class="demo-input-suffix">
                 <div class="lable">添加产品</div>
-                    <el-select v-model="selectProduction" placeholder="选择产品">
+                    <el-select :disabled="!edit" v-model="selectProduction" placeholder="选择产品">
                         <el-option
                         v-for="item in productTypeList"
                         :key="item.id"
@@ -61,11 +61,11 @@
               <tr v-for="(item, index) in productList" :key="index">
                 <td>{{item.product_name}}</td>
                 <td>{{item.product_num}}</td>
-                <td><input type="number" class="input-box" v-model="item.receipt_num" placeholder="请输入产品批次号"></td>
-                <td><input type="number" class="input-box" v-model="item.product_batch_num" placeholder="请输入产品序列号"></td>
-                <td><input type="number" class="input-box" v-model="item.product" placeholder="请输入产品序列号"></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入产品批次号"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品序列号"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.product" placeholder="请输入产品序列号"></el-input></td>
                 <td>{{item.norms}}</td>
-                <td><i class="el-icon-close icon-font"></i></td>
+                <td><i class="el-icon-close icon-font" v-show="edit"></i></td>
               </tr>
             </table>
           </div>
@@ -75,7 +75,7 @@
           <div class="content">
             <div class="demo-input-suffix">
                 <div class="lable">自定义属性</div>
-                <el-select   v-model="selectCustomDefine" placeholder="请选择">
+                <el-select  :disabled="!edit" v-model="selectCustomDefine" placeholder="请选择">
                     <el-option
                     v-for="item in customDefineList"
                     :key="item.id"
@@ -86,9 +86,22 @@
                 </el-select>
             </div>
           </div>
-          <div class="attribute-wrapper">
-
+          <div class="attribute-wrapper" v-show="selectCustomDefine">
+            <div class="content">
+              <div class="demo-input-suffix">
+                <div class="lable">产地</div>
+                <el-cascader :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
+              </div>
+              <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
+                <div class="lable">{{item.column_chinese}}</div>
+                <el-input :disabled="!edit" v-model="item.value" placeholder="请输入内容"></el-input>
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="btn-wrapper">
+          <div class="btn" v-if="!edit" @click="editPage">编辑</div>
+          <div class="btn" v-if="edit" @click="saveData">保存</div>
         </div>
     </div>
 </template>
@@ -100,6 +113,7 @@ import {
   getCustomAttributeList,
   getCustomAttributeDetail
 } from "../../assets/js/business/ajax.js";
+import { cityData } from "../../assets/js/api/cityData.js";
 
 export default {
   name: "getGoodsInfoDetail",
@@ -112,12 +126,16 @@ export default {
     return {
       // 当前节点可选列表
       thisNodeOption: [],
+      // 当前选中的当前节点
+      currnetNode: '',
       // 来源节点可选列表
       sourceNodedOption: [],
-      // 当前选中产品
-      selectProduction: "",
+      // 当前选中的来源节点
+      sourceNode: '',
       // 所有产品类型列表
       productTypeList: [],
+      // 当前选中产品类型
+      selectProduction: "",
       // 用户自定义模块可选列表
       customDefineList: [],
       // 当前用户选中自定义模块
@@ -126,16 +144,28 @@ export default {
       selectCustomDefineId: "",
       // 用户选定模块的自定义属性列表
       customDefineAttributeList: [],
+      // 城市列表数据
+      cityDataList: cityData,
+      // 选中的城市
+      selectedCity: ["110000", "110000", "110000"],
+      // 时间
+      time: this.receiptDate
     };
   },
   props: {
+    // 是否可编辑
+    edit: {
+      type: Boolean,
+      default: true,
+      required: false
+    },
     // 产品列表
     productList: {
       type: Array,
       default: () => [],
       required: false
     },
-    // 当前节点
+    // 当前节点id
     thisNodeId: {
       type: String,
       default: "",
@@ -147,7 +177,7 @@ export default {
       default: "",
       required: false
     },
-    // 来源节点
+    // 来源节点id
     sourceNodedId: {
       type: String,
       default: "",
@@ -172,6 +202,8 @@ export default {
       getListNode({ node_type_id: 1 })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
+          this.showSourceNode()
+          this.showCurrnetNode()
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -180,6 +212,8 @@ export default {
       getListNode({ node_type_id: 2 })
         .then(res => {
           this.sourceNodedOption = res.data.nodeList;
+          this.showCurrnetNode()
+          this.showSourceNode()
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -208,10 +242,12 @@ export default {
     },
     // 请求用户自定义模块详情
     loadCustomDefineDetailData(id) {
-       getCustomAttributeDetail({id})
+      // console.log('loadCustomDefineDetailData');
+      getCustomAttributeDetail({ id })
         .then(res => {
-          this.customDefineAttributeList = res.data.customAttribute.customAttributeList;
-          console.log(this.customDefineAttributeList)
+          this.customDefineAttributeList =
+            res.data.customAttribute.customAttributeList;
+          this.mergeCustomDefineAttributeList();
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -219,18 +255,54 @@ export default {
     },
     // 根据收货详情回显出当前用户选中的自定义模块
     showSelectCustomDefineMould() {
-      this.customDefineList.forEach((value,index) => {
-        if(value.id == this.customMouldId) {
+      this.customDefineList.forEach((value, index) => {
+        // console.log(value.id, this.customMouldId)
+        if (value.id == this.customMouldId) {
           this.selectCustomDefine = value.mould_name;
           this.selectCustomDefineId = value.id;
         }
       });
-      // this.selectCustomDefine = this.customDefineList[0].mould_name;
-      // this.selectCustomDefineId = this.customDefineList[0].id;
+    },
+    // 回显出来源用户选中的节点
+    showSourceNode() {
+      this.sourceNodedOption.forEach((value, index) => {
+        // console.log(value, this.sourceNodedId);
+        if(value.id == this.sourceNodedId) {
+          this.sourceNode = value.node_address;
+        }
+      })
+    },
+    // 回显出当前用户选中的节点
+    showCurrnetNode() {
+      this.thisNodeOption.forEach((value, index) => {
+        // console.log(value, this.thisNodeId);
+        if(value.id == this.thisNodeId) {
+          this.currnetNode = value.node_address;
+        }
+      })
+    },
+    // 根据传入的当前用户已经有值的自定义属性(props.customFields)和查出的用户自定义属性列表(data.customDefineAttributeList)合并成一个符合规则的列表
+    mergeCustomDefineAttributeList() {
+      let customFields = this.customFields;
+      let customDefineAttributeList = this.customDefineAttributeList;
+      customDefineAttributeList.forEach((value, index) => {
+        customFields.forEach((val, idx) => {
+          if (value.id == val.custom_id) {
+            value.value = val.data_value;
+          }
+        });
+      });
+      // console.log(this.customDefineAttributeList)
+    },
+    editPage() {
+      this.$emit('editPage');
+    },
+    saveData() {
+      let data = {name: '测试'}
+      this.$emit('saveData', data)
     }
-
   },
-  watch: {  
+  watch: {
     selectCustomDefine(newVal) {
       this.loadCustomDefineDetailData(newVal);
     }
@@ -262,7 +334,7 @@ export default {
       margin-top: 10px;
       font-size: 15px;
       .lable {
-        flex: 0 0 100px;
+        flex: 0 0 120px;
         align-items: center;
         line-height: 40px;
       }
@@ -311,6 +383,24 @@ export default {
 }
 .custom-define-info {
   .receive-info;
+  .el-input {
+    width: 217px;
+  }
+}
+.btn-wrapper {
+  margin-left: 300px;
+  margin-top: 40px;
+  .btn {
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 15px;
+    color: #fff;
+    background-color: rgb(47, 169, 18);
+    border-radius: 4px;
+    cursor: pointer;
+  }
 }
 </style>
 

@@ -1,4 +1,4 @@
-import {ajaxPost} from './api.js';
+import {ajaxPost} from '../api/api.js';
 
 // 收货信息列表查询接口
 export const  getReceiptList  = function(params) {
