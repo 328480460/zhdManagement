@@ -12,14 +12,13 @@
             <el-button type="text" class="br_text">立即认证</el-button>
           </el-form-item>
           <el-form-item label="所在地区：">
-            <el-input v-model="form.area"></el-input>
+            <el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
             <el-input v-model="form.area" style="margin-top: 20px"></el-input>
           </el-form-item>
           <el-form-item label="开通日期：">2017-11-08 &nbsp 15:24:26
           </el-form-item>
           <el-form-item label="企业LOGO：">
             <img src="../../assets/image/enterprise_logo.png" alt="enterprise_logo" class="enterprise_logo">
-            <!--<span class="amend_logo" >修改</span>-->
             <el-button type="text" class="br_text">修改</el-button>
           </el-form-item>
           <el-form-item label="企业简介：">
@@ -43,12 +42,17 @@
 
 <script type="text/ecmascript-6">
 import axios from "axios";
+import { cityData } from "../../assets/js/api/cityData.js";
 export default {
     name: "enterprise",
     created() {
     },
     data() {
       return{
+        // 城市列表数据
+        cityDataList: cityData,
+        // 选中的城市
+        selectedCity: ["110000", "110000", "110000"],
         form: {
           name: '',
           type: '',
@@ -111,10 +115,11 @@ export default {
 #enterprise {
   margin: 10px;
   padding: 10px;
-  height: 100%;
+  height: auto;
   background-color: #fff;
   .default-info-wrapper {
     .section-content {
+      margin-top: 20px;
       width: 600px;
       .enterprise_logo {
         width: 60px;
