@@ -75,6 +75,7 @@ export default {
   background-color: #fff;
   .default-info-wrapper {
     .section-content {
+      margin-top: 20px;
       width: 600px;
     }
   }

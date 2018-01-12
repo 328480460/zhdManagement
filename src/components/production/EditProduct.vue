@@ -11,11 +11,18 @@
             <el-input v-model="form.productName"></el-input>
           </el-form-item>
           <el-form-item label="*产品分类">
-            <el-cascader :options="productType" change-on-select ></el-cascader>
+            <el-cascader :options="productTypes" change-on-select v-model="form.productTypeSelected"></el-cascader>
           </el-form-item>
-          <el-form-item label="*包装规格">
-            <el-input style="width: 100px;" type="number"></el-input>
-            <el-select v-model="form.productPackaging" placeholder="未选择">
+          <el-form-item label="*包装单位">
+            <el-select v-model="form.norms" placeholder="无">
+              <!--换包装单位集合查询接口的集合-->
+              <el-option  v-for="item in customFields" :key="item.custom_id" :label="item.data_value"  :value="item.custom_id" >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="*计量单位">
+            <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
+            <el-select v-model="form.norms" placeholder="未选择">
               <el-option label="袋" value="袋"></el-option>
               <el-option label="件" value="件"></el-option>
               <el-option label="箱" value="箱"></el-option>
@@ -26,8 +33,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="自定义分类">
-            <el-select v-model="form.custom_type_id" placeholder="未选择">
-              <el-option label="牛肉" value="牛肉"></el-option>
+            <el-select v-model="form.custom_type" placeholder="未选择">
+              <el-option label="text牛肉" value="牛肉"></el-option>
               <el-option label="羊肉" value="羊肉"></el-option>
             </el-select>
           </el-form-item>
@@ -43,8 +50,9 @@
       <div class="section-content">
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="自定义属性">
-            <el-select v-model="form.custom_mould_id" placeholder="无">
-              <el-option label="肉类产品" value="肉类产品"></el-option>
+            <el-select v-model="form.customField" placeholder="无">
+              <el-option  v-for="item in customFields" :key="item.custom_id" :label="item.data_value"  :value="item.custom_id" >
+              </el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -55,6 +63,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import axios from "axios";
   export default {
     name: "editProduct",
     data() {
@@ -63,14 +72,19 @@
           productCode: "",
           productName: "",
           productType: "",
+          productTypeSelected:[],
           custom_type_id: "",
-          productPackaging: "袋",
+          norms: "",
+          metering: "",
+          productPackaging: "text袋",
           productPackagingUnit: "",
           productDesc: "",
           productBrand: "",
-          custom_mould_id:"",
+          custom_mould:"",
+          customField:"",
         },
-        productType: [
+        customFields:[],
+        productTypes: [
           {
             value: "zhinan",
             label: "指南",
@@ -340,10 +354,36 @@
         ]
       };
     },
+    mounted(){
+      this.initData();
+    },
     methods: {
       onSubmit() {
         console.log("submit!新增产品");
-      }
+      },
+      initData(){
+          let params ={
+            "id":124
+          }
+          let that = this
+        axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductDetail', {params})
+          .then(function (response) {
+            that.form.productCode = response.data.data.productDetail. product;
+            that.form.productName = response.data.data.productDetail.product_name;
+//            that.form.productType = response.data.data.productDetail.product_type_id;
+//            that.form.productTypeSelected = response.data.data.productDetail.product_type_id;
+            that.form.custom_type = response.data.data.productDetail.custom_type_id;
+            that.form.norms = response.data.data.productDetail.norms;
+            that.form.metering = response.data.data.productDetail.metering;
+            that.form.productDesc = response.data.data.productDetail. product_depict;
+            that.form.productBrand = response.data.data.productDetail. brand_name;
+            that.customFields = response.data.data.productDetail. customFields;
+            that.form.customField = that.customFields[0].data_value;
+          })
+          .catch(function (error) {
+            this.$message({type: 'error', message: '出错啦!'});
+          });
+      },
     }
   };
 </script>
