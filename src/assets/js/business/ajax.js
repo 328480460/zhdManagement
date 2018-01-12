@@ -30,3 +30,14 @@ export const getCustomAttributeDetail = function(params) {
     let url = 'http://47.92.149.109:7108/mockjsdata/2/getCustomAttributeDetail';
     return ajaxPost(url,params)
 }
+
+// 生产信息列表查询接口
+export const  getListProduction  = function(params) {
+    let url = 'http://47.92.149.109:7108/mockjsdata/2/Production/getListProduction';
+    return ajaxPost(url,params)
+}
+// 生产信息详情接口
+export const  getDetailProduction  = function(params) {
+    let url = 'http://47.92.149.109:7108/mockjsdata/2/Production/getDetailProduction';
+    return ajaxPost(url,params)
+}

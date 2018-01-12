@@ -92,15 +92,15 @@
       layout="total,prev, pager, next"
       @current-change="handleCurrentChange"
       :page-size=10
-      :current-page= search.pageNum
+      :current-page= currentPage
       :total= totalcount>
     </el-pagination>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import axios from "axios";
 import { getReceiptList, getListNode } from "../../assets/js/business/ajax.js";
+import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
   data() {
@@ -113,9 +113,10 @@ export default {
         currentNode: "",
         resourceNode: "",
         productName: "",
-        pageNum: 1,
-        pageSize: 10
       },
+      currentPage: 1,
+      pageSize: 10,
+      ajaxSearch: "",
       pickerOptions2: {
         shortcuts: [
           {
@@ -163,6 +164,7 @@ export default {
       receiptdate_end: ""
     };
     this.initData(params);
+    this.ajaxSearch = deepCopy(this.search);
   },
   methods: {
     newGetGoodsInfo() {
@@ -206,16 +208,20 @@ export default {
         });
     },
     searchConditions(current) {
-      this.search.pageNum = typeof current === 'number' ? current : 1;
+      this.ajaxSearch = deepCopy(this.search);
+      if (this.currentPage !== 1) {
+        this.currentPage = 1;
+        return;
+      }
       let params = {
-        current_nodeid: this.search.currentNode,
-        resource_nodeid: this.search.resourceNode,
-        info_no: this.search.infoNo,
-        pagenum: this.search.pageNum,
-        pagesize: this.search.pageSize,
-        product_name: this.search.productName,
-        receiptdate_start: this.search.time[0],
-        receiptdate_end: this.search.time[1]
+        current_nodeid: this.ajaxSearch.currentNode,
+        resource_nodeid: this.ajaxSearch.resourceNode,
+        info_no: this.ajaxSearch.infoNo,
+        product_name: this.ajaxSearch.productName,
+        receiptdate_start: this.ajaxSearch.time[0],
+        receiptdate_end: this.ajaxSearch.time[1],
+        pagenum: this.currentPage,
+        pagesize: this.pageSize
       };
       this.getDataAjax(params);
     },
@@ -228,23 +234,34 @@ export default {
     },
     // 分页跳转
     handleCurrentChange(val) {
-      this.searchConditions(val);
+      this.currentPage = val;
+      let params = {
+        current_nodeid: this.ajaxSearch.currentNode,
+        resource_nodeid: this.ajaxSearch.resourceNode,
+        info_no: this.ajaxSearch.infoNo,
+        product_name: this.ajaxSearch.productName,
+        receiptdate_start: this.ajaxSearch.time[0],
+        receiptdate_end: this.ajaxSearch.time[1],
+        pagenum: this.currentPage,
+        pagesize: this.pageSize
+      };
+      this.getDataAjax(params);
     },
     initData(params) {
       this.getDataAjax(params);
       this.loadNodeData();
     },
     loadNodeData() {
-      // 请求来源节点
-      getListNode({ node_type_id: 1 })
+      // 请求当前节点
+      getListNode({ node_type_id: 2 })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
         })
         .catch(() => {
           this.$message.error("出错啦!");
         });
-      // 请求当前节点
-      getListNode({ node_type_id: 2 })
+      // 请求来源节点
+      getListNode({ node_type_id: 1 })
         .then(res => {
           this.sourceNodedOption = res.data.nodeList;
         })

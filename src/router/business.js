@@ -9,6 +9,9 @@ import FTPHistoryBusiness from '@/components/business/FTPHistoryBusiness'
 import NewGetGoodsInfo from '../components/business/NewGetGoodsInfo'
 import GetGoodsInfoDetail from '../components/business/GetGoodsInfoDetail'
 import EditGetGoodsInfoDetail from '../components/business/EditGetGoodsInfoDetail'
+import NewProductGoodsInfo from '../components/business/NewProductGoodsInfo'
+import ProductGoodsInfoDetail from '../components/business/ProductGoodsInfoDetail'
+import EditProductGoodsInfoDetail from '../components/business/EditProductGoodsInfoDetail'
 
 export default[
     { //业务-收货信息
@@ -31,6 +34,21 @@ export default[
     {
         path : 'business/productGoodsInfo',
         component : ProductGoodsInfo
+    },
+    //业务-生产信息-新建生产信息
+    {
+        path : 'business/newProductGoodsInfo',
+        component : NewProductGoodsInfo
+    },
+    //业务-生产信息-生产信息详情
+    {
+        path : 'business/productGoodsInfoDetail',
+        component : ProductGoodsInfoDetail
+    },
+    //业务-生产信息-编辑生产信息
+    {
+        path : 'business/editProductGoodsInfoDetail',
+        component : EditProductGoodsInfoDetail
     },
     //业务-发货信息
     {
