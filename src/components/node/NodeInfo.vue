@@ -211,7 +211,7 @@ export default {
             that.nodeList = response.data.data.nodeList;
           })
           .catch(function (error) {
-            this.$message({type: 'error', message: '出错啦!'});
+            that.$message({type: 'error', message: '出错啦!'});
           });
       },
       // 分页跳转

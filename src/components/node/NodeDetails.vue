@@ -59,7 +59,8 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+  import axios from "axios";
   export default {
     name: 'nodeDetails',
     data(){
@@ -81,19 +82,45 @@
           name: '(test)养殖场',
         }, {
           id: '2',
-          name: '批发商',
+          name: '屠宰场',
         }],
-        customMouldNames: [{
-          id: '1',
-          name: '(test)自定义节点信息',
-        }],
+        customMouldNames: [],
       }
+    },
+    mounted(){
+      let params ={
+        "id":1
+      }
+      this.initData(params);
     },
     methods:{
       onSubmit() {
         console.log("submit!添加节点");
       },
+      initData(params){
 
+        let that = this
+        axios.post('http://47.92.149.109:7108/mockjsdata/2/Node/getDetailNode', {params})
+          .then(function (response) {
+            let node = response.data.data.node
+//            console.log("节点详情==="+JSON.stringify(node))
+
+            that.form.nodeNumber = node. node_number;
+            that.form.nodeName = node. node_name;
+            that.form.nodeSplitting = node. splitting;
+            that.form.nodeType = node. node_type_id;
+            that.form.nodeDepict = node. node_depict;
+            that.form.nodeAddress = node. node_address;
+            that.form.contacts = node. contacts;
+            that.form.contactsPhone = node. contacts_phone;
+//            that.form.customMouldName = node. custom_mould_name;
+            that.customMouldNames = node. customList;
+            that.form.customMouldName = that.customMouldNames[0].column_chinese;
+          })
+          .catch(function (error) {
+            that.$message({type: 'error', message: '出错啦!'});
+          });
+      },
     }
 
   }
