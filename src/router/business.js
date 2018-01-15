@@ -6,12 +6,15 @@ import SendGoodsInfo from '@/components/business/SendGoodsInfo'
 import SystemInsert from '@/components/business/SystemInsert'
 import ImportHistoryBusiness from '@/components/business/ImportHistoryBusiness'
 import FTPHistoryBusiness from '@/components/business/FTPHistoryBusiness'
-import NewGetGoodsInfo from '../components/business/NewGetGoodsInfo'
-import GetGoodsInfoDetail from '../components/business/GetGoodsInfoDetail'
-import EditGetGoodsInfoDetail from '../components/business/EditGetGoodsInfoDetail'
-import NewProductGoodsInfo from '../components/business/NewProductGoodsInfo'
-import ProductGoodsInfoDetail from '../components/business/ProductGoodsInfoDetail'
-import EditProductGoodsInfoDetail from '../components/business/EditProductGoodsInfoDetail'
+import NewGetGoodsInfo from '@/components/business/NewGetGoodsInfo'
+import GetGoodsInfoDetail from '@/components/business/GetGoodsInfoDetail'
+import EditGetGoodsInfoDetail from '@/components/business/EditGetGoodsInfoDetail'
+import NewProductGoodsInfo from '@/components/business/NewProductGoodsInfo'
+import ProductGoodsInfoDetail from '@/components/business/ProductGoodsInfoDetail'
+import EditProductGoodsInfoDetail from '@/components/business/EditProductGoodsInfoDetail'
+import NewSendGoodsInfo from '../components/business/NewSendGoodsInfo'
+import EditSendGoodsInfoDetail from '../components/business/EditSendGoodsInfoDetail'
+import SendGoodsInfoDetail from '../components/business/SendGoodsInfoDetail'
 
 export default[
     { //业务-收货信息
@@ -54,6 +57,21 @@ export default[
     {
         path : 'business/sendGoodsInfo',
         component : SendGoodsInfo
+    },
+     //业务-发货信息-新建发货信息
+     {
+        path : 'business/newSendGoodsInfo',
+        component : NewSendGoodsInfo
+    },
+     //业务-发货信息-发货信息详情
+     {
+        path : 'business/sendGoodsInfoDetail',
+        component : SendGoodsInfoDetail
+    },
+     //业务-发货信息-编辑发货信息
+     {
+        path : 'business/editSendGoodsInfoDetail',
+        component : EditSendGoodsInfoDetail
     },
     //业务-批量导入-批量导入
     {

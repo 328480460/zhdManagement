@@ -6,7 +6,7 @@ export const  getReceiptList  = function(params) {
     return ajaxPost(url,params)
 }
 // 收货信息详情接口
-export const  getInvoiceDetail  = function(params) {
+export const  getReceiptDetail  = function(params) {
     let url = 'http://47.92.149.109:7108/mockjsdata/2/getReceiptDetail';
     return ajaxPost(url,params)
 }
@@ -39,5 +39,15 @@ export const  getListProduction  = function(params) {
 // 生产信息详情接口
 export const  getDetailProduction  = function(params) {
     let url = 'http://47.92.149.109:7108/mockjsdata/2/Production/getDetailProduction';
+    return ajaxPost(url,params)
+}
+// 发货信息列表查询接口
+export const  getInvoiceList  = function(params) {
+    let url = 'http://47.92.149.109:7108/mockjsdata/2/getInvoiceList';
+    return ajaxPost(url,params)
+}
+// 发货信息详情接口
+export const  getInvoiceDetail  = function(params) {
+    let url = 'http://47.92.149.109:7108/mockjsdata/2/getInvoiceDetail';
     return ajaxPost(url,params)
 }

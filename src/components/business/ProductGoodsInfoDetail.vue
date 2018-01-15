@@ -1,15 +1,16 @@
 <template>
     <div id="productGoodsInfoDetailTemplate" v-if='detailDataInfo'>
         <ProductGoodsInfoDetailTemplate 
-            :edit= true
+            :edit= false
             :productList='detailDataInfo.productList' 
             :thisNodeId='"1" || detailDataInfo.this_node_id' 
             :productListIn='detailDataInfo.productionInProductList'
             :productListOut='detailDataInfo.productionOutProductList'
-            :productDate='detailDataInfo.production_date' 
+            :productDate='detailDataInfo.production_date.toString()' 
             :customFields='[{"data_value": "苹果","custom_id": "258"},{"data_value": "香蕉","custom_id": "259"}] || detailDataInfo.customFields'
             :customMouldId='"属性id1" || detailDataInfo.custom_mould_id'
             @saveData= saveData
+            @editPage = editPage
             >
             <div slot="infoNo">
                 <div class="demo-input-suffix">
@@ -43,6 +44,14 @@ export default {
         .catch(() => {
           this.$message.error("出错啦!");
         });
+    },
+    editPage() {
+      this.$emit("openExtraPage", {
+        node: "business",
+        page: "EditProductGoodsInfoDetail",
+        name: "编辑生产信息",
+        id: "05020103"
+      });
     },
     saveData(data) {
         console.log(data)
