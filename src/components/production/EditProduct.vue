@@ -355,16 +355,17 @@
       };
     },
     mounted(){
-      this.initData();
+      let params ={
+        "id":124
+      }
+      this.initData(params);
     },
     methods: {
       onSubmit() {
         console.log("submit!新增产品");
       },
-      initData(){
-          let params ={
-            "id":124
-          }
+      initData(params){
+
           let that = this
         axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductDetail', {params})
           .then(function (response) {
