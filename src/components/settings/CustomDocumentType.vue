@@ -1,15 +1,33 @@
 <template>
   <div id="documenttype">
-    <div class="default-info-wrapper">
-      <div class="section-content">
-        <el-form ref="form" label-width="120px">
-          <el-form-item label="文档类型">
-            <el-input ></el-input>
-          </el-form-item>
-
-        </el-form>
-      </div>
+    <div class="btn-list">
+      <el-button type="primary" size="medium">添加文档类型</el-button>
     </div>
+
+    <el-table class="el-table"
+              border
+    >
+      <el-table-column class="table-column"
+                       prop="name"
+                       label="文档类型"
+      >
+      </el-table-column>
+
+      <el-table-column class="table-column"
+                       label="操作"
+      >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            @click="handleEdit">修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -36,10 +54,11 @@ export default {
   padding: 10px;
   height: 100%;
   background-color: #fff;
-  .default-info-wrapper {
-    .section-content {
-      width: 600px;
-    }
+  .el-table{
+    width: 100%;
+    text-align: center;
+    margin-top: 24px;
+
   }
 }
 </style>

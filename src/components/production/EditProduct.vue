@@ -11,7 +11,11 @@
             <el-input v-model="form.productName"></el-input>
           </el-form-item>
           <el-form-item label="*产品分类">
-            <el-cascader :options="productTypes" change-on-select v-model="form.productTypeSelected"></el-cascader>
+            <!--<el-cascader :options="productTypes" change-on-select v-model="form.productTypeSelected"></el-cascader>-->
+            <el-select v-model="form.productType" clearable  placeholder="请选择" width="50px" >
+              <el-option  v-for="item in systemDefaultTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="*包装单位">
             <el-select v-model="form.norms" placeholder="无">
@@ -33,9 +37,9 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="自定义分类">
-            <el-select v-model="form.custom_type" placeholder="未选择">
-              <el-option label="text牛肉" value="牛肉"></el-option>
-              <el-option label="羊肉" value="羊肉"></el-option>
+            <el-select v-model="form.custom_type" clearable  placeholder="请选择" width="50px" >
+              <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="产品描述">
@@ -83,6 +87,8 @@
           custom_mould:"",
           customField:"",
         },
+        systemDefaultTypeList:[],
+        customTypeList:[],
         customFields:[],
         productTypes: [
           {
@@ -364,6 +370,7 @@
       onSubmit() {
         console.log("submit!新增产品");
       },
+
       initData(params){
 
           let that = this
@@ -371,7 +378,7 @@
           .then(function (response) {
             that.form.productCode = response.data.data.productDetail. product;
             that.form.productName = response.data.data.productDetail.product_name;
-//            that.form.productType = response.data.data.productDetail.product_type_id;
+            that.form.productType = response.data.data.productDetail.product_type_id;
 //            that.form.productTypeSelected = response.data.data.productDetail.product_type_id;
             that.form.custom_type = response.data.data.productDetail.custom_type_id;
             that.form.norms = response.data.data.productDetail.norms;
@@ -384,12 +391,45 @@
           .catch(function (error) {
             this.$message({type: 'error', message: '出错啦!'});
           });
+
+        //查询“产品分类-系统默认提供”列表
+        this.systemDefaultTypeLists()
+        //查询“自定义分类”列表
+        this.selectTypes()
+      },
+      //“产品分类-系统默认提供”列表
+      systemDefaultTypeLists(){
+        let that = this
+        axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getDefaultProductType', {
+
+          })
+          .then(function (response) {
+            that.totalcount = response.data.data.totalcount ;
+            that.systemDefaultTypeList = response.data.data.systemDefaultType.systemDefaultTypeList;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+      //产品"自定义分类"列表查询
+      selectTypes(){
+        let that = this
+        axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {
+            pagenum: 1,     //？？？请求所有的分类
+            pagesize: 10,
+          })
+          .then(function (response) {
+            that.customTypeList = response.data.data.customTypeList;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       },
     }
   };
 </script>
 
-<style rel="stylesheet/scss" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' scoped>
   #editProduct {
     margin: 10px;
     padding: 10px;
