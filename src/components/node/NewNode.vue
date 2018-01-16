@@ -114,7 +114,7 @@ export default {
         contacts_phone: this.form.contactsPhone,
         brand_name: this.form.customMouldName,
       };
-      console.log("submit!添加节点"+JSON.stringify(params));
+//      console.log("submit!添加节点"+JSON.stringify(params));
       createNode(params)
         .then(res =>{
           this.$message.success("节点添加成功!");

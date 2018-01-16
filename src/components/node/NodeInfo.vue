@@ -208,7 +208,7 @@ export default {
       getNodeList(params){
         getListNode(params)
           .then(res =>{
-            this.$message.success("节点列表查询成功!");
+//            this.$message.success("节点列表查询成功!");
             this.totalcount = res.data.totalcount;
             this.nodeList = res.data.nodeList;
           })

@@ -1,4 +1,5 @@
 import EnterpriseInfo from '@/components/settings/EnterpriseInfo'
+import EnterpriseInfoEdit from '@/components/settings/EnterpriseInfoEdit'
 import AccountSetting from '@/components/settings/AccountSetting'
 import StaffManagement from '@/components/settings/StaffManagement'
 import RolePermission from '@/components/settings/RolePermission'
@@ -12,6 +13,9 @@ import CustomDocumentType from '@/components/settings/CustomDocumentType'
 export default[
     { //设置-企业信息
         path : 'settings/enterpriseInfo', component : EnterpriseInfo
+    },
+    { //设置-企业信息-编辑
+      path : 'settings/enterpriseInfoEdit', component : EnterpriseInfoEdit
     },
     //设置-账号信息
     {

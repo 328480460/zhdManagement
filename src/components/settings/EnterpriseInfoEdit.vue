@@ -1,37 +1,37 @@
 <template>
-  <div id="enterprise">
+  <div id="enterprise-edit">
     <div class="default-info-wrapper">
       <div class="section-content">
         <el-form :model="form" ref="form" label-width="120px">
-          <el-form-item label="企业名称：">{{form.name}}
-            <!--<el-input v-model="form.name"></el-input>-->
+          <el-form-item label="企业名称：">
+            <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="机构类型：">{{form.type}}
           </el-form-item>
           <el-form-item label="主体信息：" >{{form.certificate}}
             <el-button type="text" class="br_text">立即认证</el-button>
           </el-form-item>
-          <el-form-item label="所在地区：">{{form.area}}
-            <!--<el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>-->
-            <!--<el-input v-model="form.area" style="margin-top: 20px"></el-input>-->
+          <el-form-item label="所在地区：">
+            <el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
+            <el-input v-model="form.area" style="margin-top: 20px"></el-input>
           </el-form-item>
           <el-form-item label="开通日期：">{{form.date}}
           </el-form-item>
           <el-form-item label="企业LOGO：">
             <img src="../../assets/image/enterprise_logo.png" alt="enterprise_logo" class="enterprise_logo">
-            <!--<el-button type="text" class="br_text">修改</el-button>-->
+            <el-button type="text" class="br_text">修改</el-button>
           </el-form-item>
-          <el-form-item label="企业简介：">{{form.intro}}
-            <!--<el-input v-model="form.intro" type="textarea" ></el-input>-->
+          <el-form-item label="企业简介：">
+            <el-input v-model="form.intro" type="textarea" ></el-input>
           </el-form-item>
-          <el-form-item label="联系人姓名：">{{form.contact}}
-            <!--<el-input v-model="form.contact"></el-input>-->
+          <el-form-item label="联系人姓名：">
+            <el-input v-model="form.contact"></el-input>
           </el-form-item>
-          <el-form-item label="联系人手机号：">{{form.phonenum}}
-            <!--<el-input v-model="form.phonenum"></el-input>-->
+          <el-form-item label="联系人手机号：">
+            <el-input v-model="form.phonenum"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="editPage" >编辑</el-button>
+            <el-button type="primary" @click="submitForm('form')" >保存</el-button>
           </el-form-item>
 
         </el-form>
@@ -48,7 +48,7 @@
 
 import { cityData } from "../../assets/js/api/cityData.js";
 export default {
-    name: "enterprise",
+    name: "enterprise-edit",
     created() {
     },
     data() {
@@ -79,16 +79,14 @@ export default {
     methods: {
       initData(params){
         /**
-         * 企业详情查询
+         * 企业详情查询接口
          */
         getEnterpriseDetail(params)
           .then(res =>{
-//            console.log("企业详情---"+JSON.stringify(res))
             let enterprise = res.enterprise
             this.form.name = enterprise. enterprise_name;
             this.form.type = enterprise. enterprise_type;
             this.form.certificate = enterprise. certificate;
-            this.form.area = enterprise.  address;
             this.form.date = enterprise.  creat_date;
             this.form.intro = enterprise. introduction;
             this.form.contact = enterprise.  contact;
@@ -98,29 +96,49 @@ export default {
             this.$message.error("出错啦!");
           })
       },
-
-      editPage() {
-        this.$emit("openExtraPage", {
-          node: "settings",
-          page: "enterpriseInfoEdit",
-          name: "编辑企业信息",
-          id: "03010102"
-        });
-      }
+      /**
+       * 企业信息修改接口
+       * @param form
+         */
+      submitForm() {
+        let params = {
+          enterprise_name: this.form.name,
+          enterprise_type: this.form.type,
+          certificate: this.form.certificate,
+          address: this.selectedCity,
+          creat_date: this.form.date,
+          enterprise_logo: "http://fsdf.jpg",
+          introduction: this.form.intro,
+          contact: this.form.contact,
+          contact_phone: this.form.phonenum,
+        };
+//        console.log("编辑企业的信息-----"+JSON.stringify(params))
+        /**
+         * 企业信息修改接口
+         */
+        updateEnterprise(params)
+          .then(res =>{
+            this.$message.success("企业信息修改成功!");
+//            console.log("企业信息成功!!"+JSON.stringify(res))
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
+      },
     }
 };
 </script>
 
 <style rel="stylesheet/less" lang='less' scoped>
-#enterprise {
+#enterprise-edit {
   margin: 10px;
   padding: 10px;
   height: auto;
   background-color: #fff;
   .default-info-wrapper {
     .section-content {
-      margin-left: 20px;
       margin-top: 20px;
+      margin-left: 20px;
       width: 600px;
       .enterprise_logo {
         width: 60px;
