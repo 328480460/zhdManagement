@@ -1,11 +1,11 @@
 <template>
     <div id="getGoodsInfoDetailTemp">
         <div class="receive-info">
-            <h6 class="title">生产信息</h6>
+            <h6 class="title">发货日期</h6>
             <div class="content">
                 <slot name="infoNo"></slot> 
                 <div class="demo-input-suffix">
-                    <div class="lable">生产日期</div>
+                    <div class="lable">请选择日期</div>
                     <el-date-picker :disabled="!edit" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
                 </div>
                 <div class="demo-input-suffix">
@@ -19,15 +19,25 @@
                             </el-option>
                         </el-select>
                 </div>
+                <div class="demo-input-suffix">
+                    <div class="lable">流向节点</div>
+                    <el-select :disabled="!edit" v-model="flowNode" placeholder="请选择">
+                        <el-option
+                        v-for="item in flowNodeOption"
+                        :key="item.id"
+                        :label="item.node_name"
+                        :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
             </div>
         </div>
-        <!--  投入品 -->
         <div class="product-info">
           <h6 class="title">产品信息</h6>
           <div class="content">
             <div class="demo-input-suffix">
-                <div class="lable">投入品</div>
-                    <el-select :disabled="!edit" v-model="selectProductionIn" placeholder="选择产品">
+                <div class="lable">添加产品</div>
+                    <el-select :disabled="!edit" v-model="selectProduction" placeholder="选择产品">
                         <el-option
                         v-for="item in productTypeList"
                         :key="item.id"
@@ -37,58 +47,23 @@
                     </el-select>
             </div>
           </div>
-          <div class="product-list-wrapper" v-show="productListIn.length">
+          <div class="product-list-wrapper" v-show="productList.length">
             <table>
               <tr>
                 <th width='100'>产品名称</th>
-                <th width='80'>产品编号</th>
-                <th width='80'>产品批次号</th>
-                <th width='80'>产品序列号</th>
-                <th width='60'>投入品数量</th>
+                <th width='100'>产品编号</th>
+                <th width='100'>产品批次号</th>
+                <th width='100'>产品序列号</th>
+                <th width='60'>发货数量</th>
                 <th width='60'>包装单位</th>
                 <th width='60'>操作</th>
               </tr>
-              <tr v-for="(item, index) in productListIn" :key="index">
-                <td>{{item.product_name}}缺少字段</td>
-                <td>{{item.product_num}}缺少字段</td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入产品批次号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入数量"></el-input></td>
-                <td>{{item.norms}}</td>
-                <td><i class="el-icon-close icon-font" v-show="edit"></i></td>
-              </tr>
-            </table>
-          </div>
-          <div class="content">
-            <div class="demo-input-suffix">
-                <div class="lable">成品</div>
-                    <el-select :disabled="!edit" v-model="selectProductionOut" placeholder="选择产品">
-                        <el-option
-                        v-for="item in productTypeList"
-                        :key="item.id"
-                        :label="item.product_name"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>
-            </div>
-          </div>
-          <div class="product-list-wrapper" v-show="productListOut.length">
-            <table>
-              <tr>
-                <th width='100'>产品名称</th>
-                <th width='80'>产品编号</th>
-                <th width='80'>产品批次号</th>
-                <th width='80'>产品序列号</th>
-                <th width='60'>成品数量</th>
-                <th width='60'>包装单位</th>
-                <th width='60'>操作</th>
-              </tr>
-              <tr v-for="(item, index) in productListOut" :key="index">
+              <tr v-for="(item, index) in productList" :key="index">
                 <td>{{item.product_name}}</td>
                 <td>{{item.product_num}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入数量"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.product" placeholder="请输入产品序列号"></el-input></td>
                 <td>{{item.norms}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit"></i></td>
               </tr>
@@ -153,12 +128,14 @@ export default {
       thisNodeOption: [],
       // 当前选中的当前节点
       currnetNode: '',
+      // 来源节点可选列表
+      flowNodeOption: [],
+      // 当前选中的来源节点
+      flowNode: '',
       // 所有产品类型列表
       productTypeList: [],
-      // 当前选中投入品类型
-      selectProductionIn: "",
-      // 当前选中产出品类型
-      selectProductionOut: "",
+      // 当前选中产品类型
+      selectProduction: "",
       // 用户自定义模块可选列表
       customDefineList: [],
       // 当前用户选中自定义模块
@@ -172,7 +149,7 @@ export default {
       // 选中的城市
       selectedCity: ["110000", "110000", "110000"],
       // 时间
-      time: this.productDate
+      time: this.date
     };
   },
   props: {
@@ -182,14 +159,8 @@ export default {
       default: true,
       required: false
     },
-    // 产品投入列表
-    productListIn: {
-      type: Array,
-      default: () => [],
-      required: false
-    },
-    // 产品产出列表
-    productListOut: {
+    // 产品列表
+    productList: {
       type: Array,
       default: () => [],
       required: false
@@ -201,7 +172,13 @@ export default {
       required: false
     },
     // 日期
-    productDate: {
+    date: {
+      type: String,
+      default: "",
+      required: false
+    },
+    // 流向节点id
+    flowNodeId: {
       type: String,
       default: "",
       required: false
@@ -222,10 +199,21 @@ export default {
   methods: {
     loadNodeData() {
       // 请求当前节点
-      getListNode({ node_type_id: 1 })
+      getListNode({ node_type_id: 2 })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
+          this.showFlowNode()
           this.showCurrnetNode()
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+      // 请求流向节点
+      getListNode({ node_type_id: 3 })
+        .then(res => {
+          this.flowNodeOption = res.data.nodeList;
+          this.showCurrnetNode()
+          this.showFlowNode()
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -275,10 +263,17 @@ export default {
         }
       });
     },
+    // 回显出流向用户选中的节点
+    showFlowNode() {
+      this.flowNodeOption.forEach((value, index) => {
+        if(value.id == this.flowNodeId) {
+          this.flowNode = value.node_address;
+        }
+      })
+    },
     // 回显出当前用户选中的节点
     showCurrnetNode() {
       this.thisNodeOption.forEach((value, index) => {
-        // console.log(value, this.thisNodeId);
         if(value.id == this.thisNodeId) {
           this.currnetNode = value.node_address;
         }

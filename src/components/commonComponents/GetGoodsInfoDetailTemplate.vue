@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="custom-define-info">
-          <h6 class="title">收货信息</h6>
+          <h6 class="title">自定义属性</h6>
           <div class="content">
             <div class="demo-input-suffix">
                 <div class="lable">自定义属性</div>

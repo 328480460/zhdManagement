@@ -1,31 +1,31 @@
 <template>
-    <div id="newProductGoodsInfo" >
-        <ProductGoodsInfoDetailTemplate >
-        </ProductGoodsInfoDetailTemplate>
+    <div id="sendGoodsInfoDetail" >
+        <SendGoodsInfoDetailTemplate :edit= true  @saveData='saveData' >
+         
+        </SendGoodsInfoDetailTemplate>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-import ProductGoodsInfoDetailTemplate from "../commonComponents/ProductGoodsInfoDetailTemplate";
+import SendGoodsInfoDetailTemplate from "../commonComponents/SendGoodsInfoDetailTemplate";
 
 export default {
-  name: "productGoodsInfoDetailTemplate",
   data() {
     return { detailDataInfo: "" };
   },
   methods: {
-    saveData(data) {
-        console.log(data)
-    }
+    saveData(value) {
+        console.log(value)
+    },
   },
   components: {
-    ProductGoodsInfoDetailTemplate
+    SendGoodsInfoDetailTemplate
   }
 };
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
-#newProductGoodsInfo {
+#sendGoodsInfoDetail {
   margin: 10px;
   padding: 10px;
   min-height: 92%;

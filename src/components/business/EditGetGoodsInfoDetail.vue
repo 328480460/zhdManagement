@@ -21,7 +21,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { getInvoiceDetail } from "../../assets/js/business/ajax.js";
+import { getReceiptDetail } from "../../assets/js/business/ajax.js";
 import GetGoodsInfoDetailTemplate from "../commonComponents/GetGoodsInfoDetailTemplate";
 
 export default {
@@ -35,7 +35,7 @@ export default {
   methods: {
     getDetailDataInfo() {
       let params = { id: "1232131" };
-      getInvoiceDetail(params)
+      getReceiptDetail(params)
         .then(res => {
           this.detailDataInfo = res.data.receipt;
         })

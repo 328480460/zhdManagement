@@ -180,7 +180,7 @@ export default {
         node: "business",
         page: "newProductGoodsInfo",
         name: "新建收货信息",
-        id: "05010104"
+        id: "05020101"
       });
     },
     productGoodsInfoDetail() {
@@ -188,7 +188,7 @@ export default {
         page: "productGoodsInfoDetail",
         node: "business",
         name: "收货信息详情",
-        id: "05010105"
+        id: "05020102"
       });
     },
 
