@@ -40,7 +40,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from "axios";
+  import {
+    login
+  } from "../../assets/js/business/ajax.js";
+
 export default {
   name: 'login',
   data(){
@@ -58,19 +61,18 @@ export default {
       }else if(this.password == 1 && this.accountName == 1 ){
 
         /*登录接口*/
-        let that = this
-        axios.post('http://47.92.149.109:7108/mockjsdata/2/common/login', {
-            user_account: that.accountName,
-            user_password: that.password
-          })
-          .then(function (response) {
-            console.log(response);
-            console.log("点击登录！获取输入框内容：accountName--"+that.accountName+"--password--"+that.password);
+        let param = {
+          account: this.accountName,
+          password: this.password
+        }
+        login(param)
+          .then(res => {
+            console.log("点击登录！获取输入框内容：accountName--"+this.accountName+"--password--"+this.password);
             // 命名的路由
-            that.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+            this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
           })
-          .catch(function (error) {
-            console.log(error);
+          .catch(() => {
+            this.$message.error("出错啦!");
           });
       }else {
         this.warn3()

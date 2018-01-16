@@ -13,22 +13,22 @@
           </el-form-item>
 
           <el-form-item label="*产品分类">
-            <el-select v-model="form.systemDefaultType" clearable  placeholder="请选择" width="50px" >
+            <el-select v-model="form.productType" clearable  placeholder="请选择" width="50px" >
               <el-option  v-for="item in systemDefaultTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
             </el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="*包装规格">
-            <el-input style="width: 100px;" type="number"></el-input>
-            <el-select v-model="form.productPackaging" placeholder="未选择">
-              <el-option label="袋" value="袋"></el-option>
+            <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
+            <el-select v-model="form.norms" placeholder="未选择">
+              <el-option label="(test)头" value="头"></el-option>
               <el-option label="件" value="件"></el-option>
               <el-option label="箱" value="箱"></el-option>
             </el-select>
-            <el-radio-group v-model="form.productPackagingUnit">
-              <el-radio label="标件"></el-radio>
-              <el-radio label="称重"></el-radio>
+            <el-radio-group v-model="form.metering_id">
+              <el-radio label="标件" value="标件"></el-radio>
+              <el-radio label="称重" value="称重"></el-radio>
             </el-radio-group>
           </el-form-item>
 
@@ -52,7 +52,7 @@
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item label="自定义属性">
           <el-select v-model="form.custom_mould_id" placeholder="无">
-            <el-option label="肉类产品" value="肉类产品"></el-option>
+            <el-option label="(test)肉类产品" value="肉类产品"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -63,7 +63,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import axios from "axios";
+  import {
+    getListProductType,
+    getDefaultProductType,
+    saveProduct
+  } from "../../assets/js/business/ajax.js";
+
 export default {
   name: "newProduct",
   data() {
@@ -72,16 +77,16 @@ export default {
         productCode: "",
         productName: "",
         productType: "",
-        productPackaging: "袋",
-        productPackagingUnit: "",
+        metering: "",
+        norms: "",
+        metering_id: "",
         productDesc: "",
         productBrand: "",
         custom_mould_id:"",
 
         systemDefaultType:"",
-        customType:"",
+        systemDefaultType:"",
       },
-      productTypes:[],
       systemDefaultTypeList:[],
       customTypeList:[],
 //      productType: [
@@ -360,34 +365,56 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("submit!新增产品");
+      let params = {
+        product: this.form.productCode,
+        product_name: this.form.productName,
+        product_type_id: this.form.productType,
+        metering: this.form.metering,
+        norms: this.form.norms,
+
+        metering_id: this.form.metering_id,
+        custom_type_id: this.form.customType,
+        product_depict: this.form.productDesc,
+        brand_name: this.form.productBrand,
+        custom_mould_id: this.form.custom_mould_id,
+        customFields: [{
+          "custom_id": "123",
+          "data_value": "123"
+        }]
+      };
+//      console.log("submit!新增产品"+JSON.stringify(params));
+      saveProduct(params)
+        .then(res =>{
+          this.$message.success("保存成功!");
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        })
     },
     //“产品分类-系统默认提供”列表
     systemDefaultTypeLists(){
-      let that = this
-      axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getDefaultProductType', {
-
+      getDefaultProductType()
+        .then(res =>{
+          this.totalcount = res.data.totalcount ;
+          this.systemDefaultTypeList = res.data.systemDefaultType.systemDefaultTypeList;
         })
-        .then(function (response) {
-          that.totalcount = response.data.data.totalcount ;
-          that.systemDefaultTypeList = response.data.data.systemDefaultType.systemDefaultTypeList;
+        .catch(() => {
+          this.$message.error("出错啦!");
         })
-        .catch(function (error) {
-          console.log(error);
-        });
     },
     //产品"自定义分类"列表查询
     selectTypes(){
-      let that = this
-      axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {
-          pagenum: 1,     //？？？请求所有的分类
-          pagesize: 10,
+      let params = {
+        pagenum: 1,     //？？？请求所有的分类
+        pagesize: 10,
+      }
+      getListProductType(params)
+        .then(res => {
+          this.totalcount = res.data.totalcount;
+          this.customTypeList = res.data.customTypeList;
         })
-        .then(function (response) {
-          that.customTypeList = response.data.data.customTypeList;
-        })
-        .catch(function (error) {
-          console.log(error);
+        .catch(() => {
+          this.$message.error("出错啦!");
         });
     },
     initData() {

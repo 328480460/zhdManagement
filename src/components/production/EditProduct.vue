@@ -67,7 +67,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import axios from "axios";
+  import {
+    getListProductType,
+    getProductDetail,
+    getDefaultProductType,
+    updateProduct
+  } from "../../assets/js/business/ajax.js";
+
   export default {
     name: "editProduct",
     data() {
@@ -372,25 +378,22 @@
       },
 
       initData(params){
-
-          let that = this
-        axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductDetail', {params})
-          .then(function (response) {
-            that.form.productCode = response.data.data.productDetail. product;
-            that.form.productName = response.data.data.productDetail.product_name;
-            that.form.productType = response.data.data.productDetail.product_type_id;
-//            that.form.productTypeSelected = response.data.data.productDetail.product_type_id;
-            that.form.custom_type = response.data.data.productDetail.custom_type_id;
-            that.form.norms = response.data.data.productDetail.norms;
-            that.form.metering = response.data.data.productDetail.metering;
-            that.form.productDesc = response.data.data.productDetail. product_depict;
-            that.form.productBrand = response.data.data.productDetail. brand_name;
-            that.customFields = response.data.data.productDetail. customFields;
-            that.form.customField = that.customFields[0].data_value;
+        getProductDetail(params)
+          .then(res =>{
+            this.form.productCode = res.data.productDetail. product;
+            this.form.productName = res.data.productDetail.product_name;
+            this.form.productType = res.data.productDetail.product_type_id;
+            this.form.custom_type = res.data.productDetail.custom_type_id;
+            this.form.norms = res.data.productDetail.norms;
+            this.form.metering = res.data.productDetail.metering;
+            this.form.productDesc = res.data.productDetail. product_depict;
+            this.form.productBrand = res.data.productDetail. brand_name;
+            this.customFields = res.data.productDetail. customFields;
+            this.form.customField = this.customFields[0].data_value;
           })
-          .catch(function (error) {
-            this.$message({type: 'error', message: '出错啦!'});
-          });
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
 
         //查询“产品分类-系统默认提供”列表
         this.systemDefaultTypeLists()
@@ -399,30 +402,28 @@
       },
       //“产品分类-系统默认提供”列表
       systemDefaultTypeLists(){
-        let that = this
-        axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getDefaultProductType', {
-
+        getDefaultProductType()
+          .then(res =>{
+            this.totalcount = res.data.totalcount ;
+            this.systemDefaultTypeList = res.data.systemDefaultType.systemDefaultTypeList;
           })
-          .then(function (response) {
-            that.totalcount = response.data.data.totalcount ;
-            that.systemDefaultTypeList = response.data.data.systemDefaultType.systemDefaultTypeList;
+          .catch(() => {
+            this.$message.error("出错啦!");
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       //产品"自定义分类"列表查询
       selectTypes(){
-        let that = this
-        axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {
-            pagenum: 1,     //？？？请求所有的分类
-            pagesize: 10,
+        let params = {
+          pagenum: 1,     //？？？请求所有的分类
+          pagesize: 10,
+        }
+        getListProductType(params)
+          .then(res => {
+            this.totalcount = res.data.totalcount;
+            this.customTypeList = res.data.customTypeList;
           })
-          .then(function (response) {
-            that.customTypeList = response.data.data.customTypeList;
-          })
-          .catch(function (error) {
-            console.log(error);
+          .catch(() => {
+            this.$message.error("出错啦!");
           });
       },
     }

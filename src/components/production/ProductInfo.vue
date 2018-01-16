@@ -93,7 +93,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from "axios";
+  import {
+    getListProductType,
+    getProductList,
+    deleteProduct
+  } from "../../assets/js/business/ajax.js";
+
 export default {
   name: "productinfo",
   data() {
@@ -214,17 +219,15 @@ export default {
       };
       this.getProductList(params);
     },
-    //产品列表查询
+    //产品列表查询接口
     getProductList(params){
-      let that = this
-      axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductList', {params})
-        .then(function (response) {
-//          console.log("getProductList获取的产品列表参数信息=="+JSON.stringify(params));
-          that.totalcount = response.data.data.totalcount;
-          that.productList = response.data.data.productList;
+      getProductList(params)
+        .then(res => {
+          this.totalcount = res.data.totalcount;
+          this.productList = res.data.productList;
         })
-        .catch(function (error) {
-          this.$message({type: 'error', message: '出错啦!'});
+        .catch(() => {
+          this.$message.error("出错啦!");
         });
     },
     clearConditions(){
@@ -237,19 +240,19 @@ export default {
     handleCurrentChange(val) {
       this.searchConditions(val);
     },
-    //产品分类列表查询
+    //产品自定义分类列表查询接口
     selectTypes(){
-      let that = this
-      axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {
-          pagenum: 1,     //？？？请求所有的分类
-          pagesize: 10,
+      let params = {
+              pagenum: 1,     //？？？请求所有的分类
+              pagesize: 10,
+      }
+      getListProductType(params)
+        .then(res => {
+          this.totalcount = res.data.totalcount;
+          this.customTypeList = res.data.customTypeList;
         })
-        .then(function (response) {
-          that.totalcount = response.data.data.totalcount ;
-          that.customTypeList = response.data.data.customTypeList;
-        })
-        .catch(function (error) {
-          console.log(error);
+        .catch(() => {
+          this.$message.error("出错啦!");
         });
     },
     initData(params) {
