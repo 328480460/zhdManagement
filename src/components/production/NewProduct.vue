@@ -371,7 +371,6 @@ export default {
         product_type_id: this.form.productType,
         metering: this.form.metering,
         norms: this.form.norms,
-
         metering_id: this.form.metering_id,
         custom_type_id: this.form.customType,
         product_depict: this.form.productDesc,
@@ -385,7 +384,7 @@ export default {
 //      console.log("submit!新增产品"+JSON.stringify(params));
       saveProduct(params)
         .then(res =>{
-          this.$message.success("保存成功!");
+          this.$message.success("产品保存成功!");
         })
         .catch(() => {
           this.$message.error("出错啦!");

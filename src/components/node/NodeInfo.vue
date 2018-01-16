@@ -104,7 +104,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from "axios";
+  import {
+    getListNode,
+  } from "../../assets/js/business/ajax.js";
+
 export default {
     name: "",
     created() {
@@ -203,16 +206,16 @@ export default {
       },
       //节点列表查询
       getNodeList(params){
-        let that = this
-        axios.post('http://47.92.149.109:7108/mockjsdata/2/Node/getListNode', {params})
-          .then(function (response) {
-//          console.log("getNodeList获取的节点列表参数信息=="+JSON.stringify(params));
-            that.totalcount = response.data.data.totalcount;
-            that.nodeList = response.data.data.nodeList;
+        getListNode(params)
+          .then(res =>{
+            this.$message.success("节点列表查询成功!");
+            this.totalcount = res.data.totalcount;
+            this.nodeList = res.data.nodeList;
           })
-          .catch(function (error) {
-            that.$message({type: 'error', message: '出错啦!'});
-          });
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
+
       },
       // 分页跳转
       handleCurrentChange(val) {

@@ -51,7 +51,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import axios from "axios";
+  import {
+    getListProductType,
+    updateProductType,
+    deleteProductType
+  } from "../../assets/js/business/ajax.js";
+
   export default {
     name: 'cpymb',
     data(){
@@ -100,7 +105,7 @@
       searchProductType(current){
         this.search.pageNum = typeof current === 'number' ? current : 1;
         let params = {
-          typeName: this.search.typeName,
+          type_name: this.search.typeName,
           pagenum: this.search.pageNum,
           pagesize: this.search.pageSize,
         };
@@ -108,14 +113,13 @@
       },
       //产品分类列表查询
       getTypeList(params){
-        let that = this
-        axios.post('http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType', {params})
-          .then(function (response) {
-            that.totalcount = response.data.data.totalcount;
-            that.customTypeList = response.data.data.customTypeList;
+        getListProductType(params)
+          .then(res => {
+            this.totalcount = res.data.totalcount;
+            this.customTypeList = res.data.customTypeList;
           })
-          .catch(function (error) {
-            console.log(error);
+          .catch(() => {
+            this.$message.error("出错啦!");
           });
       },
       editProduct() {

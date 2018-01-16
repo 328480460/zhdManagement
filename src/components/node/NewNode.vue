@@ -32,7 +32,8 @@
       <div class="section-content">
         <el-form label-width="120px">
           <el-form-item label="*节点地址：">
-            <el-input v-model="form.nodeAddress"></el-input>
+            <!--<el-input v-model="form.nodeAddress"></el-input>-->
+            <el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
             <el-input style="margin-top: 20px"></el-input>
           </el-form-item>
           <el-form-item label="联系人：">
@@ -59,23 +60,33 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+  import {
+    createNode,
+  } from "../../assets/js/business/ajax.js";
+  import { cityData } from "../../assets/js/api/cityData.js";
+
 export default {
   name: 'newNode',
   data(){
     return{
+      // 城市列表数据
+      cityDataList: cityData,
+      // 选中的城市
+      selectedCity: [],
       form: {
         nodeNumber: "",
         nodeName: "",
         nodeSplitting: "",
-        nodeType: "",
+//        nodeType: "",
         nodeDepict: "",
         nodeAddress: "",
         contacts: "",
         contactsPhone: "",
         customMouldName: "",
       },
-      nodeTypes:['来源节点'],
+      customList:[],
+      nodeTypes:[],
       nodeSplittings: [{
         id: '1',
         name: '(test)养殖场',
@@ -91,7 +102,27 @@ export default {
   },
   methods:{
     onSubmit() {
-      console.log("submit!添加节点");
+      let params = {
+        node_number: this.form.nodeNumber,
+        node_name: this.form.nodeName,
+        node_splitting: this.form.nodeSplitting,
+//        node_type_id: this.form.nodeType,
+        customList:this.nodeTypes,
+        node_depict: this.form.nodeDepict,
+        node_address: this.form.nodeAddress,
+        contacts: this.form.contacts,
+        contacts_phone: this.form.contactsPhone,
+        brand_name: this.form.customMouldName,
+      };
+      console.log("submit!添加节点"+JSON.stringify(params));
+      createNode(params)
+        .then(res =>{
+          this.$message.success("节点添加成功!");
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        })
+
     },
 
   }

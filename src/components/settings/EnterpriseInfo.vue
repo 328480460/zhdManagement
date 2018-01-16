@@ -52,7 +52,7 @@ export default {
         // 城市列表数据
         cityDataList: cityData,
         // 选中的城市
-        selectedCity: ["110000", "110000", "110000"],
+        selectedCity: [],
         form: {
           name: '',
           type: '',

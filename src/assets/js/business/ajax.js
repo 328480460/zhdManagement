@@ -15,11 +15,6 @@ export const  getReceiptDetail  = function(params) {
     let url = 'http://47.92.149.109:7108/mockjsdata/2/getReceiptDetail';
     return ajaxPost(url,params)
 }
-// 节点列表接口
-export const getListNode = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/getListNode';
-    return ajaxPost(url,params)
-}
 // 产品列表查询接口
 export const getProductList = function(params) {
     let url = 'http://47.92.149.109:7108/mockjsdata/2/getProductList';
@@ -28,6 +23,16 @@ export const getProductList = function(params) {
 // 产品自定义分类列表查询接口
 export const getListProductType = function(params) {
   let url = 'http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType';
+  return ajaxPost(url,params)
+}
+// 产品自定义分类删除查询接口
+export const updateProductType = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/Product/updateProductType';
+  return ajaxPost(url,params)
+}
+// 产品自定义分类删除查询接口
+export const deleteProductType = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/Product/deleteProductType';
   return ajaxPost(url,params)
 }
 // 产品详情信息查询接口
@@ -53,6 +58,31 @@ export const deleteProduct = function(params) {
 // 产品信息新增接口
 export const saveProduct = function(params) {
   let url = 'http://47.92.149.109:7108/mockjsdata/2/saveProduct';
+  return ajaxPost(url,params)
+}
+// 节点列表查询接口
+export const getListNode = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/getListNode';
+  return ajaxPost(url,params)
+}
+//节点新增接口
+export const createNode = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/createNode';
+  return ajaxPost(url,params)
+}
+// 节点修改接口
+export const updateNode = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/updateNode';
+  return ajaxPost(url,params)
+}
+// 节点删除接口
+export const deleteNode = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/deleteNode';
+  return ajaxPost(url,params)
+}
+// 节点详情接口
+export const getDetailNode = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/getDetailNode';
   return ajaxPost(url,params)
 }
 // 用户自定义属性接口

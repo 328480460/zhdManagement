@@ -33,6 +33,7 @@
         <el-form label-width="120px">
           <el-form-item label="*节点地址：">
             <el-input v-model="form.nodeAddress"></el-input>
+            <!--<el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>-->
             <el-input style="margin-top: 20px"></el-input>
           </el-form-item>
           <el-form-item label="联系人：">
@@ -60,11 +61,20 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {
+    getDetailNode,
+  } from "../../assets/js/business/ajax.js";
+  import { cityData } from "../../assets/js/api/cityData.js";
+
   import axios from "axios";
   export default {
     name: 'nodeDetails',
     data(){
       return{
+        // 城市列表数据
+        cityDataList: cityData,
+        // 选中的城市
+        selectedCity: [],
         form: {
           nodeNumber: "",
           nodeName: "",
@@ -98,28 +108,26 @@
         console.log("submit!添加节点");
       },
       initData(params){
-
-        let that = this
-        axios.post('http://47.92.149.109:7108/mockjsdata/2/Node/getDetailNode', {params})
-          .then(function (response) {
-            let node = response.data.data.node
-//            console.log("节点详情==="+JSON.stringify(node))
-
-            that.form.nodeNumber = node. node_number;
-            that.form.nodeName = node. node_name;
-            that.form.nodeSplitting = node. splitting;
-            that.form.nodeType = node. node_type_id;
-            that.form.nodeDepict = node. node_depict;
-            that.form.nodeAddress = node. node_address;
-            that.form.contacts = node. contacts;
-            that.form.contactsPhone = node. contacts_phone;
-//            that.form.customMouldName = node. custom_mould_name;
-            that.customMouldNames = node. customList;
-            that.form.customMouldName = that.customMouldNames[0].column_chinese;
+        /**
+         * 节点详情接口
+         */
+        getDetailNode(params)
+          .then(res =>{
+            let node = res.data.node
+            this.form.nodeNumber = node. node_number;
+            this.form.nodeName = node. node_name;
+            this.form.nodeSplitting = node. splitting;
+            this.form.nodeType = node. node_type_id;
+            this.form.nodeDepict = node. node_depict;
+            this.form.nodeAddress = node. node_address;
+            this.form.contacts = node. contacts;
+            this.form.contactsPhone = node. contacts_phone;
+            this.customMouldNames = node. customList;
+            this.form.customMouldName = this.customMouldNames[0].column_chinese;
           })
-          .catch(function (error) {
-            that.$message({type: 'error', message: '出错啦!'});
-          });
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
       },
     }
 
