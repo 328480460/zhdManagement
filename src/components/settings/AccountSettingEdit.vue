@@ -1,22 +1,22 @@
 <template>
-  <div id="account">
+  <div id="accountEdit">
     <div class="default-info-wrapper">
       <div class="section-content">
         <el-form :model="form" ref="form" label-width="120px">
-          <el-form-item label="账号：">{{form.account}}
-            <!--<el-input v-model="form.phonenum"></el-input>-->
+          <el-form-item label="账号：">
+            <el-input v-model="form.account"></el-input>
           </el-form-item>
-          <el-form-item label="姓名：">{{form.name}}
-            <!--<el-input v-model="form.contacts"></el-input>-->
+          <el-form-item label="姓名：">
+            <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item label="联系方式：">{{form.password}}
-            <!--<el-input v-model="form.phonenum"></el-input>-->
+          <el-form-item label="联系方式：">
+            <el-input v-model="form.password"></el-input>
           </el-form-item>
           <el-form-item label="角色：">{{form.role_id}}
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="editPage" >编辑</el-button>
+            <el-button type="primary" @click="editPage" >保存</el-button>
           </el-form-item>
 
         </el-form>
@@ -31,7 +31,7 @@
   } from "../../assets/js/business/ajax.js";
 
 export default {
-    name: "account",
+    name: "accountEdit",
     created() {
     },
     data() {
@@ -68,20 +68,16 @@ export default {
             this.$message.error("出错啦!");
           })
       },
+
       editPage() {
-        this.$emit("openExtraPage", {
-          node: "settings",
-          page: "accountSettingEdit",
-          name: "编辑账号信息",
-          id: "03020102"
-        });
+        this.$message.success("保存!");
       }
     }
 };
 </script>
 
 <style rel="stylesheet/less" lang='less' scoped>
-#account {
+#accountEdit {
   margin: 10px;
   padding: 10px;
   height: 100%;

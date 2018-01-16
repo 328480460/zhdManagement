@@ -1,6 +1,7 @@
 import EnterpriseInfo from '@/components/settings/EnterpriseInfo'
 import EnterpriseInfoEdit from '@/components/settings/EnterpriseInfoEdit'
 import AccountSetting from '@/components/settings/AccountSetting'
+import AccountSettingEdit from '@/components/settings/AccountSettingEdit'
 import StaffManagement from '@/components/settings/StaffManagement'
 import RolePermission from '@/components/settings/RolePermission'
 import Invitation from '@/components/settings/Invitation'
@@ -20,6 +21,10 @@ export default[
     //设置-账号信息
     {
     path : 'settings/accountSetting', component : AccountSetting
+    },
+    //设置-账号信息-编辑
+    {
+    path : 'settings/accountSettingEdit', component : AccountSettingEdit
     },
     //设置-员工设置-员工管理
     {
