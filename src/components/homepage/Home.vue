@@ -5,7 +5,7 @@
         <img src="../../assets/image/logo_03.png" alt="logo" class="logo">
       </div>
       <div class="main-menu">
-        <div class="main-menu-item" v-for="(item,key) in mainMenuList" :key="key" :class="{'active': currentTabInfo.main.id === item.id}" @click="trunPage(item.id)">
+        <div class="main-menu-item" v-for="(item,key) in mainMenuList" :key="key" :class="{'active': currentTabInfo.main.id === item.id}" @click="turnPage(item.id)">
           <i class="icon-font" :class="item.icon"></i>{{item.name}}
         </div>
       </div>
@@ -14,15 +14,15 @@
       <div class="title">{{currentTabInfo.main.name}}中心</div>
       <div class="second-menu-item" v-for="(item,key) in secondMenuList"
                                     :key="key" :class="{'active': currentTabInfo.second.id === item.id}"
-                                    @click="trunPage(item.id)">{{item.name}}</div>
+                                    @click="turnPage(item.id)">{{item.name}}</div>
     </div>
     <div class="third-menu">
       <div class="third-menu-item-wrapper" v-if="!Object.keys(extraTabInfo).length">
         <div class="third-menu-item" v-for="(item,key) in thirdMenuList" :key="key"
                                   :class="{'active': currentTabInfo.third.id === item.id}"
-                                  @click="trunPage(item.id)">{{item.name}}</div>
+                                  @click="turnPage(item.id)">{{item.name}}</div>
       </div>
-      <div class="extra-page-tab-wrapper" v-if="Object.keys(extraTabInfo).length"><ExtraPageTab :tabInfo='extraTabInfo' @turnPage='trunPage'/></div>
+      <div class="extra-page-tab-wrapper" v-if="Object.keys(extraTabInfo).length"><ExtraPageTab :tabInfo='extraTabInfo' @turnPage='turnPage'/></div>
     </div>
     <div class="pages-wrapper" ><router-view @openExtraPage='openExtraPage'/></div>
   </div>
@@ -34,6 +34,10 @@ import { menu } from "./config";
 export default {
   name: "home",
   created() {
+    // this.$router.beforeEach((to, from, next) => {
+    //   console.log(to)
+    //   next();
+    // });
     this.initMenu("010101");
     this.initPage("010101");
   },
@@ -55,16 +59,13 @@ export default {
     };
   },
   methods: {
-    trunPage(id) {
+    turnPage(id) {
       // 关闭额外tab
       this.extraTabInfo = {};
       this.currentTab = id;
     },
     // 初始化menuList 和 获取当前选中的tab
     initMenu(tabId) {
-      if (tabId.length >= 8) {
-        return;
-      }
       let mainId = tabId.length >= 2 ? tabId.slice(0, 2) : "01";
       let secId = tabId.length >= 4 ? tabId.slice(2, 4) : "01";
       let thdId = tabId.length >= 6 ? tabId.slice(4, 6) : "01";
@@ -99,10 +100,11 @@ export default {
       this.curretPage = this.menu[mainId - 1]["children"][secId - 1][
         "children"
       ][thdId - 1]["page"];
-      this.$router.push({ path: "/home/" + this.menu[mainId - 1]['node'] + '/' + this.curretPage });
+      this.$router.push({path: "/home/" + this.menu[mainId - 1]['node'] + '/' + this.curretPage});
     },
     openExtraPage(extraPageInfo) {
-      this.trunPage(extraPageInfo.id);
+      // this.turnPage(extraPageInfo.id);
+      this.extraTabInfo = {};
       this.extraTabInfo.thirdTab = this.currentTabInfo.third;
       this.extraTabInfo.extraTab = extraPageInfo;
       this.$router.push({ path: `/home/${extraPageInfo.node}/${extraPageInfo.page}` });
@@ -110,8 +112,20 @@ export default {
   },
   watch: {
     currentTab(newVal) {
+      // console.log(newVal);
       this.initMenu(newVal);
       this.initPage(newVal);
+    },
+    $route(to, from) {
+      let tabId = to.meta.pageInfo.id
+      if(tabId.length > 6) {
+        this.initMenu(to.meta.pageInfo)
+        this.openExtraPage(to.meta.pageInfo)
+      } else {
+        // 关闭额外tab
+        this.extraTabInfo = {};
+      }
+      this.currentTab = tabId;
     }
   },
   components: {

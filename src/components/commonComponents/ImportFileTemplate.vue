@@ -51,7 +51,7 @@
     },
     props: {
       templatespro: {
-        type: Object,
+        type: Array,
         required: true
       }
     },
