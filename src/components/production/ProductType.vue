@@ -55,7 +55,7 @@
     getListProductType,
     updateProductType,
     deleteProductType
-  } from "../../assets/js/business/ajax.js";
+  } from "../../assets/js/production/ajax.js";
 
   export default {
     name: 'cpymb',

@@ -28,7 +28,7 @@
 <script type="text/ecmascript-6">
   import {
     getEmployeeDetail,
-  } from "../../assets/js/business/ajax.js";
+  } from "../../assets/js/settings/ajax.js";
 
 export default {
     name: "account",

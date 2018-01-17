@@ -42,7 +42,7 @@
 <script type="text/ecmascript-6">
   import {
     login
-  } from "../../assets/js/business/ajax.js";
+  } from "../../assets/js/login/ajax.js";
 
 export default {
   name: 'login',

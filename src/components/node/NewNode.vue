@@ -63,7 +63,7 @@
 <script type="text/ecmascript-6">
   import {
     createNode,
-  } from "../../assets/js/business/ajax.js";
+  } from "../../assets/js/node/ajax.js";
   import { cityData } from "../../assets/js/api/cityData.js";
 
 export default {

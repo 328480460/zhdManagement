@@ -106,7 +106,7 @@
 <script type="text/ecmascript-6">
   import {
     getListNode,
-  } from "../../assets/js/business/ajax.js";
+  } from "../../assets/js/node/ajax.js";
 
 export default {
     name: "",

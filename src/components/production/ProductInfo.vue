@@ -97,7 +97,7 @@
     getListProductType,
     getProductList,
     deleteProduct
-  } from "../../assets/js/business/ajax.js";
+  } from "../../assets/js/production/ajax.js";
 
 export default {
   name: "productinfo",
