@@ -47,55 +47,136 @@ export default[
         pageInfo: {
           page: "accountSetting",
           node: 'settings',
-          name: "企业信息",
-          id: "030201"
+          name: "账号信息",
+          id: "03020101"
         }
       }
     },
     //设置-账号信息-编辑
     {
       path : 'settings/accountSettingEdit',
-      component : AccountSettingEdit
+      component : AccountSettingEdit,
+      name: 'accountSettingEdit',
+      meta: {
+        pageInfo: {
+          page: "accountSettingEdit",
+          node: 'settings',
+          name: "编辑账号信息",
+          id: "03020102"
+        }
+      }
     },
     //设置-员工设置-员工管理
     {
       path : 'settings/staffManagement',
-      component : StaffManagement
+      component : StaffManagement,
+      name: 'staffManagement',
+      meta: {
+        pageInfo: {
+          page: "staffManagement",
+          node: 'settings',
+          name: "员工管理",
+          id: "030301"
+        }
+      }
     },
     //设置-员工设置-角色权限
     {
       path : 'settings/rolePermission',
-      component : RolePermission
+      component : RolePermission,
+      name: 'rolePermission',
+      meta: {
+        pageInfo: {
+          page: "rolePermission",
+          node: 'settings',
+          name: "角色权限",
+          id: "030302"
+        }
+      }
     },
     //设置-员工设置-待定邀请
     {
       path : 'settings/invitation',
-      component : Invitation
+      component : Invitation,
+      name: 'invitation',
+      meta: {
+        pageInfo: {
+          page: "invitation",
+          node: 'settings',
+          name: "待定邀请",
+          id: "030303"
+        }
+      }
     },
     //设置-自定义属性-产品类型
     {
       path : 'settings/customProductType',
-      component : CustomProductType
+      component : CustomProductType,
+      name: 'customProductType',
+      meta: {
+        pageInfo: {
+          page: "customProductType",
+          node: 'settings',
+          name: "产品类型",
+          id: "030401"
+        }
+      }
     },
     //设置-自定义属性-节点类型
     {
       path : 'settings/customNodeType',
-      component : CustomNodeType
+      component : CustomNodeType,
+      name: 'customNodeType',
+      meta: {
+        pageInfo: {
+          page: "customNodeType",
+          node: 'settings',
+          name: "节点类型",
+          id: "030402"
+        }
+      }
     },
     //设置-自定义属性-业务类型
     {
       path : 'settings/customBusinessType',
-      component : CustomBusinessType
+      component : CustomBusinessType,
+      name: 'customBusinessType',
+      meta: {
+        pageInfo: {
+          page: "customBusinessType",
+          node: 'settings',
+          name: "业务类型",
+          id: "030403"
+        }
+      }
     },
     //设置-自定义属性-文档类型
     {
       path : 'settings/customDocumentType',
-      component : CustomDocumentType
+      component : CustomDocumentType,
+      name: 'customDocumentType',
+      meta: {
+        pageInfo: {
+          page: "customDocumentType",
+          node: 'settings',
+          name: "文档类型",
+          id: "030404"
+        }
+      }
     },
     //设置-自定义属性-质量问题
     {
       path : 'settings/qualityProblem',
-      component : QualityProblem
+      component : QualityProblem,
+      name: 'qualityProblem',
+      meta: {
+        pageInfo: {
+          page: "qualityProblem",
+          node: 'settings',
+          name: "质量问题",
+          id: "030405"
+        }
+      }
     }
 
 ]
