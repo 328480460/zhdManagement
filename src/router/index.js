@@ -24,6 +24,7 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: Home,
+      redirect: '/home/production/productInfo',
       children: [
         ...Production,
         ...Node,
