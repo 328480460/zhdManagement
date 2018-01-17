@@ -48,7 +48,7 @@ export default {
         node: "business",
         page: "editGetGoodsInfoDetail",
         name: "编辑收货信息",
-        id: "05010102"
+        id: "05010103"
       });
     }
   },

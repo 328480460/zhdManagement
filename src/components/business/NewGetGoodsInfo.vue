@@ -1,33 +1,20 @@
 <template>
-    <div id="getGoodsInfoDetail" v-if='detailDataInfo'>
+    <div id="getGoodsInfoDetail" >
         <GetGoodsInfoDetailTemplate :edit= true @saveData= "saveData" >
         </GetGoodsInfoDetailTemplate>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { getInvoiceDetail } from "../../assets/js/business/ajax.js";
 import GetGoodsInfoDetailTemplate from "../commonComponents/GetGoodsInfoDetailTemplate";
 
 export default {
   name: "getGoodsInfoDetail",
-  created() {
-    this.getDetailDataInfo();
-  },
+
   data() {
     return { detailDataInfo: "" };
   },
   methods: {
-    getDetailDataInfo() {
-      let params = { id: "1232131" };
-      getInvoiceDetail(params)
-        .then(res => {
-          this.detailDataInfo = res.data.receipt;
-        })
-        .catch(() => {
-          this.$message.error("出错啦!");
-        });
-    },
     saveData(data) {
       console.log(data)
     }
