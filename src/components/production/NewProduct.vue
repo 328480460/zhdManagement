@@ -395,7 +395,7 @@ export default {
       getDefaultProductType()
         .then(res =>{
           this.totalcount = res.data.totalcount ;
-          this.systemDefaultTypeList = res.data.systemDefaultType.systemDefaultTypeList;
+          this.systemDefaultTypeList = res.data.systemDefaultType;
         })
         .catch(() => {
           this.$message.error("出错啦!");

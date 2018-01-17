@@ -1,7 +1,7 @@
 <template>
   <div id="staff">
     <div class="btn-list">
-      <el-button type="primary" size="medium">添加员工</el-button>
+      <el-button type="primary" size="medium" @click="newStaff">添加员工</el-button>
       <el-button type="primary" size="medium" class="btn-search">邀请员工</el-button>
     </div>
 
@@ -43,7 +43,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="handleEdit">编辑</el-button>
+            @click="handleEdit">修改</el-button>
           <!--@click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
           <el-button
             size="mini"
@@ -58,7 +58,7 @@
 
 <script type="text/ecmascript-6">
 import {
-  getEmployeeList,
+  getEmployeeList
 } from "../../assets/js/settings/ajax.js";
 
 export default {
@@ -86,6 +86,14 @@ export default {
     this.initData(params);
   },
   methods: {
+    newStaff() {
+      this.$emit("openExtraPage", {
+        node: 'settings',
+        page: "addStaff",
+        name: "添加员工",
+        id: "03030101"
+      });
+    },
     initData(params) {
       //查询产品列表
       this.searchConditions(params)

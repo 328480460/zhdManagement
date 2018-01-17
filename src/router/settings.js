@@ -3,6 +3,7 @@ import EnterpriseInfoEdit from '@/components/settings/EnterpriseInfoEdit'
 import AccountSetting from '@/components/settings/AccountSetting'
 import AccountSettingEdit from '@/components/settings/AccountSettingEdit'
 import StaffManagement from '@/components/settings/StaffManagement'
+import AddStaff from '@/components/settings/AddStaff'
 import RolePermission from '@/components/settings/RolePermission'
 import Invitation from '@/components/settings/Invitation'
 import QualityProblem from '@/components/settings/QualityProblem'
@@ -77,6 +78,20 @@ export default[
           node: 'settings',
           name: "员工管理",
           id: "030301"
+        }
+      }
+    },
+    //设置-员工设置-添加员工
+    {
+      path : 'settings/addStaff',
+      component : AddStaff,
+      name: 'addStaff',
+      meta: {
+        pageInfo: {
+          page: "addStaff",
+          node: 'settings',
+          name: "添加员工",
+          id: "03030101"
         }
       }
     },

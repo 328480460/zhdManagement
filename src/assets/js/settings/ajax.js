@@ -25,5 +25,15 @@ export const  getEmployeeList  = function(params) {
     let url = 'http://47.92.149.109:7108/mockjsdata/2/getEmployeeList';
     return ajaxPost(url,params)
 }
+// 员工信息新增
+export const  saveEmployee  = function(params) {
+    let url = 'http://47.92.149.109:7108/mockjsdata/2/saveEmployee';
+    return ajaxPost(url,params)
+}
+// 角色列表查询
+export const  getListRole  = function(params) {
+    let url = 'http://47.92.149.109:7108/mockjsdata/2/Role/getListRole';
+    return ajaxPost(url,params)
+}
 
 
