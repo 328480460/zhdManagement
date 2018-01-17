@@ -148,7 +148,6 @@ export default {
     };
   },
   created() {
-
   },
   mounted() {
     let params = {

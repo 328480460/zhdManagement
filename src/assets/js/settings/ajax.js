@@ -20,4 +20,10 @@ export const  updateEmployee  = function(params) {
     let url = 'http://47.92.149.109:7108/mockjsdata/2/updateEmployee';
     return ajaxPost(url,params)
 }
+// 员工信息列表查询
+export const  getEmployeeList  = function(params) {
+    let url = 'http://47.92.149.109:7108/mockjsdata/2/getEmployeeList';
+    return ajaxPost(url,params)
+}
+
 

@@ -7,9 +7,11 @@
 
     <el-table class="el-table"
               border
+              stripe
+              :data="employees"
     >
       <el-table-column class="table-column"
-                       prop="name"
+                       prop="account"
                        label="账号"
       >
       </el-table-column>
@@ -24,12 +26,12 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="name"
+                       prop="contacts"
                        label="角色"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="name"
+                       prop="creat_date"
                        label="添加时间"
       >
       </el-table-column>
@@ -40,11 +42,13 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="text"
             @click="handleEdit">编辑</el-button>
           <!--@click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
           <el-button
             size="mini"
-            type="danger"
+            type="text"
+            style="margin-left: 50px"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -53,19 +57,100 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from "axios";
-export default {
-    name: "staff",
-    created() {
-    },
-    data() {
-      return{
+import {
+  getEmployeeList,
+} from "../../assets/js/settings/ajax.js";
 
-      }
-    },
-    methods: {
+export default {
+  name: "staff",
+  created() {
+  },
+  data() {
+    return{
+      totalcount: 0,
+      employees: [],
 
     }
+  },
+  mounted() {
+    let params = {
+//      productName: "",
+//      time: "",
+//      customType: "",
+//      productCode: "",
+//      pageNum: 1,
+//      pageSize: 10,
+//      receiptdate_start: "",
+//      receiptdate_end: ""
+    };
+    this.initData(params);
+  },
+  methods: {
+    initData(params) {
+      //查询产品列表
+      this.searchConditions(params)
+    },
+    /*"搜索"---查询员工信息列表接口*/
+    searchConditions(current){
+//      this.search.pageNum = typeof current === 'number' ? current : 1;
+      let params = {
+//        productName: this.search.productName,
+//        customType: this.search.customType,
+//        productCode: this.search.productCode,
+//        pagenum: this.search.pageNum,
+//        pagesize: this.search.pageSize,
+//        receiptdate_start: this.search.time[0],
+//        receiptdate_end: this.search.time[1]
+      };
+      this.getEmployeeList(params);
+    },
+    //员工信息列表接口
+    getEmployeeList(params){
+      getEmployeeList(params)
+        .then(res => {
+          this.totalcount = res.data.totalcount;
+          this.employees = res.data.employees;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+    clearConditions(){
+      this.search.productName = "";
+      this.search.time = "";
+      this.search.customType = "";
+      this.search.productCode = "";
+    },
+    handleEdit() {
+//      this.$emit("openExtraPage", {
+//        node:"production",
+//        page: "editProduct",
+//        name: "编辑产品",
+//        id: "01010102"
+//      });
+    },
+    handleDelete(index, row) {
+//      this.delete()
+    },
+    delete() {
+      this.$confirm('此操作将删除该产品信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        /*删除接口*/
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+  }
 };
 </script>
 
