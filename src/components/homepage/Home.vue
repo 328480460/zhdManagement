@@ -120,7 +120,9 @@ export default {
       let tabId = to.meta.pageInfo.id
       if(tabId.length > 6) {
         this.initMenu(to.meta.pageInfo)
-        this.openExtraPage(to.meta.pageInfo)
+        this.$nextTick(() => {
+          this.openExtraPage(to.meta.pageInfo)
+        },100)
       } else {
         // 关闭额外tab
         this.extraTabInfo = {};
