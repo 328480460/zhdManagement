@@ -1,6 +1,6 @@
 <template>
     <div class="import-wrapper" id="multiImport">
-        <ImportFileTemplate :templatespro='templatespro'></ImportFileTemplate>
+        <ImportFileTemplate :templatespro='templatespro' :uploadUrl='uploadUrl'></ImportFileTemplate>
     </div>
 </template>
 
@@ -9,6 +9,7 @@ import ImportFileTemplate from "../commonComponents/ImportFileTemplate";
 export default {
   data() {
     return {
+      uploadUrl: "http://47.92.149.109:7108/mockjsdata/2/Product/update_modle_product_type",
       templatespro: [
         {
           value: "1",

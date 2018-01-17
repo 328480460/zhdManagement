@@ -4,7 +4,7 @@
       <div class="title-bg">第一步：下载节点模板</div>
       <div class="module-container">
         选择文件类型
-        <el-select v-model="value"  placeholder="节点模板" style="width: auto">
+        <el-select v-model="value"  placeholder="请选择模板" style="width: auto">
           <el-option
             v-for="item in templatespro"
             :key="item.value"
@@ -27,7 +27,7 @@
       <el-upload
         class="upload-demo"
         drag
-        action="http://47.92.149.109:7108/mockjsdata/2/Product/update_modle_product_type"
+        :action= uploadUrl
         multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -52,6 +52,10 @@
     props: {
       templatespro: {
         type: Array,
+        required: true
+      },
+      uploadUrl: {
+        type: String,
         required: true
       }
     },
