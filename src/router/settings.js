@@ -13,50 +13,89 @@ import CustomDocumentType from '@/components/settings/CustomDocumentType'
 
 export default[
     { //设置-企业信息
-        path : 'settings/enterpriseInfo', component : EnterpriseInfo
+        path : 'settings/enterpriseInfo',
+        component : EnterpriseInfo,
+        name: 'enterpriseInfo',
+        meta: {
+          pageInfo: {
+            page: "enterpriseInfo",
+            node: 'settings',
+            name: "企业信息",
+            id: "03010101"
+          }
+        }
     },
     { //设置-企业信息-编辑
-      path : 'settings/enterpriseInfoEdit', component : EnterpriseInfoEdit
+      path : 'settings/enterpriseInfoEdit',
+      component : EnterpriseInfoEdit,
+      name: 'enterpriseInfoEdit',
+      meta: {
+        pageInfo: {
+          page: "enterpriseInfoEdit",
+          node: 'settings',
+          name: "编辑企业信息",
+          id: "03010102"
+        }
+      }
     },
     //设置-账号信息
     {
-    path : 'settings/accountSetting', component : AccountSetting
+      path : 'settings/accountSetting',
+      component : AccountSetting,
+      name: 'accountSetting',
+      meta: {
+        pageInfo: {
+          page: "accountSetting",
+          node: 'settings',
+          name: "企业信息",
+          id: "030201"
+        }
+      }
     },
     //设置-账号信息-编辑
     {
-    path : 'settings/accountSettingEdit', component : AccountSettingEdit
+      path : 'settings/accountSettingEdit',
+      component : AccountSettingEdit
     },
     //设置-员工设置-员工管理
     {
-    path : 'settings/staffManagement', component : StaffManagement
+      path : 'settings/staffManagement',
+      component : StaffManagement
     },
     //设置-员工设置-角色权限
     {
-    path : 'settings/rolePermission', component : RolePermission
+      path : 'settings/rolePermission',
+      component : RolePermission
     },
     //设置-员工设置-待定邀请
     {
-    path : 'settings/invitation', component : Invitation
+      path : 'settings/invitation',
+      component : Invitation
     },
     //设置-自定义属性-产品类型
     {
-    path : 'settings/customProductType', component : CustomProductType
+      path : 'settings/customProductType',
+      component : CustomProductType
     },
     //设置-自定义属性-节点类型
     {
-    path : 'settings/customNodeType', component : CustomNodeType
+      path : 'settings/customNodeType',
+      component : CustomNodeType
     },
     //设置-自定义属性-业务类型
     {
-    path : 'settings/customBusinessType', component : CustomBusinessType
+      path : 'settings/customBusinessType',
+      component : CustomBusinessType
     },
     //设置-自定义属性-文档类型
     {
-    path : 'settings/customDocumentType', component : CustomDocumentType
+      path : 'settings/customDocumentType',
+      component : CustomDocumentType
     },
     //设置-自定义属性-质量问题
     {
-      path : 'settings/qualityProblem', component : QualityProblem
+      path : 'settings/qualityProblem',
+      component : QualityProblem
     }
 
 ]
