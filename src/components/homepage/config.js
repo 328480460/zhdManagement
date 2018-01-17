@@ -296,7 +296,7 @@ export const menu = [
                     page: 'FTPSync'
                 },{
                     id: '050502',
-                    name: 'FTP同步',
+                    name: '历史记录',
                     disabled: false,
                     page: 'FTPHistoryBusiness'
                 }

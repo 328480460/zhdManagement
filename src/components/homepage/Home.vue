@@ -34,12 +34,18 @@ import { menu } from "./config";
 export default {
   name: "home",
   created() {
-    // this.$router.beforeEach((to, from, next) => {
-    //   console.log(to)
-    //   next();
-    // });
-    this.initMenu("010101");
-    this.initPage("010101");
+    // 刷新跳转对应的路由
+    console.log(this.$route.meta)
+    let tabId = this.$route.meta.pageInfo.id;
+    if (tabId.length > 6) {
+      this.initMenu(this.$route.meta.pageInfo);
+      this.$nextTick(() => {
+        this.openExtraPage(this.$route.meta.pageInfo);
+      }, 100);
+    }
+    this.currentTab = tabId;
+    // this.initMenu("010101");
+    // this.initPage("010101");
   },
   data() {
     return {
@@ -100,14 +106,18 @@ export default {
       this.curretPage = this.menu[mainId - 1]["children"][secId - 1][
         "children"
       ][thdId - 1]["page"];
-      this.$router.push({path: "/home/" + this.menu[mainId - 1]['node'] + '/' + this.curretPage});
+      this.$router.push({
+        path: "/home/" + this.menu[mainId - 1]["node"] + "/" + this.curretPage
+      });
     },
     openExtraPage(extraPageInfo) {
       // this.turnPage(extraPageInfo.id);
       this.extraTabInfo = {};
       this.extraTabInfo.thirdTab = this.currentTabInfo.third;
       this.extraTabInfo.extraTab = extraPageInfo;
-      this.$router.push({ path: `/home/${extraPageInfo.node}/${extraPageInfo.page}` });
+      this.$router.push({
+        path: `/home/${extraPageInfo.node}/${extraPageInfo.page}`
+      });
     }
   },
   watch: {
@@ -117,12 +127,12 @@ export default {
       this.initPage(newVal);
     },
     $route(to, from) {
-      let tabId = to.meta.pageInfo.id
-      if(tabId.length > 6) {
-        this.initMenu(to.meta.pageInfo)
+      let tabId = to.meta.pageInfo.id;
+      if (tabId.length > 6) {
+        this.initMenu(to.meta.pageInfo);
         this.$nextTick(() => {
-          this.openExtraPage(to.meta.pageInfo)
-        },100)
+          this.openExtraPage(to.meta.pageInfo);
+        }, 100);
       } else {
         // 关闭额外tab
         this.extraTabInfo = {};

@@ -15,3 +15,10 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.history-wrapper {
+  height: 92%;
+}
+</style>
+
