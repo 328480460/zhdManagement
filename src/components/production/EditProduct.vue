@@ -72,7 +72,7 @@
     getProductDetail,
     getDefaultProductType,
     updateProduct
-  } from "../../assets/js/business/ajax.js";
+  } from "../../assets/js/production/ajax.js";
 
   export default {
     name: "editProduct",

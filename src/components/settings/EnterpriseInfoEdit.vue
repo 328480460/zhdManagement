@@ -44,7 +44,7 @@
   import {
     getEnterpriseDetail,
     updateEnterprise
-  } from "../../assets/js/business/ajax.js";
+  } from "../../assets/js/settings/ajax.js";
 
 import { cityData } from "../../assets/js/api/cityData.js";
 export default {
