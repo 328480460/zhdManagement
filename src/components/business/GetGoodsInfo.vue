@@ -45,7 +45,7 @@
               :default-sort = "{prop: 'receipt_date', order: 'descending'}"
     >
       <el-table-column class="table-column"
-                       prop="info_no"
+                       prop="receipt_num"
                        label="信息编号"
     >
     </el-table-column>
@@ -66,7 +66,7 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="product_content"
+                       prop="productList"
                        label="产品内容"
       >
       </el-table-column>
@@ -77,7 +77,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="getGoodsInfoDetail">详情</el-button>
+            @click="getGoodsInfoDetail(scope.row)">详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -92,14 +92,18 @@
       layout="total,prev, pager, next"
       @current-change="handleCurrentChange"
       :page-size=10
-      :current-page= currentPage
-      :total= totalcount>
+      :current-page= 'currentPage'
+      :total= 'totalcount'>
     </el-pagination>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { getReceiptList, getListNode } from "../../assets/js/business/ajax.js";
+import {
+  getReceiptList,
+  getListNode,
+  deleteReceipt
+} from "../../assets/js/business/ajax.js";
 import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
@@ -112,7 +116,7 @@ export default {
         time: "",
         currentNode: "",
         resourceNode: "",
-        productName: "",
+        productName: ""
       },
       currentPage: 1,
       pageSize: 10,
@@ -154,7 +158,7 @@ export default {
   },
   mounted() {
     let params = {
-      current_nodeid: "",
+      this_node_id: "",
       resource_nodeid: "",
       info_no: "",
       pagenum: 1,
@@ -175,19 +179,17 @@ export default {
         id: "05010101"
       });
     },
-    getGoodsInfoDetail() {
+    getGoodsInfoDetail(item) {
+      // console.log(item)
       this.$emit("openExtraPage", {
         page: "getGoodsInfoDetail",
-        node: 'business',
+        node: "business",
         name: "收货信息详情",
-        id: "05010102"
+        id: "05010102",
+        query: { id: item.id }
       });
     },
-
-    handleDelete(index, row) {
-      this.delete();
-    },
-    delete() {
+    handleDelete(index, item) {
       this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -195,9 +197,16 @@ export default {
       })
         .then(() => {
           /*删除接口*/
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+          deleteReceipt({ id: item.id }).then(res => {
+            if (res.status == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              // 重新请求当前页当前条件数据
+              this.getProductList()
+
+            }
           });
         })
         .catch(() => {
@@ -213,17 +222,7 @@ export default {
         this.currentPage = 1;
         return;
       }
-      let params = {
-        current_nodeid: this.ajaxSearch.currentNode,
-        resource_nodeid: this.ajaxSearch.resourceNode,
-        info_no: this.ajaxSearch.infoNo,
-        product_name: this.ajaxSearch.productName,
-        receiptdate_start: this.ajaxSearch.time[0],
-        receiptdate_end: this.ajaxSearch.time[1],
-        pagenum: this.currentPage,
-        pagesize: this.pageSize
-      };
-      this.getDataAjax(params);
+      this.getProductList();
     },
     clearConditions() {
       this.search.infoNo = "";
@@ -235,8 +234,15 @@ export default {
     // 分页跳转
     handleCurrentChange(val) {
       this.currentPage = val;
+      this.getProductList();
+    },
+    initData(params) {
+      this.getDataAjax(params);
+      this.loadNodeData();
+    },
+    getProductList() {
       let params = {
-        current_nodeid: this.ajaxSearch.currentNode,
+        this_node_id: this.ajaxSearch.currentNode,
         resource_nodeid: this.ajaxSearch.resourceNode,
         info_no: this.ajaxSearch.infoNo,
         product_name: this.ajaxSearch.productName,
@@ -246,10 +252,6 @@ export default {
         pagesize: this.pageSize
       };
       this.getDataAjax(params);
-    },
-    initData(params) {
-      this.getDataAjax(params);
-      this.loadNodeData();
     },
     loadNodeData() {
       // 请求当前节点

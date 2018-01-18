@@ -50,7 +50,7 @@
               :default-sort = "{prop: 'receipt_date', order: 'descending'}"
     >
       <el-table-column class="table-column"
-                       prop="info_no"
+                       prop="invoice_num"
                        label="信息编号"
     >
     </el-table-column>
@@ -61,17 +61,17 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="this_node"
+                       prop="this_node_name"
                        label="当前节点"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="flow_to_noded"
+                       prop="flow_to_name"
                        label="流向节点"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="product_content"
+                       prop="productList"
                        label="产品内容"
       >
       </el-table-column>

@@ -13,7 +13,7 @@
             <div slot="infoNo">
                 <div class="demo-input-suffix">
                    <div class="infoNo">信息编号</div>
-                   <div class="infoNo-code">{{detailDataInfo.info_no}}</div>
+                   <div class="infoNo-code">{{detailDataInfo.invoice_num}}</div>
                 </div>
             </div>
         </SendGoodsInfoDetailTemplate>
