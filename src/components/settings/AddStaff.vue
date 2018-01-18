@@ -19,13 +19,28 @@
           </el-form-item>
 
           <el-form-item label="允许访问的节点：">
-            <el-input v-model="form.role_id"></el-input>
+            <!--<el-input v-model="form.role_id"></el-input>-->
+            <el-select
+              v-model="value9"
+              multiple
+              filterable
+              remote
+              reserve-keyword
+              placeholder="请搜索已有节点名称"
+              :remote-method="remoteMethod"
+              :loading="loading">
+              <el-option
+                v-for="item in options4"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
 
           <el-form-item>
             <el-button type="primary" @click="onSubmit" >保存</el-button>
           </el-form-item>
-
         </el-form>
       </div>
     </div>
@@ -36,6 +51,7 @@
   import {
     saveEmployee,
     getListRole,
+    getListNode
   } from "../../assets/js/settings/ajax.js";
 
 export default {
@@ -51,15 +67,38 @@ export default {
           name: '',
           role_id: '',
         },
+
+        value9: [],
+        options4: [],
+        list: [],
+        nodeList: [],
+        loading: false
       }
     },
   mounted(){
-    let params ={
-      "id":123
-    }
+    let params = {
+      pagenum: 1,
+      pagesize: 10,
+    };
     this.initData(params);
+
   },
     methods: {
+      remoteMethod(query) {
+        if (query !== '') {
+          this.loading = true;
+          setTimeout(() => {
+            this.loading = false;
+            this.options4 = this.list.filter(item => {
+              return item.label.toLowerCase()
+                  .indexOf(query.toLowerCase()) > -1;
+            });
+          }, 200);
+        } else {
+          this.options4 = [];
+        }
+      },
+
       onSubmit() {
         let params = {
           account: this.form.account,
@@ -81,7 +120,8 @@ export default {
 
       },
       initData(params){
-        this.getListRole()
+        this.getListRole(params)
+        this.getListNode(params)
       },
       //角色信息列表接口
       getListRole(params){
@@ -93,7 +133,20 @@ export default {
             this.$message.error("出错啦!");
           });
       },
+      //节点列表查询
+      getListNode(params){
+        getListNode(params)
+          .then(res =>{
+            this.nodeList = res.data.nodeList;
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
 
+        this.list = this.nodeList.map(item => {
+          return { value: item.id, label: item.node_name };
+        });
+      },
     }
 };
 </script>

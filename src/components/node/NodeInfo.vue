@@ -215,7 +215,6 @@ export default {
           .catch(() => {
             this.$message.error("出错啦!");
           })
-
       },
       // 分页跳转
       handleCurrentChange(val) {

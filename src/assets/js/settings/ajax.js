@@ -35,5 +35,9 @@ export const  getListRole  = function(params) {
     let url = 'http://47.92.149.109:7108/mockjsdata/2/Role/getListRole';
     return ajaxPost(url,params)
 }
-
+// 节点列表查询接口
+export const getListNode = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/getListNode';
+  return ajaxPost(url,params)
+}
 
