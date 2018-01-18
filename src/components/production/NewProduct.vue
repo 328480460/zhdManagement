@@ -73,6 +73,7 @@ export default {
   name: "newProduct",
   data() {
     return {
+      routerQuery: this.$route.query,
       form: {
         productCode: "",
         productName: "",

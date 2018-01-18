@@ -31,21 +31,23 @@
 <script type="text/ecmascript-6">
 import ExtraPageTab from "../commonComponents/ExtraPageTab";
 import { menu } from "./config";
+import { deepCopy } from "../../assets/js/api/util.js";
 export default {
   name: "home",
   created() {
     // 刷新跳转对应的路由
-    console.log(this.$route.meta)
+    // console.log(this.$route.meta);
     let tabId = this.$route.meta.pageInfo.id;
     if (tabId.length > 6) {
       this.initMenu(this.$route.meta.pageInfo);
       this.$nextTick(() => {
-        this.openExtraPage(this.$route.meta.pageInfo);
+        let query = JSON.parse(sessionStorage.getItem("freshQuery"));
+        let extraTabInfo = deepCopy(this.$route.meta.pageInfo);
+        extraTabInfo.query = query;
+        this.openExtraPage(extraTabInfo);
       }, 100);
     }
     this.currentTab = tabId;
-    // this.initMenu("010101");
-    // this.initPage("010101");
   },
   data() {
     return {
@@ -111,27 +113,31 @@ export default {
       });
     },
     openExtraPage(extraPageInfo) {
-      // this.turnPage(extraPageInfo.id);
       this.extraTabInfo = {};
       this.extraTabInfo.thirdTab = this.currentTabInfo.third;
       this.extraTabInfo.extraTab = extraPageInfo;
+      let query = extraPageInfo.query ? extraPageInfo.query : {};
+      sessionStorage.setItem("freshQuery", JSON.stringify(query));
       this.$router.push({
-        path: `/home/${extraPageInfo.node}/${extraPageInfo.page}`
+        path: `/home/${extraPageInfo.node}/${extraPageInfo.page}`,
+        query: query
       });
     }
   },
   watch: {
     currentTab(newVal) {
-      // console.log(newVal);
       this.initMenu(newVal);
       this.initPage(newVal);
     },
     $route(to, from) {
+      // console.log(to);
       let tabId = to.meta.pageInfo.id;
       if (tabId.length > 6) {
         this.initMenu(to.meta.pageInfo);
         this.$nextTick(() => {
-          this.openExtraPage(to.meta.pageInfo);
+          this.extraTabInfo = {};
+          this.extraTabInfo.thirdTab = this.currentTabInfo.third;
+          this.extraTabInfo.extraTab = to.meta.pageInfo;
         }, 100);
       } else {
         // 关闭额外tab

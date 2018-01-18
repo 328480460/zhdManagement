@@ -86,18 +86,18 @@
       :current-page= search.pageNum
       @current-change="handleCurrentChange"
       :page-size=10
-      :total= totalcount>
+      :total= 'totalcount'>
     </el-pagination>
 
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {
-    getListProductType,
-    getProductList,
-    deleteProduct
-  } from "../../assets/js/production/ajax.js";
+import {
+  getListProductType,
+  getProductList,
+  deleteProduct
+} from "../../assets/js/production/ajax.js";
 
 export default {
   name: "productinfo",
@@ -105,7 +105,7 @@ export default {
     return {
       totalcount: 0,
       productList: [],
-      customTypeList:[],
+      customTypeList: [],
       search: {
         productName: "",
         time: "",
@@ -144,11 +144,10 @@ export default {
             }
           }
         ]
-      },
+      }
     };
   },
-  created() {
-  },
+  created() {},
   mounted() {
     let params = {
       productName: "",
@@ -164,49 +163,53 @@ export default {
   },
   methods: {
     newProduct() {
-        this.$emit("openExtraPage", {
-          node: 'production',
-          page: "newProduct",
-          name: "新建产品",
-          id: "01010101"
-        });
-      },
+      this.$emit("openExtraPage", {
+        node: "production",
+        page: "newProduct",
+        name: "新建产品",
+        id: "01010101",
+        query: { userId: "lalal" }
+      });
+    },
     //监听输入框“产品编码”内容
     queryCode(queryString, cb) {
-      this.productCode = queryString
+      this.productCode = queryString;
     },
     editProduct() {
       this.$emit("openExtraPage", {
-        node:"production",
+        node: "production",
         page: "editProduct",
         name: "编辑产品",
-        id: "01010102"
+        id: "01010102",
+        query: { userId: "lalal" }
       });
     },
     handleDelete(index, row) {
-      this.delete()
+      this.delete();
     },
     delete() {
-      this.$confirm('此操作将删除该产品信息, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        /*删除接口*/
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
+      this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          /*删除接口*/
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
     },
     /*"搜索"---查询产品列表接口*/
-    searchConditions(current){
-      this.search.pageNum = typeof current === 'number' ? current : 1;
+    searchConditions(current) {
+      this.search.pageNum = typeof current === "number" ? current : 1;
       let params = {
         productName: this.search.productName,
         customType: this.search.customType,
@@ -219,7 +222,7 @@ export default {
       this.getProductList(params);
     },
     //产品列表查询接口
-    getProductList(params){
+    getProductList(params) {
       getProductList(params)
         .then(res => {
           this.totalcount = res.data.totalcount;
@@ -229,7 +232,7 @@ export default {
           this.$message.error("出错啦!");
         });
     },
-    clearConditions(){
+    clearConditions() {
       this.search.productName = "";
       this.search.time = "";
       this.search.customType = "";
@@ -240,11 +243,11 @@ export default {
       this.searchConditions(val);
     },
     //产品自定义分类列表查询接口
-    selectTypes(){
+    selectTypes() {
       let params = {
-              pagenum: 1,     //？？？请求所有的分类
-              pagesize: 10,
-      }
+        pagenum: 1, //？？？请求所有的分类
+        pagesize: 10
+      };
       getListProductType(params)
         .then(res => {
           this.totalcount = res.data.totalcount;
@@ -256,9 +259,9 @@ export default {
     },
     initData(params) {
       //查询产品列表
-      this.searchConditions(params)
+      this.searchConditions(params);
       //查询分类列表
-      this.selectTypes()
+      this.selectTypes();
     }
   }
 };
@@ -272,13 +275,13 @@ export default {
   background-color: #fff;
   .demo-autocomplete {
     margin-top: 10px;
-    .btn-search{
+    .btn-search {
       background-color: transparent;
       color: #03b150;
       margin-left: 8.33333%;
       margin-top: 2px;
     }
-    .span-clear{
+    .span-clear {
       color: #999999;
       margin-left: 15px;
       cursor: pointer;
@@ -296,12 +299,11 @@ export default {
       width: 100%;
     }
   }
-  .el-table{
+  .el-table {
     width: 100%;
     margin-top: 24px;
-
   }
-  .btn-search{
+  .btn-search {
     background-color: transparent;
     color: #03b150;
     margin-left: 15px;
