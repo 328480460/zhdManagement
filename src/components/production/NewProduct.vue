@@ -86,7 +86,6 @@ export default {
         custom_mould_id:"",
 
         systemDefaultType:"",
-        systemDefaultType:"",
       },
       systemDefaultTypeList:[],
       customTypeList:[],

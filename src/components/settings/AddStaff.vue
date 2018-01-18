@@ -30,10 +30,10 @@
               :remote-method="remoteMethod"
               :loading="loading">
               <el-option
-                v-for="item in options4"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in options"
+                :key="item.id"
+                :label="item.node_name"
+                :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
@@ -69,8 +69,7 @@ export default {
         },
 
         value9: [],
-        options4: [],
-        list: [],
+        options: [],
         nodeList: [],
         loading: false
       }
@@ -89,13 +88,13 @@ export default {
           this.loading = true;
           setTimeout(() => {
             this.loading = false;
-            this.options4 = this.list.filter(item => {
-              return item.label.toLowerCase()
+            this.options = this.nodeList.filter(item => {
+              return item.node_name.toLowerCase()
                   .indexOf(query.toLowerCase()) > -1;
             });
           }, 200);
         } else {
-          this.options4 = [];
+          this.options = [];
         }
       },
 
@@ -142,10 +141,6 @@ export default {
           .catch(() => {
             this.$message.error("出错啦!");
           })
-
-        this.list = this.nodeList.map(item => {
-          return { value: item.id, label: item.node_name };
-        });
       },
     }
 };
