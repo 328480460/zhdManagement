@@ -3,7 +3,7 @@
         <ProductGoodsInfoDetailTemplate 
             :edit= false
             :productList='detailDataInfo.productList' 
-            :thisNodeId='"1" || detailDataInfo.this_node_id' 
+            :thisNodeId='"测试内容247h" || detailDataInfo.this_node_id' 
             :productListIn='detailDataInfo.productionInProductList'
             :productListOut='detailDataInfo.productionOutProductList'
             :productDate='detailDataInfo.production_date.toString()' 
@@ -15,7 +15,7 @@
             <div slot="infoNo">
                 <div class="demo-input-suffix">
                    <div class="infoNo">信息编号</div>
-                   <div class="infoNo-code">信息编号缺少字段</div>
+                   <div class="infoNo-code">{{detailDataInfo.receipt_num}}</div>
                 </div>
             </div>
         </ProductGoodsInfoDetailTemplate>

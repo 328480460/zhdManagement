@@ -3,17 +3,17 @@
         <GetGoodsInfoDetailTemplate 
             :edit= true
             :productList='detailDataInfo.productList' 
-            :thisNodeId='"1" || detailDataInfo.this_node_id' 
-            :sourceNodedId='"1" || detailDataInfo.source_noded_id' 
+            :thisNodeId='"测试内容247h" || detailDataInfo.this_node_id' 
+            :sourceNodedId='"测试内容247h" || detailDataInfo.source_noded_id' 
             :receiptDate='detailDataInfo.receipt_date' 
             :customFields='[{"data_value": "苹果","custom_id": "258"},{"data_value": "香蕉","custom_id": "259"}] || detailDataInfo.customFields'
             :customMouldId='"属性id1" || detailDataInfo.custom_mould_id'
-            @saveData= saveData
+            @saveData= 'saveData'
             >
             <div slot="infoNo">
                 <div class="demo-input-suffix">
                    <div class="infoNo">信息编号</div>
-                   <div class="infoNo-code">{{detailDataInfo.info_no}}</div>
+                   <div class="infoNo-code">{{detailDataInfo.receipt_num}}</div>
                 </div>
             </div>
         </GetGoodsInfoDetailTemplate>
@@ -30,11 +30,11 @@ export default {
     this.getDetailDataInfo();
   },
   data() {
-    return { detailDataInfo: "" };
+    return { detailDataInfo: "", routerQuery: this.$route.query };
   },
   methods: {
     getDetailDataInfo() {
-      let params = { id: "1232131" };
+      let params = { id: this.routerQuery.id };
       getReceiptDetail(params)
         .then(res => {
           this.detailDataInfo = res.data.receipt;
@@ -44,7 +44,7 @@ export default {
         });
     },
     saveData(data) {
-        console.log(data)
+      console.log(data);
     }
   },
   components: {

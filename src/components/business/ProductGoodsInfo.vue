@@ -50,7 +50,7 @@
               :default-sort = "{prop: 'update_date', order: 'descending'}"
     >
       <el-table-column class="table-column"
-                       prop="remark"
+                       prop="production_num"
                        label="信息编号"
     >
     </el-table-column>
@@ -61,7 +61,7 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="this_node"
+                       prop="this_node_name"
                        label="当前节点"
       >
       </el-table-column>
@@ -97,8 +97,8 @@
       layout="total,prev, pager, next"
       @current-change="handleCurrentChange"
       :page-size=10
-      :current-page= currentPage
-      :total= totalcount>
+      :current-page= 'currentPage'
+      :total= 'totalcount'>
     </el-pagination>
   </div>
 </template>
@@ -166,7 +166,7 @@ export default {
       this_node: "",
       productionInProductList: [],
       productionOutProductList: [],
-      info_no: "",
+      production_num: "",
       pagenum: 1,
       pagesize: 10,
       production_date: "",
@@ -223,7 +223,7 @@ export default {
       }
       let params = {
         this_node: this.ajaxSearch.currentNode,
-        info_no: this.ajaxSearch.infoNo,
+        production_num: this.ajaxSearch.infoNo,
         productionInProductList: [this.ajaxSearch.productGoodsIn],
         productionOutProductList: [this.ajaxSearch.productGoodsOut],
         production_date: this.ajaxSearch.time,
@@ -244,7 +244,7 @@ export default {
       this.currentPage = val;
       let params = {
         this_node: this.ajaxSearch.currentNode,
-        info_no: this.ajaxSearch.infoNo,
+        production_num: this.ajaxSearch.infoNo,
         productionInProductList: [this.ajaxSearch.productGoodsIn],
         productionOutProductList: [this.ajaxSearch.productGoodsOut],
         production_date: this.ajaxSearch.time,

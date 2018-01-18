@@ -181,7 +181,7 @@ export default {
         page: "editProduct",
         name: "编辑产品",
         id: "01010102",
-        query: { userId: "lalal" }
+        query: { userId: "lalalxxxx" }
       });
     },
     handleDelete(index, row) {

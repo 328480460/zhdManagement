@@ -49,11 +49,11 @@
                 <th width='60'>操作</th>
               </tr>
               <tr v-for="(item, index) in productListIn" :key="index">
-                <td>{{item.product_name}}缺少字段</td>
-                <td>{{item.product_num}}缺少字段</td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入产品批次号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入数量"></el-input></td>
+                <td>{{item.product_name}}</td>
+                <td>{{item.product}}</td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量"></el-input></td>
                 <td>{{item.norms}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit"></i></td>
               </tr>
@@ -85,10 +85,10 @@
               </tr>
               <tr v-for="(item, index) in productListOut" :key="index">
                 <td>{{item.product_name}}</td>
-                <td>{{item.product_num}}</td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入产品批次号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入数量"></el-input></td>
+                <td>{{item.product}}</td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量"></el-input></td>
                 <td>{{item.norms}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit"></i></td>
               </tr>
