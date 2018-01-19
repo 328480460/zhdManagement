@@ -1,10 +1,9 @@
 <template>
-  <div id="addstaff">
+  <div id="editstaff">
     <div class="default-info-wrapper">
       <div class="section-content">
         <el-form :model="form" ref="form" label-width="120px">
-          <el-form-item label="账号：">
-            <el-input v-model="form.account"></el-input>
+          <el-form-item label="账号：">{{form.account}}
           </el-form-item>
           <el-form-item label="员工姓名：">
             <el-input v-model="form.name"></el-input>
@@ -48,13 +47,14 @@
 
 <script type="text/ecmascript-6">
   import {
-    saveEmployee,
     getListRole,
-    getListNode
+    getListNode,
+    getEmployeeDetail,
+    updateEmployee
   } from "../../assets/js/settings/ajax.js";
 
 export default {
-    name: "addstaff",
+    name: "editstaff",
     created() {
     },
     data() {
@@ -74,6 +74,7 @@ export default {
       }
     },
   mounted(){
+
     let params = {
       pagenum: 1,
       pagesize: 10,
@@ -96,21 +97,19 @@ export default {
           this.options = [];
         }
       },
-
       onSubmit() {
         let params = {
           account: this.form.account,
-          contacts: this.form.contacts,
           name: this.form.name,
+          contacts: this.form.contacts,
           role_id: this.form.role_id,
         };
-//      console.log("submit!新增员工--"+JSON.stringify(params));
         /**
-         * 员工信息新增接口
+         * 员工信息修改接口
          */
-        saveEmployee(params)
+        updateEmployee(params)
           .then(res =>{
-            this.$message.success("员工添加成功!");
+            this.$message.success("员工修改成功!");
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -118,8 +117,23 @@ export default {
 
       },
       initData(params){
+        this.getEmployeeDetail()
         this.getListRole(params)
         this.getListNode(params)
+      },
+      //员工详情
+      getEmployeeDetail(){
+        getEmployeeDetail({ id: 123 })
+          .then(res =>{
+            let employee = res.data.employee
+            this.form.account = employee. account;
+            this.form.name = employee. name;
+            this.form.contacts = employee. contacts;
+            this.form.role_id = employee. role_id;
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
       },
       //角色信息列表接口
       getListRole(params){
@@ -146,7 +160,7 @@ export default {
 </script>
 
 <style rel="stylesheet/less" lang='less' scoped>
-#addstaff {
+#editstaff {
   margin: 10px;
   padding: 10px;
   height: 100%;

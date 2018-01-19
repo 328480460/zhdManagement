@@ -4,7 +4,6 @@
       <div class="section-content">
         <el-form :model="form" ref="form" label-width="120px">
           <el-form-item label="企业名称：">{{form.name}}
-            <!--<el-input v-model="form.name"></el-input>-->
           </el-form-item>
           <el-form-item label="机构类型：">{{form.type}}
           </el-form-item>
@@ -12,23 +11,17 @@
             <el-button type="text" class="br_text">立即认证</el-button>
           </el-form-item>
           <el-form-item label="所在地区：">{{form.area}}
-            <!--<el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>-->
-            <!--<el-input v-model="form.area" style="margin-top: 20px"></el-input>-->
           </el-form-item>
           <el-form-item label="开通日期：">{{form.date}}
           </el-form-item>
           <el-form-item label="企业LOGO：">
             <img src="../../assets/image/enterprise_logo.png" alt="enterprise_logo" class="enterprise_logo">
-            <!--<el-button type="text" class="br_text">修改</el-button>-->
           </el-form-item>
           <el-form-item label="企业简介：">{{form.intro}}
-            <!--<el-input v-model="form.intro" type="textarea" ></el-input>-->
           </el-form-item>
           <el-form-item label="联系人姓名：">{{form.contact}}
-            <!--<el-input v-model="form.contact"></el-input>-->
           </el-form-item>
           <el-form-item label="联系人手机号：">{{form.phonenum}}
-            <!--<el-input v-model="form.phonenum"></el-input>-->
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="editPage" >编辑</el-button>
@@ -83,7 +76,6 @@ export default {
          */
         getEnterpriseDetail(params)
           .then(res =>{
-//            console.log("企业详情---"+JSON.stringify(res))
             let enterprise = res.enterprise
             this.form.name = enterprise. enterprise_name;
             this.form.type = enterprise. enterprise_type;
