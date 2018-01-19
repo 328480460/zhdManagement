@@ -2,26 +2,25 @@
     <div id="sendGoodsInfoDetail" v-if='detailDataInfo'>
         <SendGoodsInfoDetailTemplate 
             :edit= true
+            :id = 'detailDataInfo.id'
+            :invoiceNum='detailDataInfo.invoice_num'
             :productList='detailDataInfo.productList' 
             :thisNodeId='"1" || detailDataInfo.this_node_id' 
             :flowNodeId='"1" || detailDataInfo.flow_to_id' 
             :date='detailDataInfo.invoice_date' 
             :customFields='[{"data_value": "苹果","custom_id": "258"},{"data_value": "香蕉","custom_id": "259"}] || detailDataInfo.customFields'
             :customMouldId='"属性id1" || detailDataInfo.custom_mould_id'
-            @editPage='editPage'
+            @saveData= 'saveData'
             >
-            <div slot="infoNo">
-                <div class="demo-input-suffix">
-                   <div class="infoNo">信息编号</div>
-                   <div class="infoNo-code">{{detailDataInfo.invoice_num}}</div>
-                </div>
-            </div>
         </SendGoodsInfoDetailTemplate>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { getInvoiceDetail } from "../../assets/js/business/ajax.js";
+import {
+  getInvoiceDetail,
+  updateInvoice
+} from "../../assets/js/business/ajax.js";
 import SendGoodsInfoDetailTemplate from "../commonComponents/SendGoodsInfoDetailTemplate";
 
 export default {
@@ -29,7 +28,7 @@ export default {
     this.getDetailDataInfo();
   },
   data() {
-    return { detailDataInfo: "" };
+    return { detailDataInfo: "", routerQuery: this.$route.query };
   },
   methods: {
     getDetailDataInfo() {
@@ -42,13 +41,24 @@ export default {
           this.$message.error("出错啦!");
         });
     },
-    editPage() {
-      this.$emit("openExtraPage", {
-        node: "business",
-        page: "editSendGoodsInfoDetail",
-        name: "编辑收货信息",
-        id: "05030103"
-      });
+    saveData(data) {
+      console.log(data);
+      updateInvoice(data)
+        .then(res => {
+          if (res.status == 200) {
+            this.$message.success("保存成功!");
+            this.$emit("openExtraPage", {
+              node: "business",
+              page: "sendGoodsInfoDetail",
+              name: "发货信息详情",
+              id: "05030102",
+              query: { id: this.routerQuery.id }
+            });
+          }
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
     }
   },
   components: {

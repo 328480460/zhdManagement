@@ -82,7 +82,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="productGoodsInfoDetail">详情</el-button>
+            @click="productGoodsInfoDetail(scope.row)">详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -107,7 +107,8 @@
 import {
   getListProduction,
   getListNode,
-  getProductList
+  getProductList,
+  deleteProduction
 } from "../../assets/js/business/ajax.js";
 import { deepCopy } from "../../assets/js/api/util.js";
 
@@ -183,19 +184,16 @@ export default {
         id: "05020101"
       });
     },
-    productGoodsInfoDetail() {
+    productGoodsInfoDetail(item) {
       this.$emit("openExtraPage", {
         page: "productGoodsInfoDetail",
         node: "business",
         name: "收货信息详情",
-        id: "05020102"
+        id: "05020102",
+        query: { id: item.id }
       });
     },
-
-    handleDelete(index, row) {
-      this.delete();
-    },
-    delete() {
+    handleDelete(index, item) {
       this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -203,9 +201,15 @@ export default {
       })
         .then(() => {
           /*删除接口*/
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+          deleteProduction({ id: item.id }).then(res => {
+            if (res.status == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              // 重新请求当前页当前条件数据
+              this.getProductList()
+            }
           });
         })
         .catch(() => {
@@ -221,16 +225,7 @@ export default {
         this.currentPage = 1;
         return;
       }
-      let params = {
-        this_node: this.ajaxSearch.currentNode,
-        production_num: this.ajaxSearch.infoNo,
-        productionInProductList: [this.ajaxSearch.productGoodsIn],
-        productionOutProductList: [this.ajaxSearch.productGoodsOut],
-        production_date: this.ajaxSearch.time,
-        pagenum: this.currentPage,
-        pagesize: this.pageSize
-      };
-      this.getDataAjax(params);
+      this.getProductList();
     },
     clearConditions() {
       this.search.infoNo = "";
@@ -242,16 +237,7 @@ export default {
     // 分页跳转
     handleCurrentChange(val) {
       this.currentPage = val;
-      let params = {
-        this_node: this.ajaxSearch.currentNode,
-        production_num: this.ajaxSearch.infoNo,
-        productionInProductList: [this.ajaxSearch.productGoodsIn],
-        productionOutProductList: [this.ajaxSearch.productGoodsOut],
-        production_date: this.ajaxSearch.time,
-        pagenum: this.currentPage,
-        pagesize: this.pageSize
-      };
-      this.getDataAjax(params);
+      this.getProductList();
     },
     // format 投入品 productionInProductList 和 产出品 productionOutProductList字段
     formatOutInProductList(productGoodsList) {
@@ -279,6 +265,18 @@ export default {
       this.getDataAjax(params);
       this.loadNodeData();
       this.loadProductList();
+    },
+    getProductList() {
+      let params = {
+        this_node: this.ajaxSearch.currentNode,
+        production_num: this.ajaxSearch.infoNo,
+        productionInProductList: [this.ajaxSearch.productGoodsIn],
+        productionOutProductList: [this.ajaxSearch.productGoodsOut],
+        production_date: this.ajaxSearch.time,
+        pagenum: this.currentPage,
+        pagesize: this.pageSize
+      };
+      this.getDataAjax(params);
     },
     loadNodeData() {
       // 请求d当前节点

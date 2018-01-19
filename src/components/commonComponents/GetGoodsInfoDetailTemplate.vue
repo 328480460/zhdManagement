@@ -3,10 +3,13 @@
         <div class="receive-info">
             <h6 class="title">收货信息</h6>
             <div class="content">
-                <slot name="infoNo"></slot> 
+                <div class="demo-input-suffix" v-if="receiptNum">
+                   <div class="infoNo">信息编号</div>
+                   <div class="infoNo-code">{{receiptNum}}</div>
+                </div> 
                 <div class="demo-input-suffix">
                     <div class="lable">请选择日期</div>
-                    <el-date-picker :disabled="!edit" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
+                    <el-date-picker :disabled="!edit" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
                 </div>
                 <div class="demo-input-suffix">
                     <div class="lable">当前节点</div>
@@ -37,7 +40,7 @@
           <div class="content">
             <div class="demo-input-suffix">
                 <div class="lable">添加产品</div>
-                    <el-select :disabled="!edit" v-model="selectProduction" placeholder="选择产品">
+                    <el-select :disabled="!edit" v-model="selectProduction" placeholder="选择产品" @change='changeHandle'>
                         <el-option
                         v-for="item in productTypeList"
                         :key="item.id"
@@ -47,7 +50,7 @@
                     </el-select>
             </div>
           </div>
-          <div class="product-list-wrapper" v-show="productList.length">
+          <div class="product-list-wrapper" v-show="receiveProductList.length">
             <table>
               <tr>
                 <th width='100'>产品名称</th>
@@ -58,14 +61,14 @@
                 <th width='60'>包装单位</th>
                 <th width='60'>操作</th>
               </tr>
-              <tr v-for="(item, index) in productList" :key="index">
+              <tr v-for="(item, index) in receiveProductList" :key="index">
                 <td>{{item.product_name}}</td>
                 <td>{{item.product}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入收货数量"></el-input></td>
                 <td>{{item.norms}}</td>
-                <td><i class="el-icon-close icon-font" v-show="edit"></i></td>
+                <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProduction(item, index)"></i></td>
               </tr>
             </table>
           </div>
@@ -88,13 +91,10 @@
           </div>
           <div class="attribute-wrapper" v-show="selectCustomDefine">
             <div class="content">
-              <div class="demo-input-suffix">
-                <div class="lable">产地</div>
-                <el-cascader :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
-              </div>
               <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
                 <div class="lable">{{item.column_chinese}}</div>
-                <el-input :disabled="!edit" v-model="item.value" placeholder="请输入内容"></el-input>
+                <el-cascader v-if="/产地/.test(item.column_chinese)" :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
+                <el-input v-else  :disabled="!edit" v-model="item.value" placeholder="请输入内容"></el-input>
               </div>
             </div>
           </div>
@@ -114,6 +114,7 @@ import {
   getCustomAttributeDetail
 } from "../../assets/js/business/ajax.js";
 import { cityData } from "../../assets/js/api/cityData.js";
+import { deepCopy } from '../../assets/js/api/util.js';
 
 export default {
   name: "getGoodsInfoDetail",
@@ -127,11 +128,11 @@ export default {
       // 当前节点可选列表
       thisNodeOption: [],
       // 当前选中的当前节点
-      currnetNode: '',
+      currnetNode: "",
       // 来源节点可选列表
       sourceNodedOption: [],
       // 当前选中的来源节点
-      sourceNode: '',
+      sourceNode: "",
       // 所有产品类型列表
       productTypeList: [],
       // 当前选中产品类型
@@ -149,7 +150,9 @@ export default {
       // 选中的城市
       selectedCity: ["110000", "110000", "110000"],
       // 时间
-      time: this.receiptDate
+      time: this.receiptDate,
+      // 收货产品列表
+      receiveProductList: this.productList
     };
   },
   props: {
@@ -157,6 +160,18 @@ export default {
     edit: {
       type: Boolean,
       default: true,
+      required: false
+    },
+    // 收货id
+    id: {
+      type: String,
+      default: "",
+      required: false
+    },
+    // 信息编号
+    receiptNum: {
+      type: String,
+      default: "",
       required: false
     },
     // 产品列表
@@ -202,8 +217,8 @@ export default {
       getListNode({ node_type_id: 1 })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
-          this.showSourceNode()
-          this.showCurrnetNode()
+          this.showSourceNode();
+          this.showCurrnetNode();
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -212,8 +227,8 @@ export default {
       getListNode({ node_type_id: 2 })
         .then(res => {
           this.sourceNodedOption = res.data.nodeList;
-          this.showCurrnetNode()
-          this.showSourceNode()
+          this.showCurrnetNode();
+          this.showSourceNode();
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -267,19 +282,19 @@ export default {
     showSourceNode() {
       this.sourceNodedOption.forEach((value, index) => {
         // console.log(value, this.sourceNodedId);
-        if(value.id == this.sourceNodedId) {
+        if (value.id == this.sourceNodedId) {
           this.sourceNode = value.node_address;
         }
-      })
+      });
     },
     // 回显出当前用户选中的节点
     showCurrnetNode() {
       this.thisNodeOption.forEach((value, index) => {
         // console.log(value, this.thisNodeId);
-        if(value.id == this.thisNodeId) {
+        if (value.id == this.thisNodeId) {
           this.currnetNode = value.node_address;
         }
-      })
+      });
     },
     // 根据传入的当前用户已经有值的自定义属性(props.customFields)和查出的用户自定义属性列表(data.customDefineAttributeList)合并成一个符合规则的列表
     mergeCustomDefineAttributeList() {
@@ -294,12 +309,32 @@ export default {
       });
       // console.log(this.customDefineAttributeList)
     },
+    changeHandle(id) {
+      let newProduction = this.productTypeList.filter((value, index) => {
+        return value.id === id;
+      })
+      // console.log(newProduction)
+      this.receiveProductList.unshift(deepCopy(...newProduction));
+      this.selectProduction = '';
+    },
+    deleProduction(item, index) {
+      this.receiveProductList.splice(index, 1);
+    },
     editPage() {
-      this.$emit('editPage');
+      this.$emit("editPage");
     },
     saveData() {
-      let data = {name: '测试'}
-      this.$emit('saveData', data)
+      let data = {
+        id: this.id,
+        this_node_id: this.currnetNode,
+        source_noded_id: this.sourceNode,
+        receipt_date: this.time,
+        receipt_num: this.receiptNum,
+        custom_mould_id: this.selectCustomDefineId,
+        productList: this.receiveProductList,
+        customFields: this.customDefineAttributeList
+      };
+      this.$emit("saveData", data);
     }
   },
   watch: {
@@ -400,6 +435,12 @@ export default {
     background-color: rgb(47, 169, 18);
     border-radius: 4px;
     cursor: pointer;
+  }
+}
+.demo-input-suffix {
+  display: flex;
+  .infoNo {
+    flex: 0 0 120px;
   }
 }
 </style>

@@ -82,7 +82,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="getGoodsInfoDetail">详情</el-button>
+            @click="sendGoodsInfoDetail(scope.row)">详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -96,15 +96,20 @@
       style="margin-top: 15px"
       layout="total,prev, pager, next"
       @current-change="handleCurrentChange"
-      :page-size=10
-      :current-page= currentPage
-      :total= totalcount>
+      :page-size= 10
+      :current-page= 'currentPage'
+      :total= 'totalcount'>
     </el-pagination>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { getInvoiceList, getListNode, getProductList } from "../../assets/js/business/ajax.js";
+import {
+  getInvoiceList,
+  getListNode,
+  getProductList,
+  deleteInvoice
+} from "../../assets/js/business/ajax.js";
 import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
@@ -117,7 +122,7 @@ export default {
         time: "",
         currentNode: "",
         flowNode: "",
-        productName: "",
+        productName: ""
       },
       currentPage: 1,
       pageSize: 10,
@@ -181,19 +186,16 @@ export default {
         id: "05030101"
       });
     },
-    getGoodsInfoDetail() {
+    sendGoodsInfoDetail(item) {
       this.$emit("openExtraPage", {
         page: "sendGoodsInfoDetail",
-        node: 'business',
+        node: "business",
         name: "发货信息详情",
-        id: "05030102"
+        id: "05030102",
+        query: { id: item.id }
       });
     },
-
-    handleDelete(index, row) {
-      this.delete();
-    },
-    delete() {
+    handleDelete(index, item) {
       this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -201,9 +203,15 @@ export default {
       })
         .then(() => {
           /*删除接口*/
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+          deleteInvoice({ id: item.id }).then(res => {
+            if (res.status == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              // 重新请求当前页当前条件数据
+              this.getProductList();
+            }
           });
         })
         .catch(() => {
@@ -219,17 +227,7 @@ export default {
         this.currentPage = 1;
         return;
       }
-      let params = {
-        this_node_id: this.ajaxSearch.currentNode,
-        flow_to_id: this.ajaxSearch.flowNode,
-        info_no: this.ajaxSearch.infoNo,
-        product_name: this.ajaxSearch.productName,
-        invoicedate_start: this.ajaxSearch.time[0],
-        invoicedate_end: this.ajaxSearch.time[1],
-        pagenum: this.currentPage,
-        pagesize: this.pageSize
-      };
-      this.getDataAjax(params);
+      this.getProductList();
     },
     clearConditions() {
       this.search.infoNo = "";
@@ -241,6 +239,14 @@ export default {
     // 分页跳转
     handleCurrentChange(val) {
       this.currentPage = val;
+      this.getProductList();
+    },
+    initData(params) {
+      this.getDataAjax(params);
+      this.loadNodeData();
+      this.loadProductTypeList();
+    },
+    getProductList() {
       let params = {
         this_node_id: this.ajaxSearch.currentNode,
         flow_to_id: this.ajaxSearch.flowNode,
@@ -252,11 +258,6 @@ export default {
         pagesize: this.pageSize
       };
       this.getDataAjax(params);
-    },
-    initData(params) {
-      this.getDataAjax(params);
-      this.loadNodeData();
-      this.loadProductTypeList();
     },
     loadNodeData() {
       // 请求当前节点
@@ -277,11 +278,13 @@ export default {
         });
     },
     loadProductTypeList() {
-        getProductList().then(res => {
-            this.productTypeOption = res.data.productList;
-        }).catch(() => {
-            this.$message.error("出错啦!");
+      getProductList()
+        .then(res => {
+          this.productTypeOption = res.data.productList;
         })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
     },
     getDataAjax(params) {
       getInvoiceList(params)

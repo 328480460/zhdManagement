@@ -7,7 +7,7 @@
 
 <script type="text/ecmascript-6">
 import GetGoodsInfoDetailTemplate from "../commonComponents/GetGoodsInfoDetailTemplate";
-
+import { saveReceipt } from "../../assets/js/business/ajax.js";
 export default {
   name: "getGoodsInfoDetail",
 
@@ -16,7 +16,17 @@ export default {
   },
   methods: {
     saveData(data) {
-      console.log(data)
+      console.log(data);
+      saveReceipt(data)
+        .then(res => {
+          if (res.status == 200) {
+            this.$message.success("保存成功!");
+            this.$router.go(-1);
+          }
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
     }
   },
   components: {

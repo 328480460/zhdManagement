@@ -2,6 +2,8 @@
     <div id="getGoodsInfoDetail" v-if='detailDataInfo'>
         <GetGoodsInfoDetailTemplate 
             :edit= true
+            :id = 'detailDataInfo.id'
+            :receiptNum='detailDataInfo.receipt_num'
             :productList='detailDataInfo.productList' 
             :thisNodeId='"测试内容247h" || detailDataInfo.this_node_id' 
             :sourceNodedId='"测试内容247h" || detailDataInfo.source_noded_id' 
@@ -10,18 +12,15 @@
             :customMouldId='"属性id1" || detailDataInfo.custom_mould_id'
             @saveData= 'saveData'
             >
-            <div slot="infoNo">
-                <div class="demo-input-suffix">
-                   <div class="infoNo">信息编号</div>
-                   <div class="infoNo-code">{{detailDataInfo.receipt_num}}</div>
-                </div>
-            </div>
         </GetGoodsInfoDetailTemplate>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { getReceiptDetail } from "../../assets/js/business/ajax.js";
+import {
+  getReceiptDetail,
+  updateReceipt
+} from "../../assets/js/business/ajax.js";
 import GetGoodsInfoDetailTemplate from "../commonComponents/GetGoodsInfoDetailTemplate";
 
 export default {
@@ -45,6 +44,22 @@ export default {
     },
     saveData(data) {
       console.log(data);
+      updateReceipt(data)
+        .then(res => {
+          if (res.status == 200) {
+            this.$message.success("保存成功!");
+            this.$emit("openExtraPage", {
+              node: "business",
+              page: "getGoodsInfoDetail",
+              name: "收货信息详情",
+              id: "05010102",
+              query: { id: this.routerQuery.id }
+            });
+          }
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
     }
   },
   components: {
@@ -59,12 +74,6 @@ export default {
   padding: 10px;
   min-height: 92%;
   background-color: #fff;
-}
-.demo-input-suffix {
-  display: flex;
-  .infoNo {
-    flex: 0 0 120px;
-  }
 }
 </style>
 
