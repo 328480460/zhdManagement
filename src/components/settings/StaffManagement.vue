@@ -21,12 +21,12 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="name"
+                       prop="contacts"
                        label="联系方式"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="contacts"
+                       prop="role_id"
                        label="角色"
       >
       </el-table-column>
@@ -44,7 +44,6 @@
             size="mini"
             type="text"
             @click="handleEdit">修改</el-button>
-          <!--@click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
           <el-button
             size="mini"
             type="text"
@@ -53,6 +52,16 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      background
+      style="margin-top: 15px"
+      layout="total,prev, pager, next"
+      :current-page= 'currentPage'
+      @current-change="handleCurrentChange"
+      :page-size=10
+      :total= 'totalcount'>
+    </el-pagination>
   </div>
 </template>
 
@@ -60,6 +69,7 @@
 import {
   getEmployeeList
 } from "../../assets/js/settings/ajax.js";
+import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
   name: "staff",
@@ -69,21 +79,21 @@ export default {
     return{
       totalcount: 0,
       employees: [],
-
+      currentPage: 1,
+      pageSize: 10,
+      ajaxSearch: "",
     }
   },
   mounted() {
     let params = {
-//      productName: "",
-//      time: "",
-//      customType: "",
-//      productCode: "",
-//      pageNum: 1,
-//      pageSize: 10,
-//      receiptdate_start: "",
-//      receiptdate_end: ""
+      account: "",
+      contacts: "",
+      name: "",
+      pagenum: 1,
+      pagesize: 10,
     };
     this.initData(params);
+    this.ajaxSearch = deepCopy(this.search);
   },
   methods: {
     newStaff() {
@@ -95,25 +105,20 @@ export default {
       });
     },
     initData(params) {
-      //查询产品列表
-      this.searchConditions(params)
+
+      /*查询员工信息列表接口*/
+      this.getEmployeeList();
     },
-    /*"搜索"---查询员工信息列表接口*/
-    searchConditions(current){
-//      this.search.pageNum = typeof current === 'number' ? current : 1;
-      let params = {
-//        productName: this.search.productName,
-//        customType: this.search.customType,
-//        productCode: this.search.productCode,
-//        pagenum: this.search.pageNum,
-//        pagesize: this.search.pageSize,
-//        receiptdate_start: this.search.time[0],
-//        receiptdate_end: this.search.time[1]
-      };
-      this.getEmployeeList(params);
-    },
+
     //员工信息列表接口
-    getEmployeeList(params){
+    getEmployeeList(){
+      let params ={
+        pagenum: this.currentPage,
+        pagesize: this.pageSize,
+      }
+        this.getDataAjax(params);
+    },
+    getDataAjax(params) {
       getEmployeeList(params)
         .then(res => {
           this.totalcount = res.data.totalcount;
@@ -123,25 +128,19 @@ export default {
           this.$message.error("出错啦!");
         });
     },
-    clearConditions(){
-      this.search.productName = "";
-      this.search.time = "";
-      this.search.customType = "";
-      this.search.productCode = "";
-    },
     handleEdit() {
-//      this.$emit("openExtraPage", {
-//        node:"production",
-//        page: "editProduct",
-//        name: "编辑产品",
-//        id: "01010102"
-//      });
+      this.$emit("openExtraPage", {
+        node:"settings",
+        page: "editStaff",
+        name: "修改员工信息",
+        id: "03030102"
+      });
     },
     handleDelete(index, row) {
-//      this.delete()
+      this.delete()
     },
     delete() {
-      this.$confirm('此操作将删除该产品信息, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该员工信息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -157,6 +156,11 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+    // 分页跳转
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getEmployeeList();
     },
   }
 };
