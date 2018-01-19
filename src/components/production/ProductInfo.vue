@@ -83,7 +83,7 @@
       background
       style="margin-top: 15px"
       layout="total,prev, pager, next"
-      :current-page= search.pageNum
+      :current-page= 'currentPage'
       @current-change="handleCurrentChange"
       :page-size=10
       :total= 'totalcount'>
@@ -98,6 +98,7 @@ import {
   getProductList,
   deleteProduct
 } from "../../assets/js/production/ajax.js";
+import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
   name: "productinfo",
@@ -111,9 +112,10 @@ export default {
         time: "",
         customType: "",
         productCode: "",
-        pageNum: 1,
-        pageSize: 10
       },
+      currentPage: 1,
+      pageSize: 10,
+      ajaxSearch: "",
       pickerOptions2: {
         shortcuts: [
           {
@@ -150,16 +152,16 @@ export default {
   created() {},
   mounted() {
     let params = {
-      productName: "",
-      time: "",
-      customType: "",
-      productCode: "",
-      pageNum: 1,
-      pageSize: 10,
-      receiptdate_start: "",
-      receiptdate_end: ""
+      product_name: "",
+      custom_type_id: "",
+      product: "",
+      pagenum: 1,
+      pagesize: 10,
+      createdate_start: "",
+      createdate_end: ""
     };
     this.initData(params);
+    this.ajaxSearch = deepCopy(this.search);
   },
   methods: {
     newProduct() {
@@ -209,21 +211,28 @@ export default {
     },
     /*"搜索"---查询产品列表接口*/
     searchConditions(current) {
-      this.search.pageNum = typeof current === "number" ? current : 1;
-      let params = {
-        productName: this.search.productName,
-        customType: this.search.customType,
-        productCode: this.search.productCode,
-        pagenum: this.search.pageNum,
-        pagesize: this.search.pageSize,
-        receiptdate_start: this.search.time[0],
-        receiptdate_end: this.search.time[1]
-      };
-      this.getProductList(params);
+      this.ajaxSearch = deepCopy(this.search);
+      if (this.currentPage !== 1) {
+        this.currentPage = 1;
+        return;
+      }
+      this.getProductList();
     },
     //产品列表查询接口
-    getProductList(params) {
-      getProductList(params)
+    getProductList() {
+      let params = {
+        product_name: this.ajaxSearch.productName,
+        custom_type_id: this.ajaxSearch.customType,
+        product: this.ajaxSearch.productCode,
+        pagenum: this.currentPage,
+        pagesize: this.pageSize,
+        createdate_start: this.ajaxSearch.time[0],
+        createdate_end: this.ajaxSearch.time[1]
+      };
+      this.getDataAjax(params);
+    },
+    getDataAjax(params) {
+       getProductList(params)
         .then(res => {
           this.totalcount = res.data.totalcount;
           this.productList = res.data.productList;
@@ -240,7 +249,8 @@ export default {
     },
     // 分页跳转
     handleCurrentChange(val) {
-      this.searchConditions(val);
+      this.currentPage = val;
+      this.getProductList();
     },
     //产品自定义分类列表查询接口
     selectTypes() {
@@ -250,7 +260,7 @@ export default {
       };
       getListProductType(params)
         .then(res => {
-          this.totalcount = res.data.totalcount;
+//          this.totalcount = res.data.totalcount;
           this.customTypeList = res.data.customTypeList;
         })
         .catch(() => {
@@ -258,8 +268,8 @@ export default {
         });
     },
     initData(params) {
-      //查询产品列表
-      this.searchConditions(params);
+      //查询产品列表信息
+      this.getDataAjax(params);
       //查询分类列表
       this.selectTypes();
     }

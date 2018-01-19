@@ -94,7 +94,7 @@
       background
       style="margin-top: 15px"
       layout="total,prev, pager, next"
-      :current-page= search.pageNum
+      :current-page= 'currentPage'
       @current-change="handleCurrentChange"
       :page-size=10
       :total= totalcount>
@@ -107,6 +107,7 @@
   import {
     getListNode,
   } from "../../assets/js/node/ajax.js";
+  import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
     name: "",
@@ -114,14 +115,15 @@ export default {
     },
     mounted(){
       let params = {
-        nodeNumber: "",
-        nodeName: "",
-        nodeSplitting: "",
-        nodeType: "",
+        node_number: "",
+        node_name: "",
+        node_splitting: "",
+        node_type_id: "",
         pagenum: 1,
         pagesize: 10,
       };
       this.initData(params);
+      this.ajaxSearch = deepCopy(this.search);
     },
     data() {
       return {
@@ -134,9 +136,10 @@ export default {
           contacts: "",
           contactsPhone: "",
           nodeAddress: "",
-          pageNum: 1,
-          pageSize: 10
         },
+        currentPage: 1,
+        pageSize: 10,
+        ajaxSearch: "",
         nodeList:[],
         nodeSplittings: [
           {
@@ -193,22 +196,28 @@ export default {
       },
       /*"搜索"---查询节点列表接口*/
       searchConditions(current){
-        this.search.pageNum = typeof current === 'number' ? current : 1;
-        let params = {
-          nodeNumber: this.search.nodeNumber,
-          nodeName: this.search.nodeName,
-          nodeSplitting: this.search.nodeSplitting,
-          nodeType: this.search.nodeType,
-          pagenum: this.search.pageNum,
-          pagesize: this.search.pageSize,
-        };
-        this.getNodeList(params);
+        this.ajaxSearch = deepCopy(this.search);
+        if (this.currentPage !== 1) {
+          this.currentPage = 1;
+          return;
+        }
+        this.getNodeList();
       },
       //节点列表查询
-      getNodeList(params){
+      getNodeList(){
+        let params = {
+          node_number: this.ajaxSearch.nodeNumber,
+          node_name: this.ajaxSearch.nodeName,
+          node_splitting: this.ajaxSearch.nodeSplitting,
+          node_type_id: this.ajaxSearch.nodeType,
+          pagenum: this.currentPage,
+          pagesize: this.pageSize,
+        };
+        this.getDataAjax(params);
+      },
+      getDataAjax(params) {
         getListNode(params)
           .then(res =>{
-//            this.$message.success("节点列表查询成功!");
             this.totalcount = res.data.totalcount;
             this.nodeList = res.data.nodeList;
           })
@@ -218,7 +227,8 @@ export default {
       },
       // 分页跳转
       handleCurrentChange(val) {
-        this.searchConditions(val);
+        this.currentPage = val;
+        this.getNodeList();
       },
       nodeDetails() {
             this.$emit("openExtraPage", {
@@ -250,12 +260,11 @@ export default {
         });
       },
       initData(params) {
-        //查询节点列表
-        this.searchConditions(params)
-        //??????查询“节点分类”
+        //查询节点列表信息
+        this.getDataAjax(params);
 
-        //??????查询“节点类型”
-
+        //??????查询“节点分类”接口
+        //??????查询“节点类型”接口
       }
     }
 };

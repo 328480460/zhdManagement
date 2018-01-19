@@ -238,7 +238,7 @@ export default {
     },
     initData(params) {
       this.getDataAjax(params);
-      this.loadNodeData();
+      this.oadNodeData();
     },
     getProductList() {
       let params = {

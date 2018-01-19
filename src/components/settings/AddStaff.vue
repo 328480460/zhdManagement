@@ -19,7 +19,6 @@
           </el-form-item>
 
           <el-form-item label="允许访问的节点：">
-            <!--<el-input v-model="form.role_id"></el-input>-->
             <el-select
               v-model="value9"
               multiple
