@@ -40,4 +40,30 @@ export const getListNode = function(params) {
   let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/getListNode';
   return ajaxPost(url,params)
 }
+/*自定义属性管理*/
+// 自定义字段信息查询
+export const getColumnInfo = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/getColumnInfo';
+  return ajaxPost(url,params)
+}
+// 自定义属性修改
+export const updateCustomAttribute = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/updateCustomAttribute';
+  return ajaxPost(url,params)
+}
+// 自定义属性关联查询
+export const getAttributeRelationState = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/getAttributeRelationState';
+  return ajaxPost(url,params)
+}
+// 自定义属性列表查询
+export const getCustomAttributeList = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/getCustomAttributeList';
+  return ajaxPost(url,params)
+}
+// 自定义属性删除
+export const deleteCustomAttribute = function(params) {
+  let url = 'http://47.92.149.109:7108/mockjsdata/2/deleteCustomAttribute';
+  return ajaxPost(url,params)
+}
 

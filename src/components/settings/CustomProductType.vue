@@ -32,7 +32,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from "axios";
+  import {
+    getListProductType,
+    getProductList,
+    deleteProduct
+  } from "../../assets/js/production/ajax.js";
+  import { deepCopy } from "../../assets/js/api/util.js";
+
 export default {
     name: "producttype",
     created() {
@@ -43,6 +49,7 @@ export default {
       }
     },
     methods: {
+
 
     }
 };

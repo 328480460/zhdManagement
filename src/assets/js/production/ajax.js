@@ -2,7 +2,8 @@ import {ajaxPost} from '../api/api.js';
 
 // 产品列表查询接口
 export const getProductList = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/getProductList';
+    // let url = 'http://47.92.149.109:7108/mockjsdata/2/getProductList';
+    let url = 'http://192.168.1.47:8764/meatWebServer/getProductList';
     return ajaxPost(url,params)
 }
 // 产品自定义分类列表查询接口
