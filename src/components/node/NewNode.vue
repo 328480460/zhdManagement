@@ -78,7 +78,6 @@ export default {
         nodeNumber: "",
         nodeName: "",
         nodeSplitting: "",
-//        nodeType: "",
         nodeDepict: "",
         nodeAddress: "",
         contacts: "",

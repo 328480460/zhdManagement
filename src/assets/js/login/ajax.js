@@ -1,8 +1,8 @@
 import {ajaxPost} from '../api/api.js';
-import {ENVIRNMENT} from '../config/environment.js'
+import {ENVIRNMENTTEST} from '../config/environment.js'
 
 // 登录接口
 export const  login  = function(params) {
-  let url = ENVIRNMENT + '/common/login';
+  let url = ENVIRNMENTTEST + '/common/login';
   return ajaxPost(url,params)
 }

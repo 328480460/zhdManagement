@@ -58,24 +58,28 @@ export default {
           this.warn1()
       }else if(this.password == ''){
           this.warn2()
-      }else if(this.password == 1 && this.accountName == 1 ){
-
-        /*登录接口*/
+      }else{
+          /*登录接口*/
         let param = {
           account: this.accountName,
-          password: this.password
+          password: this.password,
+          enterprise_id:1
         }
         login(param)
           .then(res => {
-            console.log("点击登录！获取输入框内容：accountName--"+this.accountName+"--password--"+this.password);
-            // 命名的路由
-            this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+//            console.log(JSON.stringify(res)+"==accountName--"+this.accountName+"--password--"+this.password);
+//            this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+            if (res.status == 200){
+              // 命名的路由
+              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+            }
+            if (res.status == 201){
+              this.$message.error(res.msg);
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");
           });
-      }else {
-        this.warn3()
       }
     },
     warn1() {
@@ -84,9 +88,6 @@ export default {
     warn2() {
       this.$message.error('密码不能为空！');
     },
-    warn3() {
-      this.$message.error('账号或密码错误！');
-    }
   }
 }
 </script>

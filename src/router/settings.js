@@ -9,6 +9,7 @@ import RolePermission from '@/components/settings/RolePermission'
 import Invitation from '@/components/settings/Invitation'
 import QualityProblem from '@/components/settings/QualityProblem'
 import CustomProductType from '@/components/settings/CustomProductType'
+import AddProductType from '@/components/settings/AddProductType'
 import CustomNodeType from '@/components/settings/CustomNodeType'
 import CustomBusinessType from '@/components/settings/CustomBusinessType'
 import CustomDocumentType from '@/components/settings/CustomDocumentType'
@@ -149,6 +150,20 @@ export default[
           node: 'settings',
           name: "产品类型",
           id: "030401"
+        }
+      }
+    },
+  //设置-自定义属性-产品类型添加
+    {
+      path : 'settings/addProductType',
+      component : AddProductType,
+      name: 'addProductType',
+      meta: {
+        pageInfo: {
+          page: "addProductType",
+          node: 'settings',
+          name: "产品类型添加",
+          id: "03040101"
         }
       }
     },
