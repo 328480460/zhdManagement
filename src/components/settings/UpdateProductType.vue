@@ -65,11 +65,13 @@
           prop="column_chinese"
           label="字段名称"
           >
+          <el-input v-model="column_chinese" placeholder="字段名称"></el-input>
         </el-table-column>
         <el-table-column
           prop="custom_mould_type"
           label="字段类型"
           >
+          <el-input v-model="custom_mould_type" placeholder="字段类型" ></el-input>
         </el-table-column>
         <el-table-column
           prop=" id_required"

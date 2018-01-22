@@ -6,9 +6,11 @@
 
     <el-table class="el-table"
               border
+              stripe
+              :data="customAttributeList"
     >
       <el-table-column class="table-column"
-                       prop="name"
+                       prop="mould_name"
                        label="产品类型"
       >
       </el-table-column>
@@ -28,15 +30,23 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      background
+      style="margin-top: 15px"
+      layout="total,prev, pager, next"
+      :current-page= 'currentPage'
+      @current-change="handleCurrentChange"
+      :page-size=10
+      :total= 'totalcount'>
+    </el-pagination>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {
-    getListProductType,
-    getProductList,
-    deleteProduct
-  } from "../../assets/js/production/ajax.js";
+    getCustomAttributeList,
+  } from "../../assets/js/settings/ajax.js";
   import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
@@ -45,9 +55,20 @@ export default {
     },
     data() {
       return{
-
+        totalcount: 0,
+        currentPage: 1,
+        pageSize: 10,
+        customAttributeList: [],
       }
     },
+  mounted() {
+    let params = {
+      custom_mould_type: "产品类型",
+      pagenum: 1,
+      pagesize: 10,
+    };
+    this.initData(params);
+  },
     methods: {
       newProductType() {
         this.$emit("openExtraPage", {
@@ -58,6 +79,42 @@ export default {
           query: { userId: "lalal" }
         });
       },
+      handleEdit() {
+        this.$emit("openExtraPage", {
+          node: "settings",
+          page: "updateProductType",
+          name: "修改产品类型",
+          id: "03040102",
+          query: { userId: "lalal" }
+        });
+      },
+      // 分页跳转
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getCustomAttributeList();
+      },
+      getCustomAttributeList(){
+        let params = {
+          custom_mould_type: "产品类型",
+          pagenum: this.currentPage,
+          pagesize: 10,
+        };
+        this.getDataAjax(params);
+      },
+      getDataAjax(params) {
+        getCustomAttributeList(params)
+          .then(res => {
+            this.totalcount = res.data.totalcount;
+            this.customAttributeList = res.data.customAttributeList;
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
+      },
+      initData(params){
+        this.getDataAjax(params)
+      },
+
 
     }
 };
