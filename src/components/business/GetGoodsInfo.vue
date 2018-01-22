@@ -91,7 +91,7 @@
       style="margin-top: 15px"
       layout="total,prev, pager, next"
       @current-change="handleCurrentChange"
-      :page-size=10
+      :page-size= 10
       :current-page= 'currentPage'
       :total= 'totalcount'>
     </el-pagination>
@@ -205,7 +205,6 @@ export default {
               });
               // 重新请求当前页当前条件数据
               this.getProductList()
-
             }
           });
         })

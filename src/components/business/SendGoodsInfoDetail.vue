@@ -2,6 +2,8 @@
     <div id="sendGoodsInfoDetail" v-if='detailDataInfo'>
         <SendGoodsInfoDetailTemplate 
             :edit= false
+            :id = 'detailDataInfo.id'
+            :invoiceNum='detailDataInfo.invoice_num'
             :productList='detailDataInfo.productList' 
             :thisNodeId='"1" || detailDataInfo.this_node_id' 
             :flowNodeId='"1" || detailDataInfo.flow_to_id' 
@@ -10,12 +12,6 @@
             :customMouldId='"属性id1" || detailDataInfo.custom_mould_id'
             @editPage='editPage'
             >
-            <div slot="infoNo">
-                <div class="demo-input-suffix">
-                   <div class="infoNo">信息编号</div>
-                   <div class="infoNo-code">{{detailDataInfo.invoice_num}}</div>
-                </div>
-            </div>
         </SendGoodsInfoDetailTemplate>
     </div>
 </template>
@@ -29,11 +25,11 @@ export default {
     this.getDetailDataInfo();
   },
   data() {
-    return { detailDataInfo: "" };
+    return { detailDataInfo: "", routerQuery: this.$route.query};
   },
   methods: {
     getDetailDataInfo() {
-      let params = { id: "1232131" };
+      let params = { id: this.routerQuery.id };
       getInvoiceDetail(params)
         .then(res => {
           this.detailDataInfo = res.data.invoice;
@@ -46,8 +42,9 @@ export default {
       this.$emit("openExtraPage", {
         node: "business",
         page: "editSendGoodsInfoDetail",
-        name: "编辑收货信息",
-        id: "05030103"
+        name: "编辑发货信息",
+        id: "05030103",
+        query: {id: this.routerQuery.id}
       });
     }
   },

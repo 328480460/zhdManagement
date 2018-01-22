@@ -1,49 +1,48 @@
 import {ajaxPost} from '../api/api.js';
+import {ENVIRNMENT,ENVIRNMENTTEST} from '../config/environment.js';
 
 // 产品列表查询接口
 export const getProductList = function(params) {
-    // let url = 'http://47.92.149.109:7108/mockjsdata/2/getProductList';
-    let url = 'http://192.168.1.73:8764/meatWebServer/getProductList';
+    let url = ENVIRNMENTTEST + '/getProductList';
     return ajaxPost(url,params)
 }
 // 产品自定义分类列表查询接口
 export const getListProductType = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/Product/getListProductType';
+  let url = ENVIRNMENT + '/getListProductType';
   return ajaxPost(url,params)
 }
 // 产品自定义分类删除查询接口
 export const updateProductType = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/Product/updateProductType';
+  let url = ENVIRNMENT + '/updateProductType';
   return ajaxPost(url,params)
 }
 // 产品自定义分类删除查询接口
 export const deleteProductType = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/Product/deleteProductType';
+  let url = ENVIRNMENT + '/deleteProductType';
   return ajaxPost(url,params)
 }
 // 产品详情信息查询接口
 export const getProductDetail = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/getProductDetail';
+  let url = ENVIRNMENT + '/getProductDetail';
   return ajaxPost(url,params)
 }
 // 产品系统默认分类查询接口
 export const getDefaultProductType = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/Product/getDefaultProductType';
+  let url = ENVIRNMENT + '/getDefaultProductType';
   return ajaxPost(url,params)
 }
 // 产品信息修改接口
 export const updateProduct = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/updateProduct';
+  let url = ENVIRNMENT + '/updateProduct';
   return ajaxPost(url,params)
 }
 // 产品信息删除接口
 export const deleteProduct = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/deleteProduct';
+  let url = ENVIRNMENT + '/deleteProduct';
   return ajaxPost(url,params)
 }
 // 产品信息新增接口
 export const saveProduct = function(params) {
-  // let url = 'http://47.92.149.109:7108/mockjsdata/2/saveProduct';
-  let url = 'http://192.168.1.73:8764/meatWebServer/saveProduct';
+  let url = ENVIRNMENT + '/saveProduct';
   return ajaxPost(url,params)
 }

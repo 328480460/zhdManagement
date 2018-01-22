@@ -1,43 +1,44 @@
 import {ajaxPost} from '../api/api.js';
+import {ENVIRNMENT} from '../config/environment.js'
 
 // 企业详情查询
 export const  getEnterpriseDetail  = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/getEnterpriseDetail';
+    let url = ENVIRNMENT + '/getEnterpriseDetail';
     return ajaxPost(url,params)
 }
 // 企业信息修改
 export const  updateEnterprise  = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/updateEnterprise';
+    let url = ENVIRNMENT + '/updateEnterprise';
     return ajaxPost(url,params)
 }
 // 员工详情查询
 export const  getEmployeeDetail  = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/getEmployeeDetail';
+    let url = ENVIRNMENT + '/getEmployeeDetail';
     return ajaxPost(url,params)
 }
 // 员工详情修改
 export const  updateEmployee  = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/updateEmployee';
+    let url = ENVIRNMENT + '/updateEmployee';
     return ajaxPost(url,params)
 }
 // 员工信息列表查询
 export const  getEmployeeList  = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/getEmployeeList';
+    let url = ENVIRNMENT + '/getEmployeeList';
     return ajaxPost(url,params)
 }
 // 员工信息新增
 export const  saveEmployee  = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/saveEmployee';
+    let url = ENVIRNMENT + '/saveEmployee';
     return ajaxPost(url,params)
 }
 // 角色列表查询
 export const  getListRole  = function(params) {
-    let url = 'http://47.92.149.109:7108/mockjsdata/2/Role/getListRole';
+    let url = ENVIRNMENT + '/Role/getListRole';
     return ajaxPost(url,params)
 }
 // 节点列表查询接口
 export const getListNode = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/getListNode';
+  let url = ENVIRNMENT + '/Node/getListNode';
   return ajaxPost(url,params)
 }
 /**

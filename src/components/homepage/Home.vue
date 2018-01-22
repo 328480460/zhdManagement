@@ -5,6 +5,9 @@
         <img src="../../assets/image/logo_03.png" alt="logo" class="logo">
       </div>
       <div class="main-menu">
+        <div class="main-menu-item">
+          <i class="icon-font el-icon-menu"></i>概况
+        </div>
         <div class="main-menu-item" v-for="(item,key) in mainMenuList" :key="key" :class="{'active': currentTabInfo.main.id === item.id}" @click="turnPage(item.id)">
           <i class="icon-font" :class="item.icon"></i>{{item.name}}
         </div>

@@ -1,13 +1,13 @@
 <template>
     <div id="newProductGoodsInfo" >
-        <ProductGoodsInfoDetailTemplate >
+        <ProductGoodsInfoDetailTemplate :edit= true @saveData= "saveData">
         </ProductGoodsInfoDetailTemplate>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
 import ProductGoodsInfoDetailTemplate from "../commonComponents/ProductGoodsInfoDetailTemplate";
-
+import { createProduction } from "../../assets/js/business/ajax.js";
 export default {
   name: "productGoodsInfoDetailTemplate",
   data() {
@@ -15,7 +15,17 @@ export default {
   },
   methods: {
     saveData(data) {
-        console.log(data)
+      console.log(data);
+      createProduction(data)
+        .then(res => {
+          if (res.status == 200) {
+            this.$message.success("保存成功!");
+            this.$router.go(-1);
+          }
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
     }
   },
   components: {
