@@ -67,22 +67,20 @@ export default {
         }
         login(param)
           .then(res => {
-            this.$message.success(res.msg);
-            console.log(JSON.stringify(res)+"==accountName--"+this.accountName+"--password--"+this.password);
-            this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
-//            if (res.status == 200){
-//              // 命名的路由
-//              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
-//            }
+//            console.log(JSON.stringify(res)+"==accountName--"+this.accountName+"--password--"+this.password);
+//            this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+            if (res.status == 200){
+              // 命名的路由
+              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+            }
+            if (res.status == 201){
+              this.$message.error(res.msg);
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");
           });
-
       }
-//    else {
-//        this.warn3()
-//      }
     },
     warn1() {
       this.$message.error('账号不能为空！');
@@ -90,9 +88,6 @@ export default {
     warn2() {
       this.$message.error('密码不能为空！');
     },
-    warn3() {
-      this.$message.error('账号或密码错误！');
-    }
   }
 }
 </script>

@@ -38,7 +38,7 @@
               :data="productList"
     >
       <el-table-column class="table-column"
-                       prop="id"
+                       prop="product"
                        label="产品编码"
     >
     </el-table-column>
@@ -172,10 +172,6 @@ export default {
         id: "01010101",
         query: { userId: "lalal" }
       });
-    },
-    //监听输入框“产品编码”内容
-    queryCode(queryString, cb) {
-      this.productCode = queryString;
     },
     editProduct() {
       this.$emit("openExtraPage", {

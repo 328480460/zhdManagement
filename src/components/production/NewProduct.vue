@@ -381,9 +381,10 @@ export default {
           "data_value": "123"
         }]
       };
-//      console.log("submit!新增产品"+JSON.stringify(params));
+      console.log("submit!新增产品"+JSON.stringify(params));
       saveProduct(params)
         .then(res =>{
+          console.log("添加返回=="+JSON.stringify(res));
           this.$message.success("产品保存成功!");
         })
         .catch(() => {

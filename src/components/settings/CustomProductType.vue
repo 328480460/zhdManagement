@@ -1,7 +1,7 @@
 <template>
   <div id="producttype">
     <div class="btn-list">
-      <el-button type="primary" size="medium">添加产品类型</el-button>
+      <el-button type="primary" size="medium" @click="newProductType">添加产品类型</el-button>
     </div>
 
     <el-table class="el-table"
@@ -49,7 +49,15 @@ export default {
       }
     },
     methods: {
-
+      newProductType() {
+        this.$emit("openExtraPage", {
+          node: "settings",
+          page: "addProductType",
+          name: "新建产品类型",
+          id: "03040101",
+          query: { userId: "lalal" }
+        });
+      },
 
     }
 };

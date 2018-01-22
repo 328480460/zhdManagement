@@ -40,7 +40,9 @@ export const getListNode = function(params) {
   let url = 'http://47.92.149.109:7108/mockjsdata/2/Node/getListNode';
   return ajaxPost(url,params)
 }
-/*自定义属性管理*/
+/**
+ * 自定义属性管理
+ */
 // 自定义字段信息查询
 export const getColumnInfo = function(params) {
   let url = 'http://47.92.149.109:7108/mockjsdata/2/getColumnInfo';

@@ -3,7 +3,7 @@ import {ajaxPost} from '../api/api.js';
 // 产品列表查询接口
 export const getProductList = function(params) {
     // let url = 'http://47.92.149.109:7108/mockjsdata/2/getProductList';
-    let url = 'http://192.168.1.47:8764/meatWebServer/getProductList';
+    let url = 'http://192.168.1.73:8764/meatWebServer/getProductList';
     return ajaxPost(url,params)
 }
 // 产品自定义分类列表查询接口
@@ -43,6 +43,7 @@ export const deleteProduct = function(params) {
 }
 // 产品信息新增接口
 export const saveProduct = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/saveProduct';
+  // let url = 'http://47.92.149.109:7108/mockjsdata/2/saveProduct';
+  let url = 'http://192.168.1.73:8764/meatWebServer/saveProduct';
   return ajaxPost(url,params)
 }
