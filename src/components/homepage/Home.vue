@@ -5,9 +5,6 @@
         <img src="../../assets/image/logo_03.png" alt="logo" class="logo">
       </div>
       <div class="main-menu">
-        <div class="main-menu-item">
-          <i class="icon-font el-icon-menu"></i>概况
-        </div>
         <div class="main-menu-item" v-for="(item,key) in mainMenuList" :key="key" :class="{'active': currentTabInfo.main.id === item.id}" @click="turnPage(item.id)">
           <i class="icon-font" :class="item.icon"></i>{{item.name}}
         </div>
@@ -77,6 +74,7 @@ export default {
     },
     // 初始化menuList 和 获取当前选中的tab
     initMenu(tabId) {
+      console.log(tabId.length)
       let mainId = tabId.length >= 2 ? tabId.slice(0, 2) : "01";
       let secId = tabId.length >= 4 ? tabId.slice(2, 4) : "01";
       let thdId = tabId.length >= 6 ? tabId.slice(4, 6) : "01";
@@ -96,7 +94,7 @@ export default {
           });
         }
       });
-
+      console.log()
       this.currentTabInfo.main = this.mainMenuList[mainId - 1];
       this.currentTabInfo.second = this.secondMenuList[secId - 1];
       this.currentTabInfo.third = this.thirdMenuList[thdId - 1];

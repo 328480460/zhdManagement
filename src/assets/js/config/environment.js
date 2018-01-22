@@ -3,3 +3,4 @@
 // ENVIRNMENT = 'test' 时对应 'http://192.168.1.73:8764/meatWebServer';
 
 export const ENVIRNMENT = 'develop';
+export const ENVIRNMENTTEST = 'test';

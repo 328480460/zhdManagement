@@ -1,5 +1,5 @@
 import {ajaxPost} from '../api/api.js';
-import {ENVIRNMENT} from '../config/environment.js'
+import {ENVIRNMENT, ENVIRNMENTTEST} from '../config/environment.js'
 
 // 产品列表查询接口
 export const getProductList = function (params) {

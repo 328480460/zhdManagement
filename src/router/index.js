@@ -9,6 +9,7 @@ import Trace from './trace.js';
 import Business from './business.js';
 import Document from './document.js';
 import Quality from './quality.js';
+import Welcome from './welcome.js';
 Vue.use(Router)
 
 export default new Router({
@@ -26,6 +27,7 @@ export default new Router({
       component: Home,
       redirect: '/home/production/productInfo',
       children: [
+        ...Welcome,
         ...Production,
         ...Node,
         ...Settings,

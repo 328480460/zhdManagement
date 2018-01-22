@@ -1,5 +1,5 @@
 export const menu = [
-    
+
     {
         id: '01',
         name: '产品',
@@ -34,7 +34,7 @@ export const menu = [
                         name: '批量导入',
                         disabled: false,
                         page: 'batchImportPro'
-                    },{
+                    }, {
                         id: '010202',
                         name: '历史记录',
                         disabled: false,
@@ -46,19 +46,19 @@ export const menu = [
                 name: '产品页模板',
                 disabled: false,
                 children: [
-                  {
-                    id: '010301',
-                    name: '产品模板页',
-                    disabled: false,
-                    page: 'productTemplate'
-                  },{
-                    id: '010302',
-                    name: '素材管理',
-                    disabled: false,
-                    page: 'metarialManagement'
-                  }
+                    {
+                        id: '010301',
+                        name: '产品模板页',
+                        disabled: false,
+                        page: 'productTemplate'
+                    }, {
+                        id: '010302',
+                        name: '素材管理',
+                        disabled: false,
+                        page: 'metarialManagement'
+                    }
                 ]
-              }
+            }
         ]
     }, {
         id: '02',
@@ -79,24 +79,24 @@ export const menu = [
                         page: 'nodeInfo'
                     }
                 ]
-              }, {
-                  id: '0202',
-                  name: '批量导入',
-                  disabled: false,
-                  children: [
-                      {
-                          id: '020201',
-                          name: '批量导入',
-                          disabled: false,
-                          page: 'batchImportNode'
-                      }, {
-                          id: '020202',
-                          name: '历史记录',
-                          disabled: false,
-                          page: 'historiesNode'
-                      }
-                  ]
-              }
+            }, {
+                id: '0202',
+                name: '批量导入',
+                disabled: false,
+                children: [
+                    {
+                        id: '020201',
+                        name: '批量导入',
+                        disabled: false,
+                        page: 'batchImportNode'
+                    }, {
+                        id: '020202',
+                        name: '历史记录',
+                        disabled: false,
+                        page: 'historiesNode'
+                    }
+                ]
+            }
         ]
     }, {
         id: '03',
@@ -191,174 +191,211 @@ export const menu = [
         icon: 'el-icon-menu',
         disabled: false,
         node: 'trace',
-        children: [{
-            id: '0401',
-            name: '链条合成',
-            disabled: false,
-            children: [{
-                id: '040101',
+        children: [
+            {
+                id: '0401',
                 name: '链条合成',
                 disabled: false,
-                page: 'chainSynthesis'
-            }]
-        },{
-            id: '0402',
-            name: '溯源查询',
-            disabled: false,
-            children: [{
-                id: '040201',
+                children: [
+                    {
+                        id: '040101',
+                        name: '链条合成',
+                        disabled: false,
+                        page: 'chainSynthesis'
+                    }
+                ]
+            }, {
+                id: '0402',
                 name: '溯源查询',
                 disabled: false,
-                page: 'traceCodeQuery'
-            }]
-        },{
-            id: '0403',
-            name: '溯源码管理',
-            disabled: false,
-            children: [{
-                id: '040301',
-                name: '溯源码申请',
+                children: [
+                    {
+                        id: '040201',
+                        name: '溯源查询',
+                        disabled: false,
+                        page: 'traceCodeQuery'
+                    }
+                ]
+            }, {
+                id: '0403',
+                name: '溯源码管理',
                 disabled: false,
-                page: 'traceCodeApplay'
-            }]
-        },]
+                children: [
+                    {
+                        id: '040301',
+                        name: '溯源码申请',
+                        disabled: false,
+                        page: 'traceCodeApplay'
+                    }
+                ]
+            }
+        ]
     }, {
         id: '05',
         name: '业务',
         icon: 'el-icon-menu',
         disabled: false,
         node: 'business',
-        children: [{
-            id: '0501',
-            name: '收货信息',
-            disabled: false,
-            children: [
-                {
-                    id: '050101',
-                    name: '收货信息',
-                    disabled: false,
-                    page: 'getGoodsInfo'
-                }
-            ]
-        },
-        {
-            id: '0502',
-            name: '生产信息',
-            disabled: false,
-            children: [
-                {
-                    id: '050201',
-                    name: '生产信息',
-                    disabled: false,
-                    page: 'productGoodsInfo'
-                }
-            ]
-        },
-        {
-            id: '0503',
-            name: '发货信息',
-            disabled: false,
-            children: [
-                {
-                    id: '050301',
-                    name: '发货信息',
-                    disabled: false,
-                    page: 'sendGoodsInfo'
-                }
-            ]
-        },
-        {
-            id: '0504',
-            name: '批量导入',
-            disabled: false,
-            children: [
-                {
-                    id: '050401',
-                    name: '批量导入',
-                    disabled: false,
-                    page: 'multiImport'
-                },{
-                    id: '050402',
-                    name: '历史记录',
-                    disabled: false,
-                    page: 'importHistoryBusiness'
-                }
-            ]
-        },
-        {
-            id: '0505',
-            name: 'FTP同步',
-            disabled: false,
-            children: [
-                {
-                    id: '050501',
-                    name: 'FTP同步',
-                    disabled: false,
-                    page: 'FTPSync'
-                },{
-                    id: '050502',
-                    name: '历史记录',
-                    disabled: false,
-                    page: 'FTPHistoryBusiness'
-                }
-            ]
-        },
-        {
-            id: '0506',
-            name: '系统对接',
-            disabled: false,
-            children: [
-                {
-                    id: '050501',
-                    name: '系统对接',
-                    disabled: false,
-                    page: 'systemInsert'
-                }
-            ]
-        }]
+        children: [
+            {
+                id: '0501',
+                name: '收货信息',
+                disabled: false,
+                children: [
+                    {
+                        id: '050101',
+                        name: '收货信息',
+                        disabled: false,
+                        page: 'getGoodsInfo'
+                    }
+                ]
+            }, {
+                id: '0502',
+                name: '生产信息',
+                disabled: false,
+                children: [
+                    {
+                        id: '050201',
+                        name: '生产信息',
+                        disabled: false,
+                        page: 'productGoodsInfo'
+                    }
+                ]
+            }, {
+                id: '0503',
+                name: '发货信息',
+                disabled: false,
+                children: [
+                    {
+                        id: '050301',
+                        name: '发货信息',
+                        disabled: false,
+                        page: 'sendGoodsInfo'
+                    }
+                ]
+            }, {
+                id: '0504',
+                name: '批量导入',
+                disabled: false,
+                children: [
+                    {
+                        id: '050401',
+                        name: '批量导入',
+                        disabled: false,
+                        page: 'multiImport'
+                    }, {
+                        id: '050402',
+                        name: '历史记录',
+                        disabled: false,
+                        page: 'importHistoryBusiness'
+                    }
+                ]
+            }, {
+                id: '0505',
+                name: 'FTP同步',
+                disabled: false,
+                children: [
+                    {
+                        id: '050501',
+                        name: 'FTP同步',
+                        disabled: false,
+                        page: 'FTPSync'
+                    }, {
+                        id: '050502',
+                        name: '历史记录',
+                        disabled: false,
+                        page: 'FTPHistoryBusiness'
+                    }
+                ]
+            }, {
+                id: '0506',
+                name: '系统对接',
+                disabled: false,
+                children: [
+                    {
+                        id: '050501',
+                        name: '系统对接',
+                        disabled: false,
+                        page: 'systemInsert'
+                    }
+                ]
+            }
+        ]
     }, {
         id: '06',
         name: '文档',
         icon: 'el-icon-menu',
         disabled: false,
         node: 'document',
-        children: [{
-            id: '0601',
-            name: '文档管理',
-            disabled: false,
-            children: [{
-                id: '060101',
+        children: [
+            {
+                id: '0601',
                 name: '文档管理',
                 disabled: false,
-                page: 'documentAdministration'
-            }]
-        }]
+                children: [
+                    {
+                        id: '060101',
+                        name: '文档管理',
+                        disabled: false,
+                        page: 'documentAdministration'
+                    }
+                ]
+            }
+        ]
     }, {
         id: '07',
         name: '质量',
         icon: 'el-icon-menu',
         disabled: false,
         node: 'quality',
-        children: [{
-            id: '0701',
-            name: '质量问题管理',
-            disabled: false,
-            children: [{
-                id: '070101',
+        children: [
+            {
+                id: '0701',
                 name: '质量问题管理',
                 disabled: false,
-                page: 'qualityAdministration'
-            }]
-        },{
-            id: '0702',
-            name: '召回管理',
-            disabled: false,
-            children: [{
-                id: '070202',
+                children: [
+                    {
+                        id: '070101',
+                        name: '质量问题管理',
+                        disabled: false,
+                        page: 'qualityAdministration'
+                    }
+                ]
+            }, {
+                id: '0702',
                 name: '召回管理',
                 disabled: false,
-                page: 'recallAdministration'
-            }]
-        },]
+                children: [
+                    {
+                        id: '070202',
+                        name: '召回管理',
+                        disabled: false,
+                        page: 'recallAdministration'
+                    }
+                ]
+            }
+        ]
+    }, {
+        id: '08',
+        name: '概述',
+        icon: 'el-icon-menu',
+        disabled: false,
+        node: 'welcome',
+        children: [
+            {
+                id: '0801',
+                name: '概述',
+                disabled: false,
+                children: [
+                    {
+                        id: '080101',
+                        name: '概述',
+                        disabled: false,
+                        page: 'welcome'
+                    }
+                ]
+            }
+        ]
+
     }
 ]
