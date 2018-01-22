@@ -11,7 +11,20 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      "/api": "http://localhost:3000"
+      "/develop": {
+        target: "http://47.92.149.109:7108/mockjsdata/2",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/develop': ''
+        }
+      },
+      "/test": {
+        target: "http://192.168.1.73:8764/meatWebServer",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/test': ''
+        }
+      }
     },
 
     // Various Dev Server settings
