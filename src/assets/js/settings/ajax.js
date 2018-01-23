@@ -61,12 +61,12 @@ export const getAttributeRelationState = function(params) {
 }
 // 自定义属性列表查询
 export const getCustomAttributeList = function(params) {
-  let url = ENVIRNMENT + '/getCustomAttributeList';
+  let url = ENVIRNMENTTEST + '/getCustomAttributeList';
   return ajaxPost(url,params)
 }
 // 自定义属性新增
 export const saveCustomAttributes = function(params) {
-  let url = ENVIRNMENT + '/saveCustomAttributes';
+  let url = ENVIRNMENTTEST + '/saveCustomAttributes';
   return ajaxPost(url,params)
 }
 // 自定义属性删除

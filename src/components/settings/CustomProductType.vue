@@ -63,7 +63,7 @@ export default {
     },
   mounted() {
     let params = {
-      custom_mould_type: "产品类型",
+      custom_mould_type: "1",
       pagenum: 1,
       pagesize: 10,
     };
@@ -95,7 +95,7 @@ export default {
       },
       getCustomAttributeList(){
         let params = {
-          custom_mould_type: "产品类型",
+          custom_mould_type: "1",
           pagenum: this.currentPage,
           pagesize: 10,
         };
@@ -104,6 +104,8 @@ export default {
       getDataAjax(params) {
         getCustomAttributeList(params)
           .then(res => {
+            console.log("res---"+JSON.stringify(res))
+
             this.totalcount = res.data.totalcount;
             this.customAttributeList = res.data.customAttributeList;
           })

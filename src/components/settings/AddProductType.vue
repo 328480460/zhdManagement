@@ -17,13 +17,14 @@
               <div class="custom-right">
                 <p>字段类型</p>
                 <el-select v-model="data_type" clearable  placeholder="选择字段类型" style="margin-top: 10px;width: 100%">
-                  <el-option label="文本类型" value="文本类型"></el-option>
-                  <el-option label="数字类型" value="数字类型"></el-option>
-                  <el-option label="选择列表" value="选择列表"></el-option>
+                  <el-option label="文本类型" value="string"></el-option>
+                  <el-option label="数字类型" value="number"></el-option>
+                  <el-option label="选择列表" value="date"></el-option>
                 </el-select>
               </div>
               <div class="weather-required">
-                <label><input class="required" name="required" type="checkbox" value="" />是否为必填</label>
+                <!--<label><input class="required" name="required" type="checkbox" value="" />是否为必填</label>-->
+                <el-checkbox v-model="checked">是否为必填</el-checkbox>
               </div>
               <el-button type="primary" size="medium" class="btn-search" @click="add">增加字段</el-button>
             </div>
@@ -42,7 +43,7 @@
           style="width: 50%">
         </el-table-column>
         <el-table-column
-          prop="custom_mould_type"
+          prop="data_type"
           label="字段类型"
           style="width: 50%">
         </el-table-column>
@@ -98,6 +99,7 @@ export default {
   name: 'producttype',
   data(){
     return{
+      checked:false,
       mould_name:'',
       column_name:'',
       column_chinese:'',
@@ -135,14 +137,27 @@ export default {
   methods:{
     //“增加字段”
     add(){
-      var arr  =
-      {
-        "column_chinese" :this.column_name,
-        "column_english" :"",
-        "data_type" :this.data_type,
-        "id_required" :"1",
+      if(this.column_name == ''){
+        this.$message.warning("请输入“字段名称”！");
+      }else if(this.data_type == ''){
+        this.$message.warning("请选择“字段类型”！");
+      }else{
+
+        if(this.checked ==true){
+          this.id_required = 1
+        }else  if(this.checked ==false){
+          this.id_required = 0
+        }
+
+        var arr  =
+        {
+          "column_chinese" :this.column_name,
+          "column_english" :"",
+          "data_type" :this.data_type,
+          "id_required" :this.id_required,
+        }
+        this.addDatas .push(arr);
       }
-      this.addDatas .push(arr);
     },
     //删除单条的“自定义字段”
     deleteRow(index, rows){
@@ -150,20 +165,24 @@ export default {
     },
     //自定义属性新增接口
     save(){
-      var customAttribute  = {
-        customAttribute :this.addDatas,
-        custom_mould_type :"产品类型",
-        mould_name :this.mould_name,
-        sub_link :"",
+      if(this.mould_name == ''){
+        this.$message.warning("请输入“自定义名称”！");
+      }else {
+        var customAttribute  = {
+          customAttributeList :this.addDatas,
+          custom_mould_type :"1",
+          mould_name :this.mould_name,
+          sub_link :"",
+        }
+        saveCustomAttributes(customAttribute)
+          .then(res => {
+            console.log("添加成功---"+JSON.stringify(res)+"---"+JSON.stringify(customAttribute))
+            this.$message.success("添加成功!");
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
       }
-      saveCustomAttributes(customAttribute)
-        .then(res => {
-//          console.log("添加成功---"+JSON.stringify(res)+"---"+JSON.stringify(customAttribute))
-          this.$message.success("添加成功!");
-        })
-        .catch(() => {
-          this.$message.error("出错啦!");
-        });
     },
 }
 }
