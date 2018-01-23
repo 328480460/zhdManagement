@@ -12,11 +12,11 @@
             <div class="float-wrap">
               <div class="custom-left">
                 <p>字段名称</p>
-                <el-input v-model="column_chinese" placeholder="请输入字段名称" style="margin-top: 10px"></el-input>
+                <el-input v-model="column_name" placeholder="请输入字段名称" style="margin-top: 10px"></el-input>
               </div>
               <div class="custom-right">
                 <p>字段类型</p>
-                <el-select v-model="custom_mould_type" clearable  placeholder="选择字段类型" style="margin-top: 10px;width: 100%">
+                <el-select v-model="data_type" clearable  placeholder="选择字段类型" style="margin-top: 10px;width: 100%">
                   <el-option label="文本类型" value="文本类型"></el-option>
                   <el-option label="数字类型" value="数字类型"></el-option>
                   <el-option label="选择列表" value="选择列表"></el-option>
@@ -25,7 +25,7 @@
               <div class="weather-required">
                 <label><input class="required" name="required" type="checkbox" value="" />是否为必填</label>
               </div>
-              <el-button type="primary" size="medium" class="btn-search" @click="onSubmit">增加字段</el-button>
+              <el-button type="primary" size="medium" class="btn-search" @click="add">增加字段</el-button>
             </div>
       </div>
     </div>
@@ -51,13 +51,13 @@
       <div class="custom-title" style="margin-top: 10px"> <i class="el-icon-arrow-down"></i>自定义字段</div>
       <div class="custom-line"></div>
       <el-table
-        :data="newDataTest"
+        :data="addDatas"
         style="width: 100%">
         <el-table-column
           label=""
         >
           <template slot-scope="scope">
-            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, newDataTest)"
+            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, addDatas)"
             ></i>
           </template>
         </el-table-column>
@@ -67,17 +67,16 @@
           >
         </el-table-column>
         <el-table-column
-          prop="custom_mould_type"
+          prop="data_type"
           label="字段类型"
           >
         </el-table-column>
         <el-table-column
-          prop=" id_required"
+          prop="id_required"
           label="是否为必须项"
           >
         </el-table-column>
       </el-table>
-
 
       <el-button
         type="primary"
@@ -90,65 +89,83 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {
+    saveCustomAttributes,
+  } from "../../assets/js/settings/ajax.js";
+  import { deepCopy } from "../../assets/js/api/util.js";
+
 export default {
   name: 'producttype',
   data(){
     return{
       mould_name:'',
+      column_name:'',
       column_chinese:'',
-      custom_mould_type:'',
+      data_type:'',
       id_required:'',
-      templatespro: [{
-        value: '1',
-        label: '产品模板'
-      }],
-      value: '',
+      addDatas:[],
 
       tableData: [{
         column_chinese: '产品编码',
-        custom_mould_type: '数字类型',
+        data_type: '数字类型',
       }, {
         column_chinese: '产品名称',
-        custom_mould_type: '文本类型',
+        data_type: '文本类型',
       }, {
         column_chinese: '产品分类编码',
-        custom_mould_type: '选择列表',
+        data_type: '选择列表',
       }, {
         column_chinese: '自定义分类编码',
-        custom_mould_type: '选择列表',
+        data_type: '选择列表',
       }, {
         column_chinese: '产品单位',
-        custom_mould_type: '选择列表',
+        data_type: '选择列表',
       }, {
         column_chinese: '产品描述',
-        custom_mould_type: '文本类型',
+        data_type: '文本类型',
       }, {
         column_chinese: '品牌名称',
-        custom_mould_type: '文本类型',
+        data_type: '文本类型',
       }],
-      newDataTest:[
-        {
-          column_chinese: 'PLUS编号',
-          custom_mould_type: '数字类型',
-        }, {
-          column_chinese: '活牛品种',
-          custom_mould_type: '文本类型',
-        }
-      ]
     }
   },
-  methods:{
-    onSubmit(){
-      console.log("--增加字段--")
-    },
-    deleteRow(scope){
-      console.log("--deleteRow--"+JSON.stringify(scope))
-    },
-    save(){
-      console.log("--保存自定义字段--")
-    }
-  }
+  mounted() {
 
+  },
+  methods:{
+    //“增加字段”
+    add(){
+      var arr  =
+      {
+        "column_chinese" :this.column_name,
+        "column_english" :"",
+        "data_type" :this.data_type,
+        "id_required" :"1",
+      }
+      this.addDatas .push(arr);
+    },
+    //删除单条的“自定义字段”
+    deleteRow(index, rows){
+      rows.splice(index, 1);
+    },
+    //自定义属性新增接口
+    save(){
+      var customAttribute  = {
+        customAttribute :this.addDatas,
+        custom_mould_type :"产品类型",
+        mould_name :this.mould_name,
+        sub_link :"",
+      }
+      saveCustomAttributes(customAttribute)
+        .then(res => {
+//          console.log("添加成功---"+JSON.stringify(res)+"---"+JSON.stringify(customAttribute))
+          this.$message.success("添加成功!");
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+}
 }
 </script>
 

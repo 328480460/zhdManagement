@@ -1,5 +1,5 @@
 import {ajaxPost} from '../api/api.js';
-import {ENVIRNMENT} from '../config/environment.js'
+import {ENVIRNMENT,ENVIRNMENTTEST} from '../config/environment.js';
 
 // 企业详情查询
 export const  getEnterpriseDetail  = function(params) {
@@ -46,27 +46,32 @@ export const getListNode = function(params) {
  */
 // 自定义字段信息查询
 export const getColumnInfo = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/getColumnInfo';
+  let url = ENVIRNMENT + '/getColumnInfo';
   return ajaxPost(url,params)
 }
 // 自定义属性修改
 export const updateCustomAttribute = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/updateCustomAttribute';
+  let url = ENVIRNMENT + '/updateCustomAttribute';
   return ajaxPost(url,params)
 }
 // 自定义属性关联查询
 export const getAttributeRelationState = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/getAttributeRelationState';
+  let url = ENVIRNMENT + '/getAttributeRelationState';
   return ajaxPost(url,params)
 }
 // 自定义属性列表查询
 export const getCustomAttributeList = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/getCustomAttributeList';
+  let url = ENVIRNMENT + '/getCustomAttributeList';
+  return ajaxPost(url,params)
+}
+// 自定义属性新增
+export const saveCustomAttributes = function(params) {
+  let url = ENVIRNMENT + '/saveCustomAttributes';
   return ajaxPost(url,params)
 }
 // 自定义属性删除
 export const deleteCustomAttribute = function(params) {
-  let url = 'http://47.92.149.109:7108/mockjsdata/2/deleteCustomAttribute';
+  let url = ENVIRNMENT + '/deleteCustomAttribute';
   return ajaxPost(url,params)
 }
 
