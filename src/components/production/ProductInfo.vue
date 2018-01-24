@@ -171,7 +171,6 @@ export default {
         page: "newProduct",
         name: "新建产品",
         id: "01010101",
-        query: { userId: "lalal" }
       });
     },
     editProduct(index, row) {

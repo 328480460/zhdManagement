@@ -34,7 +34,7 @@
 
           <el-form-item label="自定义分类">
             <el-select v-model="form.customType" clearable  placeholder="请选择" width="50px" >
-              <el-option  v-for="item in customAttributeList" :key="item.id" :label="item.mould_name"  :value="item.id" >
+              <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
               </el-option>
             </el-select>
           </el-form-item>
@@ -47,16 +47,29 @@
           </el-form-item>
         </el-form>
       </div>
+
+      <div class="receive-info">
       <h6 class="title">自定义属性</h6>
       <div class="section-content">
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="自定义属性">
-          <el-select v-model="form.custom_mould_id" placeholder="无">
-            <el-option label="(test)肉类产品" value="肉类产品"></el-option>
+          <el-select v-model="form.custom_mould_id" clearable placeholder="无">
+            <el-option  v-for="item in customAttributeList" :key="item.id" :label="item.mould_name"  :value="item.id" >
+            </el-option>
           </el-select>
         </el-form-item>
       </el-form>
       </div>
+
+      <div class="section-content">
+        <div class="demo-input-suffix" v-for="(item, key) in attributeList" :key="key" >
+          <div class="label">{{item.column_chinese}}</div>
+          <el-input v-model="item.data_type" placeholder="请输入内容"></el-input>
+        </div>
+      </div>
+
+      </div>
+
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
     </div>
   </div>
@@ -65,6 +78,7 @@
 <script type="text/ecmascript-6">
   import {
     getListProductType,
+    getColumnInfo,
     getCustomAttributeList,
     getDefaultProductType,
     saveProduct
@@ -81,14 +95,17 @@ export default {
         metering: "",
         norms: "",
         metering_id: "",
+        customType: "",
         productDesc: "",
         productBrand: "",
         custom_mould_id:"",
-
         systemDefaultType:"",
       },
       systemDefaultTypeList:[],
       customAttributeList:[],
+      customTypeList:[],
+      attributeList:[],
+      newcustomFields:[],
 //      productType: [
 //        {
 //          value: "zhinan",
@@ -363,8 +380,22 @@ export default {
   mounted() {
     this.initData();
   },
+  watch: {
+//    selectCustomDefine(newVal) {
+//      this.loadCustomDefineDetailData(newVal);
+//    }
+  },
   methods: {
     onSubmit() {
+      this.attributeList.forEach((value, index) => {
+        var arr  =
+        {
+          "custom_id" :value.id,
+          "data_value" :value.column_chinese,
+        }
+        this.newcustomFields .push(arr);
+      })
+
       let params = {
         product: this.form.productCode,
         product_name: this.form.productName,
@@ -376,10 +407,8 @@ export default {
         product_depict: this.form.productDesc,
         brand_name: this.form.productBrand,
         custom_mould_id: this.form.custom_mould_id,
-        customFields: [{
-          "custom_id": "123",
-          "data_value": "123"
-        }]
+        //需要替换为选择的
+        customFields: this.newcustomFields
       };
       console.log("submit!新增产品"+JSON.stringify(params));
       saveProduct(params)
@@ -403,6 +432,36 @@ export default {
         })
     },
     //产品自定义分类列表查询接口
+    getListProductType() {
+      let params = {
+        custom_mould_type: 1,
+        pagenum: 1,
+        pagesize: 20,
+      };
+      getListProductType(params)
+        .then(res => {
+          this.customTypeList = res.data.customTypeList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+    //自定义字段信息查询
+    getColumnInfo() {
+      let params = {
+        custom_mould_type: 1,
+        sub_link: "",
+        type: 0,
+      };
+      getColumnInfo(params)
+        .then(res => {
+          this.attributeList = res.attributeList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+    //产品自定义属性列表查询接口
     getCustomAttributeList() {
       let params = {
         custom_mould_type: 1,
@@ -422,7 +481,12 @@ export default {
       //查询“产品分类-系统默认提供”列表
       this.systemDefaultTypeLists()
       //查询自定义分类列表
+      this.getListProductType();
+      //查询自定义属性列表
       this.getCustomAttributeList();
+
+      //自定义字段信息查询
+      this.getColumnInfo();
     }
   }
 };
@@ -447,10 +511,21 @@ export default {
       width: 500px;
       margin-top: 20px;
       margin-left: 190px;
+      .demo-input-suffix {
+        display: flex;
+        margin-top: 10px;
+        .lable {
+          flex: 0 0 120px;
+          align-items: center;
+          line-height: 40px;
+        }
+      }
     }
   }
+
   .bt-save{
     margin-left: 400px;
+    margin-top: 10px;
   }
 }
 </style>

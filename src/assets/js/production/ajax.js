@@ -3,12 +3,17 @@ import {ENVIRNMENT,ENVIRNMENTTEST} from '../config/environment.js';
 
 // 产品列表查询接口
 export const getProductList = function(params) {
-    let url = ENVIRNMENT + '/getProductList';
+    let url = ENVIRNMENTTEST + '/getProductList';
     return ajaxPost(url,params)
 }
 // 产品自定义分类列表查询接口
 export const getListProductType = function(params) {
   let url = ENVIRNMENT + '/Product/getListProductType';
+  return ajaxPost(url,params)
+}
+// 自定义字段信息查询
+export const getColumnInfo = function(params) {
+  let url = ENVIRNMENT + '/getColumnInfo';
   return ajaxPost(url,params)
 }
 // 自定义属性列表查询

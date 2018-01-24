@@ -11,11 +11,11 @@
             <div class="custom-line"></div>
             <div class="float-wrap">
               <div class="custom-left">
-                <p>字段名称</p>
+                <p>*字段名称</p>
                 <el-input v-model="column_name" placeholder="请输入字段名称" style="margin-top: 10px"></el-input>
               </div>
               <div class="custom-right">
-                <p>字段类型</p>
+                <p>*字段类型</p>
                 <el-select v-model="data_type" clearable  placeholder="选择字段类型" style="margin-top: 10px;width: 100%">
                   <el-option label="文本类型" value="string"></el-option>
                   <el-option label="数字类型" value="number"></el-option>
@@ -23,7 +23,6 @@
                 </el-select>
               </div>
               <div class="weather-required">
-                <!--<label><input class="required" name="required" type="checkbox" value="" />是否为必填</label>-->
                 <el-checkbox v-model="checked">是否为必填</el-checkbox>
               </div>
               <el-button type="primary" size="medium" class="btn-search" @click="add">增加字段</el-button>
