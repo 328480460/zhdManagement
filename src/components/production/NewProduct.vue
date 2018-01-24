@@ -34,7 +34,7 @@
 
           <el-form-item label="自定义分类">
             <el-select v-model="form.customType" clearable  placeholder="请选择" width="50px" >
-              <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
+              <el-option  v-for="item in customAttributeList" :key="item.id" :label="item.mould_name"  :value="item.id" >
               </el-option>
             </el-select>
           </el-form-item>
@@ -65,6 +65,7 @@
 <script type="text/ecmascript-6">
   import {
     getListProductType,
+    getCustomAttributeList,
     getDefaultProductType,
     saveProduct
   } from "../../assets/js/production/ajax.js";
@@ -73,7 +74,6 @@ export default {
   name: "newProduct",
   data() {
     return {
-      routerQuery: this.$route.query,
       form: {
         productCode: "",
         productName: "",
@@ -88,7 +88,7 @@ export default {
         systemDefaultType:"",
       },
       systemDefaultTypeList:[],
-      customTypeList:[],
+      customAttributeList:[],
 //      productType: [
 //        {
 //          value: "zhinan",
@@ -402,16 +402,17 @@ export default {
           this.$message.error("出错啦!");
         })
     },
-    //产品"自定义分类"列表查询
-    selectTypes(){
+    //产品自定义分类列表查询接口
+    getCustomAttributeList() {
       let params = {
-        pagenum: 1,     //？？？请求所有的分类
-        pagesize: 10,
-      }
-      getListProductType(params)
+        custom_mould_type: 1,
+        pagenum: 1,
+        pagesize: 20,
+      };
+      getCustomAttributeList(params)
         .then(res => {
-          this.totalcount = res.data.totalcount;
-          this.customTypeList = res.data.customTypeList;
+//          this.customListCount = res.data.totalcount;
+          this.customAttributeList = res.data.customAttributeList;
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -420,8 +421,8 @@ export default {
     initData() {
       //查询“产品分类-系统默认提供”列表
       this.systemDefaultTypeLists()
-      //查询“自定义分类”列表
-      this.selectTypes()
+      //查询自定义分类列表
+      this.getCustomAttributeList();
     }
   }
 };

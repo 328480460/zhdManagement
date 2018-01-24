@@ -111,7 +111,7 @@
         };
         this.getTypeList(params);
       },
-      //产品分类列表查询
+      //产品自定义分类列表查询
       getTypeList(params){
         getListProductType(params)
           .then(res => {

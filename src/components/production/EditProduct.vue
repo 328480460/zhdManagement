@@ -79,6 +79,7 @@
     data() {
       return {
         form: {
+          routerQuery: this.$route.query,
           productCode: "",
           productName: "",
           productType: "",
@@ -368,7 +369,7 @@
     },
     mounted(){
       let params ={
-        "id":124
+        "id":this.$route.query.productId
       }
       this.initData(params);
     },

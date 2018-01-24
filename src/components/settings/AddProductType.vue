@@ -142,13 +142,12 @@ export default {
       }else if(this.data_type == ''){
         this.$message.warning("请选择“字段类型”！");
       }else{
-
-        if(this.checked ==true){
+        //判断checked
+        if(this.checked == true){
           this.id_required = 1
-        }else  if(this.checked ==false){
+        }else  if(this.checked == false){
           this.id_required = 0
         }
-
         var arr  =
         {
           "column_chinese" :this.column_name,

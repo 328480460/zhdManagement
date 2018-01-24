@@ -3,12 +3,17 @@ import {ENVIRNMENT,ENVIRNMENTTEST} from '../config/environment.js';
 
 // 产品列表查询接口
 export const getProductList = function(params) {
-    let url = ENVIRNMENTTEST + '/getProductList';
+    let url = ENVIRNMENT + '/getProductList';
     return ajaxPost(url,params)
 }
 // 产品自定义分类列表查询接口
 export const getListProductType = function(params) {
-  let url = ENVIRNMENT + '/getListProductType';
+  let url = ENVIRNMENT + '/Product/getListProductType';
+  return ajaxPost(url,params)
+}
+// 自定义属性列表查询
+export const getCustomAttributeList = function(params) {
+  let url = ENVIRNMENTTEST + '/getCustomAttributeList';
   return ajaxPost(url,params)
 }
 // 产品自定义分类删除查询接口
@@ -26,9 +31,9 @@ export const getProductDetail = function(params) {
   let url = ENVIRNMENT + '/getProductDetail';
   return ajaxPost(url,params)
 }
-// 产品系统默认分类查询接口
+// 产品三级分类查询接口-系统默认
 export const getDefaultProductType = function(params) {
-  let url = ENVIRNMENT + '/getDefaultProductType';
+  let url = ENVIRNMENT + '/Product/getDefaultProductType';
   return ajaxPost(url,params)
 }
 // 产品信息修改接口

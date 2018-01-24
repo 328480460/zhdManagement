@@ -69,7 +69,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="editProduct">编辑</el-button>
+            @click="editProduct(scope.$index, scope.row)">编辑</el-button>
           <el-button
             size="mini"
             type="text"
@@ -105,6 +105,7 @@ export default {
   data() {
     return {
       totalcount: 0,
+      customListCount: 0,
       productList: [],
       customTypeList: [],
       search: {
@@ -173,26 +174,36 @@ export default {
         query: { userId: "lalal" }
       });
     },
-    editProduct() {
+    editProduct(index, row) {
       this.$emit("openExtraPage", {
         node: "production",
         page: "editProduct",
         name: "编辑产品",
         id: "01010102",
-        query: { userId: "lalalxxxx" }
+        query: { productId: row.id },
       });
     },
     handleDelete(index, row) {
-      this.delete();
+      this.delete(row);
     },
-    delete() {
+    delete(row) {
       this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
+          let params = {
+            id: row.id,
+          };
           /*删除接口*/
+          deleteProduct(params)
+            .then(res => {
+              console.log("删除成功---"+JSON.stringify(res))
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            });
           this.$message({
             type: "success",
             message: "删除成功!"
@@ -249,15 +260,16 @@ export default {
       this.getProductList();
     },
     //产品自定义分类列表查询接口
-    selectTypes() {
+    getListProductType() {
       let params = {
-        pagenum: 1, //？？？请求所有的分类
-        pagesize: 10
+        custom_mould_type: 1,
+        pagenum: 1,
+        pagesize: 20,
       };
       getListProductType(params)
         .then(res => {
-//          this.totalcount = res.data.totalcount;
-          this.customTypeList = res.data.customTypeList;
+//          this.customListCount = res.data.totalcount;
+          this. customTypeList = res.data. customTypeList;
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -266,8 +278,8 @@ export default {
     initData(params) {
       //查询产品列表信息
       this.getDataAjax(params);
-      //查询分类列表
-      this.selectTypes();
+      //查询自定义分类列表
+      this.getListProductType();
     }
   }
 };
