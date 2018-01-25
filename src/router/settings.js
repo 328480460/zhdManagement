@@ -26,7 +26,7 @@ export default[
             page: "enterpriseInfo",
             node: 'settings',
             name: "企业信息",
-            id: "03010101"
+            id: "030101"
           }
         }
     },
@@ -53,7 +53,7 @@ export default[
           page: "accountSetting",
           node: 'settings',
           name: "账号信息",
-          id: "03020101"
+          id: "030201"
         }
       }
     },
