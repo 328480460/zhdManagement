@@ -10,6 +10,7 @@ import Invitation from '@/components/settings/Invitation'
 import QualityProblem from '@/components/settings/QualityProblem'
 import CustomProductType from '@/components/settings/CustomProductType'
 import AddProductType from '@/components/settings/AddProductType'
+import EditProductType from '@/components/settings/EditProductType'
 import UpdateProductType from '@/components/settings/UpdateProductType'
 import CustomNodeType from '@/components/settings/CustomNodeType'
 import CustomBusinessType from '@/components/settings/CustomBusinessType'
@@ -165,6 +166,20 @@ export default[
           node: 'settings',
           name: "产品类型添加",
           id: "03040101"
+        }
+      }
+    },
+  //设置-自定义属性-产品类型添加
+    {
+      path : 'settings/editProductType',
+      component : EditProductType,
+      name: 'editProductType',
+      meta: {
+        pageInfo: {
+          page: "editProductType",
+          node: 'settings',
+          name: "编辑产品类型",
+          id: "03040102"
         }
       }
     },
