@@ -22,7 +22,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="handleEdit">修改</el-button>
+            @click="handleEdit(scope.$index, scope.row)">修改</el-button>
           <el-button
             size="mini"
             type="text"
@@ -79,13 +79,13 @@ export default {
           query: { userId: "lalal" }
         });
       },
-      handleEdit() {
+      handleEdit(index, row) {
         this.$emit("openExtraPage", {
           node: "settings",
-          page: "updateProductType",
+          page: "editProductType",
           name: "修改产品类型",
           id: "03040102",
-          query: { userId: "lalal" }
+          query: { typeId: row.id },
         });
       },
       // 分页跳转

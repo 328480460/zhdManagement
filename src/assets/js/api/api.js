@@ -12,3 +12,15 @@ export const ajaxPost = function (url, params) {
             })
     })
 }
+export const ajaxGet= function (url, params) {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(url, params)
+            .then((res) => {
+                resolve(res.data)
+            })
+            .catch(() => {
+                reject('error')
+            })
+    })
+}

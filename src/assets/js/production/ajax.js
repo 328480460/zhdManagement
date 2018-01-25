@@ -18,10 +18,10 @@ export const getColumnInfo = function(params) {
 }
 // 自定义属性列表查询
 export const getCustomAttributeList = function(params) {
-  let url = ENVIRNMENTTEST + "/getCustomAttributeList";
-  return ajaxPost(url, params);
-};
-// 产品自定义分类删除查询接口
+  let url = ENVIRNMENTTEST + '/getCustomAttributeList';
+  return ajaxPost(url,params)
+}
+// 产品自定义分类修改查询接口
 export const updateProductType = function(params) {
   let url = ENVIRNMENT + "/updateProductType";
   return ajaxPost(url, params);
@@ -53,6 +53,17 @@ export const deleteProduct = function(params) {
 };
 // 产品信息新增接口
 export const saveProduct = function(params) {
+<<<<<<< HEAD
   let url = ENVIRNMENT + "/saveProduct";
   return ajaxPost(url, params);
 };
+=======
+  let url = ENVIRNMENT + '/saveProduct';
+  return ajaxPost(url,params)
+}
+// 自定义属性修改
+export const updateCustomAttribute = function(params) {
+  let url = ENVIRNMENT + '/updateCustomAttribute';
+  return ajaxPost(url,params)
+}
+>>>>>>> c629306ee6efb92948ab4a313936c7c9b0654877

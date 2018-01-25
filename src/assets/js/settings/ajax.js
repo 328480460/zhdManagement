@@ -1,4 +1,4 @@
-import {ajaxPost} from '../api/api.js';
+import {ajaxPost,ajaxGet} from '../api/api.js';
 import {ENVIRNMENT,ENVIRNMENTTEST} from '../config/environment.js';
 
 // 企业详情查询
@@ -73,5 +73,10 @@ export const saveCustomAttributes = function(params) {
 export const deleteCustomAttribute = function(params) {
   let url = ENVIRNMENT + '/deleteCustomAttribute';
   return ajaxPost(url,params)
+}
+// 自定义属性详情
+export const  getCustomAttributeDetail = function(params) {
+  let url = ENVIRNMENT + '/getCustomAttributeDetail';
+  return ajaxGet(url,params)
 }
 

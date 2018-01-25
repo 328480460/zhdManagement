@@ -81,6 +81,7 @@
     getColumnInfo,
     getCustomAttributeList,
     getDefaultProductType,
+    updateCustomAttribute,
     saveProduct
   } from "../../assets/js/production/ajax.js";
 
@@ -485,7 +486,7 @@ export default {
       //查询自定义属性列表
       this.getCustomAttributeList();
 
-      //自定义字段信息查询
+      //自定义字段信息查询——TEST
       this.getColumnInfo();
     }
   }
