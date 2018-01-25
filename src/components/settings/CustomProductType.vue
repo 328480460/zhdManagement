@@ -104,8 +104,7 @@ export default {
       getDataAjax(params) {
         getCustomAttributeList(params)
           .then(res => {
-            console.log("res---"+JSON.stringify(res))
-
+//            console.log("res---"+JSON.stringify(res))
             this.totalcount = res.data.totalcount;
             this.customAttributeList = res.data.customAttributeList;
           })

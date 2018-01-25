@@ -54,8 +54,8 @@
       <div class="section-content">
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="自定义属性">
-            <el-select v-model="form.customField" placeholder="无">
-              <el-option  v-for="item in customFields" :key="item.custom_id" :label="item.data_value"  :value="item.custom_id" >
+            <el-select v-model="form.customField" clearable placeholder="无">
+              <el-option  v-for="item in customAttributeList" :key="item.custom_id" :label="item.mould_name"  :value="item.custom_id" >
               </el-option>
             </el-select>
           </el-form-item>
@@ -69,6 +69,7 @@
 <script type="text/ecmascript-6">
   import {
     getListProductType,
+    getCustomAttributeList,
     getProductDetail,
     getDefaultProductType,
     updateProduct
@@ -97,6 +98,7 @@
         systemDefaultTypeList:[],
         customTypeList:[],
         customFields:[],
+        customAttributeList:[],
         productTypes: [
           {
             value: "zhinan",
@@ -372,10 +374,11 @@
         "id":this.$route.query.productId
       }
       this.initData(params);
+      console.log("res---"+JSON.stringify(params))
     },
     methods: {
       onSubmit() {
-        console.log("submit!新增产品");
+        console.log("submit!保存修改");
       },
 
       initData(params){
@@ -400,6 +403,8 @@
         this.systemDefaultTypeLists()
         //查询“自定义分类”列表
         this.selectTypes()
+        //查询自定义属性列表
+        this.getCustomAttributeList();
       },
       //“产品分类-系统默认提供”列表
       systemDefaultTypeLists(){
@@ -422,6 +427,22 @@
           .then(res => {
             this.totalcount = res.data.totalcount;
             this.customTypeList = res.data.customTypeList;
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
+      },
+      //产品自定义属性列表查询接口
+      getCustomAttributeList() {
+        let params = {
+          custom_mould_type: 1,
+          pagenum: 1,
+          pagesize: 20,
+        };
+        getCustomAttributeList(params)
+          .then(res => {
+//          this.customListCount = res.data.totalcount;
+            this.customAttributeList = res.data.customAttributeList;
           })
           .catch(() => {
             this.$message.error("出错啦!");
