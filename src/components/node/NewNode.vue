@@ -4,26 +4,26 @@
       <h6 class="title">节点信息</h6>
       <div class="section-content">
         <el-form ref="form" :model="form" label-width="120px">
-          <el-form-item label="*节点编号">
+          <el-form-item label="*节点编号：">
             <el-input v-model="form.nodeNumber"></el-input>
           </el-form-item>
-          <el-form-item label="*节点名称">
+          <el-form-item label="*节点名称：">
             <el-input v-model="form.nodeName"></el-input>
           </el-form-item>
-          <el-form-item label="节点分类">
+          <el-form-item label="节点分类：">
             <el-select v-model="form.nodeSplitting" clearable  placeholder="选择节点分类" width="50px" >
               <el-option  v-for="item in nodeSplittings" :key="item.id" :label="item.name"  :value="item.id" >
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="节点类型">
-            <el-checkbox-group v-model="nodeTypes" :min="1">
-              <el-checkbox label="来源节点"></el-checkbox>
-              <el-checkbox label="当前节点"></el-checkbox>
-              <el-checkbox label="流向节点"></el-checkbox>
+          <el-form-item label="节点类型：">
+            <el-checkbox-group v-model="nodeTypes" >
+              <el-checkbox label="来源节点" value="node11"></el-checkbox>
+              <el-checkbox label="当前节点" value="node22"></el-checkbox>
+              <el-checkbox label="流向节点" value="node33"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="节点描述">
+          <el-form-item label="节点描述：">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
           </el-form-item>
         </el-form>
@@ -33,7 +33,7 @@
         <el-form label-width="120px">
           <el-form-item label="*节点地址：">
             <!--<el-input v-model="form.nodeAddress"></el-input>-->
-            <el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
+            <el-cascader  :options="cityDataList" change-on-select clearable v-model="selectedCity" ></el-cascader>
             <el-input style="margin-top: 20px"></el-input>
           </el-form-item>
           <el-form-item label="联系人：">
@@ -44,16 +44,26 @@
           </el-form-item>
         </el-form>
       </div>
-      <h6 class="title">自定义属性</h6>
+
+      <div class="receive-info">
+      <h6 class="title">自定义属性：</h6>
       <div class="section-content">
         <el-form label-width="120px">
           <el-form-item label="自定义属性">
-            <el-select v-model="form.customMouldName" placeholder="无">
-              <el-option v-for="item in customMouldNames" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            <el-select v-model="form.custom_mould_id" clearable placeholder="无">
+              <el-option v-for="item in customAttributeList" :key="item.id" :label="item.mould_name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
       </div>
+          <div class="content">
+            <div class="demo-input-suffix" v-for="(item, key) in attributeList" :key="key" >
+              <div class="lable">{{item.column_chinese}}</div>
+              <el-input v-model="item.data_type" placeholder="请输入内容"></el-input>
+            </div>
+          </div>
+        </div>
+
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
 
     </div>
@@ -63,6 +73,8 @@
 <script type="text/ecmascript-6">
   import {
     createNode,
+    getCustomAttributeList,
+    getColumnInfo,
   } from "../../assets/js/node/ajax.js";
   import { cityData } from "../../assets/js/api/cityData.js";
 
@@ -82,10 +94,12 @@ export default {
         nodeAddress: "",
         contacts: "",
         contactsPhone: "",
-        customMouldName: "",
+        custom_mould_id: "",
       },
       customList:[],
       nodeTypes:[],
+      customAttributeList:[],
+      attributeList:[],
       nodeSplittings: [{
         id: '1',
         name: '(test)养殖场',
@@ -93,11 +107,10 @@ export default {
         id: '2',
         name: '批发商',
       }],
-      customMouldNames: [{
-        id: '1',
-        name: '(test)自定义节点信息',
-      }],
     }
+  },
+  mounted() {
+    this.initData();
   },
   methods:{
     onSubmit() {
@@ -105,25 +118,65 @@ export default {
         node_number: this.form.nodeNumber,
         node_name: this.form.nodeName,
         node_splitting: this.form.nodeSplitting,
-//        node_type_id: this.form.nodeType,
-        customList:this.nodeTypes,
+        node_type_id: this.nodeTypes,
         node_depict: this.form.nodeDepict,
         node_address: this.form.nodeAddress,
         contacts: this.form.contacts,
         contacts_phone: this.form.contactsPhone,
-        brand_name: this.form.customMouldName,
+//        brand_name: this.form.custom_mould_id
+        //需要替换为选择的
+        customList: this.attributeList
+
       };
-//      console.log("submit!添加节点"+JSON.stringify(params));
-      createNode(params)
-        .then(res =>{
-          this.$message.success("节点添加成功!");
+      console.log("submit!添加节点"+JSON.stringify(params));
+    createNode(params)
+      .then(res =>{
+        console.log("---节点添加成功"+JSON.stringify(res));
+        this.$message.success("节点添加成功!");
+      })
+      .catch(() => {
+        this.$message.error("出错啦!");
+      })
+
+    },
+    //产品自定义属性列表查询接口
+    getCustomAttributeList() {
+      let params = {
+        custom_mould_type: 2,
+        pagenum: 1,
+        pagesize: 20,
+      };
+      getCustomAttributeList(params)
+        .then(res => {
+//          this.customListCount = res.data.totalcount;
+          this.customAttributeList = res.data.customAttributeList;
         })
         .catch(() => {
           this.$message.error("出错啦!");
-        })
-
+        });
     },
+    //自定义字段信息查询
+    getColumnInfo() {
+      let params = {
+        custom_mould_type: 2,
+        sub_link: "",
+        type: 0,
+      };
+      getColumnInfo(params)
+        .then(res => {
+          this.attributeList = res.attributeList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+    initData(){
+      //查询自定义属性列表
+      this.getCustomAttributeList();
 
+      //自定义字段信息查询——TEST
+      this.getColumnInfo();
+    }
   }
 
 }
@@ -138,7 +191,13 @@ export default {
   .section-content {
     width: 500px;
     margin-top: 20px;
-    margin-left: 190px;
+    margin-left: 200px;
+  }
+  .custom-define-info {
+    .receive-info;
+    .el-input {
+      width: 217px;
+    }
   }
   .receive-info {
     width: 96%;
@@ -152,11 +211,10 @@ export default {
     .content {
       margin-left: 200px;
       margin-top: 10px;
-      width: 350px;
+      width: 500px;
       .demo-input-suffix {
         display: flex;
         margin-top: 10px;
-        font-size: 15px;
         .lable {
           flex: 0 0 100px;
           align-items: center;
@@ -166,6 +224,7 @@ export default {
     }
   }
   .bt-save{
+    margin-top: 10px;
     margin-left: 400px;
   }
 }

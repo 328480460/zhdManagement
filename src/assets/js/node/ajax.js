@@ -1,5 +1,5 @@
 import {ajaxPost} from '../api/api.js';
-import {ENVIRNMENT} from '../config/environment.js'
+import {ENVIRNMENT,ENVIRNMENTTEST} from '../config/environment.js'
 
 // 节点列表查询接口
 export const getListNode = function(params) {
@@ -24,5 +24,15 @@ export const deleteNode = function(params) {
 // 节点详情接口
 export const getDetailNode = function(params) {
   let url = ENVIRNMENT + '/Node/getDetailNode';
+  return ajaxPost(url,params)
+}
+// 自定义属性列表查询
+export const getCustomAttributeList = function(params) {
+  let url = ENVIRNMENT + '/getCustomAttributeList';
+  return ajaxPost(url,params)
+}
+// 自定义字段信息查询
+export const getColumnInfo = function(params) {
+  let url = ENVIRNMENT + '/getColumnInfo';
   return ajaxPost(url,params)
 }

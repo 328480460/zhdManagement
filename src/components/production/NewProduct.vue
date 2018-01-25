@@ -61,13 +61,12 @@
       </el-form>
       </div>
 
-      <div class="section-content">
-        <div class="demo-input-suffix" v-for="(item, key) in attributeList" :key="key" >
-          <div class="label">{{item.column_chinese}}</div>
-          <el-input v-model="item.data_type" placeholder="请输入内容"></el-input>
+        <div class="content">
+          <div class="demo-input-suffix" v-for="(item, key) in attributeList" :key="key" >
+            <div class="lable">{{item.column_chinese}}</div>
+            <el-input v-model="item.data_type" placeholder="请输入内容"></el-input>
+          </div>
         </div>
-      </div>
-
       </div>
 
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
@@ -511,12 +510,17 @@ export default {
     .section-content {
       width: 500px;
       margin-top: 20px;
-      margin-left: 190px;
+      margin-left: 200px;
+    }
+    .content {
+      margin-left: 200px;
+      margin-top: 10px;
+      width: 500px;
       .demo-input-suffix {
         display: flex;
         margin-top: 10px;
         .lable {
-          flex: 0 0 120px;
+          flex: 0 0 100px;
           align-items: center;
           line-height: 40px;
         }

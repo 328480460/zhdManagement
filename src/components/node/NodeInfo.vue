@@ -80,7 +80,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="nodeDetails">详情</el-button>
+            @click="nodeDetails(scope.$index, scope.row)">详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -106,6 +106,7 @@
 <script type="text/ecmascript-6">
   import {
     getListNode,
+    deleteNode,
   } from "../../assets/js/node/ajax.js";
   import { deepCopy } from "../../assets/js/api/util.js";
 
@@ -230,24 +231,35 @@ export default {
         this.currentPage = val;
         this.getNodeList();
       },
-      nodeDetails() {
+      nodeDetails(index, row) {
             this.$emit("openExtraPage", {
               node:"node",
               page: "nodeDetails",
               name: "节点详情",
-              id: "02010102"
+              id: "02010102",
+              query: { nodeId: row.id },
             });
       },
       handleDelete(index, row) {
-        this.delete()
+        this.delete(row)
       },
-      delete() {
+      delete(row) {
         this.$confirm('此操作将删除该节点信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          let params = {
+            id: row.id,
+          };
           /*删除接口*/
+          deleteNode(params)
+            .then(res => {
+              console.log("节点删除成功---"+JSON.stringify(res))
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            });
           this.$message({
             type: 'success',
             message: '删除成功!'

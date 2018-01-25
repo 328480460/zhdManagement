@@ -99,8 +99,9 @@
     },
     mounted(){
       let params ={
-        "id":1
+        "id":this.$route.query.nodeId
       }
+//      console.log("-----"+JSON.stringify(params))
       this.initData(params);
     },
     methods:{
