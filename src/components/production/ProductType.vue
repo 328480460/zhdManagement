@@ -29,7 +29,7 @@
             size="mini"
             type="text"
             style="margin-right: 50px"
-            @click="editProduct">编辑</el-button>
+            @click="editProduct(scope.$index, scope.row)">编辑</el-button>
           <el-button
             size="mini"
             type="text"
@@ -53,8 +53,9 @@
 <script type="text/ecmascript-6">
   import {
     getListProductType,
+    getDetailProductType,
     updateProductType,
-    deleteProductType
+    deleteProductType,
   } from "../../assets/js/production/ajax.js";
 
   export default {
@@ -68,6 +69,7 @@
           pageNum: 1,
           pageSize: 10,
         },
+        typenameDetail:'',
       }
     },
     mounted() {
@@ -87,12 +89,21 @@
           if( value == null){
             this.judge()
           }else {
-            /*新建保存接口*/
+            /*分类新建接口——（？？？暂无需要替换）*/
+            let params = {
+              type_name: value,
+            };
+            updateProductType(params)
+              .then(res => {
+//                console.log("分类新建res---"+JSON.stringify(res))
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              });
             this.$message({
               type: 'success',
-              message: '保存成功'
+              message: '新建成功'
             });
-            console.log("保存内容："+value)
           }
         }).catch(() => {
           this.$message({
@@ -122,18 +133,31 @@
             this.$message.error("出错啦!");
           });
       },
-      editProduct() {
-        this.$prompt('自定义分类名称：', '编辑自定义分类', {
+      editProduct(index, row) {
+        /*分类详情——（没有回显？？？）*/
+        this.getDetailProductType(row.id)
+        this.$prompt('自定义分类名称：', '编辑自定义分类',this.typenameDetail, {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(({ value }) => {
           if( value == null){
             this.judge()
           }else {
-            /*编辑保存接口*/
+            /*分类修改接口*/
+            let params = {
+              id: row.id,
+              type_name: value,
+            };
+            updateProductType(params)
+              .then(res => {
+//                console.log("分类修改res---"+JSON.stringify(res))
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              });
             this.$message({
               type: 'success',
-              message: '保存成功'
+              message: '编辑成功'
             });
           }
         }).catch(() => {
@@ -143,8 +167,14 @@
           });
         });
       },
-      handleDelete(index, row) {
-        this.delete()
+      getDetailProductType(params){
+        getDetailProductType(params)
+          .then(res =>{
+             this.typenameDetail = res.data.customType.type_name
+          })
+          .catch(() =>{
+            this.$message.error("出错啦!");
+          })
       },
       judge() {
         this.$message({
@@ -152,13 +182,27 @@
           type: 'warning'
         });
       },
-      delete() {
+      handleDelete(index, row) {
+        this.delete(row)
+      },
+      delete(row) {
         this.$confirm('此操作将删除该分类名称, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           /*删除接口*/
+          let params = {
+            id: row.id,
+          };
+          deleteProductType(params)
+            .then(res => {
+//              console.log("节点删除成功---"+JSON.stringify(res))
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            });
+
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -174,9 +218,6 @@
         this.pagenum = val
         console.log(`当前页: ${this.pagenum}`);
       },
-      loadAll(){
-
-      }
     },
   }
 </script>
