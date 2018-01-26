@@ -24,7 +24,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' scoped>
 #extraPageTab {
   padding-left: 15px;
   font-size: 0;
