@@ -53,11 +53,6 @@ export const deleteProduct = function(params) {
 };
 // 产品信息新增接口
 export const saveProduct = function(params) {
-<<<<<<< HEAD
-  let url = ENVIRNMENT + "/saveProduct";
-  return ajaxPost(url, params);
-};
-=======
   let url = ENVIRNMENT + '/saveProduct';
   return ajaxPost(url,params)
 }
@@ -66,4 +61,3 @@ export const updateCustomAttribute = function(params) {
   let url = ENVIRNMENT + '/updateCustomAttribute';
   return ajaxPost(url,params)
 }
->>>>>>> c629306ee6efb92948ab4a313936c7c9b0654877

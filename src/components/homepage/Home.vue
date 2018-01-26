@@ -5,19 +5,21 @@
         <img src="../../assets/image/logo_03.png" alt="logo" class="logo">
       </div>
       <div class="main-menu">
-        <div class="main-menu-item" v-for="(first,key) in menu" :key="key" :class="{'active': currentTabInfo.main.id === first.id}" @click="turnPage(first.id)">
-          <div class="main-menu-item-name"><i class="icon-font" :class="first.icon"></i>{{first.name}}</div>
+        <div class="main-menu-item" v-for="(first,key) in menu" :key="key" 
+                                    :class="{'active': currentTabInfo.main.id === first.id}" 
+                                    >
+          <div class="main-menu-item-name" @click.self="turnPage(first.id)"><i class="icon-font" :class="first.icon" ></i>{{first.name}}</div>
           <div class="second-menu" v-if="first.children">
             <div class="title">{{first.name}}中心</div>
             <div class="second-menu-item" v-for="(second, key) in first.children" :key="key"
                                           :class="{'active': currentTabInfo.second.id === second.id}"
                                           >
-              <div class="second-menu-item-name" @click.stop="turnPage(second.id)">{{second.name}} </div>
+              <div class="second-menu-item-name" @click.self="turnPage(second.id)">{{second.name}} </div>
               <div class="third-menu" v-if="!Object.keys(extraTabInfo).length">
                 <div class="third-menu-item-wrapper" >
                   <div class="third-menu-item" v-for="(third, key) in second.children" :key="key"
                                                :class="{'active': currentTabInfo.third.id === third.id}"
-                                               @click.stop="turnPage(third.id)">
+                                               @click.self="turnPage(third.id)">
                     {{third.name}}
                   </div>
                 </div>
@@ -226,7 +228,6 @@ export default {
         line-height: 60px;
         text-align: center;
         font-size: 16px;
-        cursor: pointer;
         &.active {
           background-color: #fff;
           color: #282828;
@@ -245,6 +246,9 @@ export default {
   }
   .summary {
     display: none;
+  }
+  .main-menu-item-name {
+    cursor: pointer;
   }
   .second-menu {
     display: none;
@@ -272,7 +276,9 @@ export default {
       height: 50px;
       line-height: 50px;
       font-size: 16px;
-      cursor: pointer;
+      .second-menu-item-name {
+        cursor: pointer;
+      }
       &.active {
         background-color: #f2f2f2;
         .third-menu {
