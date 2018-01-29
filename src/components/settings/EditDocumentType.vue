@@ -1,5 +1,5 @@
 <template>
-  <div id="businesstype">
+  <div id="producttype">
     <div class="batch-left">
       <el-form ref="form" label-width="100px">
         <el-form-item label="*自定义名称">
@@ -17,9 +17,10 @@
               <div class="custom-right">
                 <p>字段类型</p>
                 <el-select v-model="custom_mould_type" clearable  placeholder="选择字段类型" style="margin-top: 10px;width: 100%">
-                  <el-option label="文本类型" value="文本类型"></el-option>
-                  <el-option label="数字类型" value="数字类型"></el-option>
-                  <el-option label="选择列表" value="选择列表"></el-option>
+                  <el-option label="文本类型" value="string"></el-option>
+                  <el-option label="数字类型" value="number"></el-option>
+                  <el-option label="选择列表" value="date"></el-option>
+                  <el-option label="日期类型" value="string"></el-option>
                 </el-select>
               </div>
               <div class="weather-required">
@@ -42,7 +43,7 @@
           style="width: 50%">
         </el-table-column>
         <el-table-column
-          prop="custom_mould_type"
+          prop="data_type"
           label="字段类型"
           style="width: 50%">
         </el-table-column>
@@ -68,7 +69,7 @@
           <el-input v-model="column_chinese" placeholder="字段名称"></el-input>
         </el-table-column>
         <el-table-column
-          prop="custom_mould_type"
+          prop="data_type"
           label="字段类型"
           >
           <el-input v-model="custom_mould_type" placeholder="字段类型" ></el-input>
@@ -93,48 +94,47 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'businesstype',
+  name: 'producttype',
   data(){
     return{
       mould_name:'',
       column_chinese:'',
       custom_mould_type:'',
       id_required:'',
-      templatespro: [{
-        value: '1',
-        label: '产品模板'
-      }],
       value: '',
 
       tableData: [{
-        column_chinese: '产品编码',
-        custom_mould_type: '数字类型',
+        column_chinese: '文档名称',
+        data_type: '文本类型',
       }, {
-        column_chinese: '产品名称',
-        custom_mould_type: '文本类型',
+        column_chinese: '选择文件',
+        data_type: '文本类型',
       }, {
-        column_chinese: '产品分类编码',
-        custom_mould_type: '选择列表',
+        column_chinese: '有效期',
+        data_type: '日期类型',
       }, {
-        column_chinese: '自定义分类编码',
-        custom_mould_type: '选择列表',
+        column_chinese: '关联产品',
+        data_type: '选择列表',
       }, {
-        column_chinese: '产品单位',
-        custom_mould_type: '选择列表',
+        column_chinese: '关联节点',
+        data_type: '选择列表',
+      },{
+        column_chinese: '管理业务信息',
+        data_type: '选择列表',
       }, {
-        column_chinese: '产品描述',
-        custom_mould_type: '文本类型',
+        column_chinese: '认证机构',
+        data_type: '选择列表',
       }, {
-        column_chinese: '品牌名称',
-        custom_mould_type: '文本类型',
+        column_chinese: '认证名称',
+        data_type: '选择列表',
       }],
       newDataTest:[
         {
           column_chinese: 'PLUS编号',
-          custom_mould_type: '数字类型',
+          data_type: '数字类型',
         }, {
           column_chinese: '活牛品种',
-          custom_mould_type: '文本类型',
+          data_type: '文本类型',
         }
       ]
     }
@@ -155,7 +155,7 @@ export default {
 </script>
 
 <style rel="stylesheet/less" lang='less' scoped>
-#businesstype{
+#producttype{
   margin: 10px;
   padding: 10px;
   height: 100%;

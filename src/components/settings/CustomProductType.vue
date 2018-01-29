@@ -46,6 +46,7 @@
 <script type="text/ecmascript-6">
   import {
     getCustomAttributeList,
+    deleteCustomAttribute,
   } from "../../assets/js/settings/ajax.js";
   import { deepCopy } from "../../assets/js/api/util.js";
 
@@ -86,6 +87,40 @@ export default {
           id: "03040102",
           query: { typeId: row.id },
         });
+      },
+      handleDelete(index, row) {
+        this.delete(row);
+        console.log("1要删除的那条信息---"+JSON.stringify(row))
+      },
+      delete(row) {
+        this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+          .then(() => {
+            let params = {
+              id: row.id,
+            };
+            /*删除接口*/
+            deleteCustomAttribute(params)
+              .then(res => {
+                console.log("产品类型删除成功---"+JSON.stringify(res)+JSON.stringify(params))
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              });
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
       },
       // 分页跳转
       handleCurrentChange(val) {

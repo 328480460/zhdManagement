@@ -71,7 +71,7 @@ export const saveCustomAttributes = function(params) {
 }
 // 自定义属性删除
 export const deleteCustomAttribute = function(params) {
-  let url = ENVIRNMENT + '/deleteCustomAttribute';
+  let url = ENVIRNMENTTEST + '/deleteCustomAttribute';
   return ajaxPost(url,params)
 }
 // 自定义属性详情

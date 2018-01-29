@@ -1,14 +1,16 @@
 <template>
   <div id="quality">
     <div class="btn-list">
-      <el-button type="primary" size="medium">添加问题详情</el-button>
+      <el-button type="primary" size="medium" @click="newQuality">添加问题详情</el-button>
     </div>
 
     <el-table class="el-table"
               border
+              stripe
+              :data="customAttributeList"
     >
       <el-table-column class="table-column"
-                       prop="name"
+                       prop="mould_name"
                        label="问题详情"
       >
       </el-table-column>
@@ -20,7 +22,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="handleEdit">修改</el-button>
+            @click="handleEdit(scope.$index, scope.row)">修改</el-button>
           <el-button
             size="mini"
             type="text"
@@ -28,22 +30,125 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      background
+      style="margin-top: 15px"
+      layout="total,prev, pager, next"
+      :current-page= 'currentPage'
+      @current-change="handleCurrentChange"
+      :page-size=10
+      :total= 'totalcount'>
+    </el-pagination>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import axios from "axios";
+  import {
+    getCustomAttributeList,
+    deleteCustomAttribute,
+  } from "../../assets/js/settings/ajax.js";
+  import { deepCopy } from "../../assets/js/api/util.js";
+
 export default {
     name: "quality",
     created() {
     },
     data() {
       return{
-
+        totalcount: 0,
+        currentPage: 1,
+        pageSize: 10,
+        customAttributeList: [],
       }
     },
+    mounted() {
+      let params = {
+        custom_mould_type: "5",
+        pagenum: 1,
+        pagesize: 10,
+      };
+      this.initData(params);
+    },
     methods: {
-
+      newQuality() {
+        this.$emit("openExtraPage", {
+          node: "settings",
+          page: "addQualityProblem",
+          name: "添加质量问题",
+          id: "03040501",
+        });
+      },
+      handleEdit(index, row) {
+        this.$emit("openExtraPage", {
+          node: "settings",
+          page: "editQualityProblem",
+          name: "修改质量问题",
+          id: "03040502",
+          query: { typeId: row.id },
+        });
+      },
+      handleDelete(index, row) {
+        this.delete(row);
+        console.log("5要删除的那条信息---"+JSON.stringify(row))
+      },
+      delete(row) {
+        this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+          .then(() => {
+            let params = {
+              id: row.id,
+            };
+            /*删除接口*/
+            deleteCustomAttribute(params)
+              .then(res => {
+                console.log("质量问题删除成功---"+JSON.stringify(res)+JSON.stringify(params))
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              });
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
+      },
+      // 分页跳转
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getCustomAttributeList();
+      },
+      getCustomAttributeList(){
+        let params = {
+          custom_mould_type: "2",
+          pagenum: this.currentPage,
+          pagesize: 10,
+        };
+        this.getDataAjax(params);
+      },
+      getDataAjax(params) {
+        getCustomAttributeList(params)
+          .then(res => {
+//            console.log("res---"+JSON.stringify(res))
+            this.totalcount = res.data.totalcount;
+            this.customAttributeList = res.data.customAttributeList;
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
+      },
+      initData(params){
+        this.getDataAjax(params)
+      },
     }
 };
 </script>

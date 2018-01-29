@@ -210,7 +210,7 @@ export default {
     getCustomAttributeDetail(params) {
       getCustomAttributeDetail(params)
         .then(res => {
-          console.log("getCustomAttributeDetail----"+JSON.stringify(res))
+//          console.log("getCustomAttributeDetail----"+JSON.stringify(res))
           this.mould_name = res.data.customAttribute.mould_name;
         })
         .catch(() => {

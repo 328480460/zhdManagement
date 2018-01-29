@@ -11,21 +11,19 @@
             <div class="custom-line"></div>
             <div class="float-wrap">
               <div class="custom-left">
-                <p>字段名称</p>
-                <el-input v-model="column_chinese" placeholder="请输入字段名称" style="margin-top: 10px"></el-input>
+                <p>*字段名称</p>
+                <el-input v-model="column_name" placeholder="请输入字段名称" style="margin-top: 10px"></el-input>
               </div>
               <div class="custom-right">
-                <p>字段类型</p>
-                <el-select v-model="custom_mould_type" clearable  placeholder="选择字段类型" style="margin-top: 10px;width: 100%">
-                  <el-option label="文本类型" value="文本类型"></el-option>
-                  <el-option label="数字类型" value="数字类型"></el-option>
-                  <el-option label="选择列表" value="选择列表"></el-option>
+                <p>*字段类型</p>
+                <el-select v-model="data_type" clearable  placeholder="选择字段类型" style="margin-top: 10px;width: 100%">
+                  <el-option label="文本类型" value="string"></el-option>
                 </el-select>
               </div>
               <div class="weather-required">
-                <label><input class="required" name="required" type="checkbox" value="" />是否为必填</label>
+                <el-checkbox v-model="checked">是否为必填</el-checkbox>
               </div>
-              <el-button type="primary" size="medium" class="btn-search" @click="onSubmit">增加字段</el-button>
+              <el-button type="primary" size="medium" class="btn-search" @click="add">增加字段</el-button>
             </div>
       </div>
     </div>
@@ -42,7 +40,7 @@
           style="width: 50%">
         </el-table-column>
         <el-table-column
-          prop="custom_mould_type"
+          prop="data_type"
           label="字段类型"
           style="width: 50%">
         </el-table-column>
@@ -51,13 +49,13 @@
       <div class="custom-title" style="margin-top: 10px"> <i class="el-icon-arrow-down"></i>自定义字段</div>
       <div class="custom-line"></div>
       <el-table
-        :data="newDataTest"
+        :data="addDatas"
         style="width: 100%">
         <el-table-column
           label=""
         >
           <template slot-scope="scope">
-            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, newDataTest)"
+            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, addDatas)"
             ></i>
           </template>
         </el-table-column>
@@ -65,21 +63,18 @@
           prop="column_chinese"
           label="字段名称"
           >
-          <el-input v-model="column_chinese" placeholder="字段名称"></el-input>
         </el-table-column>
         <el-table-column
-          prop="custom_mould_type"
+          prop="data_type"
           label="字段类型"
           >
-          <el-input v-model="custom_mould_type" placeholder="字段类型" ></el-input>
         </el-table-column>
         <el-table-column
-          prop=" id_required"
+          prop="id_required"
           label="是否为必须项"
           >
         </el-table-column>
       </el-table>
-
 
       <el-button
         type="primary"
@@ -92,64 +87,87 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {
+    saveCustomAttributes,
+  } from "../../assets/js/settings/ajax.js";
+
 export default {
   name: 'producttype',
   data(){
     return{
+      checked:false,
       mould_name:'',
+      column_name:'',
       column_chinese:'',
-      custom_mould_type:'',
+      data_type:'',
       id_required:'',
-      value: '',
+      addDatas:[],
 
       tableData: [{
-        column_chinese: '节点编码',
-        data_type: '数字类型',
-      }, {
-        column_chinese: '节点名称',
+        column_chinese: '问题标题',
         data_type: '文本类型',
       }, {
-        column_chinese: '节点类型',
-        data_type: '选择列表',
-      }, {
-        column_chinese: '节点分类',
-        data_type: '选择列表',
-      }, {
-        column_chinese: '地址',
+        column_chinese: '问题发现人',
         data_type: '文本类型',
       }, {
-        column_chinese: '节点描述',
+        column_chinese: '问题描述',
         data_type: '文本类型',
-      }, {
-        column_chinese: '联系人',
-        data_type: '文本类型',
-      }, {
-        column_chinese: '联系电话',
-        data_type: '数字类型',
       }],
-      newDataTest:[
-        {
-          column_chinese: 'PLUS编号',
-          custom_mould_type: '数字类型',
-        }, {
-          column_chinese: '活牛品种',
-          custom_mould_type: '文本类型',
-        }
-      ]
     }
   },
-  methods:{
-    onSubmit(){
-      console.log("--增加字段--")
-    },
-    deleteRow(scope){
-      console.log("--deleteRow--"+JSON.stringify(scope))
-    },
-    save(){
-      console.log("--保存自定义字段--")
-    }
-  }
+  mounted() {
 
+  },
+  methods:{
+    //“增加字段”
+    add(){
+      if(this.column_name == ''){
+        this.$message.warning("请输入“字段名称”！");
+      }else if(this.data_type == ''){
+        this.$message.warning("请选择“字段类型”！");
+      }else{
+        //判断checked
+        if(this.checked == true){
+          this.id_required = 1
+        }else  if(this.checked == false){
+          this.id_required = 0
+        }
+        var arr  =
+        {
+          "column_chinese" :this.column_name,
+          "column_english" :"",
+          "data_type" :this.data_type,
+          "id_required" :this.id_required,
+        }
+        this.addDatas .push(arr);
+      }
+    },
+    //删除单条的“自定义字段”
+    deleteRow(index, rows){
+      rows.splice(index, 1);
+    },
+    //自定义属性新增接口
+    save(){
+      if(this.mould_name == ''){
+        this.$message.warning("请输入“自定义名称”！");
+      }else {
+        var customAttribute  = {
+          customAttributeList :this.addDatas,
+          custom_mould_type :"5",
+          mould_name :this.mould_name,
+          sub_link :"",
+        }
+        saveCustomAttributes(customAttribute)
+          .then(res => {
+//            console.log("添加成功---"+JSON.stringify(res)+"---"+JSON.stringify(customAttribute))
+            this.$message.success("添加成功!");
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
+      }
+    },
+}
 }
 </script>
 

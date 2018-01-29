@@ -18,8 +18,6 @@
                 <p>字段类型</p>
                 <el-select v-model="custom_mould_type" clearable  placeholder="选择字段类型" style="margin-top: 10px;width: 100%">
                   <el-option label="文本类型" value="文本类型"></el-option>
-                  <el-option label="数字类型" value="数字类型"></el-option>
-                  <el-option label="选择列表" value="选择列表"></el-option>
                 </el-select>
               </div>
               <div class="weather-required">
@@ -42,7 +40,7 @@
           style="width: 50%">
         </el-table-column>
         <el-table-column
-          prop="custom_mould_type"
+          prop="data_type"
           label="字段类型"
           style="width: 50%">
         </el-table-column>
@@ -68,7 +66,7 @@
           <el-input v-model="column_chinese" placeholder="字段名称"></el-input>
         </el-table-column>
         <el-table-column
-          prop="custom_mould_type"
+          prop="data_type"
           label="字段类型"
           >
           <el-input v-model="custom_mould_type" placeholder="字段类型" ></el-input>
@@ -100,41 +98,25 @@ export default {
       column_chinese:'',
       custom_mould_type:'',
       id_required:'',
-      templatespro: [{
-        value: '1',
-        label: '产品模板'
-      }],
       value: '',
 
       tableData: [{
-        column_chinese: '产品编码',
-        custom_mould_type: '数字类型',
+        column_chinese: '问题标题',
+        data_type: '文本类型',
       }, {
-        column_chinese: '产品名称',
-        custom_mould_type: '文本类型',
+        column_chinese: '问题发现人',
+        data_type: '文本类型',
       }, {
-        column_chinese: '产品分类编码',
-        custom_mould_type: '选择列表',
-      }, {
-        column_chinese: '自定义分类编码',
-        custom_mould_type: '选择列表',
-      }, {
-        column_chinese: '产品单位',
-        custom_mould_type: '选择列表',
-      }, {
-        column_chinese: '产品描述',
-        custom_mould_type: '文本类型',
-      }, {
-        column_chinese: '品牌名称',
-        custom_mould_type: '文本类型',
+        column_chinese: '问题描述',
+        data_type: '文本类型',
       }],
       newDataTest:[
         {
           column_chinese: 'PLUS编号',
-          custom_mould_type: '数字类型',
+          data_type: '数字类型',
         }, {
           column_chinese: '活牛品种',
-          custom_mould_type: '文本类型',
+          data_type: '文本类型',
         }
       ]
     }

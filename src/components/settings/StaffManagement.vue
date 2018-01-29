@@ -69,7 +69,6 @@
 import {
   getEmployeeList
 } from "../../assets/js/settings/ajax.js";
-import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
   name: "staff",
@@ -81,7 +80,6 @@ export default {
       employees: [],
       currentPage: 1,
       pageSize: 10,
-      ajaxSearch: "",
     }
   },
   mounted() {
@@ -93,7 +91,6 @@ export default {
       pagesize: 10,
     };
     this.initData(params);
-    this.ajaxSearch = deepCopy(this.search);
   },
   methods: {
     newStaff() {
@@ -105,14 +102,14 @@ export default {
       });
     },
     initData(params) {
-
-      /*查询员工信息列表接口*/
-      this.getEmployeeList();
+      this.getDataAjax(params);
     },
-
     //员工信息列表接口
     getEmployeeList(){
       let params ={
+        account: "",
+        contacts: "",
+        name: "",
         pagenum: this.currentPage,
         pagesize: this.pageSize,
       }

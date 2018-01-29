@@ -20,8 +20,7 @@
                   <el-option label="文本类型" value="string"></el-option>
                   <el-option label="数字类型" value="number"></el-option>
                   <el-option label="选择列表" value="date"></el-option>
-                  <el-option label="日期类型" value="string"></el-option>
-                  <el-option label="产品选择列表" value="date"></el-option>
+                  <el-option label="日期类型" value="date"></el-option>
                 </el-select>
               </div>
               <div class="weather-required">
@@ -94,7 +93,6 @@
   import {
     saveCustomAttributes,
   } from "../../assets/js/settings/ajax.js";
-  import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
   name: 'producttype',
@@ -109,26 +107,29 @@ export default {
       addDatas:[],
 
       tableData: [{
-        column_chinese: '收货日期',
+        column_chinese: '文档名称',
+        data_type: '文本类型',
+      }, {
+        column_chinese: '选择文件',
+        data_type: '文本类型',
+      }, {
+        column_chinese: '有效期',
         data_type: '日期类型',
       }, {
-        column_chinese: '来源节点',
+        column_chinese: '关联产品',
         data_type: '选择列表',
       }, {
-        column_chinese: '收货产品',
-        data_type: '产品选择列表  ',
+        column_chinese: '关联节点',
+        data_type: '选择列表',
+      },{
+        column_chinese: '管理业务信息',
+        data_type: '选择列表',
       }, {
-        column_chinese: '产品批次号',
-        data_type: '文本类型',
+        column_chinese: '认证机构',
+        data_type: '选择列表',
       }, {
-        column_chinese: '产品序列号',
-        data_type: '文本类型',
-      }, {
-        column_chinese: '产品数量',
-        data_type: '数字类型',
-      }, {
-        column_chinese: '产品单位',
-        data_type: '文本类型',
+        column_chinese: '认证名称',
+        data_type: '选择列表',
       }],
     }
   },
@@ -170,13 +171,13 @@ export default {
       }else {
         var customAttribute  = {
           customAttributeList :this.addDatas,
-          custom_mould_type :"3",
+          custom_mould_type :"4",
           mould_name :this.mould_name,
           sub_link :"",
         }
         saveCustomAttributes(customAttribute)
           .then(res => {
-            console.log("添加成功---"+JSON.stringify(res)+"---"+JSON.stringify(customAttribute))
+//            console.log("添加成功---"+JSON.stringify(res)+"---"+JSON.stringify(customAttribute))
             this.$message.success("添加成功!");
           })
           .catch(() => {

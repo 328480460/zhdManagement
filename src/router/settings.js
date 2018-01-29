@@ -7,18 +7,22 @@ import AddStaff from '@/components/settings/AddStaff'
 import EditStaff from '@/components/settings/EditStaff'
 import RolePermission from '@/components/settings/RolePermission'
 import Invitation from '@/components/settings/Invitation'
-import QualityProblem from '@/components/settings/QualityProblem'
 import CustomProductType from '@/components/settings/CustomProductType'
 import AddProductType from '@/components/settings/AddProductType'
-import AddNodeType from '@/components/settings/AddNodeType'
-import UpdateNodeType from '@/components/settings/UpdateNodeType'
 import EditProductType from '@/components/settings/EditProductType'
-import UpdateProductType from '@/components/settings/UpdateProductType'
 import CustomNodeType from '@/components/settings/CustomNodeType'
+import AddNodeType from '@/components/settings/AddNodeType'
+import EditNodeType from '@/components/settings/EditNodeType'
 import CustomBusinessType from '@/components/settings/CustomBusinessType'
 import AddBusinessType from '@/components/settings/AddBusinessType'
-import UpdateBusinessType from '@/components/settings/UpdateBusinessType'
+import EditBusinessType from '@/components/settings/EditBusinessType'
 import CustomDocumentType from '@/components/settings/CustomDocumentType'
+import AddDocumentType from '@/components/settings/AddDocumentType'
+import EditDocumentType from '@/components/settings/EditDocumentType'
+import QualityProblem from '@/components/settings/QualityProblem'
+import AddQualityProblem from '@/components/settings/AddQualityProblem'
+import EditQualityProblem from '@/components/settings/EditQualityProblem'
+
 
 export default[
     { //设置-企业信息
@@ -187,20 +191,6 @@ export default[
         }
       }
     },
-  //设置-自定义属性-产品类型修改
-    {
-      path : 'settings/updateProductType',
-      component : UpdateProductType,
-      name: 'updateProductType',
-      meta: {
-        pageInfo: {
-          page: "updateProductType",
-          node: 'settings',
-          name: "产品类型修改",
-          id: "03040102"
-        }
-      }
-    },
     //设置-自定义属性-节点类型
     {
       path : 'settings/customNodeType',
@@ -231,12 +221,12 @@ export default[
     },
     //设置-自定义属性-节点类型修改
     {
-      path : 'settings/updateNodeType',
-      component : UpdateNodeType,
-      name: 'updateNodeType',
+      path : 'settings/editNodeType',
+      component : EditNodeType,
+      name: 'editNodeType',
       meta: {
         pageInfo: {
-          page: "updateNodeType",
+          page: "editNodeType",
           node: 'settings',
           name: "节点类型修改",
           id: "03040202"
@@ -273,19 +263,18 @@ export default[
     },
   //设置-自定义属性-修改业务类型
     {
-      path : 'settings/updateBusinessType',
-      component : UpdateBusinessType,
-      name: 'updateBusinessType',
+      path : 'settings/editBusinessType',
+      component : EditBusinessType,
+      name: 'editBusinessType',
       meta: {
         pageInfo: {
-          page: "updateBusinessType",
+          page: "editBusinessType",
           node: 'settings',
           name: "修改业务类型",
           id: "03040302"
         }
       }
     },
-
     //设置-自定义属性-文档类型
     {
       path : 'settings/customDocumentType',
@@ -300,6 +289,34 @@ export default[
         }
       }
     },
+  //设置-自定义属性-添加文档类型
+    {
+      path : 'settings/addDocumentType',
+      component : AddDocumentType,
+      name: 'addDocumentType',
+      meta: {
+        pageInfo: {
+          page: "addDocumentType",
+          node: 'settings',
+          name: "添加文档类型",
+          id: "03040401"
+        }
+      }
+    },
+  //设置-自定义属性-修改文档类型
+    {
+      path : 'settings/editDocumentType',
+      component : EditDocumentType,
+      name: 'editDocumentType',
+      meta: {
+        pageInfo: {
+          page: "editDocumentType",
+          node: 'settings',
+          name: "修改文档类型",
+          id: "03040402"
+        }
+      }
+    },
     //设置-自定义属性-质量问题
     {
       path : 'settings/qualityProblem',
@@ -311,6 +328,34 @@ export default[
           node: 'settings',
           name: "质量问题",
           id: "030405"
+        }
+      }
+    },
+    //设置-自定义属性-添加质量问题
+    {
+      path : 'settings/addQualityProblem',
+      component : AddQualityProblem,
+      name: 'addQualityProblem',
+      meta: {
+        pageInfo: {
+          page: "addQualityProblem",
+          node: 'settings',
+          name: "添加质量问题",
+          id: "03040501"
+        }
+      }
+    },
+    //设置-自定义属性-编辑质量问题
+    {
+      path : 'settings/editQualityProblem',
+      component : EditQualityProblem,
+      name: 'editQualityProblem',
+      meta: {
+        pageInfo: {
+          page: "editQualityProblem",
+          node: 'settings',
+          name: "编辑质量问题",
+          id: "03040502"
         }
       }
     }

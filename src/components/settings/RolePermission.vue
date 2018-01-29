@@ -1,38 +1,46 @@
 <template>
-  <div id="role">
-    <div class="btn-list">
-      <el-button type="primary" size="medium">添加角色</el-button>
+    <div id="role">
+      <div class="btn-list">
+        <el-button type="primary" size="medium">添加角色</el-button>
+      </div>
+
+      <el-table class="el-table"
+                border
+                stripe
+                :data="roleList"
+      >
+        <el-table-column class="table-column"
+                         prop="role_name"
+                         label="角色"
+        >
+        </el-table-column>
+
+        <el-table-column class="table-column"
+                         label="操作"
+        >
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="handleEdit">修改</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              style="margin-left: 50px"
+              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        background
+        style="margin-top: 15px"
+        layout="total,prev, pager, next"
+        :current-page= 'currentPage'
+        @current-change="handleCurrentChange"
+        :page-size=10
+        :total= 'totalcount'>
+      </el-pagination>
     </div>
-
-    <el-table class="el-table"
-              border
-              stripe
-              :data="roleList"
-    >
-      <el-table-column class="table-column"
-                       prop="role_name"
-                       label="角色"
-      >
-      </el-table-column>
-
-      <el-table-column class="table-column"
-                       label="操作"
-      >
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            @click="handleEdit">修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            style="margin-left: 50px"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -46,33 +54,40 @@ export default {
     data() {
       return{
         totalcount: 0,
+        currentPage: 1,
+        pageSize: 10,
         roleList: [],
       }
     },
     mounted() {
       let params = {
-  //      productName: "",
-  //      time: "",
+        role_name: "",
+        pagenum: 1,
+        pagesize: 10,
       };
       this.initData(params);
     },
     methods: {
       initData(params) {
-        //查询产品列表
-        this.searchConditions(params)
+        this.getDataAjax(params)
       },
-      /*"搜索"---查询角色信息列表接口*/
-      searchConditions(current){
-//      this.search.pageNum = typeof current === 'number' ? current : 1;
+      // 分页跳转
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getListRole();
+      },
+      getListRole(){
         let params = {
-
+          role_name: "",
+          pagenum: this.currentPage,
+          pagesize: 10,
         };
-        this.getListRole(params);
+        this.getDataAjax(params);
       },
-      //角色信息列表接口
-      getListRole(params){
+      getDataAjax(params) {
         getListRole(params)
           .then(res => {
+//            console.log("res---"+JSON.stringify(res))
             this.totalcount = res.data.totalcount;
             this.roleList = res.data.roleList;
           })
