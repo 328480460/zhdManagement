@@ -76,7 +76,6 @@ export default {
           page: "addProductType",
           name: "新建产品类型",
           id: "03040101",
-          query: { userId: "lalal" }
         });
       },
       handleEdit(index, row) {

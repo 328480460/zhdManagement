@@ -10,6 +10,8 @@ import Invitation from '@/components/settings/Invitation'
 import QualityProblem from '@/components/settings/QualityProblem'
 import CustomProductType from '@/components/settings/CustomProductType'
 import AddProductType from '@/components/settings/AddProductType'
+import AddNodeType from '@/components/settings/AddNodeType'
+import UpdateNodeType from '@/components/settings/UpdateNodeType'
 import EditProductType from '@/components/settings/EditProductType'
 import UpdateProductType from '@/components/settings/UpdateProductType'
 import CustomNodeType from '@/components/settings/CustomNodeType'
@@ -208,6 +210,34 @@ export default[
           node: 'settings',
           name: "节点类型",
           id: "030402"
+        }
+      }
+    },
+    //设置-自定义属性-节点类型添加
+    {
+      path : 'settings/addNodeType',
+      component : AddNodeType,
+      name: 'addNodeType',
+      meta: {
+        pageInfo: {
+          page: "addNodeType",
+          node: 'settings',
+          name: "节点类型添加",
+          id: "03040201"
+        }
+      }
+    },
+    //设置-自定义属性-节点类型修改
+    {
+      path : 'settings/updateNodeType',
+      component : UpdateNodeType,
+      name: 'updateNodeType',
+      meta: {
+        pageInfo: {
+          page: "updateNodeType",
+          node: 'settings',
+          name: "节点类型修改",
+          id: "03040202"
         }
       }
     },

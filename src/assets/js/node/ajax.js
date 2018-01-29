@@ -26,6 +26,7 @@ export const getDetailNode = function(params) {
   let url = ENVIRNMENT + '/Node/getDetailNode';
   return ajaxPost(url,params)
 }
+
 // 自定义属性列表查询
 export const getCustomAttributeList = function(params) {
   let url = ENVIRNMENT + '/getCustomAttributeList';

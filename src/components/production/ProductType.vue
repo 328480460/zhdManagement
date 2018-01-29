@@ -42,7 +42,7 @@
         background
         style="margin-top: 15px"
         layout="total,prev, pager, next"
-        :current-page= search.pageNum
+        :current-page= currentPage
         @current-change="handleCurrentChange"
         :page-size=10
         :total=totalcount>
@@ -57,6 +57,7 @@
     updateProductType,
     deleteProductType,
   } from "../../assets/js/production/ajax.js";
+  import { deepCopy } from "../../assets/js/api/util.js";
 
   export default {
     name: 'cpymb',
@@ -66,19 +67,21 @@
         customTypeList:[],
         search: {
           typeName:'',
-          pageNum: 1,
-          pageSize: 10,
         },
+        currentPage: 1,
+        pageSize: 10,
+        ajaxSearch: "",
         typenameDetail:'',
       }
     },
     mounted() {
       let params = {
-        typeName: '',
-        pageNum: 1,
-        pageSize: 10,
+        type_name: '',
+        pagenum: 1,
+        pagesize: 10,
       };
-      this.getTypeList(params);
+      this.initData(params);
+      this.ajaxSearch = deepCopy(this.search);
     },
     methods:{
       newProductType() {
@@ -114,16 +117,22 @@
       },
       /*"搜索"---查询产品分类列表接口*/
       searchProductType(current){
-        this.search.pageNum = typeof current === 'number' ? current : 1;
-        let params = {
-          type_name: this.search.typeName,
-          pagenum: this.search.pageNum,
-          pagesize: this.search.pageSize,
-        };
-        this.getTypeList(params);
+        this.ajaxSearch = deepCopy(this.search);
+        if (this.currentPage !== 1) {
+          this.currentPage = 1;
+          return;
+        }
+        this.getTypeList();
       },
-      //产品自定义分类列表查询
-      getTypeList(params){
+      getTypeList(){
+        let params = {
+          type_name: this.ajaxSearch.typeName,
+          pagenum: this.currentPage,
+          pagesize: this.pageSize,
+        };
+        this.getDataAjax(params);
+      },
+      getDataAjax(params){
         getListProductType(params)
           .then(res => {
             this.totalcount = res.data.totalcount;
@@ -215,9 +224,13 @@
         });
       },
       handleCurrentChange(val) {
-        this.pagenum = val
-        console.log(`当前页: ${this.pagenum}`);
+        this.currentPage = val;
+        this.getTypeList()
       },
+      initData(params) {
+        //查询产品类型列表信息
+        this.getDataAjax(params);
+      }
     },
   }
 </script>
