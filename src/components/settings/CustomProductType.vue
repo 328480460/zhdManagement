@@ -114,8 +114,6 @@ export default {
       initData(params){
         this.getDataAjax(params)
       },
-
-
     }
 };
 </script>

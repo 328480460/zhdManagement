@@ -25,10 +25,10 @@
             <div class="num">18<span class="unit">个</span></div>
           </div>
         </div>
-        
+
       </div>
       <div class="section">
-        <h4 class="title">常用功能</h4> 
+        <h4 class="title">常用功能</h4>
         <div class="func-wrapper">
           <div class="func-item"><i class="el-icon-document"></i>新建收货</div>
           <div class="func-item"><i class="el-icon-document"></i>新增产品</div>
@@ -39,13 +39,13 @@
       <div class="section">
         <h4 class="title">近7天追溯数据量趋势</h4>
         <div class="echars-wrapper" id="echars" style="width: 1200px;height:500px;"></div>
-      </div> 
+      </div>
     </div>
     <div class="help-wrapper"></div>
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import echarts from "echarts";
 
 export default {
@@ -90,7 +90,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style rel="stylesheet/less" lang="less" scoped>
 .custom-name {
   height: 70px;
   line-height: 70px;

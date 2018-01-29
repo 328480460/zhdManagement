@@ -16,6 +16,8 @@ import EditProductType from '@/components/settings/EditProductType'
 import UpdateProductType from '@/components/settings/UpdateProductType'
 import CustomNodeType from '@/components/settings/CustomNodeType'
 import CustomBusinessType from '@/components/settings/CustomBusinessType'
+import AddBusinessType from '@/components/settings/AddBusinessType'
+import UpdateBusinessType from '@/components/settings/UpdateBusinessType'
 import CustomDocumentType from '@/components/settings/CustomDocumentType'
 
 export default[
@@ -255,6 +257,35 @@ export default[
         }
       }
     },
+  //设置-自定义属性-添加业务类型
+    {
+      path : 'settings/addBusinessType',
+      component : AddBusinessType,
+      name: 'addBusinessType',
+      meta: {
+        pageInfo: {
+          page: "addBusinessType",
+          node: 'settings',
+          name: "添加业务类型",
+          id: "03040301"
+        }
+      }
+    },
+  //设置-自定义属性-修改业务类型
+    {
+      path : 'settings/updateBusinessType',
+      component : UpdateBusinessType,
+      name: 'updateBusinessType',
+      meta: {
+        pageInfo: {
+          page: "updateBusinessType",
+          node: 'settings',
+          name: "修改业务类型",
+          id: "03040302"
+        }
+      }
+    },
+
     //设置-自定义属性-文档类型
     {
       path : 'settings/customDocumentType',
