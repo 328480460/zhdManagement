@@ -64,6 +64,7 @@ export default {
           account: '',
           contacts: '',
           name: '',
+          email: '',
           role_id: '',
         },
 
@@ -102,15 +103,20 @@ export default {
           account: this.form.account,
           contacts: this.form.contacts,
           name: this.form.name,
+          email: this.form.email,
           role_id: this.form.role_id,
         };
-//      console.log("submit!新增员工--"+JSON.stringify(params));
+      console.log("params!新增员工--"+JSON.stringify(params));
         /**
          * 员工信息新增接口
          */
         saveEmployee(params)
           .then(res =>{
-            this.$message.success("员工添加成功!");
+            console.log("res!新增员工--"+JSON.stringify(res));
+            if (res.status == 200) {
+              this.$message.success("添加成功!");
+              this.$router.go(-1);
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");

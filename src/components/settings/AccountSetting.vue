@@ -49,6 +49,7 @@ export default {
       "id":123
     }
     this.initData(params);
+
   },
     methods: {
       initData(params){

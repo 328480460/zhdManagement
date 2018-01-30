@@ -23,12 +23,12 @@ export const  updateEmployee  = function(params) {
 }
 // 员工信息列表查询
 export const  getEmployeeList  = function(params) {
-    let url = ENVIRNMENT + '/getEmployeeList';
+    let url = ENVIRNMENTTEST + '/getEmployeeList';
     return ajaxPost(url,params)
 }
 // 员工信息新增
 export const  saveEmployee  = function(params) {
-    let url = ENVIRNMENT + '/saveEmployee';
+    let url = ENVIRNMENTTEST + '/saveEmployee';
     return ajaxPost(url,params)
 }
 // 角色列表查询

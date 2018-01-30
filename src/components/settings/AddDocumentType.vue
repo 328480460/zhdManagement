@@ -177,8 +177,10 @@ export default {
         }
         saveCustomAttributes(customAttribute)
           .then(res => {
-//            console.log("添加成功---"+JSON.stringify(res)+"---"+JSON.stringify(customAttribute))
-            this.$message.success("添加成功!");
+            if (res.status == 200) {
+              this.$message.success("添加成功!");
+              this.$router.go(-1);
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");

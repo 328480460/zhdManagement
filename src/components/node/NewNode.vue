@@ -131,8 +131,10 @@ export default {
       console.log("submit!添加节点"+JSON.stringify(params));
     createNode(params)
       .then(res =>{
-        console.log("---节点添加成功"+JSON.stringify(res));
-        this.$message.success("节点添加成功!");
+        if (res.status == 200) {
+          this.$message.success("添加成功!");
+          this.$router.go(-1);
+        }
       })
       .catch(() => {
         this.$message.error("出错啦!");

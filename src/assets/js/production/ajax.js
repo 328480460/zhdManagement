@@ -29,12 +29,12 @@ export const updateProduct = function(params) {
 };
 // 产品信息删除接口
 export const deleteProduct = function(params) {
-  let url = ENVIRNMENT + "/deleteProduct";
+  let url = ENVIRNMENTTEST + "/deleteProduct";
   return ajaxPost(url, params);
 };
 // 产品信息新增接口
 export const saveProduct = function(params) {
-  let url = ENVIRNMENT + "/saveProduct";
+  let url = ENVIRNMENTTEST + "/saveProduct";
   return ajaxPost(url, params);
 };
 // 系统默认分类管理——三级查询

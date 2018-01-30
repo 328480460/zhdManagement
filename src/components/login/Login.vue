@@ -24,7 +24,8 @@
           <div class="form-line">
           </div>
           <div class="rememeber-pwd">
-            <label><input class="remember-pwd" name="remember-pwd" type="checkbox" value="" />记住密码</label>
+            <!--<label><input class="remember-pwd" name="remember-pwd" type="checkbox" value="" />记住密码</label>-->
+            <el-checkbox v-model="checked">记住密码</el-checkbox>
           </div>
           <div class="submit-button">
             <el-button type="success" @click="loginBt" class="button">登录</el-button>
@@ -40,7 +41,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {
+import {
     login
   } from "../../assets/js/login/ajax.js";
 
@@ -48,9 +49,36 @@ export default {
   name: 'login',
   data(){
     return{
+      checked:false,
       accountName: '',
       password: ''
     };
+  },
+  mounted() {
+    if(JSON.stringify(localStorage.length) == 0){
+      console.log("localStorage---"+JSON.stringify(localStorage.length))
+    }else {
+      this.accountName = JSON.parse(localStorage.account)
+      this.password = JSON.parse(localStorage.password)
+      this.enterprise_id = JSON.parse(localStorage.enterprise_id)
+      this.checked = JSON.parse(localStorage.checked)
+      console.log("localStorage-else--"+JSON.stringify(localStorage.length))
+//      this.accountName = JSON.parse(localStorage.account)
+//      this.password = JSON.parse(localStorage.password)
+//      this.enterprise_id = JSON.parse(localStorage.enterprise_id)
+//      this.checked = JSON.parse(localStorage.checked)
+//      console.log("localStorage-else--"+JSON.stringify(localStorage.length))
+
+//      if(JSON.parse(localStorage.checked)== true){
+//        this.accountName = JSON.parse(localStorage.account)
+//        this.password = JSON.parse(localStorage.password)
+//        this.enterprise_id = JSON.parse(localStorage.enterprise_id)
+//        this.checked = JSON.parse(localStorage.checked)
+//        console.log("this.checked--true-"+this.checked)
+//      }else{
+//        console.log("this.checked--else-"+this.checked)
+//      }
+    }
   },
   methods:{
     loginBt(){
@@ -67,11 +95,20 @@ export default {
         }
         login(param)
           .then(res => {
-//            console.log(JSON.stringify(res)+"==accountName--"+this.accountName+"--password--"+this.password);
-//            this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
             if (res.status == 200){
               // 命名的路由
               this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+              console.log("login---"+JSON.stringify(res)+"*****checked---"+JSON.stringify(this.checked));
+              if(this.checked == true){
+                localStorage.setItem('account',JSON.stringify(this.accountName))
+                localStorage.setItem('password',JSON.stringify(this.password))
+                localStorage.setItem('enterprise_id',JSON.stringify(1))
+                localStorage.setItem('checked',JSON.stringify(true))
+                console.log("==true")
+              }else {
+                localStorage.clear()
+                console.log("==clear")
+              }
             }
             if (res.status == 201){
               this.$message.error(res.msg);

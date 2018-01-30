@@ -28,6 +28,7 @@
 <script type="text/ecmascript-6">
   import {
     getEmployeeDetail,
+    updateEmployee,
   } from "../../assets/js/settings/ajax.js";
 
 export default {
@@ -53,7 +54,7 @@ export default {
     methods: {
       initData(params){
         /**
-         * 企业详情查询
+         * 员工详情查询
          */
         getEmployeeDetail(params)
           .then(res =>{
@@ -68,9 +69,21 @@ export default {
             this.$message.error("出错啦!");
           })
       },
-
+      /**
+       * 员工信息修改
+       */
       editPage() {
-        this.$message.success("保存!");
+//        updateEmployee(params)
+//          .then(res =>{
+//            let employee = res.data.employee
+//            this.form.account = employee. account;
+//            this.form.name = employee. name;
+//            this.form.password = employee. password;
+//            this.form.role_id = employee. role_id;
+//          })
+//          .catch(() => {
+//            this.$message.error("出错啦!");
+//          })
       }
     }
 };

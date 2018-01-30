@@ -118,8 +118,10 @@ export default {
          */
         updateEnterprise(params)
           .then(res =>{
-            this.$message.success("企业信息修改成功!");
-//            console.log("企业信息成功!!"+JSON.stringify(res))
+            if (res.status == 200) {
+              this.$message.success("修改成功!");
+              this.$router.go(-1);
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");
