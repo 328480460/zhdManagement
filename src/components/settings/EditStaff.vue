@@ -123,8 +123,9 @@ export default {
       },
       //员工详情
       getEmployeeDetail(){
-        getEmployeeDetail({ id: 123 })
+        getEmployeeDetail({ id: this.$route.query.staffId })
           .then(res =>{
+            console.log("--getEmployeeDetail--"+JSON.stringify(res))
             let employee = res.data.employee
             this.form.account = employee. account;
             this.form.name = employee. name;

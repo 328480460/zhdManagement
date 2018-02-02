@@ -19,7 +19,7 @@ export const getCustomAttributeList = function(params) {
 }
 // 产品详情信息查询接口
 export const getProductDetail = function(params) {
-  let url = ENVIRNMENT + "/getProductDetail";
+  let url = ENVIRNMENTTEST + "/getProductDetail";
   return ajaxPost(url, params);
 };
 // 产品信息修改接口

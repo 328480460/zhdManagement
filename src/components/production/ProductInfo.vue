@@ -48,7 +48,7 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="product_type_name"
+                       prop="product_type_id"
                        label="产品分类"
       >
       </el-table-column>
@@ -58,7 +58,7 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="metering_name"
+                       prop="norms"
                        label="单位"
       >
       </el-table-column>
@@ -242,6 +242,7 @@ export default {
         .then(res => {
           this.totalcount = res.data.totalcount;
           this.productList = res.data.productList;
+//          console.log("productList---"+JSON.stringify(this.productList))
         })
         .catch(() => {
           this.$message.error("出错啦!");

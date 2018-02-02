@@ -10,13 +10,13 @@
             <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="联系方式：">
-            <el-input v-model="form.password"></el-input>
+            <el-input v-model="form.contacts"></el-input>
           </el-form-item>
           <el-form-item label="角色：">{{form.role_id}}
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="editPage" >保存</el-button>
+            <el-button type="primary" @click="save" >保存</el-button>
           </el-form-item>
 
         </el-form>
@@ -40,14 +40,14 @@ export default {
         form: {
           account: '',
           name: '',
-          password: '',
+          contacts: '',
           role_id: '',
         },
       }
     },
   mounted(){
     let params ={
-      "id":123
+      "id":1
     }
     this.initData(params);
   },
@@ -62,7 +62,7 @@ export default {
             let employee = res.data.employee
             this.form.account = employee. account;
             this.form.name = employee. name;
-            this.form.password = employee. password;
+            this.form.contacts = employee. contacts;
             this.form.role_id = employee. role_id;
           })
           .catch(() => {
@@ -72,18 +72,24 @@ export default {
       /**
        * 员工信息修改
        */
-      editPage() {
-//        updateEmployee(params)
-//          .then(res =>{
-//            let employee = res.data.employee
-//            this.form.account = employee. account;
-//            this.form.name = employee. name;
-//            this.form.password = employee. password;
-//            this.form.role_id = employee. role_id;
-//          })
-//          .catch(() => {
-//            this.$message.error("出错啦!");
-//          })
+      save() {
+        let params ={
+          "account":this.form.account,
+          "name":this.form.name,
+          "contacts":this.form.contacts,
+          "role_id":this.form.role_id,
+        }
+        updateEmployee(params)
+          .then(res =>{
+            if (res.status == 200) {
+              this.$message.success("编辑成功!");
+              this.$router.go(-1);
+            }
+            console.log("--res--"+JSON.stringify(res))
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
       }
     }
 };

@@ -56,28 +56,14 @@ export default {
   },
   mounted() {
     if(JSON.stringify(localStorage.length) == 0){
-      console.log("localStorage---"+JSON.stringify(localStorage.length))
+//      console.log("unchecked---"+JSON.stringify(localStorage.length))
     }else {
+//      var userid = JSON.stringify(JSON.parse(localStorage.userid))
       this.accountName = JSON.parse(localStorage.account)
       this.password = JSON.parse(localStorage.password)
       this.enterprise_id = JSON.parse(localStorage.enterprise_id)
       this.checked = JSON.parse(localStorage.checked)
-      console.log("localStorage-else--"+JSON.stringify(localStorage.length))
-//      this.accountName = JSON.parse(localStorage.account)
-//      this.password = JSON.parse(localStorage.password)
-//      this.enterprise_id = JSON.parse(localStorage.enterprise_id)
-//      this.checked = JSON.parse(localStorage.checked)
-//      console.log("localStorage-else--"+JSON.stringify(localStorage.length))
-
-//      if(JSON.parse(localStorage.checked)== true){
-//        this.accountName = JSON.parse(localStorage.account)
-//        this.password = JSON.parse(localStorage.password)
-//        this.enterprise_id = JSON.parse(localStorage.enterprise_id)
-//        this.checked = JSON.parse(localStorage.checked)
-//        console.log("this.checked--true-"+this.checked)
-//      }else{
-//        console.log("this.checked--else-"+this.checked)
-//      }
+//      console.log("checked---"+JSON.stringify(localStorage.length))
     }
   },
   methods:{
@@ -96,10 +82,14 @@ export default {
         login(param)
           .then(res => {
             if (res.status == 200){
+              console.log("userid---"+JSON.stringify(res.data.user.id))
+              localStorage.setItem('userid',JSON.stringify(res.data.user.id))//userid存本地
+
               // 命名的路由
               this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
-              console.log("login---"+JSON.stringify(res)+"*****checked---"+JSON.stringify(this.checked));
+              //记住密码
               if(this.checked == true){
+                localStorage.setItem('userid',JSON.stringify(res.data.user.id))
                 localStorage.setItem('account',JSON.stringify(this.accountName))
                 localStorage.setItem('password',JSON.stringify(this.password))
                 localStorage.setItem('enterprise_id',JSON.stringify(1))
@@ -110,12 +100,12 @@ export default {
                 console.log("==clear")
               }
             }
-            if (res.status == 201){
+            else if (res.status == 201){
               this.$message.error(res.msg);
             }
           })
           .catch(() => {
-            this.$message.error("出错啦!");
+            this.$message.error("出错啦!login");
           });
       }
     },

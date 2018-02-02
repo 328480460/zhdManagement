@@ -42,14 +42,17 @@ export default {
           password: '',
           role_id: '',
         },
+        userid:'',
       }
     },
   mounted(){
+//    var userid = JSON.stringify(JSON.parse(localStorage.userid))
+//    console.log("userid-userid--"+id)
     let params ={
-      "id":123
+      "id":1,
+//      "id":userid
     }
     this.initData(params);
-
   },
     methods: {
       initData(params){

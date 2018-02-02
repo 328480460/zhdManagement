@@ -43,7 +43,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="handleEdit">修改</el-button>
+            @click="handleEdit(scope.$index, scope.row)">修改</el-button>
           <el-button
             size="mini"
             type="text"
@@ -125,12 +125,13 @@ export default {
           this.$message.error("出错啦!");
         });
     },
-    handleEdit() {
+    handleEdit(index, row) {
       this.$emit("openExtraPage", {
         node:"settings",
         page: "editStaff",
         name: "修改员工信息",
-        id: "03030102"
+        id: "03030102",
+        query: { staffId: row.id },
       });
     },
     handleDelete(index, row) {
