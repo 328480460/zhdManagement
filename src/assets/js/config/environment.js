@@ -2,7 +2,7 @@
 // ENVIRNMENT = 'develop' 时对应 'http://47.92.149.109:7108/mockjsdata/2';
 // ENVIRNMENT = 'test' 时对应 'http://192.168.1.73:8764/meatWebServer';
 const develop = 'http://47.92.149.109:7108/mockjsdata/2';
-const test = 'http://192.168.1.66:8764/meatWebServer';
+const test = 'http://192.168.1.67:8764/meatWebServer';
 // const test = 'http://10.51.1.108:8764/meatWebServer';
 
 export const ENVIRNMENT = develop;

@@ -55,15 +55,15 @@ export default {
     };
   },
   mounted() {
-    if(JSON.stringify(localStorage.length) == 0){
-//      console.log("unchecked---"+JSON.stringify(localStorage.length))
-    }else {
-//      var userid = JSON.stringify(JSON.parse(localStorage.userid))
+    if(JSON.stringify(localStorage.checked) != null){
+        console.log("checked---"+JSON.stringify(localStorage.checked))
+      var userid = JSON.stringify(JSON.parse(localStorage.userid))
       this.accountName = JSON.parse(localStorage.account)
       this.password = JSON.parse(localStorage.password)
       this.enterprise_id = JSON.parse(localStorage.enterprise_id)
       this.checked = JSON.parse(localStorage.checked)
-//      console.log("checked---"+JSON.stringify(localStorage.length))
+    }else {
+        console.log("unchecked---")
     }
   },
   methods:{
@@ -96,6 +96,7 @@ export default {
                 localStorage.setItem('checked',JSON.stringify(true))
                 console.log("==true")
               }else {
+                //清除本地缓存
                 localStorage.clear()
                 console.log("==clear")
               }
