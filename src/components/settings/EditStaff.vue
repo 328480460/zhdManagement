@@ -125,7 +125,7 @@ export default {
       getEmployeeDetail(){
         getEmployeeDetail({ id: this.$route.query.staffId })
           .then(res =>{
-            console.log("--getEmployeeDetail--"+JSON.stringify(res))
+//            console.log("--getEmployeeDetail--"+JSON.stringify(res))
             let employee = res.data.employee
             this.form.account = employee. account;
             this.form.name = employee. name;

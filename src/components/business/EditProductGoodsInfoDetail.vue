@@ -1,13 +1,13 @@
 <template>
     <div id="editProductGoodsInfoDetailTemplate" v-if='detailDataInfo'>
-        <ProductGoodsInfoDetailTemplate 
+        <ProductGoodsInfoDetailTemplate
             :edit= true
             :id= 'detailDataInfo.id'
             :productionNum='detailDataInfo.production_num'
-            :thisNodeId='"测试内容247h" || detailDataInfo.this_node_id' 
+            :thisNodeId='"测试内容247h" || detailDataInfo.this_node_id'
             :productListIn='detailDataInfo.productionInProductList'
             :productListOut='detailDataInfo.productionOutProductList'
-            :productDate='detailDataInfo.production_date' 
+            :productDate='detailDataInfo.production_date'
             :customFields='[{"data_value": "苹果","custom_id": "258"},{"data_value": "香蕉","custom_id": "259"}] || detailDataInfo.customFields'
             :customMouldId='"属性id1" || detailDataInfo.custom_mould_id'
             @saveData= 'saveData'

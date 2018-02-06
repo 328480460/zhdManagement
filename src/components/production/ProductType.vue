@@ -53,7 +53,7 @@
 <script type="text/ecmascript-6">
   import {
     getListProductType,
-    getDetailProductType,
+    createProductType,
     updateProductType,
     deleteProductType,
   } from "../../assets/js/production/ajax.js";
@@ -84,6 +84,7 @@
       this.ajaxSearch = deepCopy(this.search);
     },
     methods:{
+      //新建分类
       newProductType() {
         this.$prompt('自定义分类名称：', '新建自定义分类', {
           confirmButtonText: '确定',
@@ -92,21 +93,21 @@
           if( value == null){
             this.judge()
           }else {
-            /*分类新建接口——（？？？暂无需要替换）*/
+            /*分类新建接口*/
             let params = {
               type_name: value,
             };
-            updateProductType(params)
+            createProductType(params)
               .then(res => {
-//                console.log("分类新建res---"+JSON.stringify(res))
+                this.$message({
+                  type: 'success',
+                  message: '新建成功'
+                });
+                console.log("分类新建res---"+JSON.stringify(res))
               })
               .catch(() => {
                 this.$message.error("出错啦!");
               });
-            this.$message({
-              type: 'success',
-              message: '新建成功'
-            });
           }
         }).catch(() => {
           this.$message({
@@ -137,37 +138,39 @@
           .then(res => {
             this.totalcount = res.data.totalcount;
             this.customTypeList = res.data.customTypeList;
+//            console.log(JSON.stringify(res))
           })
           .catch(() => {
             this.$message.error("出错啦!");
           });
       },
+      //编辑分类
       editProduct(index, row) {
-        /*分类详情——（没有回显？？？）*/
-        this.getDetailProductType(row.id)
-        this.$prompt('自定义分类名称：', '编辑自定义分类',this.typenameDetail, {
+        //“编辑分类”弹框内容
+        this.$prompt('自定义分类名称：', '编辑自定义分类', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
+          inputValue:row.type_name
         }).then(({ value }) => {
           if( value == null){
             this.judge()
           }else {
-            /*分类修改接口*/
-            let params = {
-              id: row.id,
-              type_name: value,
-            };
-            updateProductType(params)
-              .then(res => {
-//                console.log("分类修改res---"+JSON.stringify(res))
-              })
-              .catch(() => {
-                this.$message.error("出错啦!");
-              });
-            this.$message({
-              type: 'success',
-              message: '编辑成功'
-            });
+              /*分类修改接口*/
+              let params = {
+                id: row.id,
+                type_name: value,
+              };
+              updateProductType(params)
+                .then(res => {
+                  this.$message({
+                    type: 'success',
+                    message: '编辑成功'
+                  });
+                  console.log("分类修改res---"+JSON.stringify(res))
+                })
+                .catch(() => {
+                  this.$message.error("出错啦!");
+                });
           }
         }).catch(() => {
           this.$message({
@@ -175,15 +178,6 @@
             message: '取消输入'
           });
         });
-      },
-      getDetailProductType(params){
-        getDetailProductType(params)
-          .then(res =>{
-             this.typenameDetail = res.data.customType.type_name
-          })
-          .catch(() =>{
-            this.$message.error("出错啦!");
-          })
       },
       judge() {
         this.$message({
@@ -206,16 +200,15 @@
           };
           deleteProductType(params)
             .then(res => {
-//              console.log("节点删除成功---"+JSON.stringify(res))
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              console.log("产品自定义类型删除成功---"+JSON.stringify(res))
             })
             .catch(() => {
               this.$message.error("出错啦!");
             });
-
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
         }).catch(() => {
           this.$message({
             type: 'info',

@@ -105,7 +105,6 @@ export default {
         systemDefaultType:"",
       },
       systemDefaultType:[],
-      systemDefaultTypeList:[],
       props: {
         value: 'id',
         label: 'type_name',
@@ -121,9 +120,7 @@ export default {
     this.initData();
   },
   watch: {
-//    selectCustomDefine(newVal) {
-//      this.loadCustomDefineDetailData(newVal);
-//    }
+
   },
   methods: {
     onSubmit() {
@@ -140,7 +137,7 @@ export default {
         product: this.form.productCode,
         product_name: this.form.productName,
 //        product_type_id: 1,
-        product_type_id: this.form.productType.toString(),
+        product_type_id: this.form.productType,
         metering: this.form.metering,
         norms: this.form.norms,
         custom_mould_id: this.form.custom_mould_id,
@@ -164,19 +161,16 @@ export default {
         })
     },
     handleChange(value) {
-      console.log("handleChange--"+JSON.stringify(value));
-      this.productType = value
+//      console.log("handleChange--"+JSON.stringify(value[value.length - 1]));
+      console.log("handleChange--"+value[value.length - 1]);
+      this.form.productType =value
     },
     //“产品分类-系统默认提供”列表
     systemDefaultTypeLists(){
       getDefaultProductType()
         .then(res =>{
-//          this.totalcount = res.data.totalcount ;
-          this.systemDefaultType = res.data.systemDefaultType;
-          this.systemDefaultTypeList = res.data.systemDefaultType[0].systemDefaultTypeList;
-
-          console.log("--systemDefaultType--"+JSON.stringify(this.systemDefaultType))
-          console.log("--systemDefaultTypeList--"+JSON.stringify(this.systemDefaultTypeList))
+          this.systemDefaultType = res.data.systemDefaultTypeList;
+          console.log("--getDefaultProductType----"+JSON.stringify(res.data.systemDefaultTypeList.length))
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -221,7 +215,6 @@ export default {
       };
       getCustomAttributeList(params)
         .then(res => {
-//          this.customListCount = res.data.totalcount;
           this.customAttributeList = res.data.customAttributeList;
         })
         .catch(() => {

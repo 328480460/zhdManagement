@@ -30,8 +30,9 @@
           <el-form-item label="*包装单位">
             <el-select v-model="form.norms" clearable placeholder="无">
               <!--换包装单位集合查询接口的集合-->
-              <el-option  v-for="item in customFields" :key="item.custom_id" :label="item.data_value"  :value="item.custom_id" >
-              </el-option>
+              <el-option label="袋" value="袋"></el-option>
+              <el-option label="件" value="件"></el-option>
+              <el-option label="箱" value="箱"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="*计量单位">
@@ -121,8 +122,8 @@
         systemDefaultType:[],
         systemDefaultTypeList:[],
         props: {
-          value: 'type_name',
-          label: 'id',
+          value: 'id',
+          label: 'type_name',
           children: 'systemDefaultTypeList'
         },
         customTypeList:[],
@@ -155,7 +156,7 @@
           id: this.$route.query.productId,
           product: this.form.productCode,
           product_name: this.form.productName,
-          product_type_id: this.form.productType,
+          product_type_id: this.form.productType.toString(),
           metering: this.form.metering,
           norms: this.form.norms,
           metering_id: this.form.metering_id,
@@ -184,11 +185,11 @@
       systemDefaultTypeLists(){
         getDefaultProductType()
           .then(res =>{
-//            this.totalcount = res.data.totalcount ;
             this.systemDefaultType = res.data.systemDefaultType;
             this.systemDefaultTypeList = res.data.systemDefaultType[0].systemDefaultTypeList;
-//            console.log("--systemDefaultType--"+JSON.stringify(this.systemDefaultType))
-//            console.log("--systemDefaultTypeList--"+JSON.stringify(this.systemDefaultTypeList))
+
+            console.log("--systemDefaultType--"+JSON.stringify(this.systemDefaultType))
+            console.log("--systemDefaultTypeList--"+JSON.stringify(this.systemDefaultTypeList))
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -200,28 +201,28 @@
             console.log("productDetail---"+JSON.stringify(res))
             this.form.productCode = res.data.productDetail. product;
             this.form.productName = res.data.productDetail.product_name;
-            this.form.productType = res.data.productDetail.product_type_id;
+//            this.form.productType = res.data.productDetail.product_type_id;
             this.form.custom_type = res.data.productDetail.custom_type_id;
             this.form.norms = res.data.productDetail.norms;
             this.form.metering = res.data.productDetail.metering;
             this.form.productDesc = res.data.productDetail. product_depict;
             this.form.productBrand = res.data.productDetail. brand_name;
             this.customFields = res.data.productDetail. customFields;
-            this.form.customField = this.customFields[0].data_value;
+//            this.form.customField = this.customFields[0].data_value;
+
+            //查询“产品分类-系统默认提供”列表
+            this.systemDefaultTypeLists()
+            //查询“自定义分类”列表
+            this.selectTypes()
+            //查询自定义属性列表
+            this.getCustomAttributeList();
+
+            //自定义字段信息查询——TEST
+            this.getColumnInfo();
           })
           .catch(() => {
             this.$message.error("出错啦getProductDetail!");
           })
-
-        //查询“产品分类-系统默认提供”列表
-        this.systemDefaultTypeLists()
-        //查询“自定义分类”列表
-        this.selectTypes()
-        //查询自定义属性列表
-        this.getCustomAttributeList();
-
-        //自定义字段信息查询——TEST
-        this.getColumnInfo();
       },
       //产品"自定义分类"列表查询
       selectTypes(){

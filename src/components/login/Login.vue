@@ -82,8 +82,9 @@ export default {
         login(param)
           .then(res => {
             if (res.status == 200){
+              //userid存本地
+              localStorage.setItem('userid',JSON.stringify(res.data.user.id))
               console.log("userid---"+JSON.stringify(res.data.user.id))
-              localStorage.setItem('userid',JSON.stringify(res.data.user.id))//userid存本地
 
               // 命名的路由
               this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
@@ -106,7 +107,7 @@ export default {
             }
           })
           .catch(() => {
-            this.$message.error("出错啦!login");
+            this.$message.error("出错啦!");
           });
       }
     },

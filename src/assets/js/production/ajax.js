@@ -1,5 +1,5 @@
 import { ajaxPost,ajaxGet } from "../api/api.js";
-import { ENVIRNMENT, ENVIRNMENTTEST } from "../config/environment.js";
+import { ENVIRNMENT, ENVIRNMENTTEST, ENVIRNMENTTEST2 } from "../config/environment.js";
 
 /*产品信息*/
 // 产品列表查询接口
@@ -39,24 +39,29 @@ export const saveProduct = function(params) {
 };
 // 系统默认分类管理——三级查询
 export const getDefaultProductType = function(params) {
-  let url = ENVIRNMENT + "/Product/getDefaultProductType";
+  let url = ENVIRNMENTTEST2 + "/Product/getDefaultProductType";
   return ajaxPost(url, params);
 };
 
 /*分类管理*/
 // 分类列表查询
 export const getListProductType = function(params) {
-  let url = ENVIRNMENT + "/Product/getListProductType";
+  let url = ENVIRNMENTTEST2 + "/Product/getListProductType";
   return ajaxPost(url, params);
 };
-// 分类修改
-export const updateProductType = function(params) {
-  let url = ENVIRNMENT + "/Product/updateProductType";
+// 分类新增
+export const createProductType = function(params) {
+  let url = ENVIRNMENTTEST2 + "/Product/createProductType";
   return ajaxPost(url, params);
 };
 // 分类删除
 export const deleteProductType = function(params) {
-  let url = ENVIRNMENT + "/Product/deleteProductType";
+  let url = ENVIRNMENTTEST2 + "/Product/deleteProductType";
+  return ajaxPost(url, params);
+};
+// 分类修改
+export const updateProductType = function(params) {
+  let url = ENVIRNMENTTEST2 + "/Product/updateProductType";
   return ajaxPost(url, params);
 };
 // 分类详情
