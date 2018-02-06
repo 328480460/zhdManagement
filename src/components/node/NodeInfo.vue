@@ -189,6 +189,15 @@ export default {
           id: "02010101"
         });
       },
+      nodeDetails(index, row) {
+        this.$emit("openExtraPage", {
+          node:"node",
+          page: "nodeDetails",
+          name: "节点详情",
+          id: "02010102",
+          query: { nodeId: row.id },
+        });
+      },
       clearConditions(){
         this.search.nodeNumber = "";
         this.search.nodeName = "";
@@ -219,6 +228,7 @@ export default {
       getDataAjax(params) {
         getListNode(params)
           .then(res =>{
+//            console.log("getListNode--"+JSON.stringify(res));
             this.totalcount = res.data.totalcount;
             this.nodeList = res.data.nodeList;
           })
@@ -230,15 +240,6 @@ export default {
       handleCurrentChange(val) {
         this.currentPage = val;
         this.getNodeList();
-      },
-      nodeDetails(index, row) {
-            this.$emit("openExtraPage", {
-              node:"node",
-              page: "nodeDetails",
-              name: "节点详情",
-              id: "02010102",
-              query: { nodeId: row.id },
-            });
       },
       handleDelete(index, row) {
         this.delete(row)
@@ -255,15 +256,15 @@ export default {
           /*删除接口*/
           deleteNode(params)
             .then(res => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
               console.log("节点删除成功---"+JSON.stringify(res))
             })
             .catch(() => {
               this.$message.error("出错啦!");
             });
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
         }).catch(() => {
           this.$message({
             type: 'info',

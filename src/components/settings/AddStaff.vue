@@ -13,14 +13,14 @@
             <el-input v-model="form.contacts"></el-input>
           </el-form-item>
           <el-form-item label="角色：">
-            <el-select v-model="form.custom_mould_id" placeholder="无">
+            <el-select v-model="form.role_id" placeholder="无">
               <el-option v-for="item in roleList" :key="item.id" :label="item.role_name"  :value="item.id"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="允许访问的节点：">
             <el-select
-              v-model="value9"
+              v-model="form.nodeName"
               multiple
               filterable
               remote
@@ -29,7 +29,7 @@
               :remote-method="remoteMethod"
               :loading="loading">
               <el-option
-                v-for="item in options"
+                v-for="item in nodeList"
                 :key="item.id"
                 :label="item.node_name"
                 :value="item.id">
@@ -50,7 +50,7 @@
   import {
     saveEmployee,
     getListRole,
-    getListNode
+    getListNode,
   } from "../../assets/js/settings/ajax.js";
 
 export default {
@@ -66,9 +66,8 @@ export default {
           name: '',
           email: '',
           role_id: '',
+          nodeName: '',
         },
-
-        value9: [],
         options: [],
         nodeList: [],
         loading: false
@@ -97,7 +96,6 @@ export default {
           this.options = [];
         }
       },
-
       onSubmit() {
         let params = {
           account: this.form.account,
@@ -137,7 +135,7 @@ export default {
             this.$message.error("出错啦!");
           });
       },
-      //节点列表查询
+      //节点列表查询接口
       getListNode(params){
         getListNode(params)
           .then(res =>{

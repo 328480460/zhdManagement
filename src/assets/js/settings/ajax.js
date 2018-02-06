@@ -21,6 +21,11 @@ export const  updateEmployee  = function(params) {
     let url = ENVIRNMENT + '/updateEmployee';
     return ajaxPost(url,params)
 }
+// 员工详情修改
+export const  deleteEmployee  = function(params) {
+    let url = ENVIRNMENTTEST + '/deleteEmployee';
+    return ajaxPost(url,params)
+}
 // 员工信息列表查询
 export const  getEmployeeList  = function(params) {
     let url = ENVIRNMENTTEST + '/getEmployeeList';

@@ -12,16 +12,21 @@
           </el-form-item>
           <el-form-item label="节点分类：">
             <el-select v-model="form.nodeSplitting" clearable  placeholder="选择节点分类" width="50px" >
-              <el-option  v-for="item in nodeSplittings" :key="item.id" :label="item.name"  :value="item.id" >
+              <el-option  v-for="item in nodeTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="节点类型：">
-            <el-checkbox-group v-model="nodeTypes" >
-              <el-checkbox label="来源节点" value="node11"></el-checkbox>
-              <el-checkbox label="当前节点" value="node22"></el-checkbox>
-              <el-checkbox label="流向节点" value="node33"></el-checkbox>
-            </el-checkbox-group>
+            <!--<el-checkbox-group v-model="nodeTypes" >-->
+              <!--<el-checkbox label="来源节点" value="node11"></el-checkbox>-->
+              <!--<el-checkbox label="当前节点" value="node22"></el-checkbox>-->
+              <!--<el-checkbox label="流向节点" value="node33"></el-checkbox>-->
+            <!--</el-checkbox-group>-->
+            <el-radio-group v-model="nodeTypes">
+              <el-radio label="来源节点" value="node11"></el-radio>
+              <el-radio label="当前节点" value="node12"></el-radio>
+              <el-radio label="流向节点" value="node13"></el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="节点描述：">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
@@ -75,6 +80,7 @@
     createNode,
     getCustomAttributeList,
     getColumnInfo,
+    getlist,
   } from "../../assets/js/node/ajax.js";
   import { cityData } from "../../assets/js/api/cityData.js";
 
@@ -97,16 +103,12 @@ export default {
         custom_mould_id: "",
       },
       customList:[],
-      nodeTypes:[],
+      nodeTypes:"",
       customAttributeList:[],
       attributeList:[],
-      nodeSplittings: [{
-        id: '1',
-        name: '(test)养殖场',
-      }, {
-        id: '2',
-        name: '批发商',
-      }],
+      typeTablesList:[],
+      nodeTypeList:[],
+      splittingList:[],
     }
   },
   mounted() {
@@ -125,10 +127,9 @@ export default {
         contacts_phone: this.form.contactsPhone,
 //        brand_name: this.form.custom_mould_id
         //需要替换为选择的
-        customList: this.attributeList
+        nodeCustomList: this.attributeList
 
       };
-      console.log("submit!添加节点"+JSON.stringify(params));
     createNode(params)
       .then(res =>{
         if (res.status == 200) {
@@ -139,9 +140,35 @@ export default {
       .catch(() => {
         this.$message.error("出错啦!");
       })
-
     },
-    //产品自定义属性列表查询接口
+    //节点分类查询
+    getNodetupelist(){
+      let params = {
+        tables_name: "node_type",
+      };
+      getlist(params)
+        .then(res => {
+          this.nodeTypeList = res.data.typeTablesList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+    //节点类型查询
+    getSplitlist(){
+      let params = {
+        tables_name: "node_splitting",
+      };
+      getlist(params)
+        .then(res => {
+          console.log("node_splitting--"+JSON.stringify(res))
+          this.splittingList = res.data.typeTablesList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+    //节点自定义属性列表查询接口
     getCustomAttributeList() {
       let params = {
         custom_mould_type: 2,
@@ -150,7 +177,6 @@ export default {
       };
       getCustomAttributeList(params)
         .then(res => {
-//          this.customListCount = res.data.totalcount;
           this.customAttributeList = res.data.customAttributeList;
         })
         .catch(() => {
@@ -173,9 +199,13 @@ export default {
         });
     },
     initData(){
+      //节点分类查询
+      this.getNodetupelist();
+      //节点类型查询
+      this.getSplitlist();
+
       //查询自定义属性列表
       this.getCustomAttributeList();
-
       //自定义字段信息查询——TEST
       this.getColumnInfo();
     }

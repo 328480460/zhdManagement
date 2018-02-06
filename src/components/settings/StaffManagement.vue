@@ -67,7 +67,8 @@
 
 <script type="text/ecmascript-6">
 import {
-  getEmployeeList
+  getEmployeeList,
+  deleteEmployee
 } from "../../assets/js/settings/ajax.js";
 
 export default {
@@ -135,19 +136,29 @@ export default {
       });
     },
     handleDelete(index, row) {
-      this.delete()
+      this.delete(row)
     },
-    delete() {
+    delete(row) {
       this.$confirm('此操作将删除该员工信息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         /*删除接口*/
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
+        let params = {
+          id: row.id,
+        };
+        deleteEmployee(params)
+          .then(res => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            console.log("员工“自定义属性”删除成功---"+JSON.stringify(res))
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
       }).catch(() => {
         this.$message({
           type: 'info',
