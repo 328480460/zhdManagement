@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       "/test": {
-        target: "http://192.168.1.73:8764/meatWebServer",
+        target: "http://124.193.211.202:10086/meatWebServer",
         changeOrigin: true,
         pathRewrite: {
           '^/test': ''
