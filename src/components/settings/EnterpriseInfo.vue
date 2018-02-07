@@ -65,7 +65,7 @@ export default {
     },
   mounted(){
     let params ={
-      "enterprise_id":1
+      enterprise_id:1
     }
     this.initData(params);
   },
@@ -76,15 +76,15 @@ export default {
          */
         getEnterpriseDetail(params)
           .then(res =>{
-            let enterprise = res.enterprise
-            this.form.name = enterprise. enterprise_name;
-            this.form.type = enterprise. enterprise_type;
-            this.form.certificate = enterprise. certificate;
-            this.form.area = enterprise.  address;
-            this.form.date = enterprise.  creat_date;
-            this.form.intro = enterprise. introduction;
-            this.form.contact = enterprise.  contact;
-            this.form.phonenum = enterprise. contact_phone;
+            let enterprise = res.data.enterprise
+            this.form.name = enterprise.enterprise_name;
+            this.form.type = enterprise.enterprise_type;
+            this.form.certificate = enterprise.certificate;
+            this.form.area = enterprise.address;
+//            this.form.date = enterprise.creat_date;
+            this.form.intro = enterprise.introduction;
+            this.form.contact = enterprise.contact;
+            this.form.phonenum = enterprise.contact_phone;
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -96,7 +96,8 @@ export default {
           node: "settings",
           page: "enterpriseInfoEdit",
           name: "编辑企业信息",
-          id: "03010102"
+          id: "03010102",
+          query: { enterprise_id: 1 },
         });
       }
     }

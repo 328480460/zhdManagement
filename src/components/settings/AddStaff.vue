@@ -18,24 +18,24 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="允许访问的节点：">
-            <el-select
-              v-model="form.nodeName"
-              multiple
-              filterable
-              remote
-              reserve-keyword
-              placeholder="请搜索已有节点名称"
-              :remote-method="remoteMethod"
-              :loading="loading">
-              <el-option
-                v-for="item in nodeList"
-                :key="item.id"
-                :label="item.node_name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
+          <!--<el-form-item label="允许访问的节点：">-->
+            <!--<el-select-->
+              <!--v-model="form.nodeName"-->
+              <!--multiple-->
+              <!--filterable-->
+              <!--remote-->
+              <!--reserve-keyword-->
+              <!--placeholder="请搜索已有节点名称"-->
+              <!--:remote-method="remoteMethod"-->
+              <!--:loading="loading">-->
+              <!--<el-option-->
+                <!--v-for="item in nodeList"-->
+                <!--:key="item.id"-->
+                <!--:label="item.node_name"-->
+                <!--:value="item.id">-->
+              <!--</el-option>-->
+            <!--</el-select>-->
+          <!--</el-form-item>-->
 
           <el-form-item>
             <el-button type="primary" @click="onSubmit" >保存</el-button>
@@ -82,20 +82,20 @@ export default {
 
   },
     methods: {
-      remoteMethod(query) {
-        if (query !== '') {
-          this.loading = true;
-          setTimeout(() => {
-            this.loading = false;
-            this.options = this.nodeList.filter(item => {
-              return item.node_name.toLowerCase()
-                  .indexOf(query.toLowerCase()) > -1;
-            });
-          }, 200);
-        } else {
-          this.options = [];
-        }
-      },
+//      remoteMethod(query) {
+//        if (query !== '') {
+//          this.loading = true;
+//          setTimeout(() => {
+//            this.loading = false;
+//            this.options = this.nodeList.filter(item => {
+//              return item.node_name.toLowerCase()
+//                  .indexOf(query.toLowerCase()) > -1;
+//            });
+//          }, 200);
+//        } else {
+//          this.options = [];
+//        }
+//      },
       onSubmit() {
         let params = {
           account: this.form.account,
@@ -104,13 +104,11 @@ export default {
           email: this.form.email,
           role_id: this.form.role_id,
         };
-      console.log("params!新增员工--"+JSON.stringify(params));
         /**
          * 员工信息新增接口
          */
         saveEmployee(params)
           .then(res =>{
-            console.log("res!新增员工--"+JSON.stringify(res));
             if (res.status == 200) {
               this.$message.success("添加成功!");
               this.$router.go(-1);

@@ -17,24 +17,24 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="允许访问的节点：">
-            <el-select
-              v-model="value9"
-              multiple
-              filterable
-              remote
-              reserve-keyword
-              placeholder="请搜索已有节点名称"
-              :remote-method="remoteMethod"
-              :loading="loading">
-              <el-option
-                v-for="item in options"
-                :key="item.id"
-                :label="item.node_name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
+          <!--<el-form-item label="允许访问的节点：">-->
+            <!--<el-select-->
+              <!--v-model="value9"-->
+              <!--multiple-->
+              <!--filterable-->
+              <!--remote-->
+              <!--reserve-keyword-->
+              <!--placeholder="请搜索已有节点名称"-->
+              <!--:remote-method="remoteMethod"-->
+              <!--:loading="loading">-->
+              <!--<el-option-->
+                <!--v-for="item in options"-->
+                <!--:key="item.id"-->
+                <!--:label="item.node_name"-->
+                <!--:value="item.id">-->
+              <!--</el-option>-->
+            <!--</el-select>-->
+          <!--</el-form-item>-->
 
           <el-form-item>
             <el-button type="primary" @click="onSubmit" >保存</el-button>
@@ -83,22 +83,23 @@ export default {
 
   },
     methods: {
-      remoteMethod(query) {
-        if (query !== '') {
-          this.loading = true;
-          setTimeout(() => {
-            this.loading = false;
-            this.options = this.nodeList.filter(item => {
-              return item.node_name.toLowerCase()
-                  .indexOf(query.toLowerCase()) > -1;
-            });
-          }, 200);
-        } else {
-          this.options = [];
-        }
-      },
+//      remoteMethod(query) {
+//        if (query !== '') {
+//          this.loading = true;
+//          setTimeout(() => {
+//            this.loading = false;
+//            this.options = this.nodeList.filter(item => {
+//              return item.node_name.toLowerCase()
+//                  .indexOf(query.toLowerCase()) > -1;
+//            });
+//          }, 200);
+//        } else {
+//          this.options = [];
+//        }
+//      },
       onSubmit() {
         let params = {
+          id: this.$route.query.staffId,
           account: this.form.account,
           name: this.form.name,
           contacts: this.form.contacts,
@@ -109,7 +110,11 @@ export default {
          */
         updateEmployee(params)
           .then(res =>{
-            this.$message.success("员工修改成功!");
+            console.log("updateEmployee---"+JSON.stringify(res))
+            if (res.status == 200) {
+              this.$message.success("修改成功!");
+              this.$router.go(-1);
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -117,15 +122,17 @@ export default {
 
       },
       initData(params){
-        this.getEmployeeDetail()
+        let id = {
+          id: this.$route.query.staffId,
+        };
+        this.getEmployeeDetail(id)
         this.getListRole(params)
         this.getListNode(params)
       },
       //员工详情
-      getEmployeeDetail(){
-        getEmployeeDetail({ id: this.$route.query.staffId })
+      getEmployeeDetail(id){
+        getEmployeeDetail(id)
           .then(res =>{
-//            console.log("--getEmployeeDetail--"+JSON.stringify(res))
             let employee = res.data.employee
             this.form.account = employee. account;
             this.form.name = employee. name;

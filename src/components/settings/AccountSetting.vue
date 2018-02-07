@@ -46,10 +46,11 @@ export default {
       }
     },
   mounted(){
-//    var userid = JSON.stringify(JSON.parse(localStorage.userid))
-//    console.log("userid-userid--"+id)
+//    var userid = JSON.parse(localStorage.userid)
+    console.log("accountSetting-userid--???--"+JSON.stringify(localStorage.userid))
     let params ={
       "id":1,
+      //？？？userid解析问题？？
 //      "id":userid
     }
     this.initData(params);
@@ -65,7 +66,8 @@ export default {
             let employee = res.data.employee
             this.form.account = employee. account;
             this.form.name = employee. name;
-            this.form.password = employee. password;
+            this.form.password = employee.contacts;
+            this.form.password = employee.contacts;
             this.form.role_id = employee. role_id;
           })
           .catch(() => {
@@ -77,7 +79,8 @@ export default {
           node: "settings",
           page: "accountSettingEdit",
           name: "编辑账号信息",
-          id: "03020102"
+          id: "03020102",
+          query: { id: 1 },
         });
       }
     }

@@ -34,7 +34,6 @@
           <el-form-item label="*节点地址：">
             <el-input v-model="form.nodeAddress"></el-input>
             <!--<el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>-->
-            <el-input style="margin-top: 20px"></el-input>
           </el-form-item>
           <el-form-item label="联系人：">
             <el-input v-model="form.contacts"></el-input>

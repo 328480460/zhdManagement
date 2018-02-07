@@ -12,7 +12,7 @@
             <el-button type="text" class="br_text">立即认证</el-button>
           </el-form-item>
           <el-form-item label="所在地区：">
-            <el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
+            <!--<el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>-->
             <el-input v-model="form.area" style="margin-top: 20px"></el-input>
           </el-form-item>
           <el-form-item label="开通日期：">{{form.date}}
@@ -31,7 +31,7 @@
             <el-input v-model="form.phonenum"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('form')" >保存</el-button>
+            <el-button type="primary" @click="submitForm" >保存</el-button>
           </el-form-item>
 
         </el-form>
@@ -72,7 +72,7 @@ export default {
     },
   mounted(){
     let params ={
-      "enterprise_id":1
+      enterprise_id:this.$route.query.enterprise_id
     }
     this.initData(params);
   },
@@ -83,14 +83,15 @@ export default {
          */
         getEnterpriseDetail(params)
           .then(res =>{
-            let enterprise = res.enterprise
-            this.form.name = enterprise. enterprise_name;
-            this.form.type = enterprise. enterprise_type;
-            this.form.certificate = enterprise. certificate;
-            this.form.date = enterprise.  creat_date;
-            this.form.intro = enterprise. introduction;
-            this.form.contact = enterprise.  contact;
-            this.form.phonenum = enterprise. contact_phone;
+            let enterprise = res.data.enterprise
+            this.form.area = enterprise.address;
+            this.form.name = enterprise.enterprise_name;
+            this.form.type = enterprise.enterprise_type;
+            this.form.certificate = enterprise.certificate;
+//            this.form.date = enterprise.creat_date;
+            this.form.intro = enterprise.introduction;
+            this.form.contact = enterprise.contact;
+            this.form.phonenum = enterprise.contact_phone;
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -102,17 +103,17 @@ export default {
          */
       submitForm() {
         let params = {
+          enterprise_id:this.$route.query.enterprise_id,
+          address: this.form.area,
           enterprise_name: this.form.name,
           enterprise_type: this.form.type,
           certificate: this.form.certificate,
-          address: this.selectedCity,
-          creat_date: this.form.date,
+//          creat_date: this.form.date,
           enterprise_logo: "http://fsdf.jpg",
           introduction: this.form.intro,
           contact: this.form.contact,
           contact_phone: this.form.phonenum,
         };
-//        console.log("编辑企业的信息-----"+JSON.stringify(params))
         /**
          * 企业信息修改接口
          */

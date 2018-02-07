@@ -47,7 +47,7 @@ export default {
     },
   mounted(){
     let params ={
-      "id":1
+      "id":this.$route.query.id
     }
     this.initData(params);
   },
@@ -74,6 +74,7 @@ export default {
        */
       save() {
         let params ={
+          "id":this.$route.query.id,
           "account":this.form.account,
           "name":this.form.name,
           "contacts":this.form.contacts,

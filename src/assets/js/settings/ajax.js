@@ -3,22 +3,22 @@ import {ENVIRNMENT,ENVIRNMENTTEST} from '../config/environment.js';
 
 // 企业详情查询
 export const  getEnterpriseDetail  = function(params) {
-    let url = ENVIRNMENT + '/getEnterpriseDetail';
+    let url = ENVIRNMENTTEST + '/getEnterpriseDetail';
     return ajaxPost(url,params)
 }
 // 企业信息修改
 export const  updateEnterprise  = function(params) {
-    let url = ENVIRNMENT + '/updateEnterprise';
+    let url = ENVIRNMENTTEST + '/updateEnterprise';
     return ajaxPost(url,params)
 }
 // 员工详情查询
 export const  getEmployeeDetail  = function(params) {
-    let url = ENVIRNMENT + '/getEmployeeDetail';
+    let url = ENVIRNMENTTEST + '/getEmployeeDetail';
     return ajaxPost(url,params)
 }
 // 员工详情修改
 export const  updateEmployee  = function(params) {
-    let url = ENVIRNMENT + '/updateEmployee';
+    let url = ENVIRNMENTTEST + '/updateEmployee';
     return ajaxPost(url,params)
 }
 // 员工详情修改

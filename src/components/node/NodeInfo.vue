@@ -49,12 +49,12 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="node_splitting"
+                       prop="node_splitting_name"
                        label="节点分类"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="node_type_id"
+                       prop="node_type_name"
                        label="节点类型"
       >
       </el-table-column>
