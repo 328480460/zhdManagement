@@ -243,20 +243,19 @@ export default {
       }
     }
   }
-  .custom-line{
-    border-bottom: 1px solid #dcdfe6;;
-  }
   .batch-right{
     float: left;
     width: 40%;
     margin: 10px;
     margin-left: 80px;
-
   }
   .custom-title{
     font-weight: bold;
     width: 100%;
     padding: 10px;
+  }
+  .custom-line{
+    border-bottom: 1px solid #dcdfe6;;
   }
   .bt-save{
     margin-left: 40%;

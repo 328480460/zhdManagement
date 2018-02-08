@@ -5,6 +5,14 @@
         <el-form-item label="*自定义名称">
           <el-input v-model="mould_name" ></el-input>
         </el-form-item>
+        <el-form-item label="*所述环节">
+          <el-select v-model="sub_link" clearable  placeholder="选择所述环节" style="width: 100%">
+            <el-option label="收货信息" value="收货信息"></el-option>
+            <el-option label="生产信息" value="生产信息"></el-option>
+            <el-option label="发货信息" value="发货信息"></el-option>
+          </el-select>
+        </el-form-item>
+
       </el-form>
       <div class="custom-form">
             <div class="custom-title">自定义字段</div>
@@ -101,6 +109,7 @@ export default {
   data(){
     return{
       checked:false,
+      sub_link:'',
       mould_name:'',
       column_name:'',
       column_chinese:'',
@@ -167,13 +176,16 @@ export default {
     save(){
       if(this.mould_name == ''){
         this.$message.warning("请输入“自定义名称”！");
+      }if(this.sub_link == ''){
+        this.$message.warning("请选择“所述环节”！");
       }else {
         var customAttribute  = {
           customAttributeList :this.addDatas,
           custom_mould_type :"3",
           mould_name :this.mould_name,
-          sub_link :"",
+          sub_link :this.sub_link,
         }
+        console.log("customAttribute---"+JSON.stringify(customAttribute))
         saveCustomAttributes(customAttribute)
           .then(res => {
             if (res.status == 200) {
