@@ -50,7 +50,6 @@
           </el-form-item>
         </el-form>
       </div>
-
       <div class="receive-info">
         <h6 class="title">自定义属性</h6>
         <div class="section-content">
@@ -63,7 +62,6 @@
           </el-form-item>
         </el-form>
         </div>
-
           <div class="content">
             <div class="demo-input-suffix" v-for="(item, key) in attributeList" :key="key" >
               <div class="lable">{{item.column_chinese}}</div>
@@ -71,7 +69,6 @@
             </div>
           </div>
       </div>
-
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
     </div>
   </div>
