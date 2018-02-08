@@ -1,5 +1,5 @@
 import {ajaxPost,ajaxGet} from '../api/api.js';
-import {ENVIRNMENT,ENVIRNMENTTEST} from '../config/environment.js';
+import {ENVIRNMENT,ENVIRNMENTTEST,ENVIRNMENTTEST2} from '../config/environment.js';
 
 // 企业详情查询
 export const  getEnterpriseDetail  = function(params) {
@@ -36,9 +36,30 @@ export const  saveEmployee  = function(params) {
     let url = ENVIRNMENTTEST + '/saveEmployee';
     return ajaxPost(url,params)
 }
+
 // 角色列表查询
 export const  getListRole  = function(params) {
-    let url = ENVIRNMENT + '/Role/getListRole';
+    let url = ENVIRNMENTTEST2 + '/Role/getListRole';
+    return ajaxPost(url,params)
+}
+// 角色新增
+export const  createRole  = function(params) {
+    let url = ENVIRNMENT + 'Role/createRole';
+    return ajaxPost(url,params)
+}
+// 角色删除
+export const  deleteRole  = function(params) {
+    let url = ENVIRNMENT + 'Role/deleteRole';
+    return ajaxPost(url,params)
+}
+// 角色修改
+export const  updateRole  = function(params) {
+    let url = ENVIRNMENT + 'Role/updateRole';
+    return ajaxPost(url,params)
+}
+// 角色详情查询
+export const  getDetailRole  = function(params) {
+    let url = ENVIRNMENT + 'ole/getDetailRole';
     return ajaxPost(url,params)
 }
 // 节点列表查询接口

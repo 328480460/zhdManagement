@@ -198,15 +198,12 @@ export default {
           /*删除接口*/
           deleteProduct(params)
             .then(res => {
+              this.$message.success("删除成功!");
               console.log("产品删除成功---"+JSON.stringify(res))
             })
             .catch(() => {
               this.$message.error("出错啦!");
             });
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
         })
         .catch(() => {
           this.$message({

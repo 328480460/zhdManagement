@@ -159,7 +159,6 @@
         };
         getlist(params)
           .then(res => {
-            console.log("node_splitting--"+JSON.stringify(res))
             this.splittingList = res.data.typeTablesList;
           })
           .catch(() => {

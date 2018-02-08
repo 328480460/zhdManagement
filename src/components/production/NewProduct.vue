@@ -136,8 +136,8 @@ export default {
       let params = {
         product: this.form.productCode,
         product_name: this.form.productName,
-//        product_type_id: 1,
-        product_type_id: this.form.productType,
+        product_type_id: "食品",
+//        product_type_id: this.form.productType,
         metering: this.form.metering,
         norms: this.form.norms,
         custom_mould_id: this.form.custom_mould_id,

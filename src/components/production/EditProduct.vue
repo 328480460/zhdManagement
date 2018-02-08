@@ -109,7 +109,6 @@
           productCode: "",
           productName: "",
           productType: "",
-          productTypeSelected:[],
           custom_type_id: "",
           norms: "",
           metering: "",
@@ -118,9 +117,9 @@
           productBrand: "",
           custom_mould:"",
           customField:"",
+          systemDefaultType:"",
         },
         systemDefaultType:[],
-        systemDefaultTypeList:[],
         props: {
           value: 'id',
           label: 'type_name',
@@ -131,7 +130,6 @@
         newcustomFields:[],
         customAttributeList:[],
         attributeList:[],
-
       };
     },
     mounted(){
@@ -151,12 +149,12 @@
           }
           this.newcustomFields .push(arr);
         })
-
         let params = {
           id: this.$route.query.productId,
           product: this.form.productCode,
           product_name: this.form.productName,
-          product_type_id: this.form.productType.toString(),
+//          product_type_id: this.form.productType,
+          product_type_id: "食品",
           metering: this.form.metering,
           norms: this.form.norms,
           metering_id: this.form.metering_id,
@@ -167,11 +165,13 @@
           //需要替换为选择的
           customFields: this.newcustomFields
         };
-        console.log("submit!保存修改"+JSON.stringify(params));
+//        console.log("submit!保存修改"+JSON.stringify(params));
         updateProduct(params)
           .then(res =>{
-          console.log("添加返回=="+JSON.stringify(res));
-            this.$message.success("产品修改成功!");
+            if (res.status == 200) {
+              this.$message.success("产品修改成功!");
+              this.$router.go(-1);
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -179,29 +179,42 @@
 
       },
       handleChange(value) {
-        console.log("handleChange--"+JSON.stringify(value));
+        console.log("handleChange--"+value[value.length - 1]);
+        this.form.productType =value
       },
       //“产品分类-系统默认提供”列表
       systemDefaultTypeLists(){
         getDefaultProductType()
           .then(res =>{
-            this.systemDefaultType = res.data.systemDefaultType;
-            this.systemDefaultTypeList = res.data.systemDefaultType[0].systemDefaultTypeList;
-
-            console.log("--systemDefaultType--"+JSON.stringify(this.systemDefaultType))
-            console.log("--systemDefaultTypeList--"+JSON.stringify(this.systemDefaultTypeList))
+            this.systemDefaultType = res.data.systemDefaultTypeList;
+            console.log("--systemDefaultTypeList----"+JSON.stringify(res.data.systemDefaultTypeList.length))
           })
           .catch(() => {
             this.$message.error("出错啦!");
           })
       },
       initData(params){
+        //查询产品详情
+        this.getProductDetail(params)
+        //查询“产品分类-系统默认提供”列表
+        this.systemDefaultTypeLists()
+        //查询“自定义分类”列表
+        this.selectTypes()
+        //查询自定义属性列表
+        this.getCustomAttributeList();
+
+        //自定义字段信息查询——TEST
+        this.getColumnInfo();
+      },
+      //产品详情接口
+      getProductDetail(params){
         getProductDetail(params)
           .then(res =>{
             console.log("productDetail---"+JSON.stringify(res))
             this.form.productCode = res.data.productDetail. product;
             this.form.productName = res.data.productDetail.product_name;
-//            this.form.productType = res.data.productDetail.product_type_id;
+            this.form.productType = res.data.productDetail.product_type_id;
+//            this.form.productType = "食品";
             this.form.custom_type = res.data.productDetail.custom_type_id;
             this.form.norms = res.data.productDetail.norms;
             this.form.metering = res.data.productDetail.metering;
@@ -209,16 +222,6 @@
             this.form.productBrand = res.data.productDetail. brand_name;
             this.customFields = res.data.productDetail. customFields;
 //            this.form.customField = this.customFields[0].data_value;
-
-            //查询“产品分类-系统默认提供”列表
-            this.systemDefaultTypeLists()
-            //查询“自定义分类”列表
-            this.selectTypes()
-            //查询自定义属性列表
-            this.getCustomAttributeList();
-
-            //自定义字段信息查询——TEST
-            this.getColumnInfo();
           })
           .catch(() => {
             this.$message.error("出错啦getProductDetail!");

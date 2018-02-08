@@ -46,6 +46,7 @@
 <script type="text/ecmascript-6">
   import {
     getListRole,
+    deleteRole,
   } from "../../assets/js/settings/ajax.js";
 export default {
     name: "role",
@@ -87,7 +88,6 @@ export default {
       getDataAjax(params) {
         getListRole(params)
           .then(res => {
-//            console.log("res---"+JSON.stringify(res))
             this.totalcount = res.data.totalcount;
             this.roleList = res.data.roleList;
           })
@@ -100,19 +100,32 @@ export default {
 //        node:"production",
 //        page: "editProduct",
 //        name: "编辑产品",
-//        id: "01010102"
+//        id: "01010102",
 //      });
       },
       handleDelete(index, row) {
-      this.delete()
+      this.delete(row)
       },
-      delete() {
+      delete(row) {
         this.$confirm('此操作将删除该角色信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           /*删除接口*/
+          let params = {
+            id: row.id,
+          };
+          deleteRole(params)
+            .then(res => {
+              if (res.status == 200) {
+                this.$message.success("删除成功!");
+              }
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            });
+
           this.$message({
             type: 'success',
             message: '删除成功!'
