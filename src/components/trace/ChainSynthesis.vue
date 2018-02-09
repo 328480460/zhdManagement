@@ -19,5 +19,5 @@
 </script>
 
 <style rel="stylesheet/less" lang='less' scoped>
-    
+
 </style>

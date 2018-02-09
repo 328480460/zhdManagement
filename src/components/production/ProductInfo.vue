@@ -48,7 +48,7 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="product_type_id"
+                       prop="product_type_name"
                        label="产品分类"
       >
       </el-table-column>

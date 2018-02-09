@@ -38,7 +38,7 @@
                   <el-col :span="2"><div class="sub-title">节点分类：</div></el-col>
                   <el-col :span="6"><div class="sub-title">{{item.node_type_name}}</div></el-col>
                   <el-col :span="2"><div class="sub-title">联系人：</div></el-col>
-                  <el-col :span="6"><div class="sub-title">{{item.user}}</div></el-col>
+                  <el-col :span="6"><div class="sub-title">{{item.contacts}}</div></el-col>
                   <el-col :span="2"><div class="sub-title">联系电话：</div></el-col>
                   <el-col :span="6"><div class="sub-title">{{item.contacts_phone}}</div></el-col>
                 </el-row>
@@ -77,7 +77,7 @@
                   <el-col :span="2"><div class="sub-title">节点分类：</div></el-col>
                   <el-col :span="6"><div class="sub-title">{{item.node_type_name}}</div></el-col>
                   <el-col :span="2"><div class="sub-title">联系人：</div></el-col>
-                  <el-col :span="6"><div class="sub-title">{{item.user}}</div></el-col>
+                  <el-col :span="6"><div class="sub-title">{{item.contacts}}</div></el-col>
                   <el-col :span="2"><div class="sub-title">联系电话：</div></el-col>
                   <el-col :span="6"><div class="sub-title">{{item.contacts_phone}}</div></el-col>
                 </el-row>
@@ -149,7 +149,7 @@ export default {
             var product = res.data.code.product
             this.search.productName = product.product_name
             this.search.productNum = product.product
-            this.search.batchNum = product.product//？？批次号
+            this.search.batchNum = product.product_batch_num
             this.search.productType = product.product_type_name
             this.search.norms = product.norms
             //来源节点（多个）

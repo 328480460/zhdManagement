@@ -9,19 +9,23 @@ import ImportFileTemplate from "../commonComponents/ImportFileTemplate";
 export default {
   data() {
     return {
-      uploadUrl: "http://47.92.149.109:7108/mockjsdata/2/Product/update_modle_product_type",
+      uploadUrl: "http://47.92.149.109:7108/mockjsdata/2/Product/update_modle_business_type",
       templatespro: [
         {
-          value: "1",
-          label: "产品模板"
+          value: "Receipt",
+          label: "进场模板"
         },
         {
-          value: "2",
-          label: "节点模板"
+          value: "Production",
+          label: "生产模板"
         },
         {
-          value: "3",
-          label: "追溯模板"
+          value: "ProductionGL",
+          label: "生产关联模板"
+        },
+        {
+          value: "Invoice",
+          label: "出库模板"
         }
       ]
     };

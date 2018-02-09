@@ -86,6 +86,12 @@ export const getListNode = function (params) {
   let url = ENVIRNMENT + '/Node/getListNode';
   return ajaxPost(url, params)
 }
+// 下载模板
+export const downLoad = function (params) {
+  let url = 'http://192.168.1.73:8764/meatWebServer/downLoad/business?type=Receipt';
+  return ajaxPost(url, params)
+}
+
 
 // 用户自定义属性接口
 export const getCustomAttributeList = function (params) {

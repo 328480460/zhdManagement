@@ -1,10 +1,10 @@
 <template>
   <div id="batchimport">
     <div class="batch-left">
-      <div class="title-bg">第一步：下载节点模板</div>
+      <div class="title-bg">第一步：选择模板</div>
       <div class="module-container">
         选择文件类型
-        <el-select v-model="value"  placeholder="请选择模板" style="width: auto">
+        <el-select v-model="templateValue"  placeholder="请选择模板" style="width: auto">
           <el-option
             v-for="item in templatespro"
             :key="item.value"
@@ -17,17 +17,20 @@
         class="download-template"
         size="mini"
         type="text"
-        @click="downloadyemplate">下载节点模板</el-button>
+        @click="downloadyemplate()">下载模板</el-button>
     </div>
 
     <div class="batch-right">
       <div class="title-bg">第二步：上传文件
       </div>
-      <!--更换“action”上传产品模板-->
+      <!--更换“action”上传模板-->
       <el-upload
         class="upload-demo"
         drag
         :action= uploadUrl
+        :on-remove="handleRemove"
+        :on-success="handleAvatarSuccess"
+        :file-list="fileList"
         multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -41,12 +44,20 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script type="text/ecmascript-6" >
+  import {
+    downLoad
+  } from "../../assets/js/business/ajax.js";
+  import axios from 'axios';
+  import FileSaver from 'file-saver';
+
   export default {
     name: 'importFileTemplate',
     data(){
       return{
-        value: ''
+        templateValue: '',
+        imageUrl: '',
+        fileList:[],
       }
     },
     props: {
@@ -60,14 +71,63 @@
       }
     },
     methods:{
-      downloadyemplate(){
-        console.log("下载产品模板")
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
       },
+      handleRemove(file, fileList) {
+        console.log("handleRemove---"+JSON.stringify(file.name));
+        this.fileList = fileList
+        console.log("fileList---"+JSON.stringify(this.fileList));
+      },
+      downLoad(){
+        if(this.templateValue == ''){
+          this.$message.warning("请选择模板");
+        }else{
+          let params ={
+              type:this.templateValue
+          }
+
+          axios.get('http://192.168.1.73:8764/meatWebServer/downLoad/business?type=Production', {responseType:'blob'})
+            .then(function (response) {
+              console.log("~~~~"+JSON.stringify(response))
+              FileSaver.saveAs(response.body, 'Export2.xlsx')
+
+//              let content = new Blob([response.data], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
+//              let url = URL.createObjectURL(content)
+//              window.location.href=url
+
+            //定义文件内容，类型必须为Blob 否则createObjectURL会报错
+//            let content = new Blob([JSON.stringify(this.todos)])
+//            let  urlObject = window.URL || window.webkitURL || window
+//            let url = urlObject.createObjectURL(content)
+//            let el = document.createElement('a')
+//            el.href = url
+//            el.download ="zyyy.xlsx"
+//            el.click()
+//            urlObject.revokeObjectURL(url)
+
+          }).catch(function (error) {
+            alert(error);
+          });
+
+          /* downLoad(params)
+            .then(res => {
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            });*/
+        }
+      },
+      downloadyemplate(){
+        /*下载模板接口*/
+        this.downLoad()
+      },
+
       update(){
-        console.log("上传文件保存")
+        this.$message.success("上传文件");
+        console.log("点击上传文件保存--"+JSON.stringify(this.imageUrl))
       }
     }
-
   }
 </script>
 
