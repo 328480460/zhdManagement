@@ -1,5 +1,5 @@
-import {ajaxPost} from '../api/api.js';
-import {ENVIRNMENT} from '../config/environment.js'
+import {ajaxPost,ajaxGet} from '../api/api.js';
+import {ENVIRNMENT,ENVIRNMENTTEST,ENVIRNMENTTEST2} from '../config/environment.js'
 
 // 收货信息列表查询接口
 export const getReceiptList = function (params) {
@@ -88,7 +88,12 @@ export const getListNode = function (params) {
 }
 // 下载模板
 export const downLoad = function (params) {
-  let url = 'http://192.168.1.73:8764/meatWebServer/downLoad/business?type=Receipt';
+  let url = ENVIRNMENTTEST + '/downLoad/business?type=Receipt';
+  return ajaxGet(url, params)
+}
+// 上传模板
+export const upload = function (params) {
+  let url = ENVIRNMENTTEST2 + '/upload/business';
   return ajaxPost(url, params)
 }
 

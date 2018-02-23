@@ -27,9 +27,9 @@
       <el-upload
         class="upload-demo"
         drag
-        :action= uploadUrl
-        :on-remove="handleRemove"
-        :on-success="handleAvatarSuccess"
+        :action= uploadUrl+templateValue
+        :on-success="uploadSuccess"
+        :onError="uploadError"
         :file-list="fileList"
         multiple>
         <i class="el-icon-upload"></i>
@@ -37,16 +37,19 @@
         <!--<div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>-->
       </el-upload>
       <el-button
-        type="primary" size="medium"
+        type="primary"
+        size="medium"
         class="download-template"
-        @click="update">保存</el-button>
+        :action= uploadUrl+templateValue
+        >保存</el-button>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6" >
   import {
-    downLoad
+    downLoad,
+    upload
   } from "../../assets/js/business/ajax.js";
   import axios from 'axios';
   import FileSaver from 'file-saver';
@@ -56,6 +59,7 @@
     data(){
       return{
         templateValue: '',
+//        templateValue: 'Receipt',
         imageUrl: '',
         fileList:[],
       }
@@ -65,68 +69,52 @@
         type: Array,
         required: true
       },
+      downloadUrl: {
+        type: String,
+        required: true
+      },
       uploadUrl: {
         type: String,
         required: true
       }
     },
     methods:{
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      handleRemove(file, fileList) {
-        console.log("handleRemove---"+JSON.stringify(file.name));
-        this.fileList = fileList
-        console.log("fileList---"+JSON.stringify(this.fileList));
-      },
       downLoad(){
         if(this.templateValue == ''){
           this.$message.warning("请选择模板");
         }else{
-          let params ={
-              type:this.templateValue
-          }
-
-          axios.get('http://192.168.1.73:8764/meatWebServer/downLoad/business?type=Production', {responseType:'blob'})
+          /*下载模板网络请求*/
+          axios.get(this.downloadUrl+this.templateValue,{responseType:'blob'})
             .then(function (response) {
-              console.log("~~~~"+JSON.stringify(response))
+//              console.log("~~~~下载模板~~~~"+JSON.stringify(response))
               FileSaver.saveAs(response.body, 'Export2.xlsx')
-
-//              let content = new Blob([response.data], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
-//              let url = URL.createObjectURL(content)
-//              window.location.href=url
-
-            //定义文件内容，类型必须为Blob 否则createObjectURL会报错
-//            let content = new Blob([JSON.stringify(this.todos)])
-//            let  urlObject = window.URL || window.webkitURL || window
-//            let url = urlObject.createObjectURL(content)
-//            let el = document.createElement('a')
-//            el.href = url
-//            el.download ="zyyy.xlsx"
-//            el.click()
-//            urlObject.revokeObjectURL(url)
-
-          }).catch(function (error) {
-            alert(error);
+            }).catch(function (error) {
+            console.log("error---"+error)
           });
-
-          /* downLoad(params)
-            .then(res => {
-            })
-            .catch(() => {
-              this.$message.error("出错啦!");
-            });*/
         }
       },
       downloadyemplate(){
         /*下载模板接口*/
         this.downLoad()
       },
-
-      update(){
-        this.$message.success("上传文件");
-        console.log("点击上传文件保存--"+JSON.stringify(this.imageUrl))
-      }
+      // 上传成功
+      uploadSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+        this.$message.success("上传成功");
+      },
+      // 上传错误
+      uploadError (response, file, fileList) {
+        console.log('上传失败，请重试！')
+      },
+  /*    update(){
+        /!*上传模板网络请求*!/
+        axios.post(this.uploadUrl+this.templateValue)
+          .then(function (response) {
+            this.$message.success("上传文件");
+          }).catch(function (error) {
+          console.log("uploadUrl--error---"+error)
+        });
+      }*/
     }
   }
 </script>
