@@ -9,7 +9,7 @@ import ImportFileTemplate from "../commonComponents/ImportFileTemplate";
 export default {
   data() {
     return {
-      downloadUrl: "http://192.168.1.57:8764/meatWebServer/downLoad/business?type=",
+      downloadUrl: "http://192.168.1.60:8764/meatWebServer/downLoad/business?type=",
       uploadUrl: "http://192.168.1.222:8764/meatWebServer/upload/business?type=",
       templatespro: [
         {
