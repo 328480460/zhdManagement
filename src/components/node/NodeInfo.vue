@@ -256,11 +256,14 @@ export default {
           /*删除接口*/
           deleteNode(params)
             .then(res => {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              });
-              console.log("节点删除成功---"+JSON.stringify(res))
+              if(res.status == 200){
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+                console.log("节点删除成功---"+JSON.stringify(res))
+              }
+              console.log("节点删除res---"+JSON.stringify(res))
             })
             .catch(() => {
               this.$message.error("出错啦!");
