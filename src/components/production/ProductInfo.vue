@@ -183,9 +183,9 @@ export default {
       });
     },
     handleDelete(index, row) {
-      this.delete(row);
+      this.delete(index,row);
     },
-    delete(row) {
+    delete(index, row) {
       this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -198,8 +198,10 @@ export default {
           /*删除接口*/
           deleteProduct(params)
             .then(res => {
-              this.$message.success("删除成功!");
-              console.log("产品删除成功---"+JSON.stringify(res))
+              if(res.status == 200){
+                this.$message.success("删除成功!");
+                this.productList.splice(index, 1);
+              }
             })
             .catch(() => {
               this.$message.error("出错啦!");

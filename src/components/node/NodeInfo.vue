@@ -250,11 +250,8 @@ export default {
           deleteNode(params)
             .then(res => {
               if(res.status == 200){
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
-                });
-                console.log("节点删除成功---"+JSON.stringify(res))
+                this.$message.success("删除成功!");
+                this.nodeList.splice(index, 1);
               }
               console.log("节点删除res---"+JSON.stringify(res))
             })

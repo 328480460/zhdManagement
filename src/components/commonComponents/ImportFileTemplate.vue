@@ -84,13 +84,16 @@
         if(this.templateValue == ''){
           this.$message.warning("请选择模板");
         }else{
+          var that = this
           /*下载模板网络请求*/
           axios.get(this.downloadUrl+this.templateValue,{responseType:'blob'})
             .then(function (response) {
-//              console.log("~~~~下载模板~~~~"+JSON.stringify(response))
-              FileSaver.saveAs(response.body, 'Export2.xlsx')
+              if(response.status == 200){
+                FileSaver.saveAs(response.data, that.templateValue+'.xlsx')
+                console.log("~~~~下载模板成功~~~~"+JSON.stringify(response))
+              }
             }).catch(function (error) {
-            console.log("error---"+error)
+              console.log("error下载模板---"+error)
           });
         }
       },

@@ -94,11 +94,9 @@ export default {
                 localStorage.setItem('password',JSON.stringify(this.password))
                 localStorage.setItem('enterprise_id',JSON.stringify(1))
                 localStorage.setItem('checked',JSON.stringify(true))
-                console.log("==true")
               }else {
                 //清除本地缓存
                 localStorage.clear()
-                console.log("==clear")
               }
             }
             else if (res.status == 201){
