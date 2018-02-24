@@ -87,6 +87,7 @@ export default {
               console.log("login的userid---"+JSON.stringify(res.data.user.id))
               // 命名的路由
               this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+
               //记住密码
               if(this.checked == true){
                 localStorage.setItem('account',JSON.stringify(this.accountName))
