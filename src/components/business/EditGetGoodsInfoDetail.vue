@@ -5,11 +5,11 @@
             :id = 'detailDataInfo.id'
             :receiptNum='detailDataInfo.receipt_num'
             :productList='detailDataInfo.productList' 
-            :thisNodeId='"测试内容247h" || detailDataInfo.this_node_id' 
-            :sourceNodedId='"测试内容247h" || detailDataInfo.source_noded_id' 
+            :thisNodeId='detailDataInfo.this_node_id' 
+            :sourceNodedId='detailDataInfo.source_noded_id' 
             :receiptDate='detailDataInfo.receipt_date' 
-            :customFields='[{"data_value": "苹果","custom_id": "258"},{"data_value": "香蕉","custom_id": "259"}] || detailDataInfo.customFields'
-            :customMouldId='"属性id1" || detailDataInfo.custom_mould_id'
+            :customFields='detailDataInfo.customFields'
+            :customMouldId='detailDataInfo.custom_mould_id'
             @saveData= 'saveData'
             >
         </GetGoodsInfoDetailTemplate>

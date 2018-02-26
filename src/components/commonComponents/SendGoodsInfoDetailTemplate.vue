@@ -13,7 +13,7 @@
                 </div>
                 <div class="demo-input-suffix">
                     <div class="lable">当前节点</div>
-                        <el-select :disabled="!edit" v-model="currnetNode" placeholder="请选择">
+                        <el-select :disabled="!edit" v-model="currnetNodeId" placeholder="请选择">
                             <el-option
                             v-for="item in thisNodeOption"
                             :key="item.id"
@@ -24,7 +24,7 @@
                 </div>
                 <div class="demo-input-suffix">
                     <div class="lable">流向节点</div>
-                    <el-select :disabled="!edit" v-model="flowNode" placeholder="请选择">
+                    <el-select :disabled="!edit" v-model="nextNodeId" placeholder="请选择">
                         <el-option
                         v-for="item in flowNodeOption"
                         :key="item.id"
@@ -78,7 +78,7 @@
           <div class="content">
             <div class="demo-input-suffix">
                 <div class="lable">自定义属性</div>
-                <el-select  :disabled="!edit" v-model="selectCustomDefine" placeholder="请选择">
+                <el-select  :disabled="!edit" v-model="selectCustomDefineId" placeholder="请选择">
                     <el-option
                     v-for="item in customDefineList"
                     :key="item.id"
@@ -89,12 +89,12 @@
                 </el-select>
             </div>
           </div>
-          <div class="attribute-wrapper" v-show="selectCustomDefine">
+          <div class="attribute-wrapper" v-show="selectCustomDefineId">
             <div class="content">
               <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
                 <div class="lable">{{item.column_chinese}}</div>
-                <el-cascader v-if="/产地/.test(item.column_chinese)" :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
-                <el-input :disabled="!edit" v-model="item.value" placeholder="请输入内容"></el-input>
+                <!-- <el-cascader v-if="/产地/.test(item.column_chinese)" :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader> -->
+                <el-input :disabled="!edit" v-model="item.data_value" placeholder="请输入内容"></el-input>
               </div>
             </div>
           </div>
@@ -129,10 +129,14 @@ export default {
       thisNodeOption: [],
       // 当前选中的当前节点
       currnetNode: '',
+      // 当前选中的当前节点ID
+      currnetNodeId: '',
       // 来源节点可选列表
       flowNodeOption: [],
       // 当前选中的来源节点
       flowNode: '',
+      // 当前选中的来源节点ID
+      nextNodeId: '',
       // 所有产品类型列表
       productTypeList: [],
       // 当前选中产品类型
@@ -214,7 +218,7 @@ export default {
   methods: {
     loadNodeData() {
       // 请求当前节点
-      getListNode({ node_type_id: 2 })
+      getListNode({ node_type_id: '', pagenum: '1', pagesize: '100', node_name: '', node_number: '', node_splitting: '' })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
           this.showFlowNode()
@@ -224,7 +228,7 @@ export default {
           this.$message.error("出错啦!");
         });
       // 请求流向节点
-      getListNode({ node_type_id: 3 })
+      getListNode({ node_type_id: '', pagenum: '1', pagesize: '100', node_name: '', node_number: '', node_splitting: '' })
         .then(res => {
           this.flowNodeOption = res.data.nodeList;
           this.showCurrnetNode()
@@ -236,7 +240,7 @@ export default {
     },
     // 请求产品列表
     loadProductionTypeData() {
-      getProductList()
+      getProductList({pagenum: '1', pagesize: '100'})
         .then(res => {
           this.productTypeList = res.data.productList;
         })
@@ -246,7 +250,7 @@ export default {
     },
     // 请求用户自定义模块列表
     loadCustomDefineData() {
-      getCustomAttributeList()
+      getCustomAttributeList({pagesize: '100', pagenum: '1', custom_mould_type: '3', sub_link: '发货信息'})
         .then(res => {
           this.customDefineList = res.data.customAttributeList;
           this.showSelectCustomDefineMould();
@@ -283,6 +287,7 @@ export default {
       this.flowNodeOption.forEach((value, index) => {
         if(value.id == this.flowNodeId) {
           this.flowNode = value.node_address;
+          this.nextNodeId = value.id;
         }
       })
     },
@@ -291,6 +296,7 @@ export default {
       this.thisNodeOption.forEach((value, index) => {
         if(value.id == this.thisNodeId) {
           this.currnetNode = value.node_address;
+          this.currnetNodeId = value.id;
         }
       })
     },
@@ -301,7 +307,7 @@ export default {
       customDefineAttributeList.forEach((value, index) => {
         customFields.forEach((val, idx) => {
           if (value.id == val.custom_id) {
-            value.value = val.data_value;
+            value.data_value = val.data_value;
           }
         });
       });
@@ -322,10 +328,26 @@ export default {
       this.$emit('editPage');
     },
     saveData() {
+       if(!this.time) {
+        this.$message.warning('请选择日期');
+        return
+      }
+      if(!this.currnetNodeId) {
+        this.$message.warning('请选择当前节点');
+        return
+      }
+      if(!this.nextNodeId) {
+        this.$message.warning('请选择流向节点');
+        return
+      }
+      if(!this.productList.length) {
+        this.$message.warning('请添加产品');
+        return
+      }
       let data = {
         id: this.id,
-        this_node_id: this.currnetNode,
-        flow_to_id: this.flowNode,
+        this_node_id: this.currnetNodeId,
+        flow_to_id: this.nextNodeId,
         invoice_date: this.time,
         invoice_num: this.invoiceNum,
         custom_mould_id: this.selectCustomDefineId,
@@ -336,7 +358,7 @@ export default {
     }
   },
   watch: {
-    selectCustomDefine(newVal) {
+    selectCustomDefineId(newVal) {
       this.loadCustomDefineDetailData(newVal);
     }
   }

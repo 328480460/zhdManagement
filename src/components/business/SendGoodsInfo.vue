@@ -241,6 +241,21 @@ export default {
       this.currentPage = val;
       this.getProductList();
     },
+    // format  产品字段
+    formatProductList(productGoodsList) {
+      let _productionList = "";
+      productGoodsList.forEach(element => {
+        let productList = element.productList;
+
+        productList.forEach((ele, index) => {
+          _productionList += `${ele["product_batch_num"]}-`;
+          _productionList += `${ele["product_num"]} `;
+        });
+        
+        element.productList = _productionList;
+      });
+      return productGoodsList;
+    },
     initData(params) {
       this.getDataAjax(params);
       this.loadNodeData();
@@ -261,7 +276,7 @@ export default {
     },
     loadNodeData() {
       // 请求当前节点
-      getListNode({ node_type_id: 2 })
+      getListNode({ node_type_id: '', pagenum: '1', pagesize: '100', node_name: '', node_number: '', node_splitting: '' })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
         })
@@ -269,7 +284,7 @@ export default {
           this.$message.error("出错啦!");
         });
       // 请求流向节点
-      getListNode({ node_type_id: 3 })
+      getListNode({ node_type_id: '', pagenum: '1', pagesize: '100', node_name: '', node_number: '', node_splitting: '' })
         .then(res => {
           this.flowNodeOption = res.data.nodeList;
         })
@@ -278,7 +293,7 @@ export default {
         });
     },
     loadProductTypeList() {
-      getProductList()
+      getProductList({pagenum: '1', pagesize: '100'})
         .then(res => {
           this.productTypeOption = res.data.productList;
         })
@@ -289,7 +304,7 @@ export default {
     getDataAjax(params) {
       getInvoiceList(params)
         .then(res => {
-          this.dataList = res.data.invoice;
+          this.dataList = this.formatProductList(res.data.invoiceList);
           this.totalcount = res.data.totalcount;
         })
         .catch(() => {

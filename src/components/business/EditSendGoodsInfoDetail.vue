@@ -2,14 +2,14 @@
     <div id="sendGoodsInfoDetail" v-if='detailDataInfo'>
         <SendGoodsInfoDetailTemplate 
             :edit= true
-            :id = 'detailDataInfo.id'
+            :id= 'detailDataInfo.id'
             :invoiceNum='detailDataInfo.invoice_num'
             :productList='detailDataInfo.productList' 
-            :thisNodeId='"1" || detailDataInfo.this_node_id' 
-            :flowNodeId='"1" || detailDataInfo.flow_to_id' 
+            :thisNodeId='detailDataInfo.this_node_id' 
+            :flowNodeId='detailDataInfo.flow_to_id' 
             :date='detailDataInfo.invoice_date' 
-            :customFields='[{"data_value": "苹果","custom_id": "258"},{"data_value": "香蕉","custom_id": "259"}] || detailDataInfo.customFields'
-            :customMouldId='"属性id1" || detailDataInfo.custom_mould_id'
+            :customFields='detailDataInfo.customFields'
+            :customMouldId='detailDataInfo.custom_mould_id'
             @saveData= 'saveData'
             >
         </SendGoodsInfoDetailTemplate>
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     getDetailDataInfo() {
-      let params = { id: "1232131" };
+      let params = { id: this.routerQuery.id };
       getInvoiceDetail(params)
         .then(res => {
           this.detailDataInfo = res.data.invoice;
