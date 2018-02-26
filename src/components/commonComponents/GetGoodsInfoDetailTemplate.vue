@@ -6,7 +6,7 @@
                 <div class="demo-input-suffix" v-if="receiptNum">
                    <div class="infoNo">信息编号</div>
                    <div class="infoNo-code">{{receiptNum}}</div>
-                </div> 
+                </div>
                 <div class="demo-input-suffix">
                     <div class="lable">请选择日期</div>
                     <el-date-picker :disabled="!edit" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="time" type="date" placeholder="选择日期"></el-date-picker>

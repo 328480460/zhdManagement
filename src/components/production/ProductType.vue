@@ -99,10 +99,7 @@
             };
             createProductType(params)
               .then(res => {
-                this.$message({
-                  type: 'success',
-                  message: '新建成功'
-                });
+                this.$message.success("新建成功!");
                 console.log("分类新建res---"+JSON.stringify(res))
               })
               .catch(() => {
@@ -138,7 +135,6 @@
           .then(res => {
             this.totalcount = res.data.totalcount;
             this.customTypeList = res.data.customTypeList;
-//            console.log(JSON.stringify(res))
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -186,9 +182,9 @@
         });
       },
       handleDelete(index, row) {
-        this.delete(row)
+        this.delete(index,row)
       },
-      delete(row) {
+      delete(index,row) {
         this.$confirm('此操作将删除该分类名称, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -200,11 +196,8 @@
           };
           deleteProductType(params)
             .then(res => {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              });
-              console.log("产品自定义类型删除成功---"+JSON.stringify(res))
+              this.$message.success("新建成功!");
+              this.customTypeList.splice(index, 1);
             })
             .catch(() => {
               this.$message.error("出错啦!");

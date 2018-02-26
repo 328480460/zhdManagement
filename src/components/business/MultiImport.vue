@@ -6,11 +6,12 @@
 
 <script>
 import ImportFileTemplate from "../commonComponents/ImportFileTemplate";
+import {ENVIRNMENTTEST,ENVIRNMENTTEST2} from "../../assets/js/config/environment.js";
 export default {
   data() {
     return {
-      downloadUrl: "http://192.168.1.60:8764/meatWebServer/downLoad/business?type=",
-      uploadUrl: "http://192.168.1.222:8764/meatWebServer/upload/business?type=",
+      downloadUrl: ENVIRNMENTTEST2+"/downLoad/business?type=",
+      uploadUrl: ENVIRNMENTTEST2+"/upload/business?type=",
       templatespro: [
         {
           value: "Receipt",

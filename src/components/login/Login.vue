@@ -2,11 +2,11 @@
   <div id="login">
     <div class="navbar_login">
       <div class="navbar-logo">
-        <img src="../../assets/image/logo_title.png" alt="logo_title" class="logo">
+        <img src="../../assets/image/logo_t.png" alt="logo_title" class="logo">
       </div>
-      <div class="navbar-logo">
-        <div class="navbar-title">志恒达生产企业追溯平台</div>
-      </div>
+      <!--<div class="navbar-logo">-->
+        <!--<div class="navbar-title">志恒达生产企业追溯平台</div>-->
+      <!--</div>-->
     </div>
 
     <div class="content">
@@ -123,17 +123,18 @@ export default {
   background-attachment: fixed;
   background-size: cover;
   .navbar_login {
-    position: fixed;
     left: 0;
     top: 0;
     right: 0;
     width: 100%;
     height: 76px;
-    background-color: #444444;
-    z-index: 1000;
+    /*background-color: #444444;*/
+    background:url("../../assets/image/logo_bg.png") no-repeat;
+    z-index: 1;
     .navbar-logo{
       float: left;
-      padding: 12px;
+      margin-top: 15px;
+      margin-left: 10%;
       .navbar-title{
         color: white;
         font-size: 22px;

@@ -17,10 +17,10 @@
             </el-select>
           </el-form-item>
           <el-form-item label="节点类型">
-            <el-radio-group v-model="nodeTypes">
-              <el-radio label="来源节点" value="node11"></el-radio>
-              <el-radio label="当前节点" value="node12"></el-radio>
-              <el-radio label="流向节点" value="node13"></el-radio>
+            <el-radio-group v-model="splittingList">
+                <el-radio label="来源节点" value="node11"></el-radio>
+                <el-radio label="当前节点" value="node12"></el-radio>
+                <el-radio label="流向节点" value="node13"></el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="节点描述">

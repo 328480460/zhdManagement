@@ -12,8 +12,8 @@
           </el-form-item>
           <el-form-item label="所在地区：">{{form.area}}
           </el-form-item>
-          <el-form-item label="开通日期：">{{form.date}}
-          </el-form-item>
+          <!--<el-form-item label="开通日期：">{{form.date}}-->
+          <!--</el-form-item>-->
           <el-form-item label="企业LOGO：">
             <img src="../../assets/image/enterprise_logo.png" alt="enterprise_logo" class="enterprise_logo">
           </el-form-item>
@@ -56,7 +56,7 @@ export default {
           certificate: '',
           msg: '',
           area: '',
-          date: '',
+//          date: '',
           intro: '',
           contact: '',
           phonenum: ''

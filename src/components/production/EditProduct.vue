@@ -210,7 +210,7 @@
       getProductDetail(params){
         getProductDetail(params)
           .then(res =>{
-            console.log("productDetail---"+JSON.stringify(res))
+//            console.log("productDetail---"+JSON.stringify(res))
             this.form.productCode = res.data.productDetail. product;
             this.form.productName = res.data.productDetail.product_name;
             this.form.productType = res.data.productDetail.product_type_id;

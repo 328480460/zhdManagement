@@ -57,10 +57,21 @@ export const updateProductType = function(params) {
 
 /*自定义属性*/
 // 自定义属性列表查询
-export const getCustomAttributeList = function(params) {
-  let url = ENVIRNMENTTEST + '/getCustomAttributeList';
-  return ajaxPost(url,params)
+// export const getCustomAttributeList = function(params) {
+//   let url = ENVIRNMENTTEST + '/getCustomAttributeList';
+//   return ajaxPost(url,params)
+// }
+// 用户自定义属性接口
+export const getCustomAttributeList = function (params) {
+  let url = ENVIRNMENT + '/getCustomAttributeList';
+  return ajaxPost(url, params)
 }
+// 用户自定义属性详情接口
+export const getCustomAttributeDetail = function (params) {
+  let url = ENVIRNMENT + '/getCustomAttributeDetail';
+  return ajaxPost(url, params)
+}
+
 // 自定义字段信息查询
 export const getColumnInfo = function(params) {
   let url = ENVIRNMENT + '/getColumnInfo';

@@ -6,7 +6,7 @@
                 <div class="demo-input-suffix" v-if="productionNum">
                    <div class="infoNo">信息编号</div>
                    <div class="infoNo-code">{{productionNum}}</div>
-                </div> 
+                </div>
                 <div class="demo-input-suffix">
                     <div class="lable">生产日期</div>
                     <el-date-picker :disabled="!edit" v-model="time" type="date" placeholder="选择日期"></el-date-picker>

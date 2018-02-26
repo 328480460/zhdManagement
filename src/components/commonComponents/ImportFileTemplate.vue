@@ -110,8 +110,13 @@
       },
       // 上传成功
       uploadSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-        this.$message.success("上传成功");
+        console.log("res-"+JSON.stringify(res))
+        if(res.status == 200){
+          this.imageUrl = URL.createObjectURL(file.raw);
+          this.$message.success("上传成功");
+        }else {
+          this.$message.error(res.msg);
+        }
       },
       // 上传错误
       uploadError (response, file, fileList) {

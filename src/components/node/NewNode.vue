@@ -17,16 +17,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="节点类型：">
-            <!--<el-checkbox-group v-model="nodeTypes" >-->
-              <!--<el-checkbox label="来源节点" value="node11"></el-checkbox>-->
-              <!--<el-checkbox label="当前节点" value="node22"></el-checkbox>-->
-              <!--<el-checkbox label="流向节点" value="node33"></el-checkbox>-->
-            <!--</el-checkbox-group>-->
-            <el-radio-group v-model="nodeTypes">
-              <el-radio label="来源节点" value="node11"></el-radio>
-              <el-radio label="当前节点" value="node12"></el-radio>
-              <el-radio label="流向节点" value="node13"></el-radio>
-            </el-radio-group>
+            <!--<el-radio-group v-model="nodeTypes">-->
+              <!--<el-radio label="来源节点" value="node11"></el-radio>-->
+              <!--<el-radio label="当前节点" value="node12"></el-radio>-->
+              <!--<el-radio label="流向节点" value="node13"></el-radio>-->
+            <!--</el-radio-group>-->
+            <!--<div class="demo-input-suffix" v-for="(item, key) in splittingList" :key="key" >-->
+              <!--<el-radio >{{item.type_name}}</el-radio>-->
+            <!--</div>-->
+            <div class="demo-input-suffix" v-for="(item, key) in splittingList" :key="key" >
+              <input type="radio" value=item.id />{{item.type_name}}
+            </div>
           </el-form-item>
           <el-form-item label="节点描述：">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
