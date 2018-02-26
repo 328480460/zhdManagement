@@ -61,7 +61,7 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="this_node_name"
+                       prop="node_name"
                        label="当前节点"
       >
       </el-table-column>
@@ -270,8 +270,8 @@ export default {
       let params = {
         this_node: this.ajaxSearch.currentNode,
         production_num: this.ajaxSearch.infoNo,
-        productionInProductList: [this.ajaxSearch.productGoodsIn],
-        productionOutProductList: [this.ajaxSearch.productGoodsOut],
+        productionInProductList: [{product_id: this.ajaxSearch.productGoodsIn}],
+        productionOutProductList: [{product_id: this.ajaxSearch.productGoodsOut}],
         production_date: this.ajaxSearch.time,
         pagenum: this.currentPage,
         pagesize: this.pageSize
@@ -280,7 +280,7 @@ export default {
     },
     loadNodeData() {
       // 请求d当前节点
-      getListNode({ node_type_id: 2 })
+      getListNode({ node_type_id: '', pagenum: '1', pagesize: '100', node_name: '', node_number: '', node_splitting: '' })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
         })
@@ -289,7 +289,7 @@ export default {
         });
     },
     loadProductList() {
-      getProductList()
+      getProductList({pagesize: '100', pagenum: '1'})
         .then(res => {
           this.productOption = res.data.productList;
         })

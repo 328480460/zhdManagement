@@ -56,12 +56,12 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="this_node"
+                       prop="this_node_name"
                        label="当前节点"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="source_noded"
+                       prop="source_node_name"
                        label="来源节点"
       >
       </el-table-column>
@@ -235,6 +235,21 @@ export default {
       this.currentPage = val;
       this.getProductList();
     },
+    // format  产品字段
+    formatProductList(productGoodsList) {
+      let _productionList = "";
+      productGoodsList.forEach(element => {
+        let productList = element.productList;
+
+        productList.forEach((ele, index) => {
+          _productionList += `${ele["product_batch_num"]}-`;
+          _productionList += `${ele["product_num"]} `;
+        });
+        
+        element.productList = _productionList;
+      });
+      return productGoodsList;
+    },
     initData(params) {
       this.getDataAjax(params);
       this.loadNodeData();
@@ -254,7 +269,7 @@ export default {
     },
     loadNodeData() {
       // 请求当前节点
-      getListNode({ node_type_id: 2 })
+      getListNode({ node_type_id: '', pagenum: '1', pagesize: '100', node_name: '', node_number: '', node_splitting: '' })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
         })
@@ -262,7 +277,7 @@ export default {
           this.$message.error("出错啦!");
         });
       // 请求来源节点
-      getListNode({ node_type_id: 1 })
+      getListNode({ node_type_id: '', pagenum: '1', pagesize: '100', node_name: '', node_number: '', node_splitting: '' })
         .then(res => {
           this.sourceNodedOption = res.data.nodeList;
         })
@@ -273,7 +288,7 @@ export default {
     getDataAjax(params) {
       getReceiptList(params)
         .then(res => {
-          this.dataList = res.data.receipt;
+          this.dataList = this.formatProductList(res.data.receiptList) ;
           this.totalcount = res.data.totalcount;
         })
         .catch(() => {

@@ -9,11 +9,11 @@
                 </div>
                 <div class="demo-input-suffix">
                     <div class="lable">生产日期</div>
-                    <el-date-picker :disabled="!edit" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
+                    <el-date-picker :disabled="!edit" v-model="time" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
                 </div>
                 <div class="demo-input-suffix">
                     <div class="lable">当前节点</div>
-                        <el-select :disabled="!edit" v-model="currnetNode" placeholder="请选择">
+                        <el-select :disabled="!edit" v-model="currnetNodeId" placeholder="请选择">
                             <el-option
                             v-for="item in thisNodeOption"
                             :key="item.id"
@@ -53,11 +53,11 @@
               </tr>
               <tr v-for="(item, index) in productGoodsIn" :key="index">
                 <td>{{item.product_name}}</td>
-                <td>{{item.product}}</td>
+                <td>{{item.product_num}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量"></el-input></td>
-                <td>{{item.norms}}</td>
+                <td>{{item.metering_name}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProductionIn(item, index)"></i></td>
               </tr>
             </table>
@@ -88,11 +88,11 @@
               </tr>
               <tr v-for="(item, index) in productGoodsOut" :key="index">
                 <td>{{item.product_name}}</td>
-                <td>{{item.product}}</td>
+                <td>{{item.product_num}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量"></el-input></td>
-                <td>{{item.norms}}</td>
+                <td>{{item.metering_name}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProductionOut(item, index)"></i></td>
               </tr>
             </table>
@@ -103,7 +103,7 @@
           <div class="content">
             <div class="demo-input-suffix">
                 <div class="lable">自定义属性</div>
-                <el-select  :disabled="!edit" v-model="selectCustomDefine" placeholder="请选择">
+                <el-select  :disabled="!edit" v-model="selectCustomDefineId" placeholder="请选择">
                     <el-option
                     v-for="item in customDefineList"
                     :key="item.id"
@@ -114,12 +114,12 @@
                 </el-select>
             </div>
           </div>
-          <div class="attribute-wrapper" v-show="selectCustomDefine">
+          <div class="attribute-wrapper" v-show="selectCustomDefineId">
             <div class="content">
               <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
                 <div class="lable">{{item.column_chinese}}</div>
-                <el-cascader v-if="/产地/.test(item.column_chinese)" :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>
-                <el-input v-else  :disabled="!edit" v-model="item.value" placeholder="请输入内容"></el-input>
+                <!-- <el-cascader v-if="/产地/.test(item.column_chinese)" :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader> -->
+                <el-input :disabled="!edit" v-model="item.data_value" placeholder="请输入内容"></el-input>
               </div>
             </div>
           </div>
@@ -154,6 +154,8 @@ export default {
       thisNodeOption: [],
       // 当前选中的当前节点
       currnetNode: '',
+      // 当前选中的当前节点ID
+      currnetNodeId: "",
       // 所有产品类型列表
       productTypeList: [],
       // 当前选中投入品类型
@@ -239,7 +241,7 @@ export default {
   methods: {
     loadNodeData() {
       // 请求当前节点
-      getListNode({ node_type_id: 1 })
+      getListNode({ node_type_id: '', pagenum: '1', pagesize: '100', node_name: '', node_number: '', node_splitting: '' })
         .then(res => {
           this.thisNodeOption = res.data.nodeList;
           this.showCurrnetNode()
@@ -250,7 +252,7 @@ export default {
     },
     // 请求产品列表
     loadProductionTypeData() {
-      getProductList()
+      getProductList({pagenum: '1', pagesize: '100'})
         .then(res => {
           this.productTypeList = res.data.productList;
         })
@@ -260,7 +262,7 @@ export default {
     },
     // 请求用户自定义模块列表
     loadCustomDefineData() {
-      getCustomAttributeList()
+      getCustomAttributeList({pagesize: '100', pagenum: '1', custom_mould_type: '3', sub_link: '生产信息'})
         .then(res => {
           this.customDefineList = res.data.customAttributeList;
           this.showSelectCustomDefineMould();
@@ -271,7 +273,6 @@ export default {
     },
     // 请求用户自定义模块详情
     loadCustomDefineDetailData(id) {
-      // console.log('loadCustomDefineDetailData');
       getCustomAttributeDetail({ id })
         .then(res => {
           this.customDefineAttributeList =
@@ -298,6 +299,7 @@ export default {
         // console.log(value, this.thisNodeId);
         if(value.id == this.thisNodeId) {
           this.currnetNode = value.node_address;
+          this.currnetNodeId = value.id;
         }
       })
     },
@@ -308,11 +310,18 @@ export default {
       customDefineAttributeList.forEach((value, index) => {
         customFields.forEach((val, idx) => {
           if (value.id == val.custom_id) {
-            value.value = val.data_value;
+            value.data_value = val.data_value;
           }
         });
       });
       // console.log(this.customDefineAttributeList)
+    },
+    // format 投入品和产出品字段，以符合后台要求
+    formatProduction(production) {
+      production.map((item) => {
+        item.product_id = item.product_id;
+      })
+      return production;
     },
     changeHandleIn(id) {
       let newProduction = this.productTypeList.filter((value, index) => {
@@ -342,19 +351,20 @@ export default {
     saveData() {
       let data = {
         id: this.id,
-        this_node_id: this.currnetNode,
+        this_node_id: this.currnetNodeId,
         production_date: this.time,
         production_num: this.productionNum,
         custom_mould_id: this.selectCustomDefineId,
-        productionOutProductList: this.productGoodsOut,
-        productionInProductList: this.productGoodsIn,
-        customFields: this.customDefineAttributeList
+        productionOutProductList: this.formatProduction(this.productGoodsOut),
+        productionInProductList: this.formatProduction(this.productGoodsIn),
+        productionCustomList: this.customDefineAttributeList
       };
+      console.log(this.formatProduction(this.productGoodsOut))
       this.$emit('saveData', data)
     }
   },
   watch: {
-    selectCustomDefine(newVal) {
+    selectCustomDefineId(newVal) {
       this.loadCustomDefineDetailData(newVal);
     }
   }

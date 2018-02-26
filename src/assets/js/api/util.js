@@ -2,7 +2,7 @@ export const deepCopy = function(source) {
   var result = Array.isArray(source) ? [] : {};
 
   for (var key in source) {
-    result[key] = typeof source[key] === 'object' ? deepCopy(source[key]) : source[key];
+    result[key] =  source[key] === null ? '' : typeof source[key] === 'object' ? deepCopy(source[key]) : source[key];
   }
   return result;
 }

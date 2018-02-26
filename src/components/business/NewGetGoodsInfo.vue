@@ -1,6 +1,6 @@
 <template>
     <div id="getGoodsInfoDetail" >
-        <GetGoodsInfoDetailTemplate :edit= true @saveData= "saveData" >
+        <GetGoodsInfoDetailTemplate :edit= true  @saveData= "saveData" >
         </GetGoodsInfoDetailTemplate>
     </div>
 </template>
