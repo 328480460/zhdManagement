@@ -17,7 +17,7 @@
         class="download-template"
         size="mini"
         type="text"
-        @click="downloadyemplate()">下载模板</el-button>
+        @click="downloadyemplate">下载模板</el-button>
     </div>
 
     <div class="batch-right">
@@ -27,22 +27,24 @@
       <el-upload
         class="upload-demo"
         drag
+        ref="upload"
+        :auto-upload = 'false'
         :action= uploadUrl+templateValue
+        :before-upload="beforeAvatarUpload"
         :on-success="uploadSuccess"
         :onError="uploadError"
         :file-list="fileList"
         multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <!--<div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>-->
-
+        <div slot="tip" class="el-upload__tip">只能上传xls/xlsx文件</div>
       </el-upload>
       <el-button
         type="primary"
         size="medium"
         class="download-template"
-        :action= uploadUrl+templateValue
-        >保存</el-button>
+        @click="update"
+        >上传</el-button>
     </div>
   </div>
 </template>
@@ -60,7 +62,6 @@
     data(){
       return{
         templateValue: '',
-//        templateValue: 'Receipt',
         imageUrl: '',
         fileList:[],
       }
@@ -80,23 +81,32 @@
       }
     },
     methods:{
-      downLoad(){
+      //上传文件格式判断
+      beforeAvatarUpload(file) {
+        let Xls = file.name.split('.');
+        if(Xls[1] === 'xls'||Xls[1] === 'xlsx'){
+          return file
+        }else {
+          this.$message.error('上传文件只能是 xls/xlsx 格式!')
+          return false
+        }
+      },
+      //下载模板
+      downloadyemplate(){
         if(this.templateValue == ''){
           this.$message.warning("请选择模板");
         }else{
-          /*下载模板网络请求*/
+          var that = this
+          /*下载模板接口*/
           axios.get(this.downloadUrl+this.templateValue,{responseType:'blob'})
             .then(function (response) {
-//              console.log("~~~~下载模板~~~~"+JSON.stringify(response))
-              FileSaver.saveAs(response.body, 'Export2.xlsx')
+              if(response.status == 200){
+                FileSaver.saveAs(response.data, that.templateValue+'.xlsx')
+              }
             }).catch(function (error) {
-            console.log("error---"+error)
+            console.log("error下载模板---"+error)
           });
         }
-      },
-      downloadyemplate(){
-        /*下载模板接口*/
-        this.downLoad()
       },
       // 上传成功
       uploadSuccess(res, file) {
@@ -107,15 +117,14 @@
       uploadError (response, file, fileList) {
         console.log('上传失败，请重试！')
       },
-  /*    update(){
-        /!*上传模板网络请求*!/
-        axios.post(this.uploadUrl+this.templateValue)
-          .then(function (response) {
-            this.$message.success("上传文件");
-          }).catch(function (error) {
-          console.log("uploadUrl--error---"+error)
-        });
-      }*/
+      //上传模板按钮
+      update() {
+        if(this.templateValue == ''){
+          this.$message.warning("请选择模板");
+        }else{
+          this.$refs.upload.submit();
+        }
+      },
     }
   }
 </script>

@@ -64,6 +64,10 @@ export default {
       }
     },
   mounted(){
+    //获取userid
+    var userid = localStorage.getItem('userid')
+    console.log("getItem的userid---"+JSON.stringify(userid))
+
     let params ={
       enterprise_id:1
     }
