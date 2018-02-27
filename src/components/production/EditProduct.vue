@@ -13,34 +13,27 @@
           <el-form-item label="*产品分类">
             <el-cascader
               :options="systemDefaultType"
+              @change="handleChange"
+              v-model="productTypeSelected"
               placeholder="可搜索"
               :props="props"
               :show-all-levels="false"
               filterable
               clearable
               change-on-select
-              v-model="form.productType"
-              @change="handleChange"
             ></el-cascader>
-            <!--<el-select v-model="form.productType" clearable  placeholder="请选择" width="50px" >-->
-              <!--<el-option  v-for="item in systemDefaultTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >-->
-              <!--</el-option>-->
-            <!--</el-select>-->
           </el-form-item>
           <el-form-item label="*包装单位">
-            <el-select v-model="form.norms" clearable placeholder="无">
-              <!--换包装单位集合查询接口的集合-->
-              <el-option label="袋" value="袋"></el-option>
-              <el-option label="件" value="件"></el-option>
-              <el-option label="箱" value="箱"></el-option>
+            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
+              <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
+              </el-option>
             </el-select>
-          </el-form-item>
+            </el-form-item>
           <el-form-item label="*计量单位">
             <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
-            <el-select v-model="form.norms" clearable placeholder="未选择">
-              <el-option label="袋" value="袋"></el-option>
-              <el-option label="件" value="件"></el-option>
-              <el-option label="箱" value="箱"></el-option>
+            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
+              <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
+              </el-option>
             </el-select>
             <el-radio-group v-model="form.productPackagingUnit">
               <el-radio label="标件"></el-radio>
@@ -91,6 +84,7 @@
 
 <script type="text/ecmascript-6">
   import {
+    getlist,
     getListProductType,
     getCustomAttributeList,
     getColumnInfo,
@@ -104,12 +98,13 @@
     name: "editProduct",
     data() {
       return {
+        productTypeSelected: [],
         form: {
           routerQuery: this.$route.query,
           productCode: "",
           productName: "",
           productType: "",
-          custom_type_id: "",
+          custom_type: "",
           norms: "",
           metering: "",
           productPackagingUnit: "",
@@ -117,7 +112,7 @@
           productBrand: "",
           custom_mould:"",
           customField:"",
-          systemDefaultType:"",
+//          systemDefaultType:"",
         },
         systemDefaultType:[],
         props: {
@@ -125,6 +120,8 @@
           label: 'type_name',
           children: 'systemDefaultTypeList'
         },
+        //规格列表
+        normsTypeList:[],
         customTypeList:[],
         customFields:[],
         newcustomFields:[],
@@ -133,13 +130,27 @@
       };
     },
     mounted(){
+      //查询“产品分类-系统默认提供”列表
+      this.systemDefaultTypeLists()
       let params ={
         "id":this.$route.query.productId
       }
       this.initData(params);
-      console.log("productid---"+JSON.stringify(params))
     },
     methods: {
+      //节点分类查询
+      getNormsTypeList(){
+        let params = {
+          tables_name: "norms",
+        };
+        getlist(params)
+          .then(res => {
+            this.normsTypeList = res.data.typeTablesList;
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
+      },
       onSubmit() {
         this.attributeList.forEach((value, index) => {
           var arr  =
@@ -153,12 +164,11 @@
           id: this.$route.query.productId,
           product: this.form.productCode,
           product_name: this.form.productName,
-//          product_type_id: this.form.productType,
-          product_type_id: "食品",
+          product_type_id: this.form.productType,
           metering: this.form.metering,
           norms: this.form.norms,
           metering_id: this.form.metering_id,
-          custom_type_id: this.form.customType,
+          custom_type_id: this.form.custom_type,
           product_depict: this.form.productDesc,
           brand_name: this.form.productBrand,
           custom_mould_id: this.form.custom_mould_id,
@@ -179,32 +189,20 @@
 
       },
       handleChange(value) {
+        console.log("value--"+value);
         console.log("handleChange--"+value[value.length - 1]);
-        this.form.productType =value
+        this.form.productType =value[value.length - 1]
       },
       //“产品分类-系统默认提供”列表
       systemDefaultTypeLists(){
         getDefaultProductType()
           .then(res =>{
             this.systemDefaultType = res.data.systemDefaultTypeList;
-            console.log("--systemDefaultTypeList----"+JSON.stringify(res.data.systemDefaultTypeList.length))
+//            console.log("--systemDefaultTypeList----"+JSON.stringify(this.systemDefaultType))
           })
           .catch(() => {
             this.$message.error("出错啦!");
           })
-      },
-      initData(params){
-        //查询产品详情
-        this.getProductDetail(params)
-        //查询“产品分类-系统默认提供”列表
-        this.systemDefaultTypeLists()
-        //查询“自定义分类”列表
-        this.selectTypes()
-        //查询自定义属性列表
-        this.getCustomAttributeList();
-
-        //自定义字段信息查询——TEST
-        this.getColumnInfo();
       },
       //产品详情接口
       getProductDetail(params){
@@ -214,7 +212,6 @@
             this.form.productCode = res.data.productDetail. product;
             this.form.productName = res.data.productDetail.product_name;
             this.form.productType = res.data.productDetail.product_type_id;
-//            this.form.productType = "食品";
             this.form.custom_type = res.data.productDetail.custom_type_id;
             this.form.norms = res.data.productDetail.norms;
             this.form.metering = res.data.productDetail.metering;
@@ -222,6 +219,10 @@
             this.form.productBrand = res.data.productDetail. brand_name;
             this.customFields = res.data.productDetail. customFields;
 //            this.form.customField = this.customFields[0].data_value;
+
+            this.productTypeSelected.push(this.form.productType);
+            console.log("data产品分类详情显示-------"+JSON.stringify(this.productTypeSelected))
+
           })
           .catch(() => {
             this.$message.error("出错啦getProductDetail!");
@@ -273,6 +274,20 @@
           .catch(() => {
             this.$message.error("出错啦!");
           });
+      },
+      initData(params){
+        //查询产品详情
+        this.getProductDetail(params)
+
+        //查询“自定义分类”列表
+        this.selectTypes()
+        //查询规格列表
+        this.getNormsTypeList();
+        //查询自定义属性列表
+        this.getCustomAttributeList();
+
+        //自定义字段信息查询——TEST
+        this.getColumnInfo();
       },
     }
   };

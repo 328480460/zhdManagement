@@ -47,16 +47,18 @@
       },
       data() {
         return{
-          templatespro: [{
-            value: '1',
-            name: '(test)默认模板'
-          }, {
-            value: '2',
-            name: '牛肉模板'
-          }, {
-            value: '3',
-            name: '其他模板'
-          }],
+          templatespro: [
+//            {
+//            value: '1',
+//            name: '(test)默认模板'
+//          }, {
+//            value: '2',
+//            name: '牛肉模板'
+//          }, {
+//            value: '3',
+//            name: '其他模板'
+//          }
+          ],
 
         }
       },

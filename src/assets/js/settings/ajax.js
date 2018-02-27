@@ -44,27 +44,28 @@ export const  getListRole  = function(params) {
 }
 // 角色新增
 export const  createRole  = function(params) {
-    let url = ENVIRNMENT + 'Role/createRole';
+    let url = ENVIRNMENTTEST2 + 'Role/createRole';
     return ajaxPost(url,params)
 }
 // 角色删除
 export const  deleteRole  = function(params) {
-    let url = ENVIRNMENT + 'Role/deleteRole';
+    let url = ENVIRNMENTTEST2 + 'Role/deleteRole';
     return ajaxPost(url,params)
 }
 // 角色修改
 export const  updateRole  = function(params) {
-    let url = ENVIRNMENT + 'Role/updateRole';
+    let url = ENVIRNMENTTEST2 + 'Role/updateRole';
     return ajaxPost(url,params)
 }
 // 角色详情查询
 export const  getDetailRole  = function(params) {
-    let url = ENVIRNMENT + 'ole/getDetailRole';
+    let url = ENVIRNMENTTEST2 + 'ole/getDetailRole';
     return ajaxPost(url,params)
 }
+
 // 节点列表查询接口
 export const getListNode = function(params) {
-  let url = ENVIRNMENT + '/Node/getListNode';
+  let url = ENVIRNMENTTEST2 + '/Node/getListNode';
   return ajaxPost(url,params)
 }
 /**

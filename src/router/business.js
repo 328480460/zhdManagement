@@ -239,16 +239,17 @@ export default[
     },
     //业务-系统对接-系统对接
     {
-        path : 'business/systemInsert',
-        component : SystemInsert,
-        name: 'systemInsert',
-        meta: {
-            pageInfo: {
-                page: "systemInsert",
-                node: 'business',
-                name: "系统对接",
-                id: "050601"
-            }
+      path : 'business/systemInsert',
+      component : SystemInsert,
+      name: 'systemInsert',
+      meta: {
+        pageInfo: {
+          page: "systemInsert",
+          node: 'business',
+          name: "历史记录",
+          id: "050601"
         }
-    }
+      }
+    },
+  
 ]

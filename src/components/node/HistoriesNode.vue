@@ -56,21 +56,23 @@
     name: 'histories',
     data(){
       return{
-        historylist: [{
-          value: '1',
-          name: '(test)文件名称',
-          totalcount:'2',
-          count:'2',
-          status:'0',
-          date:'2018-1-8',
-        }, {
-          value: '2',
-          name: '文件名称',
-          totalcount:'2',
-          count:'2',
-          status:'0',
-          date:'2018-1-8',
-        }],
+        historylist: [
+//          {
+//          value: '1',
+//          name: '(test)文件名称',
+//          totalcount:'2',
+//          count:'2',
+//          status:'0',
+//          date:'2018-1-8',
+//        }, {
+//          value: '2',
+//          name: '文件名称',
+//          totalcount:'2',
+//          count:'2',
+//          status:'0',
+//          date:'2018-1-8',
+//        }
+        ],
 
       }
     },

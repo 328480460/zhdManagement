@@ -6,6 +6,7 @@ import StaffManagement from '@/components/settings/StaffManagement'
 import AddStaff from '@/components/settings/AddStaff'
 import EditStaff from '@/components/settings/EditStaff'
 import RolePermission from '@/components/settings/RolePermission'
+import AddRole from '@/components/settings/AddRole'
 import Invitation from '@/components/settings/Invitation'
 import CustomProductType from '@/components/settings/CustomProductType'
 import AddProductType from '@/components/settings/AddProductType'
@@ -132,6 +133,20 @@ export default[
           node: 'settings',
           name: "角色权限",
           id: "030302"
+        }
+      }
+    },
+    //设置-员工设置-角色权限-添加角色
+    {
+      path : 'settings/addrole',
+      component : AddRole,
+      name: 'addrole',
+      meta: {
+        pageInfo: {
+          page: "addrole",
+          node: 'settings',
+          name: "添加角色",
+          id: "03030201"
         }
       }
     },

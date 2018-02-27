@@ -63,11 +63,11 @@
     name: 'cpymb',
     data(){
       return{
-        totalcount:0,
-        customTypeList:[],
         search: {
           typeName:'',
         },
+        totalcount:0,
+        customTypeList:[],
         currentPage: 1,
         pageSize: 10,
         ajaxSearch: "",
@@ -100,7 +100,7 @@
             createProductType(params)
               .then(res => {
                 this.$message.success("新建成功!");
-                console.log("分类新建res---"+JSON.stringify(res))
+                this.getTypeList()
               })
               .catch(() => {
                 this.$message.error("出错啦!");
@@ -196,8 +196,9 @@
           };
           deleteProductType(params)
             .then(res => {
-              this.$message.success("新建成功!");
+              this.$message.success("删除成功!");
               this.customTypeList.splice(index, 1);
+              this.getTypeList()
             })
             .catch(() => {
               this.$message.error("出错啦!");

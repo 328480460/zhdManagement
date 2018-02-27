@@ -11,23 +11,20 @@
             <el-input v-model="form.nodeName"></el-input>
           </el-form-item>
           <el-form-item label="节点分类：">
-            <el-select v-model="form.nodeSplitting" clearable  placeholder="选择节点分类" width="50px" >
-              <el-option  v-for="item in nodeTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
+            <el-select v-model="form.nodeType" clearable  placeholder="选择节点分类" width="50px" >
+              <el-option  v-for="item in nodeTypeLists" :key="item.id" :label="item.type_name"  :value="item.id" >
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="节点类型：">
-            <!--<el-radio-group v-model="nodeTypes">-->
-              <!--<el-radio label="来源节点" value="node11"></el-radio>-->
-              <!--<el-radio label="当前节点" value="node12"></el-radio>-->
-              <!--<el-radio label="流向节点" value="node13"></el-radio>-->
-            <!--</el-radio-group>-->
-            <!--<div class="demo-input-suffix" v-for="(item, key) in splittingList" :key="key" >-->
-              <!--<el-radio >{{item.type_name}}</el-radio>-->
+            <el-radio-group v-model="form.splitting">
+              <el-radio label="来源节点" value="a40ffa3b-4e70-4966-866e-0d12f224e048"></el-radio>
+              <el-radio label="当前节点" value="fb4d3588-8e78-4401-b5db-14dcea0a3f61"></el-radio>
+              <el-radio label="流向节点" value="fd4de147-4c8b-4559-818e-04e2ae7aa458"></el-radio>
+            </el-radio-group>
+            <!--<div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="key" >-->
+              <!--<input type="radio" value=item.id />{{item.type_name}}-->
             <!--</div>-->
-            <div class="demo-input-suffix" v-for="(item, key) in splittingList" :key="key" >
-              <input type="radio" value=item.id />{{item.type_name}}
-            </div>
           </el-form-item>
           <el-form-item label="节点描述：">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
@@ -94,7 +91,8 @@ export default {
       form: {
         nodeNumber: "",
         nodeName: "",
-        nodeSplitting: "",
+        nodeType: "",
+        splitting:"",
         nodeDepict: "",
         nodeAddress: "",
         contacts: "",
@@ -102,12 +100,11 @@ export default {
         custom_mould_id: "",
       },
       customList:[],
-      nodeTypes:"",
       customAttributeList:[],
       attributeList:[],
       typeTablesList:[],
-      nodeTypeList:[],
-      splittingList:[],
+      splittingLists:[],
+      nodeTypeLists:[],
     }
   },
   mounted() {
@@ -118,8 +115,8 @@ export default {
       let params = {
         node_number: this.form.nodeNumber,
         node_name: this.form.nodeName,
-        node_splitting: this.form.nodeSplitting,
-        node_type_id: this.nodeTypes,
+        node_splitting: this.form.splitting,
+        node_type_id: this.form.nodeType,
         node_depict: this.form.nodeDepict,
         node_address: this.form.nodeAddress,
         contacts: this.form.contacts,
@@ -147,7 +144,7 @@ export default {
       };
       getlist(params)
         .then(res => {
-          this.nodeTypeList = res.data.typeTablesList;
+          this.nodeTypeLists = res.data.typeTablesList;
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -161,7 +158,7 @@ export default {
       getlist(params)
         .then(res => {
           console.log("node_splitting--"+JSON.stringify(res))
-          this.splittingList = res.data.typeTablesList;
+          this.splittingLists = res.data.typeTablesList;
         })
         .catch(() => {
           this.$message.error("出错啦!");

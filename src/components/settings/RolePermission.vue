@@ -1,7 +1,7 @@
 <template>
     <div id="role">
       <div class="btn-list">
-        <el-button type="primary" size="medium">添加角色</el-button>
+        <el-button type="primary" size="medium" @click="newRole">添加角色</el-button>
       </div>
 
       <el-table class="el-table"
@@ -69,6 +69,14 @@ export default {
       this.initData(params);
     },
     methods: {
+      newRole() {
+        this.$emit("openExtraPage", {
+          node: 'settings',
+          page: "addRole",
+          name: "添加角色",
+          id: "03030201"
+        });
+      },
       initData(params) {
         this.getDataAjax(params)
       },
@@ -90,7 +98,7 @@ export default {
           .then(res => {
             this.totalcount = res.data.totalcount;
             this.roleList = res.data.roleList;
-            console.log(JSON.stringify(res))
+            console.log("getListRole---"+JSON.stringify(res))
           })
           .catch(() => {
             this.$message.error("出错啦!");

@@ -14,15 +14,16 @@
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">节点分类</div></el-col>
         <el-col :span="4">
-          <el-select v-model="search.nodeSplitting" clearable  placeholder="请选择" width="50px" >
-            <el-option  v-for="item in splittingList" :key="item.id" :label="item.type_name" :value="item.id">
+          <el-select v-model="search.nodeType" clearable  placeholder="请选择" width="50px" >
+            <el-option  v-for="item in nodeTypeList" :key="item.id" :label="item.type_name" :value="item.id" >
             </el-option>
           </el-select>
+
         </el-col>
         <el-col :span="3"><div class="sub-title">节点类型</div></el-col>
         <el-col :span="4">
-          <el-select v-model="search.nodeType" clearable  placeholder="请选择" width="50px" >
-            <el-option  v-for="item in nodeTypeList" :key="item.id" :label="item.type_name" :value="item.id" >
+          <el-select v-model="search.nodeSplitting" clearable  placeholder="请选择" width="50px" >
+            <el-option  v-for="item in splittingList" :key="item.id" :label="item.type_name" :value="item.id">
             </el-option>
           </el-select>
         </el-col>
@@ -49,12 +50,12 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="node_splitting_name"
+                       prop="node_type_name"
                        label="节点分类"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="node_type_name"
+                       prop="node_splitting_name"
                        label="节点类型"
       >
       </el-table-column>
@@ -249,13 +250,15 @@ export default {
           /*删除接口*/
           deleteNode(params)
             .then(res => {
+              console.log("节点删除res---"+JSON.stringify(res))
               if(res.status == 200){
                 this.$message.success("删除成功!");
                 this.nodeList.splice(index, 1);
                 //重新请求节点列表数据
                 this.getNodeList()
+              }else {
+                this.$message.error(res.msg);
               }
-              console.log("节点删除res---"+JSON.stringify(res))
             })
             .catch(() => {
               this.$message.error("出错啦!");

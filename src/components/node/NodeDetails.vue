@@ -11,17 +11,20 @@
             <el-input v-model="form.nodeName"></el-input>
           </el-form-item>
           <el-form-item label="节点分类">
-            <el-select v-model="form.nodeSplitting" clearable  placeholder="选择节点分类" width="50px" >
-              <el-option  v-for="item in nodeTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
+            <el-select v-model="form.nodeType" clearable  placeholder="选择节点分类" width="50px" >
+              <el-option  v-for="item in nodeTypeLists" :key="item.id" :label="item.type_name"  :value="item.id" >
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="节点类型">
-            <el-radio-group v-model="splittingList">
-                <el-radio label="来源节点" value="node11"></el-radio>
-                <el-radio label="当前节点" value="node12"></el-radio>
-                <el-radio label="流向节点" value="node13"></el-radio>
+            <el-radio-group v-model="form.splitting">
+              <el-radio label="来源节点" value="a40ffa3b-4e70-4966-866e-0d12f224e048"></el-radio>
+              <el-radio label="当前节点" value="fb4d3588-8e78-4401-b5db-14dcea0a3f61"></el-radio>
+              <el-radio label="流向节点" value="fd4de147-4c8b-4559-818e-04e2ae7aa458"></el-radio>
             </el-radio-group>
+            <!--<div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="key" >-->
+            <!--<input type="radio" value=item.id />{{item.type_name}}-->
+            <!--</div>-->
           </el-form-item>
           <el-form-item label="节点描述">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
@@ -101,8 +104,8 @@
         },
         nodeTypes:"",
         customMouldNames: [],
-        nodeTypeList:[],
-        splittingList:[],
+        splittingLists:[],
+        nodeTypeLists:[],
       }
     },
     mounted(){
@@ -146,7 +149,7 @@
         };
         getlist(params)
           .then(res => {
-            this.nodeTypeList = res.data.typeTablesList;
+            this.nodeTypeLists = res.data.typeTablesList;
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -159,7 +162,7 @@
         };
         getlist(params)
           .then(res => {
-            this.splittingList = res.data.typeTablesList;
+            this.splittingLists = res.data.typeTablesList;
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -202,7 +205,7 @@
          */
         getDetailNode(params)
           .then(res =>{
-            console.log("getDetailNode--"+JSON.stringify(res))
+//            console.log("getDetailNode--"+JSON.stringify(res))
             let node = res.data.node
             this.form.nodeNumber = node. node_number;
             this.form.nodeName = node. node_name;

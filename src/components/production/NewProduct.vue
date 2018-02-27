@@ -12,24 +12,22 @@
           </el-form-item>
 
           <el-form-item label="*产品分类">
-            <!--<el-cascader-->
-              <!--:options="systemDefaultType"-->
-              <!--placeholder="可搜索"-->
-              <!--:props="props"-->
-              <!--:show-all-levels="false"-->
-              <!--filterable-->
-              <!--clearable-->
-              <!--change-on-select-->
-              <!--v-model="form.productType"-->
-              <!--@change="handleChange"-->
-            <!--&gt;</el-cascader>-->
+            <el-cascader
+              :options="systemDefaultType"
+              @change="handleChange"
+              placeholder="可搜索"
+              :props="props"
+              :show-all-levels="false"
+              filterable
+              clearable
+              change-on-select
+            ></el-cascader>
           </el-form-item>
           <el-form-item label="*包装规格">
             <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
-            <el-select v-model="form.norms" placeholder="未选择">
-              <el-option label="(test)头" value="头"></el-option>
-              <el-option label="件" value="件"></el-option>
-              <el-option label="箱" value="箱"></el-option>
+            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
+              <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
+              </el-option>
             </el-select>
             <el-radio-group v-model="form.metering_id">
               <el-radio label="标件" value="标件"></el-radio>
@@ -81,13 +79,14 @@
 
 <script type="text/ecmascript-6">
   import {
+    getlist,
     getListProductType,
     getColumnInfo,
     getCustomAttributeList,
     getCustomAttributeDetail,
     getDefaultProductType,
     updateCustomAttribute,
-    saveProduct
+    saveProduct,
   } from "../../assets/js/production/ajax.js";
   import ProductGoodsInfoDetailTemplate from "../commonComponents/ProductGoodsInfoDetailTemplate";
 
@@ -106,8 +105,9 @@ export default {
         productDesc: "",
         productBrand: "",
         custom_mould_id:"",
-        systemDefaultType:"",
       },
+      //规格列表
+      normsTypeList:[],
       //产品分类--系统默认提供
       systemDefaultType:[],
       props: {
@@ -125,7 +125,6 @@ export default {
       selectCustomDefineId: "",
       // 用户选定模块的自定义属性列表
       customDefineAttributeList: [],
-
       attributeList:[],
       newcustomFields:[],
     };
@@ -141,6 +140,19 @@ export default {
     }
   },
   methods: {
+    //节点分类查询
+    getNormsTypeList(){
+      let params = {
+        tables_name: "norms",
+      };
+      getlist(params)
+        .then(res => {
+          this.normsTypeList = res.data.typeTablesList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
     onSubmit() {
       //需要替换？？？
 //      this.attributeList.forEach((value, index) => {
@@ -181,6 +193,8 @@ export default {
     },
     //选择的产品分类--系统默认提供
     handleChange(value) {
+      console.log("handleChange----"+value)
+      console.log("this.form.productType----"+value[value.length - 1])
       this.form.productType =value[value.length - 1]
     },
     //“产品分类-系统默认提供”列表
@@ -188,6 +202,7 @@ export default {
       getDefaultProductType()
         .then(res =>{
           this.systemDefaultType = res.data.systemDefaultTypeList;
+//          console.log("--systemDefaultTypeList----"+JSON.stringify(this.systemDefaultType))
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -254,7 +269,7 @@ export default {
     // 回显出当前用户选中的自定义模块
     showSelectCustomDefineMould() {
       this.customAttributeList.forEach((value, index) => {
-         console.log(value.id, JSON.stringify(this.customMouldId))
+//         console.log(value.id, JSON.stringify(this.customMouldId))
         if (value.id == this.customMouldId) {
           this.selectCustomDefine = value.mould_name;
           this.selectCustomDefineId = value.id;
@@ -279,6 +294,8 @@ export default {
       this.systemDefaultTypeLists()
       //查询自定义分类列表
       this.getListProductType();
+      //查询规格列表
+      this.getNormsTypeList();
 
       //查询自定义属性列表
       this.getCustomAttributeList();

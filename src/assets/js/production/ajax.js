@@ -71,6 +71,11 @@ export const getCustomAttributeDetail = function (params) {
   let url = ENVIRNMENT + '/getCustomAttributeDetail';
   return ajaxPost(url, params)
 }
+// 节点类型、类型列表接口
+export const getlist = function(params) {
+  let url = ENVIRNMENTTEST2 + '/TypeTables/getlist';
+  return ajaxPost(url,params)
+}
 
 // 自定义字段信息查询
 export const getColumnInfo = function(params) {

@@ -61,35 +61,37 @@
         data() {
           return{
             activeName:'first',
-            picList: [{
-              value: '1',
-              pic:'',
-              name: '(test)企业介绍企业介绍企业介绍企业介绍企业介绍.jpg'
-            }, {
-              value: '2',
-              pic:'',
-              name: '企业介绍.jpg'
-            }, {
-              value: '3',
-              pic:'',
-              name: '企业介绍.jpg'
-            }, {
-              value: '4',
-              pic:'',
-              name: '企业介绍.jpg'
-            }, {
-              value: '5',
-              pic:'',
-              name: '企业介绍.jpg'
-            }, {
-              value: '6',
-              pic:'',
-              name: '企业介绍.jpg'
-            }, {
-              value: '7',
-              pic:'',
-              name: '企业介绍.jpg'
-            }],
+            picList: [
+//              {
+//              value: '1',
+//              pic:'',
+//              name: '(test)企业介绍企业介绍企业介绍企业介绍企业介绍.jpg'
+//            }, {
+//              value: '2',
+//              pic:'',
+//              name: '企业介绍.jpg'
+//            }, {
+//              value: '3',
+//              pic:'',
+//              name: '企业介绍.jpg'
+//            }, {
+//              value: '4',
+//              pic:'',
+//              name: '企业介绍.jpg'
+//            }, {
+//              value: '5',
+//              pic:'',
+//              name: '企业介绍.jpg'
+//            }, {
+//              value: '6',
+//              pic:'',
+//              name: '企业介绍.jpg'
+//            }, {
+//              value: '7',
+//              pic:'',
+//              name: '企业介绍.jpg'
+//            }
+            ],
           }
         },
         methods: {
