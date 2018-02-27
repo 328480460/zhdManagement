@@ -6,6 +6,9 @@
           <el-form-item label="账号：">
             <el-input v-model="form.account"></el-input>
           </el-form-item>
+          <el-form-item label="密码：">
+            <el-input v-model="form.password" type="password"></el-input>
+          </el-form-item>
           <el-form-item label="员工姓名：">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
@@ -62,6 +65,7 @@ export default {
         roleList: [],
         form: {
           account: '',
+          password: '',
           contacts: '',
           name: '',
           email: '',
@@ -99,6 +103,7 @@ export default {
       onSubmit() {
         let params = {
           account: this.form.account,
+          password: this.form.password,
           contacts: this.form.contacts,
           name: this.form.name,
           email: this.form.email,

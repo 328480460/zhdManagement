@@ -201,6 +201,8 @@ export default {
               if(res.status == 200){
                 this.$message.success("删除成功!");
                 this.productList.splice(index, 1);
+                // 重新请求当前页当前条件数据
+                this.getProductList()
               }
             })
             .catch(() => {

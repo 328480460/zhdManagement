@@ -8,8 +8,8 @@ const test = 'http://192.168.1.82:8764/meatWebServer';//test  张力
 const test2 = "http://192.168.1.222:8764/meatWebServer";//test2  刘高阳
 
 /*统一外网地址*/
-// const test = 'http://47.92.98.208/meatWebServer';
-// const test2 = "http://47.92.98.208/meatWebServer";
+const test = 'http://47.92.98.208/meatWebServer';
+const test2 = "http://47.92.98.208/meatWebServer";
 
 export const ENVIRNMENT = develop;
 export const ENVIRNMENTTEST = test;

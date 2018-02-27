@@ -90,6 +90,7 @@ export default {
           .then(res => {
             this.totalcount = res.data.totalcount;
             this.roleList = res.data.roleList;
+            console.log(JSON.stringify(res))
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -104,9 +105,9 @@ export default {
 //      });
       },
       handleDelete(index, row) {
-      this.delete(row)
+      this.delete(index, row)
       },
-      delete(row) {
+      delete(index, row) {
         this.$confirm('此操作将删除该角色信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -118,8 +119,12 @@ export default {
           };
           deleteRole(params)
             .then(res => {
-              if (res.status == 200) {
+              if(res.status == 200){
                 this.$message.success("删除成功!");
+                this.roleList.splice(index, 1);
+                this.getListRole()
+              }else {
+                this.$message.error(res.msg);
               }
             })
             .catch(() => {
