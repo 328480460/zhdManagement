@@ -252,6 +252,8 @@ export default {
               if(res.status == 200){
                 this.$message.success("删除成功!");
                 this.nodeList.splice(index, 1);
+                //重新请求节点列表数据
+                this.getNodeList()
               }
               console.log("节点删除res---"+JSON.stringify(res))
             })

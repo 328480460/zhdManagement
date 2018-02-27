@@ -136,9 +136,9 @@ export default {
       });
     },
     handleDelete(index, row) {
-      this.delete(row)
+      this.delete(index, row)
     },
-    delete(row) {
+    delete(index, row) {
       this.$confirm('此操作将删除该员工信息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -150,11 +150,13 @@ export default {
         };
         deleteEmployee(params)
           .then(res => {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-            console.log("员工“自定义属性”删除成功---"+JSON.stringify(res))
+            if(res.status == 200){
+              this.$message.success("删除成功!");
+              this.employees.splice(index, 1);
+              this.getEmployeeList()
+            }else {
+              this.$message.error(res.msg);
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");

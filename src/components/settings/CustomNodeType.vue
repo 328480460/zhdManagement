@@ -89,10 +89,9 @@ export default {
         });
       },
       handleDelete(index, row) {
-        this.delete(row);
-        console.log("2要删除的那条信息---"+JSON.stringify(row))
+        this.delete(index,row);
       },
-      delete(row) {
+      delete(index,row) {
         this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
@@ -105,15 +104,17 @@ export default {
             /*删除接口*/
             deleteCustomAttribute(params)
               .then(res => {
-                console.log("节点类型删除成功---"+JSON.stringify(res)+JSON.stringify(params))
+                if(res.status == 200){
+                  this.$message.success("删除成功!");
+                  this.customAttributeList.splice(index, 1);
+                  this.getCustomAttributeList()
+                }else {
+                  this.$message.error(res.msg);
+                }
               })
               .catch(() => {
                 this.$message.error("出错啦!");
               });
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
           })
           .catch(() => {
             this.$message({

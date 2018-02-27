@@ -161,7 +161,7 @@ export default {
         width: 100%;
         color: #333333;
         .form-title{
-          color: #333333;
+          color: #22ab38;
           font-size: 28px;
           line-height: 54px;
           margin-top: 50px;
@@ -184,7 +184,7 @@ export default {
             color: #999999;
           }
           .form-control :focus{
-            border-bottom: 1px solid #03b150;
+            border-bottom: 1px solid #22ab38;
             border-top:0;
             border-left:0;
             border-right:0;
@@ -208,7 +208,7 @@ export default {
             color: white;
             width: 100%;
             font-size: 18px;
-            background-color: #03b150;
+            background-color: #22ab38;
           }
         }
         .rememeber-pwd{
