@@ -4,9 +4,9 @@
       <div class="navbar-logo">
         <img src="../../assets/image/logo_t.png" alt="logo_title" class="logo">
       </div>
-      <!--<div class="navbar-logo">-->
-        <!--<div class="navbar-title">志恒达生产企业追溯平台</div>-->
-      <!--</div>-->
+      <!-- <div class="navbar-logo">
+        <div class="navbar-title">志恒达生产企业追溯平台</div>
+      </div> -->
     </div>
 
     <div class="content">
@@ -37,14 +37,13 @@
     <div class="footer">
       <p class="copyright">版权所有©北京志恒达科技有限公司-京ICP备05030152号</p>
     </div>
+    <canvas id="canvas"></canvas>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import {
-    login
-  } from "../../assets/js/login/ajax.js";
-
+import {login} from "../../assets/js/login/ajax.js";
+import PointLine from '../../assets/js/login/canvas.js';
 export default {
   name: 'login',
   data(){
@@ -55,6 +54,7 @@ export default {
     };
   },
   mounted() {
+    const pointLine = new PointLine();
     if(JSON.stringify(localStorage.checked) != null){
         console.log("checked---"+JSON.stringify(localStorage.checked))
       var userid = JSON.stringify(JSON.parse(localStorage.userid))
@@ -128,8 +128,9 @@ export default {
     right: 0;
     width: 100%;
     height: 76px;
+    background-color: transparent;
     /*background-color: #444444;*/
-    background:url("../../assets/image/logo_bg.png") no-repeat;
+    // background:url("../../assets/image/logo_bg.png") ;
     z-index: 1;
     .navbar-logo{
       float: left;
@@ -225,6 +226,12 @@ export default {
         }
       }
     }
+  }
+  #canvas {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: -1;
   }
   .footer{
     position: fixed; /*or前面的是absolute就可以用*/
