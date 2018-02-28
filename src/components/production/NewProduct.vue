@@ -163,8 +163,10 @@ export default {
 //        }
 //        this.newcustomFields .push(arr);
 //      })
-      if(this.form.metering == ''){
-        this.$message.warning("包装规格不能为空!");
+      if(this.form.productCode == ''||this.form.productName == ''||this.form.productType == ''||this.form.norms == ''
+        ||this.form.custom_mould_id == ''||this.form.metering_id == ''||this.form.customType == ''
+        ||this.form.productDesc == ''||this.form.productBrand == ''){
+        this.$message.warning("请填写完整信息!");
       }else{
         let params = {
           product: this.form.productCode,

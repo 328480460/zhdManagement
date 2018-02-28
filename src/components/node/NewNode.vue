@@ -102,30 +102,34 @@ export default {
   },
   methods:{
     onSubmit() {
-      let params = {
-        node_number: this.form.nodeNumber,
-        node_name: this.form.nodeName,
-        node_splitting: this.form.splitting,
-        node_type_id: this.form.nodeType,
-        node_depict: this.form.nodeDepict,
-        node_address: this.form.nodeAddress,
-        contacts: this.form.contacts,
-        contacts_phone: this.form.contactsPhone,
+      if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.form.splitting == ''||this.form.nodeType == ''
+        ||this.form.nodeDepict == ''||this.form.nodeAddress == ''||this.form.contacts == ''||this.form.contactsPhone == ''){
+        this.$message.warning("请填写完整信息!");
+      }else{
+        let params = {
+          node_number: this.form.nodeNumber,
+          node_name: this.form.nodeName,
+          node_splitting: this.form.splitting,
+          node_type_id: this.form.nodeType,
+          node_depict: this.form.nodeDepict,
+          node_address: this.form.nodeAddress,
+          contacts: this.form.contacts,
+          contacts_phone: this.form.contactsPhone,
 //        brand_name: this.form.custom_mould_id
-        //需要替换为选择的
-        nodeCustomList: this.attributeList
-
-      };
-    createNode(params)
-      .then(res =>{
-        if (res.status == 200) {
-          this.$message.success("添加成功!");
-          this.$router.go(-1);
-        }
-      })
-      .catch(() => {
-        this.$message.error("出错啦!");
-      })
+          //需要替换为选择的
+          nodeCustomList: this.attributeList
+        };
+        createNode(params)
+          .then(res =>{
+            if (res.status == 200) {
+              this.$message.success("添加成功!");
+              this.$router.go(-1);
+            }
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
+      }
     },
     //节点分类查询
     getNodetupelist(){

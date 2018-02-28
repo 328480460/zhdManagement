@@ -40,120 +40,120 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {
+  import {
     login
   } from "../../assets/js/login/ajax.js";
 
-export default {
-  name: 'login',
-  data(){
-    return{
-      checked:false,
-      accountName: '',
-      password: ''
-    };
-  },
-  mounted() {
-    if(JSON.stringify(localStorage.checked) != null){
+  export default {
+    name: 'login',
+    data(){
+      return{
+        checked:false,
+        accountName: '',
+        password: ''
+      };
+    },
+    mounted() {
+      if(JSON.stringify(localStorage.checked) != null){
         console.log("checked---"+JSON.stringify(localStorage.checked))
-      var userid = JSON.stringify(JSON.parse(localStorage.userid))
-      this.accountName = JSON.parse(localStorage.account)
-      this.password = JSON.parse(localStorage.password)
-      this.enterprise_id = JSON.parse(localStorage.enterprise_id)
-      this.checked = JSON.parse(localStorage.checked)
-    }else {
+        var userid = JSON.stringify(JSON.parse(localStorage.userid))
+        this.accountName = JSON.parse(localStorage.account)
+        this.password = JSON.parse(localStorage.password)
+        this.enterprise_id = JSON.parse(localStorage.enterprise_id)
+        this.checked = JSON.parse(localStorage.checked)
+      }else {
         console.log("unchecked---")
-    }
-  },
-  methods:{
-    loginBt(){
-      if(this.accountName == ''){
-          this.warn1()
-      }else if(this.password == ''){
-          this.warn2()
-      }else{
-          /*登录接口*/
-        let param = {
-          account: this.accountName,
-          password: this.password,
-          enterprise_id:1
-        }
-        login(param)
-          .then(res => {
-            if (res.status == 200){
-              //userid存本地
-              localStorage.setItem('userid',JSON.stringify(res.data.user.id))
-              console.log("login的userid---"+JSON.stringify(res.data.user.id))
-              // 命名的路由
-              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
-
-              //记住密码
-              if(this.checked == true){
-                localStorage.setItem('account',JSON.stringify(this.accountName))
-                localStorage.setItem('password',JSON.stringify(this.password))
-                localStorage.setItem('enterprise_id',JSON.stringify(1))
-                localStorage.setItem('checked',JSON.stringify(true))
-              }else {
-                //清除本地缓存
-                localStorage.clear()
-              }
-            }
-            else if (res.status == 201){
-              this.$message.error(res.msg);
-            }
-          })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          });
       }
     },
-    warn1() {
-      this.$message.error('账号不能为空！');
-    },
-    warn2() {
-      this.$message.error('密码不能为空！');
-    },
+    methods:{
+      loginBt(){
+        if(this.accountName == ''){
+          this.warn1()
+        }else if(this.password == ''){
+          this.warn2()
+        }else{
+          /*登录接口*/
+          let param = {
+            account: this.accountName,
+            password: this.password,
+            enterprise_id:1
+          }
+          login(param)
+            .then(res => {
+              if (res.status == 200){
+                //userid存本地
+                localStorage.setItem('userid',JSON.stringify(res.data.user.id))
+                console.log("login的userid---"+JSON.stringify(res.data.user.id))
+                // 命名的路由
+                this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+
+                //记住密码
+                if(this.checked == true){
+                  localStorage.setItem('account',JSON.stringify(this.accountName))
+                  localStorage.setItem('password',JSON.stringify(this.password))
+                  localStorage.setItem('enterprise_id',JSON.stringify(1))
+                  localStorage.setItem('checked',JSON.stringify(true))
+                }else {
+                  //清除本地缓存
+                  localStorage.clear()
+                }
+              }
+              else if (res.status == 201){
+                this.$message.error(res.msg);
+              }
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            });
+        }
+      },
+      warn1() {
+        this.$message.error('账号不能为空！');
+      },
+      warn2() {
+        this.$message.error('密码不能为空！');
+      },
+    }
   }
-}
 </script>
 
 <style rel="stylesheet/less" lang='less' scoped>
-#login {
-  background-attachment: fixed;
-  background-size: cover;
-  .login_bg{
-    background:url("../../assets/image/logo_bg.png");
-    .navbar_login {
-      left: 0;
-      top: 0;
-      right: 0;
-      width: 100%;
-      height: 76px;
-      z-index: 1;
-      .navbar-logo{
-        float: left;
-        margin-left: 10%;
-        margin-top: 15px;
-        .navbar-title{
-          color: white;
-          font-size: 22px;
-          line-height: 52px;
+  #login {
+    background-attachment: fixed;
+    background-size: cover;
+    .login_bg{
+      background:url("../../assets/image/logo_bg.png");
+      .navbar_login {
+        left: 0;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 76px;
+        z-index: 1;
+        .navbar-logo{
+          float: left;
+          margin-left: 10%;
+          margin-top: 15px;
+          .navbar-title{
+            color: white;
+            font-size: 22px;
+            line-height: 52px;
+          }
         }
       }
-    }
-    .content{
-      width:450px;
-      height:450px;
-      position:absolute;
-      left:50%;
-      top:50%;
-      margin-left:-220px;
-      margin-top:-200px;
-      .login-box{
-        height: 100%;
-        box-shadow: 1px 1px 2px 2px #c5c5c5;
-        background: white;
-        display: block;
+      .content{
+        width:450px;
+        height:450px;
+        position:absolute;
+        left:50%;
+        top:50%;
+        margin-left:-220px;
+        margin-top:-200px;
+        .login-box{
+          height: 100%;
+          box-shadow: 1px 1px 2px 2px #c5c5c5;
+          background: white;
+          display: block;
           .form-title{
             padding-top: 8%;
             padding-bottom: 5%;
@@ -221,21 +221,21 @@ export default {
             float: left;
             color: #666666;
           }
+        }
+      }
+      .footer{
+        width: 80%;
+        margin-left: 10%;
+        border-top: 1px solid #c0c4cc;
+        position: fixed; /*or前面的是absolute就可以用*/
+        bottom: 20px;
+        text-align: center;
+        .copyright{
+          font-size: 14px;
+          color: #333333;
+        }
       }
     }
-    .footer{
-      width: 80%;
-      margin-left: 10%;
-      border-top: 1px solid #c0c4cc;
-      position: fixed; /*or前面的是absolute就可以用*/
-      bottom: 20px;
-      text-align: center;
-      .copyright{
-        font-size: 14px;
-        color: #333333;
-      }
-    }
-  }
 
-}
+  }
 </style>
