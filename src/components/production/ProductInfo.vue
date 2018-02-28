@@ -269,7 +269,6 @@ export default {
       };
       getListProductType(params)
         .then(res => {
-//          this.customListCount = res.data.totalcount;
           this. customTypeList = res.data. customTypeList;
         })
         .catch(() => {

@@ -3,8 +3,9 @@
     <div class="traceCode-search">
       <el-row>
         <el-col :span="4" ><el-input placeholder="角色名称" v-model="form.role_name" style="padding-left: 20px"></el-input></el-col>
-        <el-button type="primary" class="btn-search" >保存</el-button>
+        <el-button type="primary" class="btn-search" @click="createRole">保存</el-button>
       </el-row>
+
     </div>
 
   </div>
@@ -17,8 +18,6 @@
 
 export default {
     name: "addrole",
-    created() {
-    },
   data() {
     return{
       form:{
@@ -30,10 +29,17 @@ export default {
     this.initData();
   },
   methods:{
-    save(){
+    createRole(){
       let params ={
         role_name: this.form.role_name,
       }
+      if(this.form.role_name == ''){
+        this.$message.warning("请输入“角色名称”！");
+      }else{
+        this.createRole(params)
+      }
+    },
+    createRole(params){
       createRole(params)
         .then(res =>{
           console.log("createRole---"+JSON.stringify(res))
@@ -53,9 +59,6 @@ export default {
   mounted(){
 
   },
-    methods: {
-
-    }
 };
 </script>
 

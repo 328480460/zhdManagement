@@ -250,7 +250,6 @@ export default {
           /*删除接口*/
           deleteNode(params)
             .then(res => {
-              console.log("节点删除res---"+JSON.stringify(res))
               if(res.status == 200){
                 this.$message.success("删除成功!");
                 this.nodeList.splice(index, 1);

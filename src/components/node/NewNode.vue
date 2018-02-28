@@ -17,14 +17,9 @@
             </el-select>
           </el-form-item>
           <el-form-item label="节点类型：">
-            <el-radio-group v-model="form.splitting">
-              <el-radio label="来源节点" value="a40ffa3b-4e70-4966-866e-0d12f224e048"></el-radio>
-              <el-radio label="当前节点" value="fb4d3588-8e78-4401-b5db-14dcea0a3f61"></el-radio>
-              <el-radio label="流向节点" value="fd4de147-4c8b-4559-818e-04e2ae7aa458"></el-radio>
-            </el-radio-group>
-            <!--<div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="key" >-->
-              <!--<input type="radio" value=item.id />{{item.type_name}}-->
-            <!--</div>-->
+              <div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="item.id">
+              <input type="radio"  :value="item.id" name="name" v-model="form.splitting"/>{{item.type_name}}
+            </div>
           </el-form-item>
           <el-form-item label="节点描述：">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
@@ -66,7 +61,6 @@
         </div>
 
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
-
     </div>
   </div>
 </template>
@@ -84,10 +78,6 @@ export default {
   name: 'newNode',
   data(){
     return{
-      // 城市列表数据
-      cityDataList: cityData,
-      // 选中的城市
-      selectedCity: [],
       form: {
         nodeNumber: "",
         nodeName: "",
@@ -157,7 +147,7 @@ export default {
       };
       getlist(params)
         .then(res => {
-          console.log("node_splitting--"+JSON.stringify(res))
+//          console.log("splittingLists---"+JSON.stringify(res.data.typeTablesList))
           this.splittingLists = res.data.typeTablesList;
         })
         .catch(() => {

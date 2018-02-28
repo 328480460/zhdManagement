@@ -17,14 +17,9 @@
             </el-select>
           </el-form-item>
           <el-form-item label="节点类型">
-            <el-radio-group v-model="form.splitting">
-              <el-radio label="来源节点" value="a40ffa3b-4e70-4966-866e-0d12f224e048"></el-radio>
-              <el-radio label="当前节点" value="fb4d3588-8e78-4401-b5db-14dcea0a3f61"></el-radio>
-              <el-radio label="流向节点" value="fd4de147-4c8b-4559-818e-04e2ae7aa458"></el-radio>
-            </el-radio-group>
-            <!--<div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="key" >-->
-            <!--<input type="radio" value=item.id />{{item.type_name}}-->
-            <!--</div>-->
+            <div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="item.id">
+              <input type="radio"  :value="item.id" name="name" v-model="form.splitting"/>{{item.type_name}}
+            </div>
           </el-form-item>
           <el-form-item label="节点描述">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
@@ -36,7 +31,6 @@
         <el-form label-width="120px">
           <el-form-item label="*节点地址：">
             <el-input v-model="form.nodeAddress"></el-input>
-            <!--<el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>-->
           </el-form-item>
           <el-form-item label="联系人：">
             <el-input v-model="form.contacts"></el-input>
@@ -94,7 +88,7 @@
         form: {
           nodeNumber: "",
           nodeName: "",
-          nodeSplitting: "",
+          splitting: "",
           nodeType: "",
           nodeDepict: "",
           nodeAddress: "",
@@ -120,8 +114,8 @@
           id: this.$route.query.nodeId,
           node_number: this.form.nodeNumber,
           node_name: this.form.nodeName,
-          node_splitting: this.form.nodeSplitting,
-          node_type_id: this.nodeTypes,
+          node_type_id: this.form.nodeType,
+          node_splitting: this.form.splitting,
           node_depict: this.form.nodeDepict,
           node_address: this.form.nodeAddress,
           contacts: this.form.contacts,
@@ -129,13 +123,13 @@
           //？？？需要替换为选择的自定义属性--TEST
           nodeCustomList: this.attributeList
         };
-        console.log("submit!添加节点"+JSON.stringify(params));
         updateNode(params)
           .then(res =>{
-            console.log("submit!res---"+JSON.stringify(res));
             if (res.status == 200) {
               this.$message.success("修改成功!");
               this.$router.go(-1);
+            }else {
+              this.$message.error(res.msg);
             }
           })
           .catch(() => {
@@ -209,7 +203,7 @@
             let node = res.data.node
             this.form.nodeNumber = node. node_number;
             this.form.nodeName = node. node_name;
-            this.form.nodeSplitting = node. splitting;
+            this.form.splitting = node. splitting;
             this.form.nodeType = node. node_type_id;
             this.form.nodeDepict = node. node_depict;
             this.form.nodeAddress = node. node_address;

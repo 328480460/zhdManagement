@@ -23,13 +23,13 @@
               change-on-select
             ></el-cascader>
           </el-form-item>
-          <el-form-item label="*包装单位">
-            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
-              <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
-              </el-option>
-            </el-select>
-            </el-form-item>
-          <el-form-item label="*计量单位">
+          <!--<el-form-item label="*包装单位">-->
+            <!--<el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >-->
+              <!--<el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >-->
+              <!--</el-option>-->
+            <!--</el-select>-->
+            <!--</el-form-item>-->
+          <el-form-item label="*包装规格">
             <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
             <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
@@ -160,32 +160,37 @@
           }
           this.newcustomFields .push(arr);
         })
-        let params = {
-          id: this.$route.query.productId,
-          product: this.form.productCode,
-          product_name: this.form.productName,
-          product_type_id: this.form.productType,
-          metering: this.form.metering,
-          norms: this.form.norms,
-          metering_id: this.form.metering_id,
-          custom_type_id: this.form.custom_type,
-          product_depict: this.form.productDesc,
-          brand_name: this.form.productBrand,
-          custom_mould_id: this.form.custom_mould_id,
-          //需要替换为选择的
-          customFields: this.newcustomFields
-        };
+        if(this.form.metering == ''){
+          this.$message.warning("包装规格不能为空!");
+        }else{
+          let params = {
+            id: this.$route.query.productId,
+            product: this.form.productCode,
+            product_name: this.form.productName,
+            product_type_id: this.form.productType,
+            metering: this.form.metering,
+            norms: this.form.norms,
+            metering_id: this.form.metering_id,
+            custom_type_id: this.form.custom_type,
+            product_depict: this.form.productDesc,
+            brand_name: this.form.productBrand,
+            custom_mould_id: this.form.custom_mould_id,
+            //需要替换为选择的
+            customFields: this.newcustomFields
+          };
 //        console.log("submit!保存修改"+JSON.stringify(params));
-        updateProduct(params)
-          .then(res =>{
-            if (res.status == 200) {
-              this.$message.success("产品修改成功!");
-              this.$router.go(-1);
-            }
-          })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          })
+          updateProduct(params)
+            .then(res =>{
+              if (res.status == 200) {
+                this.$message.success("产品修改成功!");
+                this.$router.go(-1);
+              }
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            })
+        }
+
 
       },
       handleChange(value) {

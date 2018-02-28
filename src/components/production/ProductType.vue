@@ -158,11 +158,12 @@
               };
               updateProductType(params)
                 .then(res => {
-                  this.$message({
-                    type: 'success',
-                    message: '编辑成功'
-                  });
-                  console.log("分类修改res---"+JSON.stringify(res))
+                  if(res.status == 200){
+                    this.$message.success("编辑成功!");
+                    this.getTypeList()
+                  }else {
+                    this.$message.error(res.msg);
+                  }
                 })
                 .catch(() => {
                   this.$message.error("出错啦!");
@@ -196,9 +197,13 @@
           };
           deleteProductType(params)
             .then(res => {
-              this.$message.success("删除成功!");
-              this.customTypeList.splice(index, 1);
-              this.getTypeList()
+              if(res.status == 200){
+                this.$message.success("删除成功!");
+                this.customTypeList.splice(index, 1);
+                this.getTypeList()
+              }else {
+                this.$message.error(res.status);
+              }
             })
             .catch(() => {
               this.$message.error("出错啦!");

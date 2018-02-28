@@ -163,7 +163,9 @@ export default {
 //        }
 //        this.newcustomFields .push(arr);
 //      })
-
+      if(this.form.metering == ''){
+        this.$message.warning("包装规格不能为空!");
+      }else{
         let params = {
           product: this.form.productCode,
           product_name: this.form.productName,
@@ -190,6 +192,8 @@ export default {
           .catch(() => {
             this.$message.error("出错啦!");
           })
+      }
+
     },
     //选择的产品分类--系统默认提供
     handleChange(value) {
