@@ -164,8 +164,7 @@ export default {
 //        this.newcustomFields .push(arr);
 //      })
       if(this.form.productCode == ''||this.form.productName == ''||this.form.productType == ''||this.form.norms == ''
-        ||this.form.custom_mould_id == ''||this.form.metering_id == ''||this.form.customType == ''
-        ||this.form.productDesc == ''||this.form.productBrand == ''){
+        ||this.form.metering_id == ''||this.form.customType == ''||this.form.productDesc == ''||this.form.productBrand == ''){
         this.$message.warning("请填写完整信息!");
       }else{
         let params = {
@@ -174,11 +173,11 @@ export default {
           product_type_id: this.form.productType,
           metering: this.form.metering,
           norms: this.form.norms,
-          custom_mould_id: this.form.custom_mould_id,
           metering_id: this.form.metering_id,
           custom_type_id: this.form.customType,
           product_depict: this.form.productDesc,
           brand_name: this.form.productBrand,
+          custom_mould_id: this.form.custom_mould_id,
           //需要替换为选择的
 //          customFields: this.newcustomFields
           customFields: this.customDefineAttributeList

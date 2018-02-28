@@ -104,7 +104,6 @@ export default {
   name: "productinfo",
   data() {
     return {
-      totalcount: 0,
       customListCount: 0,
       productList: [],
       customTypeList: [],
@@ -114,6 +113,7 @@ export default {
         customType: "",
         productCode: "",
       },
+      totalcount: 0,
       currentPage: 1,
       pageSize: 10,
       ajaxSearch: "",

@@ -2,20 +2,20 @@
   <div id="histories">
     <el-table class="el-table"
               border
-              :data="historylist"
+              :data="uploadMoudleList"
     >
       <el-table-column class="table-column"
-                       prop="name"
+                       prop="file_name"
                        label="文件名称"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="totalcount"
+                       prop="allcount"
                        label="总条数"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="count"
+                       prop="success_count"
                        label="成功条数"
       >
       </el-table-column>
@@ -26,7 +26,7 @@
       </el-table-column>
 
       <el-table-column class="table-column"
-                       prop="date"
+                       prop="upload_date"
                        label="上传日期"
       >
       </el-table-column>
@@ -48,50 +48,49 @@
       </el-table-column>
     </el-table>
 
+    <el-pagination
+      background
+      style="margin-top: 15px"
+      layout="total,prev, pager, next"
+      :current-page= 'currentPage'
+      @current-change="handleCurrentChange"
+      :page-size=10
+      :total= 'totalcount'>
+    </el-pagination>
+
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {
+    getUploadRecord
+  } from "../../assets/js/login/ajax.js";
+
 export default {
   name: 'histories',
   data(){
     return{
-      historylist: [{
-        value: '1',
-        name: '(test)文件名称',
-        totalcount:'2',
-        count:'2',
-        status:'0',
-        date:'2018-1-8',
-      }, {
-        value: '2',
-        name: '文件名称',
-        totalcount:'2',
-        count:'2',
-        status:'0',
-        date:'2018-1-8',
-      }],
-
+      totalcount: 0,
+      currentPage: 1,
+      pageSize: 10,
+      uploadMoudleList: [],
+    }
+  },
+  props: {
+    file_type: {
+      type: Number,
+      required: true
     }
   },
   mounted() {
-    this.searchHistories();
+    let params = {
+      file_type: this.file_type,
+      pagenum: 1,
+      pagesize: 10,
+    };
+    this.initData(params);
   },
   methods: {
-    /*"产品"---查询历史记录接口*/
-    searchHistories(){
-//      let that = this
-//      axios.post('http://47.92.149.109:7108/mockjsdata/2/getProductList', {
-//          pagenum: that.pagenum,
-//          pagesize: 10,
-//        })
-//        .then(function (response) {
-//          console.log("查询历史记录接口==="+response.data);
-//        })
-//        .catch(function (error) {
-//          console.log(error);
-//        });
-    },
     details(){
       console.log("历史记录详情查看");
     },
@@ -106,17 +105,43 @@ export default {
       }).then(() => {
         /*删除接口*/
         this.$message({
-        type: 'success',
-        message: '删除成功!'
-      });
-    }).catch(() => {
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
         this.$message({
-        type: 'info',
-        message: '已取消删除'
+          type: 'info',
+          message: '已取消删除'
+        });
       });
-    });
     },
-
+    // 分页跳转
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getUploadRecord();
+    },
+    //导入记录查询
+    getUploadRecord() {
+      let params = {
+        file_type: this.file_type,
+        pagenum: this.currentPage,
+        pagesize: this.pageSize,
+      };
+      this.getDataAjax(params);
+    },
+    getDataAjax(params) {
+      getUploadRecord(params)
+        .then(res => {
+          this.totalcount = res.data.totalcount;
+          this.uploadMoudleList = res.data.uploadMoudleList;
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+    initData(params){
+      this.getDataAjax(params);
+    }
   }
 
 }

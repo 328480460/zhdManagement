@@ -1,6 +1,6 @@
 <template>
     <div class="history-wrapper">
-        <ImportFileHistoryTemplate></ImportFileHistoryTemplate>
+        <ImportFileHistoryTemplate  :file_type='file_type'></ImportFileHistoryTemplate>
     </div>
 </template>
 
@@ -8,7 +8,9 @@
 import ImportFileHistoryTemplate from '../commonComponents/ImportFileHistoryTemplate'
 export default {
   data() {
-      return {}
+      return {
+        file_type: 3,
+      }
   },
   components: {
       ImportFileHistoryTemplate

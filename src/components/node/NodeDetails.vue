@@ -198,10 +198,8 @@
             this.$message.error("出错啦!");
           });
       },
-      initData(params){
-        /**
-         * 节点详情接口
-         */
+      //节点详情接口
+      getNodeDetail(params){
         getDetailNode(params)
           .then(res =>{
 //            console.log("getDetailNode--"+JSON.stringify(res))
@@ -221,7 +219,10 @@
           .catch(() => {
             this.$message.error("出错啦!");
           })
-
+      },
+      initData(params){
+        //节点详情
+        this.getNodeDetail(params)
         //节点分类查询
         this.getNodetupelist();
         //节点类型查询
