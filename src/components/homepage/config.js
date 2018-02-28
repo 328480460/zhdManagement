@@ -252,7 +252,7 @@ export const menu = [
         disabled: false,
         children: [
           {
-            id: "050501",
+            id: "050601",
             name: "系统对接",
             disabled: false,
             page: "systemInsert"

@@ -181,7 +181,7 @@ export default {
 //          customFields: this.newcustomFields
           customFields: this.customDefineAttributeList
         };
-        console.log("新增产品的params"+JSON.stringify(params))
+//        console.log("新增产品的params"+JSON.stringify(params))
         saveProduct(params)
           .then(res =>{
             if (res.status == 200) {
