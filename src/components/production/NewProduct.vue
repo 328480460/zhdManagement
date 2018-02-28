@@ -24,7 +24,7 @@
             ></el-cascader>
           </el-form-item>
           <el-form-item label="*包装规格">
-            <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
+            <!--<el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>-->
             <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
@@ -171,7 +171,7 @@ export default {
           product: this.form.productCode,
           product_name: this.form.productName,
           product_type_id: this.form.productType,
-          metering: this.form.metering,
+//          metering: this.form.metering,
           norms: this.form.norms,
           metering_id: this.form.metering_id,
           custom_type_id: this.form.customType,

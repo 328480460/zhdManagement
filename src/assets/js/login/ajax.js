@@ -9,6 +9,6 @@ export const  login  = function(params) {
 
 // 导入记录查询
 export const  getUploadRecord  = function(params) {
-  let url = ENVIRNMENT + '/getUploadRecord';
+  let url = ENVIRNMENTTEST + '/getUploadRecord';
   return ajaxPost(url,params)
 }
