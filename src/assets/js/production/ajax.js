@@ -55,35 +55,30 @@ export const updateProductType = function(params) {
   return ajaxPost(url, params);
 };
 
-/*自定义属性*/
-// 自定义属性列表查询
-// export const getCustomAttributeList = function(params) {
-//   let url = ENVIRNMENTTEST + '/getCustomAttributeList';
-//   return ajaxPost(url,params)
-// }
-// 用户自定义属性接口
-export const getCustomAttributeList = function (params) {
-  let url = ENVIRNMENT + '/getCustomAttributeList';
-  return ajaxPost(url, params)
-}
-// 用户自定义属性详情接口
-export const getCustomAttributeDetail = function (params) {
-  let url = ENVIRNMENT + '/getCustomAttributeDetail';
-  return ajaxPost(url, params)
-}
 // 节点类型、类型列表接口
 export const getlist = function(params) {
   let url = ENVIRNMENTTEST2 + '/TypeTables/getlist';
   return ajaxPost(url,params)
 }
 
+/*自定义属性*/
+// 自定义属性列表查询
+export const getCustomAttributeList = function(params) {
+  let url = ENVIRNMENTTEST + '/getCustomAttributeList';
+  return ajaxPost(url,params)
+}
+// 用户自定义属性详情接口
+export const getCustomAttributeDetail = function (params) {
+  let url = ENVIRNMENTTEST + '/getCustomAttributeDetail';
+  return ajaxPost(url, params)
+}
 // 自定义字段信息查询
 export const getColumnInfo = function(params) {
-  let url = ENVIRNMENT + '/getColumnInfo';
+  let url = ENVIRNMENTTEST + '/getColumnInfo';
   return ajaxPost(url,params)
 }
 // 自定义属性修改
 export const updateCustomAttribute = function(params) {
-  let url = ENVIRNMENT + '/updateCustomAttribute';
+  let url = ENVIRNMENTTEST + '/updateCustomAttribute';
   return ajaxPost(url,params)
 }

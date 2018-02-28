@@ -21,6 +21,6 @@
 
 <style rel="stylesheet/less" lang='less' scoped>
   #histories {
-    height: 92%;
+    min-height: 92%;
   }
 </style>

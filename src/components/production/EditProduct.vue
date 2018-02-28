@@ -30,7 +30,7 @@
             <!--</el-select>-->
             <!--</el-form-item>-->
           <el-form-item label="*包装规格">
-            <!--<el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>-->
+            <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
             <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
@@ -40,6 +40,7 @@
               <el-radio label="称重"></el-radio>
             </el-radio-group>
           </el-form-item>
+
           <el-form-item label="自定义分类">
             <el-select v-model="form.custom_type" clearable  placeholder="请选择" width="50px" >
               <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
@@ -66,6 +67,7 @@
           </el-form-item>
         </el-form>
       </div>
+
         <div class="content">
           <div class="demo-input-suffix" v-for="(item, key) in attributeList" :key="key" >
             <div class="lable">{{item.column_chinese}}</div>
@@ -74,6 +76,7 @@
         </div>
       </div>
       </div>
+
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
     </div>
   </div>
@@ -166,7 +169,7 @@
             product: this.form.productCode,
             product_name: this.form.productName,
             product_type_id: this.form.productType,
-//            metering: this.form.metering,
+            metering: this.form.metering,
             norms: this.form.norms,
             metering_id: this.form.metering_id,
             custom_type_id: this.form.custom_type,
@@ -211,13 +214,13 @@
       getProductDetail(params){
         getProductDetail(params)
           .then(res =>{
-//            console.log("productDetail---"+JSON.stringify(res))
+            console.log("productDetail---"+JSON.stringify(res))
             this.form.productCode = res.data.productDetail. product;
             this.form.productName = res.data.productDetail.product_name;
             this.form.productType = res.data.productDetail.product_type_id;
             this.form.custom_type = res.data.productDetail.custom_type_id;
             this.form.norms = res.data.productDetail.norms;
-//            this.form.metering = res.data.productDetail.metering;
+            this.form.metering = res.data.productDetail.metering;
             this.form.productDesc = res.data.productDetail. product_depict;
             this.form.productBrand = res.data.productDetail. brand_name;
             this.customFields = res.data.productDetail. customFields;
@@ -290,7 +293,7 @@
         this.getCustomAttributeList();
 
         //自定义字段信息查询——TEST
-        this.getColumnInfo();
+//        this.getColumnInfo();
       },
     }
   };
@@ -300,7 +303,7 @@
   #editProduct {
     margin: 10px;
     padding: 10px;
-    height: auto;
+    min-height: 92%;
     background-color: #fff;
     .receive-info {
       width: 96%;
@@ -332,6 +335,8 @@
       }
     }
     .bt-save{
+      width: 100px;
+      height: 40px;
       margin-top: 10px;
       margin-left: 400px;
     }

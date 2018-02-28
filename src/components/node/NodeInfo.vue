@@ -35,8 +35,6 @@
     </div>
 
     <el-table class="el-table"
-              border
-              stripe
               :data="nodeList"
     >
       <el-table-column class="table-column"
@@ -286,7 +284,7 @@ export default {
 #setting {
   margin: 10px;
   padding: 10px;
-  height: 100%;
+  min-height: 92%;
   background-color: #fff;
   .demo-autocomplete {
     margin-top: 10px;

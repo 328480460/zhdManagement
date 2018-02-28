@@ -136,7 +136,7 @@ export default {
 #enterprise-edit {
   margin: 10px;
   padding: 10px;
-  height: auto;
+  min-height: 92%;
   background-color: #fff;
   .default-info-wrapper {
     .section-content {

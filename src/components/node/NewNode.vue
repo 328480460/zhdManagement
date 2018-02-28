@@ -200,7 +200,6 @@ export default {
       this.getColumnInfo();
     }
   }
-
 }
 </script>
 
@@ -208,7 +207,7 @@ export default {
 #newNode{
   margin: 10px;
   padding: 10px;
-  height: auto;
+  min-height: 92%;
   background-color: #fff;
   .section-content {
     width: 500px;

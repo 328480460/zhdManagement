@@ -234,7 +234,6 @@
         this.getColumnInfo();
       },
     }
-
   }
 </script>
 
@@ -242,7 +241,7 @@
   #nodeDetails{
     margin: 10px;
     padding: 10px;
-    height: auto;
+    min-height: 92%;
     background-color: #fff;
     .section-content {
       width: 500px;

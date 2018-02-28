@@ -20,7 +20,7 @@ export default {
 
 <style lang="less" scoped>
 .history-wrapper {
-  height: 92%;
+  min-height: 92%;
 }
 </style>
 

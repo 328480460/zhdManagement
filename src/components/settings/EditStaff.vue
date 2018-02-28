@@ -171,7 +171,7 @@ export default {
 #editstaff {
   margin: 10px;
   padding: 10px;
-  height: 100%;
+  min-height: 92%;
   background-color: #fff;
   .default-info-wrapper {
     .section-content {

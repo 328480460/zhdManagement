@@ -24,7 +24,6 @@
             ></el-cascader>
           </el-form-item>
           <el-form-item label="*包装规格">
-            <!--<el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>-->
             <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
@@ -50,27 +49,28 @@
       </div>
       <div class="receive-info">
         <h6 class="title">自定义属性</h6>
-        <div class="section-content">
-        <!--<el-form ref="form" :model="form" label-width="100px">-->
-        <el-form v-model="selectCustomDefine" placeholder="请选择" label-width="100px">
-          <el-form-item label="自定义属性">
-            <el-select v-model="form.custom_mould_id" clearable placeholder="请选择">
+        <div class="content">
+          <div class="demo-input-suffix">
+            <div class="lable">自定义属性</div>
+            <el-select  v-model="selectCustomDefineId" placeholder="请选择">
               <el-option
-                v-for="item in customAttributeList"
+                v-for="item in customDefineList"
                 :key="item.id"
                 :label="item.mould_name"
-                :value="item.id" >
+                :value="item.id"
+              >
               </el-option>
             </el-select>
-          </el-form-item>
-        </el-form>
+          </div>
         </div>
+        <div class="attribute-wrapper" v-show="selectCustomDefineId">
           <div class="content">
-            <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key" >
+            <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
               <div class="lable">{{item.column_chinese}}</div>
-              <el-input v-model="item.column_chinese" placeholder="请输入内容"></el-input>
+              <el-input  v-model="item.data_value" placeholder="请输入内容"></el-input>
             </div>
           </div>
+        </div>
       </div>
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
     </div>
@@ -88,7 +88,6 @@
     updateCustomAttribute,
     saveProduct,
   } from "../../assets/js/production/ajax.js";
-  import ProductGoodsInfoDetailTemplate from "../commonComponents/ProductGoodsInfoDetailTemplate";
 
 export default {
   name: "newProduct",
@@ -98,7 +97,6 @@ export default {
         productCode: "",
         productName: "",
         productType: "",
-        metering: "",
         norms: "",
         metering_id: "",
         customType: "",
@@ -117,26 +115,24 @@ export default {
       },
       //自定义分类列表
       customTypeList:[],
-      //自定义分类属性列表
-      customAttributeList:[],
+      // 用户自定义模块可选列表
+      customDefineList: [],
       // 当前用户选中自定义模块
       selectCustomDefine: "",
-      // 当前用户选中自定义模块id
       selectCustomDefineId: "",
       // 用户选定模块的自定义属性列表
       customDefineAttributeList: [],
-      attributeList:[],
-      newcustomFields:[],
+      customFields:[],
+      newCustomFields:[],
+      customMouldId:"",
     };
   },
   mounted() {
     this.initData();
   },
   watch: {
-    selectCustomDefine(newVal) {
-      //所选的自定义属性详情
+    selectCustomDefineId(newVal) {
       this.loadCustomDefineDetailData(newVal);
-      console.log("----"+newVal)
     }
   },
   methods: {
@@ -154,40 +150,41 @@ export default {
         });
     },
     onSubmit() {
-      //需要替换？？？
-//      this.attributeList.forEach((value, index) => {
-//        var arr  =
-//        {
-//          "custom_id" :value.id,
-//          "data_value" :value.column_chinese,
-//        }
-//        this.newcustomFields .push(arr);
-//      })
       if(this.form.productCode == ''||this.form.productName == ''||this.form.productType == ''||this.form.norms == ''
-        ||this.form.metering_id == ''||this.form.customType == ''||this.form.productDesc == ''||this.form.productBrand == ''){
+        ||this.form.customType == ''||this.form.productDesc == ''||this.form.productBrand == ''){
         this.$message.warning("请填写完整信息!");
+      }else if(this.form.metering_id == ''){
+        this.$message.warning("请选择包装规格!");
       }else{
+        this.customDefineAttributeList.forEach((value, index) => {
+          var arr  =
+          {
+            "custom_id" :value.custom_id,
+            "data_value" :value.data_value,
+          }
+          this.newCustomFields .push(arr);
+        })
         let params = {
           product: this.form.productCode,
           product_name: this.form.productName,
           product_type_id: this.form.productType,
-//          metering: this.form.metering,
           norms: this.form.norms,
           metering_id: this.form.metering_id,
           custom_type_id: this.form.customType,
           product_depict: this.form.productDesc,
           brand_name: this.form.productBrand,
-          custom_mould_id: this.form.custom_mould_id,
-          //需要替换为选择的
-//          customFields: this.newcustomFields
-          customFields: this.customDefineAttributeList
+          custom_mould_id: this.selectCustomDefineId,
+          customFields: this.newCustomFields
         };
-//        console.log("新增产品的params"+JSON.stringify(params))
+        console.log("params------"+JSON.stringify(params))
         saveProduct(params)
           .then(res =>{
             if (res.status == 200) {
+              console.log("res------"+JSON.stringify(res))
               this.$message.success("添加成功!");
               this.$router.go(-1);
+            }else{
+              this.$message.error(res.msg);
             }
           })
           .catch(() => {
@@ -228,53 +225,35 @@ export default {
           this.$message.error("出错啦!");
         });
     },
-    //自定义字段信息查询
-//    getColumnInfo() {
-//      let params = {
-//        custom_mould_type: 1,
-//        sub_link: "",
-//        type: 0,
-//      };
-//      getColumnInfo(params)
-//        .then(res => {
-//          this.attributeList = res.attributeList;
-//        })
-//        .catch(() => {
-//          this.$message.error("出错啦!");
-//        });
-//    },
-    //产品自定义属性列表查询接口
+
+    // 查询自定义属性列表
     getCustomAttributeList() {
-      let params = {
-        custom_mould_type: 1,
-        pagenum: 1,
-        pagesize: 100,
-      };
-      getCustomAttributeList(params)
+      getCustomAttributeList({pagesize: '100', pagenum: '1', custom_mould_type: '1', sub_link: ''})
         .then(res => {
-          this.customAttributeList = res.data.customAttributeList;
+          this.customDefineList = res.data.customAttributeList;
           this.showSelectCustomDefineMould();
         })
         .catch(() => {
-          this.$message.error("出错啦111!");
+          this.$message.error("出错啦!");
         });
     },
-    //所选的自定义属性详情
+    // 请求用户自定义模块详情
     loadCustomDefineDetailData(id) {
-      console.log('loadCustomDefineDetailData');
+      // console.log('loadCustomDefineDetailData');
       getCustomAttributeDetail({ id })
         .then(res => {
-          this.customDefineAttributeList = res.data.customAttribute.customAttributeList;
+          this.customDefineAttributeList =
+            res.data.customAttribute.customAttributeList;
           this.mergeCustomDefineAttributeList();
         })
         .catch(() => {
           this.$message.error("出错啦!");
         });
     },
-    // 回显出当前用户选中的自定义模块
+    // 根据收货详情回显出当前用户选中的自定义模块
     showSelectCustomDefineMould() {
-      this.customAttributeList.forEach((value, index) => {
-//         console.log(value.id, JSON.stringify(this.customMouldId))
+      this.customDefineList.forEach((value, index) => {
+        // console.log(value.id, this.customMouldId)
         if (value.id == this.customMouldId) {
           this.selectCustomDefine = value.mould_name;
           this.selectCustomDefineId = value.id;
@@ -288,12 +267,13 @@ export default {
       customDefineAttributeList.forEach((value, index) => {
         customFields.forEach((val, idx) => {
           if (value.id == val.custom_id) {
-            value.value = val.data_value;
+            value.data_value = val.data_value;
           }
         });
       });
-       console.log(this.customDefineAttributeList)
+      // console.log(this.customDefineAttributeList)
     },
+
     initData() {
       //查询“产品分类-系统默认提供”列表
       this.systemDefaultTypeLists()
@@ -301,11 +281,8 @@ export default {
       this.getListProductType();
       //查询规格列表
       this.getNormsTypeList();
-
       //查询自定义属性列表
       this.getCustomAttributeList();
-      //自定义字段信息查询——？？？
-//      this.getColumnInfo();
     }
   }
 };
@@ -315,7 +292,7 @@ export default {
 #newProduct {
   margin: 10px;
   padding: 10px;
-  height: auto;
+  min-height: 92%;
   background-color: #fff;
   .receive-info {
     width: 96%;
@@ -348,6 +325,8 @@ export default {
   }
 
   .bt-save{
+    width: 100px;
+    height: 40px;
     margin-left: 400px;
     margin-top: 10px;
   }

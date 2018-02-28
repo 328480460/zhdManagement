@@ -1,7 +1,6 @@
 <template>
   <div id="histories">
     <el-table class="el-table"
-              border
               :data="uploadMoudleList"
     >
       <el-table-column class="table-column"
@@ -155,7 +154,6 @@ export default {
     background-color: #fff;
   .el-table{
     width: 100%;
-    text-align: center;
     margin-top: 24px;
 
   }

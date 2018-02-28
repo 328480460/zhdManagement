@@ -1,7 +1,7 @@
 <template>
   <div id="productinfo">
     <div class="btn-list">
-      <el-button type="primary" size="medium"  @click="newProduct">新建产品</el-button>
+      <el-button type="primary" size="medium"  @click="newProduct">新增产品</el-button>
       <el-button type="primary" size="medium" class="btn-search">导出</el-button>
     </div>
     <div class="option-wrapper">
@@ -33,8 +33,6 @@
     </div>
 
     <el-table class="el-table"
-              border
-              stripe
               :data="productList"
     >
       <el-table-column class="table-column"
@@ -289,7 +287,7 @@ export default {
 #productinfo {
   margin: 10px;
   padding: 10px;
-  height: 100%;
+  min-height: 92%;
   background-color: #fff;
   .demo-autocomplete {
     margin-top: 10px;

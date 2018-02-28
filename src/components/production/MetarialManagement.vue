@@ -53,7 +53,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-
     export default {
         name: "metarial",
         created() {
@@ -137,7 +136,7 @@
 #metarial {
   margin: 10px;
   padding: 10px;
-  height: 100%;
+  min-height: 92%;
   background-color: #fff;
   .tab-item{
     height: 100%;

@@ -6,8 +6,6 @@
     </div>
 
     <el-table class="el-table"
-              border
-              stripe
               :data="employees"
     >
       <el-table-column class="table-column"
@@ -181,13 +179,11 @@ export default {
 #staff {
   margin: 10px;
   padding: 10px;
-  height: 100%;
+  min-height: 92%;
   background-color: #fff;
   .el-table{
     width: 100%;
-    text-align: center;
     margin-top: 24px;
-
   }
   .btn-search{
     background-color: transparent;

@@ -1,7 +1,7 @@
 <template>
   <div id="cpymb">
     <div class="btn-list">
-      <el-button type="primary" size="medium"  @click="newProductType">新建自定义分类</el-button>
+      <el-button type="primary" size="medium"  @click="newProductType">新增自定义分类</el-button>
     </div>
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
@@ -12,8 +12,6 @@
     </div>
 
     <el-table class="el-table"
-              border
-              stripe
               :data="customTypeList"
     >
       <el-table-column class="table-column"
@@ -231,7 +229,7 @@
   #cpymb {
     margin: 10px;
     padding: 10px;
-    height: 100%;
+    min-height: 92%;
     background-color: #fff;
     .demo-autocomplete {
       margin-top: 10px;

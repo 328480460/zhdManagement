@@ -40,7 +40,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .import-wrapper {
-  height: 92%;
+  min-height: 92%;
 }
 </style>
 
