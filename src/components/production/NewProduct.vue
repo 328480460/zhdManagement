@@ -110,15 +110,15 @@ export default {
         productBrand: "",
         custom_mould_id:"",
       },
+      //规格列表
+      normsTypeList:[],
+      //产品分类--系统默认提供
+      systemDefaultType:[],
       props: {
         value: 'id',
         label: 'type_name',
         children: 'systemDefaultTypeList'
       },
-      //规格列表
-      normsTypeList:[],
-      //产品分类--系统默认提供
-      systemDefaultType:[],
       //自定义分类列表
       customTypeList:[],
       // 用户自定义模块可选列表
@@ -199,12 +199,9 @@ export default {
             this.$message.error("出错啦!");
           })
       }
-
     },
     //选择的产品分类--系统默认提供
     handleChange(value) {
-      console.log("handleChange----"+value)
-      console.log("this.form.productType----"+value[value.length - 1])
       this.form.productType =value[value.length - 1]
     },
     //“产品分类-系统默认提供”列表
@@ -331,6 +328,7 @@ export default {
       }
     }
   }
+
   .bt-save{
     width: 100px;
     height: 40px;

@@ -137,6 +137,7 @@ export default {
           custom_mould_id: this.selectCustomDefineId,
           customList: this.customDefineAttributeList
         };
+        console.log('createNode---'+JSON.stringify(params));
         createNode(params)
           .then(res =>{
             if (res.status == 200) {
@@ -189,7 +190,6 @@ export default {
     },
     // 请求用户自定义模块详情
     loadCustomDefineDetailData(id) {
-      // console.log('loadCustomDefineDetailData');
       getCustomAttributeDetail({ id })
         .then(res => {
           this.customDefineAttributeList =

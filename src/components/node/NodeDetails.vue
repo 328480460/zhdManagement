@@ -69,7 +69,7 @@
     getDetailNode,
     updateNode,
     getCustomAttributeList,
-    getColumnInfo,
+    getCustomAttributeDetail,
     getlist,
   } from "../../assets/js/node/ajax.js";
   import { cityData } from "../../assets/js/api/cityData.js";
@@ -172,27 +172,11 @@
         let params = {
           custom_mould_type: 2,
           pagenum: 1,
-          pagesize: 20,
+          pagesize: 100,
         };
         getCustomAttributeList(params)
           .then(res => {
-//          this.customListCount = res.data.totalcount;
             this.customAttributeList = res.data.customAttributeList;
-          })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          });
-      },
-      //自定义字段信息查询
-      getColumnInfo() {
-        let params = {
-          custom_mould_type: 2,
-          sub_link: "",
-          type: 0,
-        };
-        getColumnInfo(params)
-          .then(res => {
-            this.attributeList = res.attributeList;
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -230,8 +214,6 @@
 
         //查询自定义属性列表
         this.getCustomAttributeList();
-        //自定义字段信息查询——TEST
-        this.getColumnInfo();
       },
     }
   }
