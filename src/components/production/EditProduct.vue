@@ -23,13 +23,13 @@
               change-on-select
             ></el-cascader>
           </el-form-item>
-          <!--<el-form-item label="*包装单位">-->
-            <!--<el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >-->
-              <!--<el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >-->
-              <!--</el-option>-->
-            <!--</el-select>-->
-            <!--</el-form-item>-->
           <el-form-item label="*包装规格">
+            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
+              <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
+              </el-option>
+            </el-select>
+            </el-form-item>
+          <el-form-item label="*计量单位">
             <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
             <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
@@ -228,7 +228,6 @@
 
             this.productTypeSelected.push(this.form.productType);
             console.log("data产品分类详情显示-------"+JSON.stringify(this.productTypeSelected))
-
           })
           .catch(() => {
             this.$message.error("出错啦getProductDetail!");

@@ -40,26 +40,30 @@
           </el-form-item>
         </el-form>
       </div>
-
       <div class="receive-info">
-      <h6 class="title">自定义属性：</h6>
-      <div class="section-content">
-        <el-form label-width="120px">
-          <el-form-item label="自定义属性">
-            <el-select v-model="form.custom_mould_id" clearable placeholder="无">
-              <el-option v-for="item in customAttributeList" :key="item.id" :label="item.mould_name" :value="item.id"></el-option>
+        <h6 class="title">自定义属性：</h6>
+        <div class="content">
+          <div class="demo-input-suffix">
+            <div class="lable">自定义属性</div>
+            <el-select  v-model="selectCustomDefineId" placeholder="请选择">
+              <el-option
+                v-for="item in customDefineList"
+                :key="item.id"
+                :label="item.mould_name"
+                :value="item.id">
+              </el-option>
             </el-select>
-          </el-form-item>
-        </el-form>
-      </div>
+          </div>
+        </div>
+        <div class="attribute-wrapper" v-show="selectCustomDefineId">
           <div class="content">
-            <div class="demo-input-suffix" v-for="(item, key) in attributeList" :key="key" >
+            <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
               <div class="lable">{{item.column_chinese}}</div>
-              <el-input v-model="item.data_type" placeholder="请输入内容"></el-input>
+              <el-input  v-model="item.data_value" placeholder="请输入内容"></el-input>
             </div>
           </div>
         </div>
-
+        </div>
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
     </div>
   </div>
@@ -67,10 +71,10 @@
 
 <script type="text/ecmascript-6">
   import {
-    createNode,
     getCustomAttributeList,
-    getColumnInfo,
+    getCustomAttributeDetail,
     getlist,
+    createNode,
   } from "../../assets/js/node/ajax.js";
   import { cityData } from "../../assets/js/api/cityData.js";
 
@@ -87,18 +91,33 @@ export default {
         nodeAddress: "",
         contacts: "",
         contactsPhone: "",
-        custom_mould_id: "",
       },
-      customList:[],
-      customAttributeList:[],
-      attributeList:[],
+//      attributeList:[],
       typeTablesList:[],
       splittingLists:[],
       nodeTypeLists:[],
+      //自定义分类列表
+      customTypeList:[],
+      // 用户自定义模块可选列表
+      customDefineList: [],
+      // 当前用户选中自定义模块
+      selectCustomDefine: "",
+      //所选自定义属性id
+      selectCustomDefineId: "",
+      // 用户选定模块的自定义属性列表
+      customDefineAttributeList: [],
+      customList:[],
+      newCustomFields:[],
+      customMouldId:"",
     }
   },
   mounted() {
     this.initData();
+  },
+  watch: {
+    selectCustomDefineId(newVal) {
+      this.loadCustomDefineDetailData(newVal);
+    }
   },
   methods:{
     onSubmit() {
@@ -115,9 +134,8 @@ export default {
           node_address: this.form.nodeAddress,
           contacts: this.form.contacts,
           contacts_phone: this.form.contactsPhone,
-//        brand_name: this.form.custom_mould_id
-          //需要替换为选择的
-          nodeCustomList: this.attributeList
+          custom_mould_id: this.selectCustomDefineId,
+          customList: this.customDefineAttributeList
         };
         createNode(params)
           .then(res =>{
@@ -158,46 +176,60 @@ export default {
           this.$message.error("出错啦!");
         });
     },
-    //节点自定义属性列表查询接口
+    // 查询自定义属性列表
     getCustomAttributeList() {
-      let params = {
-        custom_mould_type: 2,
-        pagenum: 1,
-        pagesize: 20,
-      };
-      getCustomAttributeList(params)
+      getCustomAttributeList({pagesize: '100', pagenum: '1', custom_mould_type: '2', sub_link: ''})
         .then(res => {
-          this.customAttributeList = res.data.customAttributeList;
+          this.customDefineList = res.data.customAttributeList;
+          this.showSelectCustomDefineMould();
         })
         .catch(() => {
           this.$message.error("出错啦!");
         });
     },
-    //自定义字段信息查询
-    getColumnInfo() {
-      let params = {
-        custom_mould_type: 2,
-        sub_link: "",
-        type: 0,
-      };
-      getColumnInfo(params)
+    // 请求用户自定义模块详情
+    loadCustomDefineDetailData(id) {
+      // console.log('loadCustomDefineDetailData');
+      getCustomAttributeDetail({ id })
         .then(res => {
-          this.attributeList = res.attributeList;
+          this.customDefineAttributeList =
+            res.data.customAttribute.customAttributeList;
+          this.mergeCustomDefineAttributeList();
         })
         .catch(() => {
           this.$message.error("出错啦!");
         });
+    },
+    // 根据收货详情回显出当前用户选中的自定义模块
+    showSelectCustomDefineMould() {
+      this.customDefineList.forEach((value, index) => {
+        // console.log(value.id, this.customMouldId)
+        if (value.id == this.customMouldId) {
+          this.selectCustomDefine = value.mould_name;
+          this.selectCustomDefineId = value.id;
+        }
+      });
+    },
+    // 根据传入的当前用户已经有值的自定义属性(props.customList)和查出的用户自定义属性列表(data.customDefineAttributeList)合并成一个符合规则的列表
+    mergeCustomDefineAttributeList() {
+      let customList = this.customList;
+      let customDefineAttributeList = this.customDefineAttributeList;
+      customDefineAttributeList.forEach((value, index) => {
+        customList.forEach((val, idx) => {
+          if (value.id == val.custom_id) {
+            value.data_value = val.data_value;
+          }
+        });
+      });
+      // console.log(this.customDefineAttributeList)
     },
     initData(){
       //节点分类查询
       this.getNodetupelist();
       //节点类型查询
       this.getSplitlist();
-
       //查询自定义属性列表
       this.getCustomAttributeList();
-      //自定义字段信息查询——TEST
-      this.getColumnInfo();
     }
   }
 }

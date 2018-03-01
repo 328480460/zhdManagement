@@ -202,7 +202,7 @@
       getNodeDetail(params){
         getDetailNode(params)
           .then(res =>{
-//            console.log("getDetailNode--"+JSON.stringify(res))
+            console.log("getDetailNode--"+JSON.stringify(res))
             let node = res.data.node
             this.form.nodeNumber = node. node_number;
             this.form.nodeName = node. node_name;

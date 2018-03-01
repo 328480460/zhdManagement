@@ -79,7 +79,7 @@
           <el-button
             size="mini"
             type="text"
-            @click="nodeDetails(scope.$index, scope.row)">详情</el-button>
+            @click="nodeDetails(scope.$index, scope.row)">编辑</el-button>
           <el-button
             size="mini"
             type="text"

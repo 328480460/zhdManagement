@@ -24,7 +24,14 @@
             ></el-cascader>
           </el-form-item>
           <el-form-item label="*包装规格">
-            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
+            <el-select v-model="form.norms" clearable  placeholder="未选择" width="50px" >
+              <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
+              </el-option>
+            </el-select>
+           </el-form-item>
+          <el-form-item label="*计量单位">
+            <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
+            <el-select v-model="form.norms" clearable  placeholder="未选择" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
             </el-select>
@@ -57,8 +64,7 @@
                 v-for="item in customDefineList"
                 :key="item.id"
                 :label="item.mould_name"
-                :value="item.id"
-              >
+                :value="item.id">
               </el-option>
             </el-select>
           </div>
@@ -81,7 +87,6 @@
   import {
     getlist,
     getListProductType,
-    getColumnInfo,
     getCustomAttributeList,
     getCustomAttributeDetail,
     getDefaultProductType,
@@ -98,6 +103,7 @@ export default {
         productName: "",
         productType: "",
         norms: "",
+        metering: "",
         metering_id: "",
         customType: "",
         productDesc: "",
@@ -119,6 +125,7 @@ export default {
       customDefineList: [],
       // 当前用户选中自定义模块
       selectCustomDefine: "",
+      //所选自定义属性id
       selectCustomDefineId: "",
       // 用户选定模块的自定义属性列表
       customDefineAttributeList: [],
@@ -151,7 +158,7 @@ export default {
     },
     onSubmit() {
       if(this.form.productCode == ''||this.form.productName == ''||this.form.productType == ''||this.form.norms == ''
-        ||this.form.customType == ''||this.form.productDesc == ''||this.form.productBrand == ''){
+        ||this.form.customType == ''||this.form.productDesc == ''||this.form.productBrand == ''||this.form.metering == ''){
         this.$message.warning("请填写完整信息!");
       }else if(this.form.metering_id == ''){
         this.$message.warning("请选择包装规格!");
@@ -169,6 +176,7 @@ export default {
           product_name: this.form.productName,
           product_type_id: this.form.productType,
           norms: this.form.norms,
+          metering: this.form.metering,
           metering_id: this.form.metering_id,
           custom_type_id: this.form.customType,
           product_depict: this.form.productDesc,
@@ -323,7 +331,14 @@ export default {
       }
     }
   }
-
+  input[type=number] {
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   .bt-save{
     width: 100px;
     height: 40px;
