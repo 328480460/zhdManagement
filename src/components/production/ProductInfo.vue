@@ -177,7 +177,10 @@ export default {
         page: "editProduct",
         name: "编辑产品",
         id: "01010102",
-        query: { productId: row.id },
+        query: {
+          productId: row.id,
+          productTypeId: row.product_type_id,
+        },
       });
     },
     handleDelete(index, row) {

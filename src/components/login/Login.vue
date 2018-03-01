@@ -11,12 +11,12 @@
         <form class="form-field">
           <div class="form-title">系 统 登 录</div>
           <div class="inner">
-            <img src="../../assets/image/account_icon.png" alt="account_icon"><input class="form-control" type="text" v-model="accountName" placeholder="账号" />
+            <img src="../../assets/image/account_icon.png" alt="account_icon"><input class="form-control" type="text" v-model="accountName" placeholder="输入账号" />
           </div>
           <div class="form-line">
           </div>
           <div class="inner">
-            <img src="../../assets/image/password_icon.png" alt="account_icon"><input class="form-control" type="password" v-model="password" placeholder="密码" />
+            <img src="../../assets/image/password_icon.png" alt="account_icon"><input class="form-control" type="password" v-model="password" placeholder="输入密码" />
           </div>
           <div class="form-line">
           </div>
