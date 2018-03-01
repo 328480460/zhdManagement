@@ -7,7 +7,7 @@
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">信息编号</div></el-col>
-        <el-col :span="4"><el-input placeholder="请输入产品名称"  v-model="search.infoNo"></el-input></el-col>
+        <el-col :span="4"><el-input placeholder="请输入信息编号"  v-model="search.infoNo"></el-input></el-col>
         <el-col :span="2"><div class="sub-title">发货日期</div></el-col>
         <el-col :span="6">
           <el-date-picker v-model="search.time" type="daterange"
@@ -18,21 +18,21 @@
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">当前节点</div></el-col>
         <el-col :span="4">
-          <el-select v-model="search.currentNode" clearable  placeholder="请选择" width="50px" >
+          <el-select v-model="search.currentNode" clearable  placeholder="请选择当前节点" width="50px" >
             <el-option  v-for="item in thisNodeOption" :key="item.id" :label="item.node_name"  :value="item.id" >
             </el-option>
           </el-select>
         </el-col>
         <el-col :span="2"><div class="sub-title">流向节点</div></el-col>
         <el-col :span="4">
-          <el-select v-model="search.flowNode" clearable  placeholder="请选择" width="50px" >
+          <el-select v-model="search.flowNode" clearable  placeholder="请选择流向节点" width="50px" >
             <el-option  v-for="item in flowNodeOption" :key="item.id" :label="item.node_name"  :value="item.id" >
             </el-option>
           </el-select>
         </el-col>
         <el-col :span="2"><div class="sub-title">产品名称</div></el-col>
         <el-col :span="4">
-          <el-select v-model="search.productName" clearable  placeholder="请选择" width="50px" >
+          <el-select v-model="search.productName" clearable  placeholder="请选择产品名称" width="50px" >
             <el-option  v-for="item in productTypeOption" :key="item.id" :label="item.product_name"  :value="item.id" >
             </el-option>
           </el-select>
@@ -243,11 +243,12 @@ export default {
     },
     // format  产品字段
     formatProductList(productGoodsList) {
-      let _productionList = "";
       productGoodsList.forEach(element => {
+        let _productionList = "";
         let productList = element.productList;
 
         productList.forEach((ele, index) => {
+          _productionList += `${ele["product_name"]}(${ele["product"]})-`
           _productionList += `${ele["product_batch_num"]}-`;
           _productionList += `${ele["product_num"]} `;
         });

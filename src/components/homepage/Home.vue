@@ -197,7 +197,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/less" lang='less' scoped>
+<style rel="stylesheet/less" lang='less' >
 #home {
   color: #282828;
   .left-menu {
@@ -342,5 +342,8 @@ export default {
       left: 120px;
     }
   }
+}
+.el-table tr th{
+  background-color: #e4e4e4;
 }
 </style>

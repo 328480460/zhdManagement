@@ -8,7 +8,7 @@
                    <div class="infoNo-code">{{invoiceNum}}</div>
                 </div> 
                 <div class="demo-input-suffix">
-                    <div class="lable">请选择日期</div>
+                    <div class="lable">发货日期</div>
                     <el-date-picker :disabled="!edit" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
                 </div>
                 <div class="demo-input-suffix">
@@ -359,6 +359,10 @@ export default {
   },
   watch: {
     selectCustomDefineId(newVal) {
+      if(!newVal) {
+        this.customDefineAttributeList = [];
+        return;
+      }
       this.loadCustomDefineDetailData(newVal);
     }
   }

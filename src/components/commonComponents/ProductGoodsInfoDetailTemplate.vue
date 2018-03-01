@@ -381,6 +381,10 @@ export default {
   },
   watch: {
     selectCustomDefineId(newVal) {
+      if(!newVal) {
+        this.customDefineAttributeList = [];
+        return;
+      }
       this.loadCustomDefineDetailData(newVal);
     }
   }
