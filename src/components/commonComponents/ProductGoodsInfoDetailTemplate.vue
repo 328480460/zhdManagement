@@ -319,7 +319,7 @@ export default {
     // format 投入品和产出品字段，以符合后台要求
     formatProduction(production) {
       production.map((item) => {
-        item.product_id = item.product_id;
+        item.product_id = item.product_id ? item.product_id : item.id;
       })
       return production;
     },
@@ -349,6 +349,22 @@ export default {
       this.$emit('editPage');
     },
     saveData() {
+      if(!this.time) {
+        this.$message.warning('请选择日期');
+        return
+      }
+      if(!this.currnetNodeId) {
+        this.$message.warning('请选择当前节点');
+        return
+      }
+      if(!this.productGoodsIn.length) {
+        this.$message.warning('请添加投入品');
+        return
+      }
+      if(!this.productGoodsOut.length) {
+        this.$message.warning('请添加产出品');
+        return
+      }
       let data = {
         id: this.id,
         this_node_id: this.currnetNodeId,

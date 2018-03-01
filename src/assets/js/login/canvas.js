@@ -20,8 +20,8 @@ export default class PointLine {
         x: Math.floor(this.canvas.width * Math.random()),
         y: Math.floor(this.canvas.height * Math.random()),
         r: Math.floor(this.rRange * Math.random()) + this.minR,
-        mx: Math.floor(Math.random() * 4) - 2,
-        my: Math.floor(Math.random() * 4) - 2,
+        mx: Math.floor(Math.random() * 3) - 2,
+        my: Math.floor(Math.random() * 3) - 2,
         color: this.colorArr[Math.floor(Math.random() * this.colorArr.length)]
       })
     }
@@ -74,7 +74,8 @@ export default class PointLine {
   loop() {
     this.move();
     this.render();
-    const requestId = requestAnimationFrame(this.loop.bind(this));
+    // const requestId = requestAnimationFrame(this.loop.bind(this));
+    const requestId = requestAnimationFrame(() => {this.loop()});
   }
 
 }
