@@ -42,25 +42,31 @@
       </div>
       <div class="receive-info">
         <h6 class="title">自定义属性：</h6>
-        <div class="section-content">
-          <el-form label-width="120px">
-            <el-form-item label="自定义属性">
-              <el-select v-model="form.custom_mould_id" clearable placeholder="无">
-                <el-option v-for="item in customAttributeList" :key="item.id" :label="item.mould_name" :value="item.id"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-        </div>
         <div class="content">
-          <div class="demo-input-suffix" v-for="(item, key) in attributeList" :key="key" >
-            <div class="lable">{{item.column_chinese}}</div>
-            <el-input v-model="item.data_type" placeholder="请输入内容"></el-input>
+          <div class="demo-input-suffix">
+            <div class="lable">自定义属性</div>
+            <el-select  v-model="selectCustomDefineId" placeholder="请选择" @change="changeselect">
+              <el-option
+                v-for="item in customDefineList"
+                :key="item.id"
+                :label="item.mould_name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="attribute-wrapper" v-show="selectCustomDefineIdshow">
+          <div class="content">
+            <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
+              <div class="lable">{{item.column_chinese}}</div>
+              <el-input v-model="item.data_value" placeholder="请输入内容"></el-input>
+            </div>
           </div>
         </div>
       </div>
-
       <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
     </div>
+  </div>
   </div>
 </template>
 
@@ -79,12 +85,6 @@
     name: 'nodeDetails',
     data(){
       return{
-        // 城市列表数据
-        cityDataList: cityData,
-        // 选中的城市
-        selectedCity: [],
-        customAttributeList:[],
-        attributeList:[],
         form: {
           nodeNumber: "",
           nodeName: "",
@@ -96,10 +96,24 @@
           contactsPhone: "",
           customMouldName: "",
         },
-        nodeTypes:"",
-        customMouldNames: [],
         splittingLists:[],
         nodeTypeLists:[],
+        customMouldNames: [],
+
+        //自定义分类列表
+        customTypeList:[],
+        // 用户自定义模块可选列表
+        customDefineList: [],
+        // 当前用户选中自定义模块
+        selectCustomDefine: "",
+        //所选自定义属性id
+        selectCustomDefineId: "",
+        selectCustomDefineIdshow: true,
+        // 用户选定模块的自定义属性列表
+        customDefineAttributeList: [],
+        customFields:[],
+        newCustomFields:[],
+        customMouldId:"",
       }
     },
     mounted(){
@@ -109,11 +123,22 @@
       this.initData(params);
     },
     methods:{
+      changeselect(val){
+        this.loadCustomDefineDetailData(val);
+      },
       onSubmit() {
         if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.form.splitting == ''||this.form.nodeType == ''
           ||this.form.nodeDepict == ''||this.form.nodeAddress == ''||this.form.contacts == ''||this.form.contactsPhone == ''){
           this.$message.warning("请填写完整信息!");
         }else{
+          this.customDefineAttributeList.forEach((value, index) => {
+            var arr  =
+            {
+              "custom_id" :value.custom_id,
+              "data_value" :value.data_value,
+            }
+            this.newCustomFields .push(arr);
+          })
           let params = {
             id: this.$route.query.nodeId,
             node_number: this.form.nodeNumber,
@@ -124,9 +149,10 @@
             node_address: this.form.nodeAddress,
             contacts: this.form.contacts,
             contacts_phone: this.form.contactsPhone,
-            //？？？需要替换为选择的自定义属性--TEST
-            nodeCustomList: this.attributeList
+            custom_mould_id: this.selectCustomDefineId,
+            nodeCustomList: this.newCustomFields
           };
+          console.log('--updateNode修改---'+JSON.stringify(params));
           updateNode(params)
             .then(res =>{
               if (res.status == 200) {
@@ -167,26 +193,11 @@
             this.$message.error("出错啦!");
           });
       },
-      //产品自定义属性列表查询接口
-      getCustomAttributeList() {
-        let params = {
-          custom_mould_type: 2,
-          pagenum: 1,
-          pagesize: 100,
-        };
-        getCustomAttributeList(params)
-          .then(res => {
-            this.customAttributeList = res.data.customAttributeList;
-          })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          });
-      },
       //节点详情接口
       getNodeDetail(params){
         getDetailNode(params)
           .then(res =>{
-            console.log("getDetailNode--"+JSON.stringify(res))
+            console.log("--getDetailNode详情--"+JSON.stringify(res))
             let node = res.data.node
             this.form.nodeNumber = node. node_number;
             this.form.nodeName = node. node_name;
@@ -196,13 +207,56 @@
             this.form.nodeAddress = node. node_address;
             this.form.contacts = node. contacts;
             this.form.contactsPhone = node. contacts_phone;
-            this.customMouldNames = node. customList;
-            //???测试数据返回为空
-//            this.form.customMouldName = this.customMouldNames[0].column_chinese;
+
+            this.selectCustomDefineId= node. custom_mould_id;
+            this.customDefineAttributeList = node. nodeCustomList;
+//            console.log("--节点customDefineAttributeList--"+JSON.stringify(this.customDefineAttributeList))
           })
           .catch(() => {
             this.$message.error("出错啦!");
           })
+      },
+      //产品自定义属性列表查询接口
+      getCustomAttributeList() {
+        let params = {
+          custom_mould_type: 2,
+          pagenum: 1,
+          pagesize: 100,
+        };
+        getCustomAttributeList(params)
+          .then(res => {
+            this.customDefineList = res.data.customAttributeList;
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
+      },
+      // 请求用户自定义模块详情
+      loadCustomDefineDetailData(id) {
+        getCustomAttributeDetail({ id })
+          .then(res => {
+            this.customDefineAttributeList = res.data.customAttribute.customAttributeList;
+            console.log("getCustomAttributeDetail-------"+JSON.stringify(this.customDefineAttributeList))
+
+            this.mergeCustomDefineAttributeList();
+          })
+          .catch(() => {
+            this.$message.error("出错啦loadCustomDefineDetailData!");
+          });
+      },
+      // 根据传入的当前用户已经有值的自定义属性(props.customFields)和查出的用户自定义属性列表(data.customDefineAttributeList)合并成一个符合规则的列表
+      mergeCustomDefineAttributeList() {
+        let nodeCustomList = this.nodeCustomList;
+        let customDefineAttributeList = this.customDefineAttributeList;
+
+        customDefineAttributeList.forEach((value, index) => {
+          nodeCustomList.forEach((val, idx) => {
+            if (value.custom_id == val.custom_id) {
+              value.data_value = val.data_value;
+            }
+          });
+        });
+        // console.log(this.customDefineAttributeList)
       },
       initData(params){
         //节点详情
@@ -211,7 +265,6 @@
         this.getNodetupelist();
         //节点类型查询
         this.getSplitlist();
-
         //查询自定义属性列表
         this.getCustomAttributeList();
       },
@@ -256,6 +309,8 @@
       }
     }
     .bt-save{
+      width: 100px;
+      height: 40px;
       margin-top: 10px;
       margin-left: 400px;
     }

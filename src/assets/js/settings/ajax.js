@@ -73,17 +73,17 @@ export const getListNode = function(params) {
  */
 // 自定义字段信息查询
 export const getColumnInfo = function(params) {
-  let url = ENVIRNMENT + '/getColumnInfo';
+  let url = ENVIRNMENTTEST + '/getColumnInfo';
   return ajaxPost(url,params)
 }
 // 自定义属性修改
 export const updateCustomAttribute = function(params) {
-  let url = ENVIRNMENT + '/updateCustomAttribute';
+  let url = ENVIRNMENTTEST + '/updateCustomAttribute';
   return ajaxPost(url,params)
 }
 // 自定义属性关联查询
 export const getAttributeRelationState = function(params) {
-  let url = ENVIRNMENT + '/getAttributeRelationState';
+  let url = ENVIRNMENTTEST + '/getAttributeRelationState';
   return ajaxPost(url,params)
 }
 // 自定义属性列表查询
@@ -103,7 +103,7 @@ export const deleteCustomAttribute = function(params) {
 }
 // 自定义属性详情
 export const  getCustomAttributeDetail = function(params) {
-  let url = ENVIRNMENT + '/getCustomAttributeDetail';
-  return ajaxGet(url,params)
+  let url = ENVIRNMENTTEST + '/getCustomAttributeDetail';
+  return ajaxPost(url,params)
 }
 

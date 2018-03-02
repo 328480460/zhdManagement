@@ -223,7 +223,7 @@
       getProductDetail(params){
         getProductDetail(params)
           .then(res =>{
-//            console.log("---productDetail---"+JSON.stringify(res))
+            console.log("---productDetail---"+JSON.stringify(res))
             this.form.productCode = res.data.productDetail. product;
             this.form.productName = res.data.productDetail.product_name;
             this.form.productType = res.data.productDetail.product_type_id;
@@ -235,6 +235,8 @@
 
             this.selectCustomDefineId= res.data.productDetail. custom_mould_id;
             this.customDefineAttributeList = res.data.productDetail. customFields;
+//            console.log("--产品customDefineAttributeList--"+JSON.stringify(this.customDefineAttributeList))
+
           })
           .catch(() => {
             this.$message.error("出错啦getProductDetail!");
@@ -306,7 +308,6 @@
         // console.log(this.customDefineAttributeList)
       },
       productTypeShow(){
-        //产品分类回显
         var productTypeName = this.$route.query.productTypeId
         var third = productTypeName.substring(0,8)
         var second = productTypeName.substring(0,5)
@@ -326,8 +327,6 @@
         this.getNormsTypeList();
         //查询自定义属性列表
         this.getCustomAttributeList();
-
-//        this.loadCustomDefineDetailData(newVal);
       },
     }
   };

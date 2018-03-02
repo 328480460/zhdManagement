@@ -92,7 +92,6 @@ export default {
         contacts: "",
         contactsPhone: "",
       },
-//      attributeList:[],
       typeTablesList:[],
       splittingLists:[],
       nodeTypeLists:[],
@@ -125,6 +124,14 @@ export default {
         ||this.form.nodeDepict == ''||this.form.nodeAddress == ''||this.form.contacts == ''||this.form.contactsPhone == ''){
         this.$message.warning("请填写完整信息!");
       }else{
+        this.customDefineAttributeList.forEach((value, index) => {
+          var arr  =
+          {
+            "custom_id" :value.custom_id,
+            "data_value" :value.data_value,
+          }
+          this.newCustomFields .push(arr);
+        })
         let params = {
           node_number: this.form.nodeNumber,
           node_name: this.form.nodeName,
@@ -135,11 +142,12 @@ export default {
           contacts: this.form.contacts,
           contacts_phone: this.form.contactsPhone,
           custom_mould_id: this.selectCustomDefineId,
-          customList: this.customDefineAttributeList
+          nodeCustomList: this.newCustomFields
         };
-        console.log('createNode---'+JSON.stringify(params));
+//        console.log('--createNode新增---'+JSON.stringify(params));
         createNode(params)
           .then(res =>{
+            console.log('createNode--res--'+JSON.stringify(res));
             if (res.status == 200) {
               this.$message.success("添加成功!");
               this.$router.go(-1);
