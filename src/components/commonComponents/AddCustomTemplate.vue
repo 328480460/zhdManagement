@@ -105,18 +105,17 @@
         data_type:'',
         id_required:'',
         addDatas:[],
-
-        props: {
-          tableData: {
-            type: Array,
-            required: true
-          },
-          custom_mould_type: {
-            type: String,
-            required: true
-          },
-        },
       }
+    },
+    props: {
+      tableData: {
+        type: Array,
+        required: true
+      },
+      custom_mould_type: {
+        type: String,
+        required: true
+      },
     },
     mounted() {
 
@@ -156,7 +155,7 @@
         }else {
           var customAttribute  = {
             customAttributeList :this.addDatas,
-            custom_mould_type :"1",
+            custom_mould_type :this.custom_mould_type,
             mould_name :this.mould_name,
             sub_link :"",
           }
