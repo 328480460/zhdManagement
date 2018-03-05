@@ -34,7 +34,10 @@ export default {
       }],
     }
   },
-  methods: {},
+  methods: {
+    // 通过所属类型来判断
+
+  },
   components: {
     EditCustomTemplate
   }

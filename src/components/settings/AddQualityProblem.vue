@@ -10,7 +10,7 @@ export default {
   name: 'producttype',
   data(){
     return{
-      custom_mould_type:"5",
+      custom_mould_type:5,
       tableData: [{
         column_chinese: '问题标题',
         data_type: '文本类型',

@@ -20,7 +20,7 @@
             <el-button
               size="mini"
               type="text"
-              @click="handleEdit">修改</el-button>
+              @click="handleEdit(scope.$index, scope.row)">修改</el-button>
             <el-button
               size="mini"
               type="text"
@@ -96,19 +96,19 @@ export default {
           .then(res => {
             this.totalcount = res.data.totalcount;
             this.roleList = res.data.roleList;
-            console.log("getListRole---"+JSON.stringify(res))
           })
           .catch(() => {
             this.$message.error("出错啦!");
           });
       },
-      handleEdit() {
-//      this.$emit("openExtraPage", {
-//        node:"production",
-//        page: "editProduct",
-//        name: "编辑产品",
-//        id: "01010102",
-//      });
+      handleEdit(index, row) {
+      this.$emit("openExtraPage", {
+        node:"setting",
+        page: "editRole",
+        name: "修改角色",
+        id: "03030202",
+        query: { roleId: row.id },
+      });
       },
       handleDelete(index, row) {
       this.delete(index, row)

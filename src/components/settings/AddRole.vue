@@ -36,21 +36,19 @@ export default {
       if(this.form.role_name == ''){
         this.$message.warning("请输入“角色名称”！");
       }else{
-        this.createRole(params)
+        createRole(params)
+          .then(res =>{
+            if (res.status == 200) {
+              this.$message.success("添加成功!");
+              this.$router.go(-1);
+            }else{
+              this.$message.error(res.msg);
+            }
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
       }
-    },
-    createRole(params){
-      createRole(params)
-        .then(res =>{
-          console.log("createRole---"+JSON.stringify(res))
-          if (res.status == 200) {
-            this.$message.success("添加成功!");
-            this.$router.go(-1);
-          }
-        })
-        .catch(() => {
-          this.$message.error("出错啦!");
-        })
     },
     initData(){
 

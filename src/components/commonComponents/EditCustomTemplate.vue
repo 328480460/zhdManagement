@@ -56,7 +56,7 @@
         <el-table-column
         >
           <template slot-scope="scope">
-            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, customAttributeList)"
+            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, scope.row)"
             ></i>
           </template>
         </el-table-column>
@@ -91,6 +91,8 @@
 
 <script type="text/ecmascript-6">
   import {
+    getAttributeRelationState,
+    deleteCustomField,
     updateCustomAttribute,
     getCustomAttributeDetail,
   } from "../../assets/js/settings/ajax.js";
@@ -106,6 +108,7 @@
         column_chinese:'',
         data_type:'',
         id_required:'',
+        custom_mould_type:'',
         customAttributeList:[],
       }
     },
@@ -147,17 +150,54 @@
       },
       //删除单条的“自定义字段”
       deleteRow(index, rows){
-        rows.splice(index, 1);
+        //自定义属性关联查询接口判断
+        var va = {
+          id:rows.id,
+          type:this.type
+        }
+        getAttributeRelationState(va)
+          .then(res => {
+            if(res.status == 200){
+              if(res.data.isRelation == 0){
+                  /**
+                   * 自定义字段删除接口判断
+                   * @type {methods.deleteRow}
+                   */
+                  deleteCustomField({id:rows.id})
+                    .then(res => {
+                      if(res.status == 200){
+//                        rows.splice(index, 1);
+                        this.$message.success("删除成功!");
+                      }else{
+                        this.$message.error(res.msg);
+                      }
+                    })
+                    .catch(() => {
+                      this.$message.error("出错啦!");
+                    });
+              }else{
+                //if(isRelation == 1)已经使用
+                this.$message.warning("该自定义字段已使用");
+              }
+            }else{
+              this.$message.warning(res.msg);
+            }
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
       },
       //自定义属性修改接口
       update(){
         if(this.mould_name == ''){
           this.$message.warning("请输入“自定义名称”！");
+        }else if(this.addDatas == ''){
+          this.$message.warning("请添加自定义字段！");
         }else {
           var customAttribute  = {
             mould_id :this.$route.query.typeId,
             customAttributeList :this.customAttributeList,
-            custom_mould_type :"1",
+            custom_mould_type :this.custom_mould_type,
             mould_name :this.mould_name,
             sub_link :"",
           }
@@ -180,7 +220,7 @@
       getCustomAttributeDetail(params) {
         getCustomAttributeDetail(params)
           .then(res => {
-            console.log("自定义属性详情----"+JSON.stringify(res))
+//            console.log("自定义属性详情----"+JSON.stringify(res))
             this.mould_name = res.data.customAttribute.mould_name;
             this.customAttributeList = res.data.customAttribute.customAttributeList;
           })

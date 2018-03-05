@@ -210,6 +210,7 @@
 
             this.selectCustomDefineId= node. custom_mould_id;
             this.customDefineAttributeList = node. nodeCustomList;
+            this.loadCustomDefineDetailData(node. custom_mould_id)
 //            console.log("--节点customDefineAttributeList--"+JSON.stringify(this.customDefineAttributeList))
           })
           .catch(() => {

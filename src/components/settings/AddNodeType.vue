@@ -10,7 +10,7 @@ export default {
   name: 'producttype',
   data(){
     return{
-      custom_mould_type:"2",
+      custom_mould_type:2,
       tableData: [{
         column_chinese: '节点编码',
         data_type: '数字类型',

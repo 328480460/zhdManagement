@@ -44,22 +44,22 @@ export const  getListRole  = function(params) {
 }
 // 角色新增
 export const  createRole  = function(params) {
-    let url = ENVIRNMENTTEST2 + 'Role/createRole';
+    let url = ENVIRNMENTTEST2 + '/Role/createRole';
     return ajaxPost(url,params)
 }
 // 角色删除
 export const  deleteRole  = function(params) {
-    let url = ENVIRNMENTTEST2 + 'Role/deleteRole';
+    let url = ENVIRNMENTTEST2 + '/Role/deleteRole';
     return ajaxPost(url,params)
 }
 // 角色修改
 export const  updateRole  = function(params) {
-    let url = ENVIRNMENTTEST2 + 'Role/updateRole';
+    let url = ENVIRNMENTTEST2 + '/Role/updateRole';
     return ajaxPost(url,params)
 }
 // 角色详情查询
 export const  getDetailRole  = function(params) {
-    let url = ENVIRNMENTTEST2 + 'ole/getDetailRole';
+    let url = ENVIRNMENTTEST2 + '/Role/getDetailRole';
     return ajaxPost(url,params)
 }
 
@@ -104,6 +104,11 @@ export const deleteCustomAttribute = function(params) {
 // 自定义属性详情
 export const  getCustomAttributeDetail = function(params) {
   let url = ENVIRNMENTTEST + '/getCustomAttributeDetail';
+  return ajaxPost(url,params)
+}
+// 自定义字段删除
+export const  deleteCustomField = function(params) {
+  let url = ENVIRNMENTTEST + '/deleteCustomField';
   return ajaxPost(url,params)
 }
 

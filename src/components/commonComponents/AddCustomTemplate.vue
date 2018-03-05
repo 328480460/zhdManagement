@@ -123,7 +123,9 @@
     methods:{
       //“增加字段”
       add(){
-        if(this.column_name == ''){
+        if(this.mould_name == ''){
+          this.$message.warning("请输入“自定义名称”！");
+        }else if(this.column_name == ''){
           this.$message.warning("请输入“字段名称”！");
         }else if(this.data_type == ''){
           this.$message.warning("请选择“字段类型”！");
@@ -150,8 +152,8 @@
       },
       //自定义属性新增接口
       save(){
-        if(this.mould_name == ''){
-          this.$message.warning("请输入“自定义名称”！");
+        if(this.addDatas == ''){
+          this.$message.warning("请添加自定义字段！");
         }else {
           var customAttribute  = {
             customAttributeList :this.addDatas,

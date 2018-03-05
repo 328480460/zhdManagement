@@ -1,7 +1,6 @@
 <template>
   <div id="invitation">
     <el-table class="el-table"
-              border
     >
       <el-table-column class="table-column"
                        prop="name"

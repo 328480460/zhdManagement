@@ -7,6 +7,7 @@ import AddStaff from '@/components/settings/AddStaff'
 import EditStaff from '@/components/settings/EditStaff'
 import RolePermission from '@/components/settings/RolePermission'
 import AddRole from '@/components/settings/AddRole'
+import EditRole from '@/components/settings/EditRole'
 import Invitation from '@/components/settings/Invitation'
 import CustomProductType from '@/components/settings/CustomProductType'
 import AddProductType from '@/components/settings/AddProductType'
@@ -138,15 +139,29 @@ export default[
     },
     //设置-员工设置-角色权限-添加角色
     {
-      path : 'settings/addrole',
+      path : 'settings/addRole',
       component : AddRole,
-      name: 'addrole',
+      name: 'addRole',
       meta: {
         pageInfo: {
-          page: "addrole",
+          page: "addRole",
           node: 'settings',
           name: "添加角色",
           id: "03030201"
+        }
+      }
+    },
+  //设置-员工设置-角色权限-编辑角色
+    {
+      path : 'settings/editRole',
+      component : EditRole,
+      name: 'editRole',
+      meta: {
+        pageInfo: {
+          page: "editRole",
+          node: 'settings',
+          name: "修改角色",
+          id: "03030202"
         }
       }
     },

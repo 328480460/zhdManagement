@@ -1,6 +1,6 @@
 <template>
   <div id="producttype" >
-    <EditCustomTemplate :tableData='tableData'></EditCustomTemplate>
+    <EditCustomTemplate :tableData='tableData' :type='type'></EditCustomTemplate>
   </div>
 </template>
 
@@ -10,6 +10,7 @@ export default {
   name: 'producttype',
   data(){
     return{
+      type:2,
       tableData: [{
         column_chinese: '节点编码',
         data_type: '数字类型',
