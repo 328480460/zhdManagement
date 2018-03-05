@@ -16,11 +16,16 @@
               </el-option>
             </el-select>
           </el-form-item>
+
           <el-form-item label="节点类型：">
-              <div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="item.id">
-              <input type="radio"  :value="item.id" name="name" v-model="form.splitting"/>{{item.type_name}}
-            </div>
+            <!--<div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="item.id">-->
+              <!--<input type="radio"  :value="item.id" name="name" v-model="form.splitting"/>{{item.type_name}}-->
+            <!--</div>-->
+            <el-checkbox-group v-model="checkedSplittings" @change="handleCheckedCitiesChange">
+              <el-checkbox v-for="item in splittingLists" :label="item.id" :key="item.id">{{item.type_name}}</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
+
           <el-form-item label="节点描述：">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
           </el-form-item>
@@ -92,6 +97,7 @@ export default {
         contacts: "",
         contactsPhone: "",
       },
+      checkedSplittings:[],
       typeTablesList:[],
       splittingLists:[],
       nodeTypeLists:[],
@@ -119,8 +125,12 @@ export default {
     }
   },
   methods:{
+    handleCheckedCitiesChange(value) {
+      this.checkedSplittings  = value
+      console.log("handleCheckedCitiesChange---"+this.checkedSplittings)
+    },
     onSubmit() {
-      if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.form.splitting == ''||this.form.nodeType == ''
+      if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.checkedSplittings.length == 0||this.form.nodeType == ''
         ||this.form.nodeDepict == ''||this.form.nodeAddress == ''||this.form.contacts == ''||this.form.contactsPhone == ''){
         this.$message.warning("请填写完整信息!");
       }else{
@@ -135,7 +145,7 @@ export default {
         let params = {
           node_number: this.form.nodeNumber,
           node_name: this.form.nodeName,
-          node_splitting: this.form.splitting,
+          node_splitting: this.checkedSplittings.toString(),
           node_type_id: this.form.nodeType,
           node_depict: this.form.nodeDepict,
           node_address: this.form.nodeAddress,
@@ -144,13 +154,14 @@ export default {
           custom_mould_id: this.selectCustomDefineId,
           nodeCustomList: this.newCustomFields
         };
-//        console.log('--createNode新增---'+JSON.stringify(params));
         createNode(params)
           .then(res =>{
-            console.log('createNode--res--'+JSON.stringify(res));
             if (res.status == 200) {
               this.$message.success("添加成功!");
               this.$router.go(-1);
+            }else{
+              this.$message.error(res.msg);
+              console.log('createNode--'+JSON.stringify(res));
             }
           })
           .catch(() => {

@@ -17,9 +17,9 @@
             </el-select>
           </el-form-item>
           <el-form-item label="节点类型">
-            <div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="item.id">
-              <input type="radio"  :value="item.id" name="name" v-model="form.splitting"/>{{item.type_name}}
-            </div>
+            <el-checkbox-group v-model="checkedSplittings" @change="handleCheckedCitiesChange">
+              <el-checkbox v-for="item in splittingLists" :label="item.id" :key="item.id">{{item.type_name}}</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
           <el-form-item label="节点描述">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
@@ -96,10 +96,12 @@
           contactsPhone: "",
           customMouldName: "",
         },
+        //选择的节点类型
+        checkedSplittings:[],
+        //节点类型列表
         splittingLists:[],
+        //节点分类列表
         nodeTypeLists:[],
-        customMouldNames: [],
-
         //自定义分类列表
         customTypeList:[],
         // 用户自定义模块可选列表
@@ -113,7 +115,6 @@
         customDefineAttributeList: [],
         customFields:[],
         newCustomFields:[],
-        customMouldId:"",
       }
     },
     mounted(){
@@ -123,11 +124,15 @@
       this.initData(params);
     },
     methods:{
+      handleCheckedCitiesChange(value) {
+        this.checkedSplittings  = value
+      },
       changeselect(val){
+        console.log("--changeselect--"+JSON.stringify(val))
         this.loadCustomDefineDetailData(val);
       },
       onSubmit() {
-        if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.form.splitting == ''||this.form.nodeType == ''
+        if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.checkedSplittings.length == 0||this.form.nodeType == ''
           ||this.form.nodeDepict == ''||this.form.nodeAddress == ''||this.form.contacts == ''||this.form.contactsPhone == ''){
           this.$message.warning("请填写完整信息!");
         }else{
@@ -144,7 +149,7 @@
             node_number: this.form.nodeNumber,
             node_name: this.form.nodeName,
             node_type_id: this.form.nodeType,
-            node_splitting: this.form.splitting,
+            node_splitting: this.checkedSplittings.toString(),
             node_depict: this.form.nodeDepict,
             node_address: this.form.nodeAddress,
             contacts: this.form.contacts,
@@ -152,7 +157,6 @@
             custom_mould_id: this.selectCustomDefineId,
             nodeCustomList: this.newCustomFields
           };
-          console.log('--updateNode修改---'+JSON.stringify(params));
           updateNode(params)
             .then(res =>{
               if (res.status == 200) {
@@ -160,6 +164,7 @@
                 this.$router.go(-1);
               }else {
                 this.$message.error(res.msg);
+                console.log('updateNode--res--'+JSON.stringify(res));
               }
             })
             .catch(() => {
@@ -197,26 +202,33 @@
       getNodeDetail(params){
         getDetailNode(params)
           .then(res =>{
-            console.log("--getDetailNode详情--"+JSON.stringify(res))
             let node = res.data.node
             this.form.nodeNumber = node. node_number;
             this.form.nodeName = node. node_name;
-            this.form.splitting = node. splitting;
             this.form.nodeType = node. node_type_id;
             this.form.nodeDepict = node. node_depict;
             this.form.nodeAddress = node. node_address;
             this.form.contacts = node. contacts;
             this.form.contactsPhone = node. contacts_phone;
-
             this.selectCustomDefineId= node. custom_mould_id;
-            this.customDefineAttributeList = node. nodeCustomList;
-            this.loadCustomDefineDetailData(node. custom_mould_id)
-//            console.log("--节点customDefineAttributeList--"+JSON.stringify(this.customDefineAttributeList))
+//            this.customDefineAttributeList = node. nodeCustomList;
+            this.nodeCustomList = node. nodeCustomList;
+
+            if(node. node_splitting != null){
+              //回显节点类型
+              this.checkedSplittings = node. node_splitting.split(",")
+            }else{
+              console.log("--没有node_splitting--"+JSON.stringify(node. node_splitting))
+            }
+
+            this.loadCustomDefineDetailData(node.custom_mould_id)
           })
           .catch(() => {
             this.$message.error("出错啦!");
           })
       },
+
+
       //产品自定义属性列表查询接口
       getCustomAttributeList() {
         let params = {
@@ -234,30 +246,28 @@
       },
       // 请求用户自定义模块详情
       loadCustomDefineDetailData(id) {
-        getCustomAttributeDetail({ id })
+        console.log("loadCustomDefineDetailData-------"+id)
+        getCustomAttributeDetail({id: id})
           .then(res => {
             this.customDefineAttributeList = res.data.customAttribute.customAttributeList;
-            console.log("getCustomAttributeDetail-------"+JSON.stringify(this.customDefineAttributeList))
-
+            console.log(res)
             this.mergeCustomDefineAttributeList();
           })
           .catch(() => {
-            this.$message.error("出错啦loadCustomDefineDetailData!");
+            this.$message.error("出错啦getCustomAttributeDetail!");
           });
       },
       // 根据传入的当前用户已经有值的自定义属性(props.customFields)和查出的用户自定义属性列表(data.customDefineAttributeList)合并成一个符合规则的列表
       mergeCustomDefineAttributeList() {
         let nodeCustomList = this.nodeCustomList;
         let customDefineAttributeList = this.customDefineAttributeList;
-
         customDefineAttributeList.forEach((value, index) => {
           nodeCustomList.forEach((val, idx) => {
-            if (value.custom_id == val.custom_id) {
+            if (value.id == val.custom_id) {
               value.data_value = val.data_value;
             }
           });
         });
-        // console.log(this.customDefineAttributeList)
       },
       initData(params){
         //节点详情

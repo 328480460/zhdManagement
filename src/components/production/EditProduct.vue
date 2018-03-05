@@ -35,7 +35,7 @@
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
             </el-select>
-            <el-radio-group v-model="form.productPackagingUnit">
+            <el-radio-group v-model="form.metering_id">
               <el-radio label="标件"></el-radio>
               <el-radio label="称重"></el-radio>
             </el-radio-group>
@@ -101,7 +101,6 @@
     name: "editProduct",
     data() {
       return {
-        productTypeSelected: [],
         form: {
           productCode: "",
           productName: "",
@@ -109,7 +108,7 @@
           customType: "",
           norms: "",
           metering: "",
-          productPackagingUnit: "",
+          metering_id: "",
           productDesc: "",
           productBrand: "",
           custom_mould:"",
@@ -120,6 +119,8 @@
           label: 'type_name',
           children: 'systemDefaultTypeList'
         },
+        //产品分类回显
+        productTypeSelected: [],
         //规格列表
         normsTypeList:[],
         //产品分类--系统默认提供
@@ -223,20 +224,18 @@
       getProductDetail(params){
         getProductDetail(params)
           .then(res =>{
-            console.log("---productDetail---"+JSON.stringify(res))
+//            console.log("---productDetail---"+JSON.stringify(res))
             this.form.productCode = res.data.productDetail. product;
             this.form.productName = res.data.productDetail.product_name;
             this.form.productType = res.data.productDetail.product_type_id;
             this.form.customType = res.data.productDetail.custom_type_id;
             this.form.norms = res.data.productDetail.norms;
             this.form.metering = res.data.productDetail.metering;
+            this.form.metering_id = res.data.productDetail.metering_id;
             this.form.productDesc = res.data.productDetail. product_depict;
             this.form.productBrand = res.data.productDetail. brand_name;
-
             this.selectCustomDefineId= res.data.productDetail. custom_mould_id;
             this.customDefineAttributeList = res.data.productDetail. customFields;
-//            console.log("--产品customDefineAttributeList--"+JSON.stringify(this.customDefineAttributeList))
-
           })
           .catch(() => {
             this.$message.error("出错啦getProductDetail!");
