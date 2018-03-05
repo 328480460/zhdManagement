@@ -14,6 +14,7 @@
 <script type="text/ecmascript-6">
   import {
     updateRole,
+    getDetailRole,
   } from "../../assets/js/settings/ajax.js";
 
 export default {
@@ -27,41 +28,50 @@ export default {
   },
   mounted() {
     let params ={
-      "id":this.$route.query.roleId
+      "id":this.$route.query.roleId,
     }
-    console.log(JSON.stringify(params))
+
     this.initData(params);
   },
   methods:{
     editRole(){
-      console.log("--编辑角色--")
-//      let params ={
-//        role_name: this.form.role_name,
-//      }
-//      if(this.form.role_name == ''){
-//        this.$message.warning("请输入“角色名称”！");
-//      }else{
-//        createRole(params)
-//          .then(res =>{
-//            console.log("createRole---"+JSON.stringify(res))
-//            if (res.status == 200) {
-//              this.$message.success("添加成功!");
-//              this.$router.go(-1);
-//            }else{
-//              this.$message.error(res.msg);
-//            }
-//          })
-//          .catch(() => {
-//            this.$message.error("出错啦!");
-//          })
-//      }
+      let params ={
+        id : this.$route.query.roleId,
+        role_name: this.form.role_name,
+      }
+      if(this.form.role_name == ''){
+        this.$message.warning("请输入“角色名称”！");
+      }else{
+        updateRole(params)
+          .then(res =>{
+            console.log("updateRole---"+JSON.stringify(res))
+            if (res.status == 200) {
+              this.$message.success("修改成功!");
+              this.$router.go(-1);
+            }else{
+              this.$message.error(res.msg);
+            }
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          })
+      }
     },
-    initData(){
-
+    getDetailRole(params){
+      getDetailRole(params).then(res =>{
+          if (res.status == 200) {
+            this.form.role_name = res.data.role.role_name
+          }else{
+            this.$message.error(res.msg);
+          }
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        })
     },
-  },
-  mounted(){
-
+    initData(params){
+      this.getDetailRole(params)
+    },
   },
 };
 </script>

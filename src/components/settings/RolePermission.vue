@@ -102,16 +102,16 @@ export default {
           });
       },
       handleEdit(index, row) {
-      this.$emit("openExtraPage", {
-        node:"setting",
-        page: "editRole",
-        name: "修改角色",
-        id: "03030202",
-        query: { roleId: row.id },
-      });
+        this.$emit("openExtraPage", {
+          node:"settings",
+          page: "editRole",
+          name: "修改角色",
+          id: "03030202",
+          query: { roleId: row.id },
+        });
       },
       handleDelete(index, row) {
-      this.delete(index, row)
+        this.delete(index, row)
       },
       delete(index, row) {
         this.$confirm('此操作将删除该角色信息, 是否继续?', '提示', {
@@ -119,12 +119,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          /*删除接口*/
           let params = {
             id: row.id,
           };
           deleteRole(params)
             .then(res => {
+              console.log("deleteRole------"+JSON.stringify(res))
               if(res.status == 200){
                 this.$message.success("删除成功!");
                 this.roleList.splice(index, 1);
@@ -148,7 +148,6 @@ export default {
           });
         });
       },
-
     }
 };
 </script>
