@@ -18,9 +18,6 @@
           </el-form-item>
 
           <el-form-item label="节点类型：">
-            <!--<div class="demo-input-suffix" v-for="(item, key) in splittingLists" :key="item.id">-->
-              <!--<input type="radio"  :value="item.id" name="name" v-model="form.splitting"/>{{item.type_name}}-->
-            <!--</div>-->
             <el-checkbox-group v-model="checkedSplittings" @change="handleCheckedCitiesChange">
               <el-checkbox v-for="item in splittingLists" :label="item.id" :key="item.id">{{item.type_name}}</el-checkbox>
             </el-checkbox-group>
@@ -50,7 +47,7 @@
         <div class="content">
           <div class="demo-input-suffix">
             <div class="lable">自定义属性</div>
-            <el-select  v-model="selectCustomDefineId" placeholder="请选择">
+            <el-select clearable v-model="selectCustomDefineId" placeholder="请选择">
               <el-option
                 v-for="item in customDefineList"
                 :key="item.id"
@@ -121,6 +118,10 @@ export default {
   },
   watch: {
     selectCustomDefineId(newVal) {
+      if(!newVal) {
+        this.customDefineAttributeList = [];
+        return;
+      }
       this.loadCustomDefineDetailData(newVal);
     }
   },

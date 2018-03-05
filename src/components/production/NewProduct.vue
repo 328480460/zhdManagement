@@ -59,7 +59,7 @@
         <div class="content">
           <div class="demo-input-suffix">
             <div class="lable">自定义属性</div>
-            <el-select  v-model="selectCustomDefineId" placeholder="请选择">
+            <el-select clearable v-model="selectCustomDefineId" placeholder="请选择">
               <el-option
                 v-for="item in customDefineList"
                 :key="item.id"
@@ -139,6 +139,10 @@ export default {
   },
   watch: {
     selectCustomDefineId(newVal) {
+      if(!newVal) {
+        this.customDefineAttributeList = [];
+        return;
+      }
       this.loadCustomDefineDetailData(newVal);
     }
   },
@@ -316,7 +320,7 @@ export default {
     .content {
       margin-left: 200px;
       margin-top: 10px;
-      width: 500px;
+      width: 460px;
       .demo-input-suffix {
         display: flex;
         margin-top: 10px;

@@ -45,7 +45,7 @@
         <div class="content">
           <div class="demo-input-suffix">
             <div class="lable">自定义属性</div>
-            <el-select  v-model="selectCustomDefineId" placeholder="请选择" @change="changeselect">
+            <el-select clearable v-model="selectCustomDefineId" placeholder="请选择" @change="changeselect">
               <el-option
                 v-for="item in customDefineList"
                 :key="item.id"
@@ -128,7 +128,10 @@
         this.checkedSplittings  = value
       },
       changeselect(val){
-        console.log("--changeselect--"+JSON.stringify(val))
+        if(!val) {
+          this.customDefineAttributeList = [];
+          return;
+        }
         this.loadCustomDefineDetailData(val);
       },
       onSubmit() {
@@ -220,14 +223,13 @@
             }else{
               console.log("--没有node_splitting--"+JSON.stringify(node. node_splitting))
             }
-
+          //请求用户自定义模块详情
             this.loadCustomDefineDetailData(node.custom_mould_id)
           })
           .catch(() => {
             this.$message.error("出错啦!");
           })
       },
-
 
       //产品自定义属性列表查询接口
       getCustomAttributeList() {
@@ -246,7 +248,6 @@
       },
       // 请求用户自定义模块详情
       loadCustomDefineDetailData(id) {
-        console.log("loadCustomDefineDetailData-------"+id)
         getCustomAttributeDetail({id: id})
           .then(res => {
             this.customDefineAttributeList = res.data.customAttribute.customAttributeList;
@@ -306,11 +307,10 @@
       .content {
         margin-left: 200px;
         margin-top: 10px;
-        width: 350px;
+        width: 460px;
         .demo-input-suffix {
           display: flex;
           margin-top: 10px;
-          font-size: 15px;
           .lable {
             flex: 0 0 100px;
             align-items: center;
