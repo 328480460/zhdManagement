@@ -8,7 +8,7 @@
                    <div class="infoNo-code">{{receiptNum}}</div>
                 </div>
                 <div class="demo-input-suffix">
-                    <div class="lable">请选择日期</div>
+                    <div class="lable">收货日期</div>
                     <el-date-picker :disabled="!edit" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
                 </div>
                 <div class="demo-input-suffix">
@@ -78,7 +78,7 @@
           <div class="content">
             <div class="demo-input-suffix">
                 <div class="lable">自定义属性</div>
-                <el-select  :disabled="!edit" v-model="selectCustomDefineId" placeholder="请选择">
+                <el-select clearable  :disabled="!edit" v-model="selectCustomDefineId" placeholder="请选择">
                     <el-option
                     v-for="item in customDefineList"
                     :key="item.id"
@@ -252,7 +252,7 @@ export default {
     loadCustomDefineData() {
       getCustomAttributeList({pagesize: '100', pagenum: '1', custom_mould_type: '3', sub_link: '收货信息'})
         .then(res => {
-          console.log(res.data.customAttributeList)
+          // console.log(res.data.customAttributeList)
           this.customDefineList = res.data.customAttributeList;
           if(this.customDefineList.length > 0) {
             this.showSelectCustomDefineMould();
@@ -361,8 +361,12 @@ export default {
     }
   },
   watch: {
-    selectCustomDefineId(newVal) {
-      // console.log('watch')
+    selectCustomDefineId(newVal, oldVal) {
+      // console.log(newVal, oldVal)
+      if(!newVal) {
+        this.customDefineAttributeList = [];
+        return;
+      }
       this.loadCustomDefineDetailData(newVal);
     }
   }

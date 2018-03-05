@@ -7,7 +7,7 @@
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">信息编号</div></el-col>
-        <el-col :span="4"><el-input placeholder="请输入产品名称"  v-model="search.infoNo"></el-input></el-col>
+        <el-col :span="4"><el-input placeholder="请输入信息编号"  v-model="search.infoNo"></el-input></el-col>
         <el-col :span="2"><div class="sub-title">生产日期</div></el-col>
         <el-col :span="6">
           <el-date-picker v-model="search.time" type="daterange"
@@ -18,21 +18,21 @@
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">当前节点</div></el-col>
         <el-col :span="4">
-          <el-select v-model="search.currentNode" clearable  placeholder="请选择" width="50px" >
+          <el-select v-model="search.currentNode" clearable  placeholder="请选择当前节点" width="50px" >
             <el-option  v-for="item in thisNodeOption" :key="item.id" :label="item.node_name"  :value="item.id" >
             </el-option>
           </el-select>
         </el-col>
         <el-col :span="2"><div class="sub-title">投入品</div></el-col>
         <el-col :span="4">
-          <el-select v-model="search.productGoodsIn" clearable  placeholder="请选择" width="50px" >
+          <el-select v-model="search.productGoodsIn" clearable  placeholder="请选择投入品" width="50px" >
             <el-option  v-for="item in productOption" :key="item.id" :label="item.product_name"  :value="item.id" >
             </el-option>
           </el-select>
         </el-col>
         <el-col :span="2"><div class="sub-title">产出品</div></el-col>
         <el-col :span="4">
-          <el-select v-model="search.productGoodsOut" clearable  placeholder="请选择" width="50px" >
+          <el-select v-model="search.productGoodsOut" clearable  placeholder="请选择产出品" width="50px" >
             <el-option  v-for="item in productOption" :key="item.id" :label="item.product_name"  :value="item.id" >
             </el-option>
           </el-select>
@@ -241,17 +241,19 @@ export default {
     },
     // format 投入品 productionInProductList 和 产出品 productionOutProductList字段
     formatOutInProductList(productGoodsList) {
-      let _productionOutProductList = "";
-      let _productionInProductList = "";
       productGoodsList.forEach(element => {
+        let _productionOutProductList = "";
+        let _productionInProductList = "";
         let productionInProductList = element.productionInProductList;
         let productionOutProductList = element.productionOutProductList;
 
         productionInProductList.forEach((ele, index) => {
+          _productionInProductList += `${ele["product_name"]}(${ele["receipt_num"]})-`
           _productionInProductList += `${ele["product_batch_num"]}-`;
           _productionInProductList += `${ele["product_num"]} `;
         });
         productionOutProductList.forEach((ele, index) => {
+          _productionOutProductList += `${ele["product_name"]}(${ele["receipt_num"]})-`
           _productionOutProductList += `${ele["product_batch_num"]}-`;
           _productionOutProductList += `${ele["product_num"]} `;
         });
