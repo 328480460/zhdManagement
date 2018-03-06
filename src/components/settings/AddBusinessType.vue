@@ -28,8 +28,6 @@
               <el-option label="文本类型" value="string"></el-option>
               <el-option label="数字类型" value="number"></el-option>
               <el-option label="选择列表" value="date"></el-option>
-              <el-option label="日期类型" value="string"></el-option>
-              <el-option label="产品选择列表" value="date"></el-option>
             </el-select>
           </div>
           <div class="weather-required">
@@ -64,7 +62,6 @@
         :data="addDatas"
         style="width: 100%">
         <el-table-column
-          label=""
         >
           <template slot-scope="scope">
             <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, addDatas)"
@@ -125,7 +122,7 @@
           data_type: '选择列表',
         }, {
           column_chinese: '收货产品',
-          data_type: '产品选择列表  ',
+          data_type: '选择列表',
         }, {
           column_chinese: '产品批次号',
           data_type: '文本类型',

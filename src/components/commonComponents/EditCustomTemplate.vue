@@ -5,6 +5,13 @@
         <el-form-item label="*自定义名称">
           <el-input v-model="mould_name" ></el-input>
         </el-form-item>
+        <el-form-item label="*所述环节" v-show="custom_type3">
+          <el-select v-model="sub_link" clearable  placeholder="选择所述环节" style="width: 100%">
+            <el-option label="收货信息" value="收货信息"></el-option>
+            <el-option label="生产信息" value="生产信息"></el-option>
+            <el-option label="发货信息" value="发货信息"></el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div class="custom-form">
         <div class="custom-title">自定义字段</div>
@@ -103,6 +110,7 @@
     data(){
       return{
         checked:false,
+        custom_type3:false,
         mould_name:'',
         column_name:'',
         column_chinese:'',
@@ -110,6 +118,7 @@
         id_required:'',
         custom_mould_type:'',
         customAttributeList:[],
+        sub_link:'',
       }
     },
     props: {
@@ -127,28 +136,53 @@
     methods:{
       //本地增加字段
       add(){
-        if(this.column_name == ''){
-          this.$message.warning("请输入“字段名称”！");
-        }else if(this.data_type == ''){
-          this.$message.warning("请选择“字段类型”！");
-        }else{
-          //判断checked
-          if(this.checked == true){
-            this.id_required = 1
-          }else  if(this.checked == false){
-            this.id_required = 0
-          }
-          var arr  =
-          {
-            "column_chinese" :this.column_name,
-            "column_english" :"",
-            "data_type" :this.data_type,
-            "id_required" :this.id_required,
-          }
-          this.customAttributeList .push(arr);
+        if(this.custom_mould_type == 3){
+              if(this.sub_link == ''){
+                this.$message.warning("请选择“所述环节”！");
+              } else if(this.column_name == ''){
+                this.$message.warning("请输入“字段名称”！");
+              }else if(this.data_type == ''){
+                this.$message.warning("请选择“字段类型”！");
+              } else{
+                //判断checked
+                if(this.checked == true){
+                  this.id_required = 1
+                }else  if(this.checked == false){
+                  this.id_required = 0
+                }
+                var arr  =
+                {
+                  "column_chinese" :this.column_name,
+                  "column_english" :"",
+                  "data_type" :this.data_type,
+                  "id_required" :this.id_required,
+                }
+                this.customAttributeList .push(arr);
+              }
+        }
+        else{
+              if(this.column_name == ''){
+                  this.$message.warning("请输入“字段名称”！");
+                }else if(this.data_type == ''){
+                  this.$message.warning("请选择“字段类型”！");
+                } else{
+                  //判断checked
+                  if(this.checked == true){
+                    this.id_required = 1
+                  }else  if(this.checked == false){
+                    this.id_required = 0
+                  }
+                  var arr  =
+                  {
+                    "column_chinese" :this.column_name,
+                    "column_english" :"",
+                    "data_type" :this.data_type,
+                    "id_required" :this.id_required,
+                  }
+                  this.customAttributeList .push(arr);
+              }
         }
       },
-      //删除单条的“自定义字段”
       deleteRow(index, rows){
         //自定义属性关联查询接口判断
         var va = {
@@ -158,26 +192,24 @@
         getAttributeRelationState(va)
           .then(res => {
             if(res.status == 200){
+              //if(isRelation == 0)该字段未使用，可删除
               if(res.data.isRelation == 0){
-                  /**
-                   * 自定义字段删除接口判断
-                   * @type {methods.deleteRow}
-                   */
+                  //自定义字段删除接口判断
                   deleteCustomField({id:rows.id})
                     .then(res => {
                       if(res.status == 200){
-//                        rows.splice(index, 1);
+                        this.customAttributeList.splice(index, 1);
                         this.$message.success("删除成功!");
                       }else{
                         this.$message.error(res.msg);
                       }
                     })
                     .catch(() => {
-                      this.$message.error("出错啦!");
+                      this.$message.error("出错啦deleteCustomField!");
                     });
               }else{
-                //if(isRelation == 1)已经使用
-                this.$message.warning("该自定义字段已使用");
+                //if(isRelation == 1)该字段已经使用，不可删除
+                this.$message.warning("该自定义字段已使用！请先删除关联数据");
               }
             }else{
               this.$message.warning(res.msg);
@@ -199,9 +231,8 @@
             customAttributeList :this.customAttributeList,
             custom_mould_type :this.custom_mould_type,
             mould_name :this.mould_name,
-            sub_link :"",
+            sub_link:this.sub_link
           }
-          console.log("update参数-========="+JSON.stringify(customAttribute))
           updateCustomAttribute(customAttribute)
             .then(res => {
               if (res.status == 200) {
@@ -220,9 +251,23 @@
       getCustomAttributeDetail(params) {
         getCustomAttributeDetail(params)
           .then(res => {
-//            console.log("自定义属性详情----"+JSON.stringify(res))
-            this.mould_name = res.data.customAttribute.mould_name;
-            this.customAttributeList = res.data.customAttribute.customAttributeList;
+            var customAttribute = res.data.customAttribute
+            //“业务类型”
+            if(customAttribute.custom_mould_type == 3){
+              this.custom_mould_type = 3
+              this.custom_type3 = true
+//              var sub_link =customAttribute.sub_link;
+              this.sub_link =customAttribute.sub_link;
+              if(this.sub_link == "生产信息"){
+                this.type = 3
+              }else if(this.sub_link == "发货信息"){
+                this.type = 4
+              }else if(this.sub_link == "收货信息"){
+                this.type = 5
+              }
+            }
+            this.mould_name = customAttribute.mould_name;
+            this.customAttributeList = customAttribute.customAttributeList;
           })
           .catch(() => {
             this.$message.error("出错啦!");

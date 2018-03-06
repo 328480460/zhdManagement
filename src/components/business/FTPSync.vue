@@ -1,5 +1,5 @@
 <template>
   <div>
-    <el-button >FTP同步</el-button>
+    <!--<el-button >FTP同步</el-button>-->
   </div>
 </template>

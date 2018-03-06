@@ -5,7 +5,7 @@
     </div>
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
-        <el-col :span="2"><div class="sub-title">自定义分类名称</div></el-col>
+        <el-col :span="2.5"><div class="sub-title">自定义分类名称</div></el-col>
         <el-col :span="4"><el-input placeholder="请输入自定义分类名称" v-model="search.typeName" style="padding-left: 20px"></el-input></el-col>
         <el-button type="primary" size="medium"  @click="searchProductType" class="btn-search" >搜索</el-button>
       </el-row>
@@ -200,7 +200,7 @@
                 this.customTypeList.splice(index, 1);
                 this.getTypeList()
               }else {
-                this.$message.error(res.status);
+                this.$message.error(res.msg);
               }
             })
             .catch(() => {

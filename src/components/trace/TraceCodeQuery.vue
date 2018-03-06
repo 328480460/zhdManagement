@@ -2,7 +2,7 @@
   <div id="traceCodeQuery" >
     <div class="traceCode-search">
       <el-row>
-        <el-col :span="4"><el-input placeholder="请输入追溯码" v-model="search.code" style="padding-left: 20px"></el-input></el-col>
+        <el-col :span="6"><el-input placeholder="请输入追溯码" v-model="search.code" style="padding-left: 20px"></el-input></el-col>
         <el-button type="primary" size="medium" @click="searchConditions" class="btn-search" >查询</el-button>
       </el-row>
     </div>

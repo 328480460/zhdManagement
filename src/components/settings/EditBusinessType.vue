@@ -18,7 +18,7 @@ export default {
         data_type: '选择列表',
       }, {
         column_chinese: '收货产品',
-        data_type: '产品选择列表  ',
+        data_type: '选择列表  ',
       }, {
         column_chinese: '产品批次号',
         data_type: '文本类型',
@@ -35,8 +35,6 @@ export default {
     }
   },
   methods: {
-    // 通过所属类型来判断
-
   },
   components: {
     EditCustomTemplate

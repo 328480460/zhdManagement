@@ -131,9 +131,12 @@ export default {
       console.log("handleCheckedCitiesChange---"+this.checkedSplittings)
     },
     onSubmit() {
-      if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.checkedSplittings.length == 0||this.form.nodeType == ''
-        ||this.form.nodeDepict == ''||this.form.nodeAddress == ''||this.form.contacts == ''||this.form.contactsPhone == ''){
-        this.$message.warning("请填写完整信息!");
+      if(this.form.nodeNumber == ''){
+        this.$message.warning("请填写节点编号!");
+      }if(this.form.nodeName == ''){
+        this.$message.warning("请填写节点名称!");
+      }if(this.form.nodeAddress == ''){
+        this.$message.warning("请填写节点地址!");
       }else{
         this.customDefineAttributeList.forEach((value, index) => {
           var arr  =

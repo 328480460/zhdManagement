@@ -169,11 +169,18 @@
           });
       },
       onSubmit() {
-        if(this.form.productCode == ''||this.form.productName == ''||this.form.norms == ''
-         ||this.form.customType == ''||this.form.productDesc == ''||this.form.productBrand == ''||this.form.metering == ''){
-          this.$message.warning("请填写完整信息!");
-        }else if(this.form.metering_id == ''){
-          this.$message.warning("请选择包装规格!");
+        if(this.form.productCode == ''){
+          this.$message.warning("请填写产品编号!");
+        }else if(this.form.productName == ''){
+          this.$message.warning("请填写产品名称!");
+        }else if(this.form.productType == ''){
+          this.$message.warning("请填写产品分类!");
+        }else if(this.form.norms == ''){
+          this.$message.warning("请填写包装规格!");
+        } else if(this.form.metering == ''){
+          this.$message.warning("请填写计量单位数量!");
+        } else if(this.form.metering_id == ''){
+          this.$message.warning("请填写计量单位!");
         }else{
           this.customDefineAttributeList.forEach((value, index) => {
             var arr  =
@@ -229,17 +236,24 @@
         getProductDetail(params)
           .then(res =>{
 //            console.log("---productDetail---"+JSON.stringify(res))
-            this.form.productCode = res.data.productDetail. product;
-            this.form.productName = res.data.productDetail.product_name;
-            this.form.productType = res.data.productDetail.product_type_id;
-            this.form.customType = res.data.productDetail.custom_type_id;
-            this.form.norms = res.data.productDetail.norms;
-            this.form.metering = res.data.productDetail.metering;
-            this.form.metering_id = res.data.productDetail.metering_id;
-            this.form.productDesc = res.data.productDetail. product_depict;
-            this.form.productBrand = res.data.productDetail. brand_name;
-            this.selectCustomDefineId= res.data.productDetail. custom_mould_id;
-            this.customDefineAttributeList = res.data.productDetail. customFields;
+            var productDetail = res.data.productDetail
+            this.form.productCode = productDetail. product;
+            this.form.productName = productDetail.product_name;
+            this.form.productType = productDetail.product_type_id;
+            this.form.customType = productDetail.custom_type_id;
+            this.form.norms = productDetail.norms;
+            this.form.metering = productDetail.metering;
+            this.form.metering_id = productDetail.metering_id;
+            this.form.productDesc = productDetail. product_depict;
+            this.form.productBrand = productDetail. brand_name;
+            this.selectCustomDefineId= productDetail. custom_mould_id;
+//            this.customDefineAttributeList = productDetail. customFields;
+            this.productCustomList = productDetail. customFields;
+
+            if(productDetail. custom_mould_id){
+              //请求用户自定义模块详情
+              this.loadCustomDefineDetailData(productDetail. custom_mould_id)
+            }
           })
           .catch(() => {
             this.$message.error("出错啦getProductDetail!");
@@ -299,16 +313,15 @@
       },
       // 根据传入的当前用户已经有值的自定义属性(props.customFields)和查出的用户自定义属性列表(data.customDefineAttributeList)合并成一个符合规则的列表
       mergeCustomDefineAttributeList() {
-        let customFields = this.customFields;
+        let productCustomList = this.productCustomList;
         let customDefineAttributeList = this.customDefineAttributeList;
         customDefineAttributeList.forEach((value, index) => {
-          customFields.forEach((val, idx) => {
+          productCustomList.forEach((val, idx) => {
             if (value.id == val.custom_id) {
               value.data_value = val.data_value;
             }
           });
         });
-        // console.log(this.customDefineAttributeList)
       },
       productTypeShow(){
         var productTypeName = this.$route.query.productTypeId

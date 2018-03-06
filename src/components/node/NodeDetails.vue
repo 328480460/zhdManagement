@@ -137,7 +137,7 @@
       onSubmit() {
         if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.checkedSplittings.length == 0||this.form.nodeType == ''
           ||this.form.nodeDepict == ''||this.form.nodeAddress == ''||this.form.contacts == ''||this.form.contactsPhone == ''){
-          this.$message.warning("请填写完整信息!");
+          this.$message.warning("请填写完整必填项!");
         }else{
           this.customDefineAttributeList.forEach((value, index) => {
             var arr  =
@@ -223,8 +223,10 @@
             }else{
               console.log("--没有node_splitting--"+JSON.stringify(node. node_splitting))
             }
-          //请求用户自定义模块详情
-            this.loadCustomDefineDetailData(node.custom_mould_id)
+            //请求用户自定义模块详情
+            if(node. custom_mould_id){
+              this.loadCustomDefineDetailData(node.custom_mould_id)
+            }
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -251,7 +253,6 @@
         getCustomAttributeDetail({id: id})
           .then(res => {
             this.customDefineAttributeList = res.data.customAttribute.customAttributeList;
-            console.log(res)
             this.mergeCustomDefineAttributeList();
           })
           .catch(() => {

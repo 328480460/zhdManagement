@@ -6,7 +6,7 @@
     </div>
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
-        <el-col :span="2"><div class="sub-title">产品名称</div></el-col>
+        <el-col :span="2.5"><div class="sub-title">产品名称</div></el-col>
         <el-col :span="4"><el-input placeholder="请输入产品名称" v-model="search.productName" ></el-input></el-col>
         <el-col :span="3"><div class="sub-title">创建日期</div></el-col>
         <el-col :span="6">
@@ -16,7 +16,7 @@
         </el-col>
       </el-row>
       <el-row class="demo-autocomplete">
-        <el-col :span="2"><div class="sub-title">自定义分类</div></el-col>
+        <el-col :span="2.5"><div class="sub-title">自定义分类</div></el-col>
         <el-col :span="4">
           <el-select v-model="search.customType" clearable  placeholder="请选择" width="50px" >
             <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >

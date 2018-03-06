@@ -10,7 +10,6 @@
           <el-form-item label="*产品名称">
             <el-input v-model="form.productName"></el-input>
           </el-form-item>
-
           <el-form-item label="*产品分类">
             <el-cascader
               :options="systemDefaultType"
@@ -54,6 +53,7 @@
           </el-form-item>
         </el-form>
       </div>
+
       <div class="receive-info">
         <h6 class="title">自定义属性</h6>
         <div class="content">
@@ -161,11 +161,18 @@ export default {
         });
     },
     onSubmit() {
-      if(this.form.productCode == ''||this.form.productName == ''||this.form.productType == ''||this.form.norms == ''
-        ||this.form.customType == ''||this.form.productDesc == ''||this.form.productBrand == ''||this.form.metering == ''){
-        this.$message.warning("请填写完整信息!");
-      }else if(this.form.metering_id == ''){
-        this.$message.warning("请选择包装规格!");
+      if(this.form.productCode == ''){
+        this.$message.warning("请填写产品编号!");
+      }else if(this.form.productName == ''){
+        this.$message.warning("请填写产品名称!");
+      }else if(this.form.productType == ''){
+        this.$message.warning("请填写产品分类!");
+      }else if(this.form.norms == ''){
+        this.$message.warning("请填写包装规格!");
+      } else if(this.form.metering == ''){
+        this.$message.warning("请填写计量单位数量!");
+      } else if(this.form.metering_id == ''){
+        this.$message.warning("请填写计量单位!");
       }else{
         this.customDefineAttributeList.forEach((value, index) => {
           var arr  =
