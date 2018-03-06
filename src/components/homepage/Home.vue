@@ -283,6 +283,9 @@ export default {
           .summary {
             display: block;
           }
+          .icon-font:before {
+            color: #282828;
+          }
         }
         .icon-font {
           margin-right: 10px;

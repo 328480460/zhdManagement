@@ -2,7 +2,7 @@ export const menu = [
   {
     id: "00",
     name: "概述",
-    icon: "el-icon-menu",
+    icon: "icon-general",
     disabled: false,
     node: "welcome",
     page: "welcome"
@@ -10,7 +10,7 @@ export const menu = [
   {
     id: "01",
     name: "产品",
-    icon: "el-icon-menu",
+    icon: "icon-production",
     disabled: false,
     node: "production",
     children: [
@@ -76,7 +76,7 @@ export const menu = [
   {
     id: "02",
     name: "节点",
-    icon: "el-icon-menu",
+    icon: "icon-node",
     disabled: false,
     node: "node",
     children: [
@@ -117,7 +117,7 @@ export const menu = [
   {
     id: "03",
     name: "追溯",
-    icon: "el-icon-menu",
+    icon: "icon-trace",
     disabled: false,
     node: "trace",
     children: [
@@ -165,7 +165,7 @@ export const menu = [
   {
     id: "04",
     name: "业务",
-    icon: "el-icon-menu",
+    icon: "icon-business",
     disabled: false,
     node: "business",
     children: [
@@ -264,7 +264,7 @@ export const menu = [
   {
     id: "05",
     name: "文档",
-    icon: "el-icon-menu",
+    icon: "icon-document",
     disabled: false,
     node: "document",
     children: [
@@ -283,45 +283,45 @@ export const menu = [
       }
     ]
   },
-  {
-    id: "06",
-    name: "质量",
-    icon: "el-icon-menu",
-    disabled: false,
-    node: "quality",
-    children: [
-      {
-        id: "0601",
-        name: "质量问题管理",
-        disabled: false,
-        children: [
-          {
-            id: "060101",
-            name: "质量问题管理",
-            disabled: false,
-            page: "qualityAdministration"
-          }
-        ]
-      },
-      {
-        id: "0602",
-        name: "召回管理",
-        disabled: false,
-        children: [
-          {
-            id: "060201",
-            name: "召回管理",
-            disabled: false,
-            page: "recallAdministration"
-          }
-        ]
-      }
-    ]
-  },
+  // {
+  //   id: "06",
+  //   name: "质量",
+  //   icon: "icon-test",
+  //   disabled: false,
+  //   node: "quality",
+  //   children: [
+  //     {
+  //       id: "0601",
+  //       name: "质量问题管理",
+  //       disabled: false,
+  //       children: [
+  //         {
+  //           id: "060101",
+  //           name: "质量问题管理",
+  //           disabled: false,
+  //           page: "qualityAdministration"
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       id: "0602",
+  //       name: "召回管理",
+  //       disabled: false,
+  //       children: [
+  //         {
+  //           id: "060201",
+  //           name: "召回管理",
+  //           disabled: false,
+  //           page: "recallAdministration"
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
   {
     id: "07",
     name: "设置",
-    icon: "el-icon-menu",
+    icon: "icon-setting",
     disabled: false,
     node: "settings",
     children: [
