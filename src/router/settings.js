@@ -36,7 +36,7 @@ export default[
             page: "enterpriseInfo",
             node: 'settings',
             name: "企业信息",
-            id: "030101"
+            id: "070101"
           }
         }
     },
@@ -49,7 +49,7 @@ export default[
           page: "enterpriseInfoEdit",
           node: 'settings',
           name: "编辑企业信息",
-          id: "03010102"
+          id: "07010102"
         }
       }
     },
@@ -63,7 +63,7 @@ export default[
           page: "accountSetting",
           node: 'settings',
           name: "账号信息",
-          id: "030201"
+          id: "070201"
         }
       }
     },
@@ -77,7 +77,7 @@ export default[
           page: "accountSettingEdit",
           node: 'settings',
           name: "编辑账号信息",
-          id: "03020102"
+          id: "07020102"
         }
       }
     },
@@ -91,7 +91,7 @@ export default[
           page: "staffManagement",
           node: 'settings',
           name: "员工管理",
-          id: "030301"
+          id: "070301"
         }
       }
     },
@@ -105,7 +105,7 @@ export default[
           page: "addStaff",
           node: 'settings',
           name: "添加员工",
-          id: "03030101"
+          id: "07030101"
         }
       }
     },
@@ -119,7 +119,7 @@ export default[
           page: "v",
           node: 'settings',
           name: "修改员工信息",
-          id: "03030102"
+          id: "07030102"
         }
       }
     },
@@ -133,7 +133,7 @@ export default[
           page: "rolePermission",
           node: 'settings',
           name: "角色权限",
-          id: "030302"
+          id: "070302"
         }
       }
     },
@@ -147,7 +147,7 @@ export default[
           page: "addRole",
           node: 'settings',
           name: "添加角色",
-          id: "03030201"
+          id: "07030201"
         }
       }
     },
@@ -161,7 +161,7 @@ export default[
           page: "editRole",
           node: 'settings',
           name: "修改角色",
-          id: "03030202"
+          id: "07030202"
         }
       }
     },
@@ -175,7 +175,7 @@ export default[
           page: "invitation",
           node: 'settings',
           name: "待定邀请",
-          id: "030303"
+          id: "070303"
         }
       }
     },
@@ -189,7 +189,7 @@ export default[
           page: "customProductType",
           node: 'settings',
           name: "产品类型",
-          id: "030401"
+          id: "070401"
         }
       }
     },
@@ -203,7 +203,7 @@ export default[
           page: "addProductType",
           node: 'settings',
           name: "产品类型添加",
-          id: "03040101"
+          id: "07040101"
         }
       }
     },
@@ -217,7 +217,7 @@ export default[
           page: "editProductType",
           node: 'settings',
           name: "编辑产品类型",
-          id: "03040102"
+          id: "07040102"
         }
       }
     },
@@ -231,7 +231,7 @@ export default[
           page: "customNodeType",
           node: 'settings',
           name: "节点类型",
-          id: "030402"
+          id: "070402"
         }
       }
     },
@@ -245,7 +245,7 @@ export default[
           page: "addNodeType",
           node: 'settings',
           name: "节点类型添加",
-          id: "03040201"
+          id: "07040201"
         }
       }
     },
@@ -259,7 +259,7 @@ export default[
           page: "editNodeType",
           node: 'settings',
           name: "节点类型修改",
-          id: "03040202"
+          id: "07040202"
         }
       }
     },
@@ -273,7 +273,7 @@ export default[
           page: "customBusinessType",
           node: 'settings',
           name: "业务类型",
-          id: "030403"
+          id: "070403"
         }
       }
     },
@@ -287,7 +287,7 @@ export default[
           page: "addBusinessType",
           node: 'settings',
           name: "添加业务类型",
-          id: "03040301"
+          id: "07040301"
         }
       }
     },
@@ -301,7 +301,7 @@ export default[
           page: "editBusinessType",
           node: 'settings',
           name: "修改业务类型",
-          id: "03040302"
+          id: "07040302"
         }
       }
     },
@@ -315,7 +315,7 @@ export default[
           page: "customDocumentType",
           node: 'settings',
           name: "文档类型",
-          id: "030404"
+          id: "070404"
         }
       }
     },
@@ -329,7 +329,7 @@ export default[
           page: "addDocumentType",
           node: 'settings',
           name: "添加文档类型",
-          id: "03040401"
+          id: "07040401"
         }
       }
     },
@@ -343,7 +343,7 @@ export default[
           page: "editDocumentType",
           node: 'settings',
           name: "修改文档类型",
-          id: "03040402"
+          id: "07040402"
         }
       }
     },
@@ -357,7 +357,7 @@ export default[
           page: "qualityProblem",
           node: 'settings',
           name: "质量问题",
-          id: "030405"
+          id: "070405"
         }
       }
     },
@@ -371,7 +371,7 @@ export default[
           page: "addQualityProblem",
           node: 'settings',
           name: "添加质量问题",
-          id: "03040501"
+          id: "07040501"
         }
       }
     },
@@ -385,7 +385,7 @@ export default[
           page: "editQualityProblem",
           node: 'settings',
           name: "编辑质量问题",
-          id: "03040502"
+          id: "07040502"
         }
       }
     }

@@ -12,7 +12,7 @@ export default[
           page: "chainSynthesis",
           node: 'trace',
           name: "链条合成",
-          id: "040101"
+          id: "030101"
         }
       }
     },
@@ -25,7 +25,7 @@ export default[
           page: "traceCodeQuery",
           node: 'trace',
           name: "溯源查询",
-          id: "040201"
+          id: "030201"
         }
       }
     },
@@ -38,7 +38,7 @@ export default[
           page: "traceCodeApplay",
           node: 'trace',
           name: "追溯码管理",
-          id: "040301"
+          id: "030301"
         }
       }
     },

@@ -5,7 +5,7 @@ export const menu = [
     icon: "el-icon-menu",
     disabled: false,
     node: "welcome",
-    page: "welcome" 
+    page: "welcome"
   },
   {
     id: "01",
@@ -115,19 +115,19 @@ export const menu = [
     ]
   },
   {
-    id: "04",
+    id: "03",
     name: "追溯",
     icon: "el-icon-menu",
     disabled: false,
     node: "trace",
     children: [
       {
-        id: "0401",
+        id: "0301",
         name: "链条合成",
         disabled: false,
         children: [
           {
-            id: "040101",
+            id: "030101",
             name: "链条合成",
             disabled: false,
             page: "chainSynthesis"
@@ -135,12 +135,12 @@ export const menu = [
         ]
       },
       {
-        id: "0402",
+        id: "0302",
         name: "溯源查询",
         disabled: false,
         children: [
           {
-            id: "040201",
+            id: "030201",
             name: "溯源查询",
             disabled: false,
             page: "traceCodeQuery"
@@ -148,12 +148,12 @@ export const menu = [
         ]
       },
       {
-        id: "0403",
+        id: "0303",
         name: "溯源码管理",
         disabled: false,
         children: [
           {
-            id: "040301",
+            id: "030301",
             name: "溯源码申请",
             disabled: false,
             page: "traceCodeApplay"
@@ -163,19 +163,19 @@ export const menu = [
     ]
   },
   {
-    id: "05",
+    id: "04",
     name: "业务",
     icon: "el-icon-menu",
     disabled: false,
     node: "business",
     children: [
       {
-        id: "0501",
+        id: "0401",
         name: "收货信息",
         disabled: false,
         children: [
           {
-            id: "050101",
+            id: "040101",
             name: "收货信息",
             disabled: false,
             page: "getGoodsInfo"
@@ -183,12 +183,12 @@ export const menu = [
         ]
       },
       {
-        id: "0502",
+        id: "0402",
         name: "生产信息",
         disabled: false,
         children: [
           {
-            id: "050201",
+            id: "040201",
             name: "生产信息",
             disabled: false,
             page: "productGoodsInfo"
@@ -196,12 +196,12 @@ export const menu = [
         ]
       },
       {
-        id: "0503",
+        id: "0403",
         name: "发货信息",
         disabled: false,
         children: [
           {
-            id: "050301",
+            id: "040301",
             name: "发货信息",
             disabled: false,
             page: "sendGoodsInfo"
@@ -209,18 +209,18 @@ export const menu = [
         ]
       },
       {
-        id: "0504",
+        id: "0404",
         name: "批量导入",
         disabled: false,
         children: [
           {
-            id: "050401",
+            id: "040401",
             name: "批量导入",
             disabled: false,
             page: "multiImport"
           },
           {
-            id: "050402",
+            id: "040402",
             name: "历史记录",
             disabled: false,
             page: "importHistoryBusiness"
@@ -228,18 +228,18 @@ export const menu = [
         ]
       },
       {
-        id: "0505",
+        id: "0405",
         name: "FTP同步",
         disabled: false,
         children: [
           {
-            id: "050501",
+            id: "040501",
             name: "FTP同步",
             disabled: false,
             page: "FTPSync"
           },
           {
-            id: "050502",
+            id: "040502",
             name: "历史记录",
             disabled: false,
             page: "FTPHistoryBusiness"
@@ -247,12 +247,12 @@ export const menu = [
         ]
       },
       {
-        id: "0506",
+        id: "0406",
         name: "系统对接",
         disabled: false,
         children: [
           {
-            id: "050601",
+            id: "040601",
             name: "系统对接",
             disabled: false,
             page: "systemInsert"
@@ -262,19 +262,19 @@ export const menu = [
     ]
   },
   {
-    id: "06",
+    id: "05",
     name: "文档",
     icon: "el-icon-menu",
     disabled: false,
     node: "document",
     children: [
       {
-        id: "0601",
+        id: "0501",
         name: "文档管理",
         disabled: false,
         children: [
           {
-            id: "060101",
+            id: "050101",
             name: "文档管理",
             disabled: false,
             page: "documentAdministration"
@@ -284,19 +284,19 @@ export const menu = [
     ]
   },
   {
-    id: "07",
+    id: "06",
     name: "质量",
     icon: "el-icon-menu",
     disabled: false,
     node: "quality",
     children: [
       {
-        id: "0701",
+        id: "0601",
         name: "质量问题管理",
         disabled: false,
         children: [
           {
-            id: "070101",
+            id: "060101",
             name: "质量问题管理",
             disabled: false,
             page: "qualityAdministration"
@@ -304,12 +304,12 @@ export const menu = [
         ]
       },
       {
-        id: "0702",
+        id: "0602",
         name: "召回管理",
         disabled: false,
         children: [
           {
-            id: "070201",
+            id: "060201",
             name: "召回管理",
             disabled: false,
             page: "recallAdministration"
@@ -319,19 +319,19 @@ export const menu = [
     ]
   },
   {
-    id: "03",
+    id: "07",
     name: "设置",
     icon: "el-icon-menu",
     disabled: false,
     node: "settings",
     children: [
       {
-        id: "0301",
+        id: "0701",
         name: "企业信息",
         disabled: false,
         children: [
           {
-            id: "030101",
+            id: "070101",
             name: "企业信息",
             disabled: false,
             page: "enterpriseInfo"
@@ -339,12 +339,12 @@ export const menu = [
         ]
       },
       {
-        id: "0302",
+        id: "0702",
         name: "账号设置",
         disabled: false,
         children: [
           {
-            id: "030201",
+            id: "070201",
             name: "账号信息",
             disabled: false,
             page: "accountSetting"
@@ -352,24 +352,24 @@ export const menu = [
         ]
       },
       {
-        id: "0303",
+        id: "0703",
         name: "员工设置",
         disabled: false,
         children: [
           {
-            id: "030301",
+            id: "070301",
             name: "员工管理",
             disabled: false,
             page: "staffManagement"
           },
           {
-            id: "030302",
+            id: "070302",
             name: "角色权限",
             disabled: false,
             page: "rolePermission"
           },
           {
-            id: "030303",
+            id: "070303",
             name: "待定邀请",
             disabled: false,
             page: "invitation"
@@ -377,36 +377,36 @@ export const menu = [
         ]
       },
       {
-        id: "0304",
+        id: "0704",
         name: "自定义属性",
         disabled: false,
         children: [
           {
-            id: "030401",
+            id: "070401",
             name: "产品类型",
             disabled: false,
             page: "customProductType"
           },
           {
-            id: "030402",
+            id: "070402",
             name: "节点类型",
             disabled: false,
             page: "customNodeType"
           },
           {
-            id: "030403",
+            id: "070403",
             name: "业务类型",
             disabled: false,
             page: "customBusinessType"
           },
           {
-            id: "030404",
+            id: "070404",
             name: "文档类型",
             disabled: false,
             page: "customDocumentType"
           },
           {
-            id: "030405",
+            id: "070405",
             name: "质量问题",
             disabled: false,
             page: "qualityProblem"
@@ -414,5 +414,5 @@ export const menu = [
         ]
       }
     ]
-  }
+  },
 ];

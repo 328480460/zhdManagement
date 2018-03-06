@@ -26,7 +26,7 @@ export default[
                 page: "getGoodsInfo",
                 node: 'business',
                 name: "收货信息",
-                id: "050101"
+                id: "040101"
             }
         }
     },
@@ -39,7 +39,7 @@ export default[
                 page: "newGetGoodsInfo",
                 node: 'business',
                 name: "新建收货信息",
-                id: "05010101"
+                id: "04010101"
             }
         }
     },
@@ -52,7 +52,7 @@ export default[
                 page: "getGoodsInfoDetail",
                 node: 'business',
                 name: "收货信息详情",
-                id: "05010102"
+                id: "04010102"
             }
         }
     },
@@ -65,7 +65,7 @@ export default[
                 page: "editGetGoodsInfoDetail",
                 node: 'business',
                 name: "编辑收货信息",
-                id: "05010103"
+                id: "04010103"
             }
         }
     },
@@ -79,7 +79,7 @@ export default[
                 page: "productGoodsInfo",
                 node: 'business',
                 name: "生产信息",
-                id: "050201"
+                id: "040201"
             }
         }
     },
@@ -93,7 +93,7 @@ export default[
                 page: "newProductGoodsInfo",
                 node: 'business',
                 name: "新建生产信息",
-                id: "05020101"
+                id: "04020101"
             }
         }
     },
@@ -107,7 +107,7 @@ export default[
                 page: "productGoodsInfoDetail",
                 node: 'business',
                 name: "生产信息详情",
-                id: "05020102"
+                id: "04020102"
             }
         }
     },
@@ -121,7 +121,7 @@ export default[
                 page: "editProductGoodsInfoDetail",
                 node: 'business',
                 name: "编辑生产信息",
-                id: "05020103"
+                id: "04020103"
             }
         }
     },
@@ -135,7 +135,7 @@ export default[
                 page: "sendGoodsInfo",
                 node: 'business',
                 name: "发货信息",
-                id: "050301"
+                id: "040301"
             }
         }
     },
@@ -149,7 +149,7 @@ export default[
                 page: "newSendGoodsInfo",
                 node: 'business',
                 name: "新建发货信息",
-                id: "05030101"
+                id: "04030101"
             }
         }
     },
@@ -163,7 +163,7 @@ export default[
                 page: "sendGoodsInfoDetail",
                 node: 'business',
                 name: "发货信息详情",
-                id: "05030102"
+                id: "04030102"
             }
         }
     },
@@ -177,7 +177,7 @@ export default[
                 page: "editSendGoodsInfoDetail",
                 node: 'business',
                 name: "编辑发货信息",
-                id: "05030103"
+                id: "04030103"
             }
         }
     },
@@ -191,7 +191,7 @@ export default[
                 page: "multiImport",
                 node: 'business',
                 name: "批量导入",
-                id: "050401"
+                id: "040401"
             }
         }
     },
@@ -205,7 +205,7 @@ export default[
                 page: "importHistoryBusiness",
                 node: 'business',
                 name: "历史记录",
-                id: "050402"
+                id: "040402"
             }
         }
     },
@@ -219,7 +219,7 @@ export default[
                 page: "FTPSync",
                 node: 'business',
                 name: "FTP配置",
-                id: "050501"
+                id: "040501"
             }
         }
     },
@@ -233,7 +233,7 @@ export default[
                 page: "FTPHistoryBusiness",
                 node: 'business',
                 name: "历史记录",
-                id: "050502"
+                id: "040502"
             }
         }
     },
@@ -247,7 +247,7 @@ export default[
           page: "systemInsert",
           node: 'business',
           name: "历史记录",
-          id: "050601"
+          id: "040601"
         }
       }
     },
