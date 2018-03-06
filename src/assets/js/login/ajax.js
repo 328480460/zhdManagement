@@ -6,6 +6,11 @@ export const  login  = function(params) {
   let url = ENVIRNMENTTEST + '/common/login';
   return ajaxPost(url,params)
 }
+// 登录接口
+export const   logout  = function(params) {
+  let url = ENVIRNMENTTEST + '/logout';
+  return ajaxPost(url,params)
+}
 
 // 导入记录查询
 export const  getUploadRecord  = function(params) {

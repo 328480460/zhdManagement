@@ -57,8 +57,7 @@
           label=""
         >
           <template slot-scope="scope">
-            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, addDatas)"
-            ></i>
+            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, addDatas)"></i>
           </template>
         </el-table-column>
         <el-table-column

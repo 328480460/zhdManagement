@@ -202,7 +202,7 @@ export default[
         pageInfo: {
           page: "addProductType",
           node: 'settings',
-          name: "产品类型添加",
+          name: "添加产品类型",
           id: "07040101"
         }
       }
@@ -244,7 +244,7 @@ export default[
         pageInfo: {
           page: "addNodeType",
           node: 'settings',
-          name: "节点类型添加",
+          name: "添加节点类型",
           id: "07040201"
         }
       }

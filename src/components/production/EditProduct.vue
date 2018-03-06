@@ -42,7 +42,7 @@
           </el-form-item>
 
           <el-form-item label="自定义分类">
-            <el-select v-model="form.customType" clearable  placeholder="请选择" width="50px" >
+            <el-select v-model="form.customType" clearable  placeholder="无" width="50px" >
               <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
               </el-option>
             </el-select>

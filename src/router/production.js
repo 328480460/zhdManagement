@@ -35,7 +35,7 @@ export default[
             }
         }
     },
-    //产品-产品信息-新建产品
+    //产品-产品信息-新增产品
     {
         path : 'production/newProduct',
         component : NewProduct,
@@ -44,7 +44,7 @@ export default[
             pageInfo: {
                 page: "newProduct",
                 node: 'production',
-                name: "新建产品",
+                name: "新增产品",
                 id: "01010101"
             }
         }

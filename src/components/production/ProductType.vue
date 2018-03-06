@@ -82,22 +82,22 @@
       this.ajaxSearch = deepCopy(this.search);
     },
     methods:{
-      //新建分类
+      //新增分类
       newProductType() {
-        this.$prompt('自定义分类名称：', '新建自定义分类', {
+        this.$prompt('自定义分类名称：', '新增自定义分类', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(({ value }) => {
           if( value == null){
             this.judge()
           }else {
-            /*分类新建接口*/
+            /*分类新增接口*/
             let params = {
               type_name: value,
             };
             createProductType(params)
               .then(res => {
-                this.$message.success("新建成功!");
+                this.$message.success("新增成功!");
                 this.getTypeList()
               })
               .catch(() => {
