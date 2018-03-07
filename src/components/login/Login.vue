@@ -53,6 +53,7 @@ export default {
       accountName: '',
       password: '',
       enterprise_id: '',
+      isLogin:true,
     };
   },
   mounted() {
@@ -93,12 +94,13 @@ export default {
                 //清除本地缓存
                 localStorage.clear()
               }
-              //本地存储
+              //本地存储-----进入系统内需要使用
               localStorage.setItem('userid',JSON.stringify(res.data.user.id))
-              localStorage.setItem('username',JSON.stringify(this.accountName))
+              localStorage.setItem('username',JSON.stringify(res.data.user.name))
               localStorage.setItem('enterprise_id',JSON.stringify(res.data.user.enterprise_id))
+
               // 命名的路由
-              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+              this.$router.push({ name: 'Home'})
             }
             else if (res.status == 201){
               this.$message.error(res.msg);

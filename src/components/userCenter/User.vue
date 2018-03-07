@@ -43,9 +43,9 @@
           logout()
             .then(res => {
               if (res.status == 200){
-                window.location.href="/"
-                sessionStorage.clear()
                 window.close();
+                sessionStorage.clear()
+                window.location.href="/"
               } else{
                 this.$message.error(res.msg);
               }
