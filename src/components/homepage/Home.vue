@@ -349,7 +349,7 @@ export default {
   }
   .pages-wrapper {
     position: fixed;
-    top: 68px;
+    top: 72px;
     left: 250px;
     right: 0;
     bottom: 0;
