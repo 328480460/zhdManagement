@@ -164,13 +164,14 @@ export default {
   },
   mounted() {
     let params = {
-      this_node: "",
+      this_node_id: "",
       productionInProductList: [],
       productionOutProductList: [],
       production_num: "",
       pagenum: 1,
       pagesize: 10,
-      production_date: "",
+      start_date: "",
+      end_date: ""
     };
     this.initData(params);
     this.ajaxSearch = deepCopy(this.search);
@@ -270,11 +271,13 @@ export default {
     },
     getProductList() {
       let params = {
-        this_node: this.ajaxSearch.currentNode,
+        this_node_id: this.ajaxSearch.currentNode,
         production_num: this.ajaxSearch.infoNo,
         productionInProductList: [{product_id: this.ajaxSearch.productGoodsIn}],
         productionOutProductList: [{product_id: this.ajaxSearch.productGoodsOut}],
-        production_date: this.ajaxSearch.time,
+        // production_date: this.ajaxSearch.time,
+        start_date:this.ajaxSearch.time[0],
+        end_date: this.ajaxSearch.time[1],
         pagenum: this.currentPage,
         pagesize: this.pageSize
       };
