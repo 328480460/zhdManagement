@@ -11,6 +11,19 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+router.beforeEach((to, from, next) => {
+  if(to.path === '/') {
+    next();
+    return
+  }
+  if(sessionStorage.getItem('isLogin') === '1') {
+    next()
+  } else {
+    next({path:'/'})
+  }
+   
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

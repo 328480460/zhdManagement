@@ -24,7 +24,7 @@
           <div class="form-line">
           </div>
           <div class="rememeber-pwd">
-            <el-checkbox v-model="checked">记住密码</el-checkbox>
+            <el-checkbox v-model="checked">记住账号</el-checkbox>
           </div>
           <div class="submit-button">
             <el-button type="success" @click="loginBt" class="button">登录</el-button>
@@ -57,10 +57,10 @@ export default {
   mounted() {
     const pointLine = new PointLine();
     if(JSON.stringify(localStorage.checked) != null){
-        console.log("checked---"+JSON.stringify(localStorage.checked))
+        // console.log("checked---"+JSON.stringify(localStorage.checked))
       var userid = JSON.stringify(JSON.parse(localStorage.userid))
       this.accountName = JSON.parse(localStorage.account)
-      this.password = JSON.parse(localStorage.password)
+      // this.password = JSON.parse(localStorage.password)
       this.enterprise_id = JSON.parse(localStorage.enterprise_id)
       this.checked = JSON.parse(localStorage.checked)
     }else {
@@ -84,15 +84,16 @@ export default {
           .then(res => {
             if (res.status == 200){
               //userid存本地
-              localStorage.setItem('userid',JSON.stringify(res.data.user.id))
-              console.log("login的userid---"+JSON.stringify(res.data.user.id))
+              localStorage.setItem('userid',JSON.stringify(res.data.user.id));
+              sessionStorage.setItem('isLogin', 1);
+              // console.log("login的userid---"+JSON.stringify(res.data.user.id))
               // 命名的路由
-              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+              this.$router.push({ name: 'Home'})
 
-              //记住密码
+              //记住账号
               if(this.checked == true){
                 localStorage.setItem('account',JSON.stringify(this.accountName))
-                localStorage.setItem('password',JSON.stringify(this.password))
+                // localStorage.setItem('password',JSON.stringify(this.password))
                 localStorage.setItem('enterprise_id',JSON.stringify(1))
                 localStorage.setItem('checked',JSON.stringify(true))
               }else {
