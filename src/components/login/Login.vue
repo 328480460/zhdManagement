@@ -51,20 +51,20 @@ export default {
     return{
       checked:false,
       accountName: '',
-      password: ''
+      password: '',
+      enterprise_id: '',
     };
   },
   mounted() {
     const pointLine = new PointLine();
     if(JSON.stringify(localStorage.checked) != null){
         console.log("checked---"+JSON.stringify(localStorage.checked))
-      var userid = JSON.stringify(JSON.parse(localStorage.userid))
       this.accountName = JSON.parse(localStorage.account)
       this.password = JSON.parse(localStorage.password)
       this.enterprise_id = JSON.parse(localStorage.enterprise_id)
       this.checked = JSON.parse(localStorage.checked)
     }else {
-        console.log("unchecked---")
+      console.log("unchecked---")
     }
   },
   methods:{
@@ -83,12 +83,6 @@ export default {
         login(param)
           .then(res => {
             if (res.status == 200){
-              //userid存本地
-              localStorage.setItem('userid',JSON.stringify(res.data.user.id))
-              console.log("login的userid---"+JSON.stringify(res.data.user.id))
-              // 命名的路由
-              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
-
               //记住密码
               if(this.checked == true){
                 localStorage.setItem('account',JSON.stringify(this.accountName))
@@ -99,6 +93,12 @@ export default {
                 //清除本地缓存
                 localStorage.clear()
               }
+              //本地存储
+              localStorage.setItem('userid',JSON.stringify(res.data.user.id))
+              localStorage.setItem('username',JSON.stringify(this.accountName))
+              localStorage.setItem('enterprise_id',JSON.stringify(res.data.user.enterprise_id))
+              // 命名的路由
+              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
             }
             else if (res.status == 201){
               this.$message.error(res.msg);

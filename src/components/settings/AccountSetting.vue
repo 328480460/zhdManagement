@@ -46,12 +46,8 @@ export default {
       }
     },
   mounted(){
-//    var userid = JSON.parse(localStorage.userid)
-    console.log("accountSetting-userid--???--"+JSON.stringify(localStorage.userid))
     let params ={
-      "id":1,
-      //？？？userid解析问题？？
-//      "id":userid
+      "id":JSON.parse(localStorage.userid)
     }
     this.initData(params);
   },

@@ -1,6 +1,9 @@
 <template>
   <div class="welcome" id="welcome">
-    <div class="custom-name">北京顺鑫鑫源食品有限公司</div>
+    <div class="custom-name">
+      <div class="welcom_title">北京顺鑫鑫源食品有限公司</div>
+      <User ></User>
+    </div>
     <div class="general-wrapper">
       <div class="section">
         <div class="header">
@@ -47,6 +50,7 @@
 
 <script type="text/ecmascript-6">
 import echarts from "echarts";
+import User from '../userCenter/User';
 
 export default {
   mounted() {
@@ -86,6 +90,9 @@ export default {
   },
   data() {
     return {};
+  },
+  components: {
+    User
   }
 };
 </script>
@@ -97,6 +104,9 @@ export default {
   padding-left: 30px;
   font-size: 22px;
   border-bottom: 1px solid #e4e4e4;
+  .welcom_title{
+    float: left;
+  }
 }
 .general-wrapper {
   padding: 10px 20px 10px 30px;

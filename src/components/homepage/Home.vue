@@ -4,6 +4,7 @@
       <div class="logo-wrapper">
         <img src="../../assets/image/logo_03.png" alt="logo" class="logo">
       </div>
+
       <div class="main-menu">
         <div class="main-menu-item" v-for="(first,key) in menu" :key="key"
                                     :class="{'active': currentTabInfo.main.id === first.id}"
@@ -33,30 +34,15 @@
         </div>
       </div>
     </div>
+    <div class="user-commonality" v-if="currentTab !== '00' ">
+      <User ></User>
+    </div>
     <div class="pages-wrapper" v-if="currentTab !== '00' ">
-      <div id="user_content">
-        <div id="user">
-          <!--<User></User>-->
-          <img src="../../assets/image/icon1.png" alt="icon_inform" class="icon">
-          <img src="../../assets/image/icon2.png" alt="icon_help" class="icon">
-          <img src="../../assets/image/icon3.png" alt="icon_user" class="icon">
-          <span @click="toggle" style="cursor: pointer;">管理员<i class="el-icon-caret-bottom" style="color: #C4BDBD"></i></span>
-        </div>
-        <div v-show="userItemToggle" class="user_toggle">
-          <table>
-            <tr>
-              <td>修改密码</td>
-            </tr>
-            <tr>
-              <td @click="exit">退出</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
       <router-view @openExtraPage='openExtraPage'/>
     </div>
-    <div class="pages-wrapper welcome" v-else><router-view @openExtraPage='openExtraPage'/></div>
+    <div class="pages-wrapper welcome" v-else>
+      <router-view @openExtraPage='openExtraPage'/>
+    </div>
   </div>
 </template>
 
@@ -65,7 +51,6 @@ import ExtraPageTab from "../commonComponents/ExtraPageTab";
 import User from '../userCenter/User';
 import { menu } from "./config";
 import { deepCopy } from "../../assets/js/api/util.js";
-import {logout} from "../../assets/js/login/ajax.js";
 
 export default {
   name: "home",
@@ -86,7 +71,6 @@ export default {
   },
   data() {
     return {
-      userItemToggle:false,
       menu: menu,
       currentTab: "", // 当前tab页面的id
       currentTabInfo: {
@@ -100,26 +84,6 @@ export default {
     };
   },
   methods: {
-    toggle(){
-      this.userItemToggle = !this.userItemToggle;
-    },
-    exit(){
-      logout()
-        .then(res => {
-          console.log("logout-----"+JSON.stringify(res))
-          if (res.status == 200){
-            this.$message.success("退出");
-            sessionStorage.clear()
-            window.close();
-            window.location.href="/"
-          } else{
-            this.$message.error(res.msg);
-          }
-        })
-        .catch(() => {
-          this.$message.error("出错啦!");
-        });
-    },
     turnPage(id) {
       // 关闭额外tab
       this.extraTabInfo = {};
@@ -379,6 +343,10 @@ export default {
     border-bottom: 1px solid #e4e4e4;
     background-color: #fff;
   }
+  .user-commonality{
+    float: right;
+    line-height: 68px;
+  }
   .pages-wrapper {
     position: fixed;
     top: 68px;
@@ -387,11 +355,11 @@ export default {
     bottom: 0;
     /*background-color: #f2f2f2;*/
     overflow: auto;
-    #user_content{
+    .user_content{
       width: auto;
       height: auto;
       float: right;
-      #user{
+      .user{
         text-align: center;
         display: flex;
         align-items: center;
@@ -406,6 +374,8 @@ export default {
         position:absolute;
         right: 10px;
         float: right;
+        z-index: 1;
+        background: white;
         table {
           height: 40px;
           text-align: left;
