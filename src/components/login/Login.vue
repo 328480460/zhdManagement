@@ -51,7 +51,9 @@ export default {
     return{
       checked:false,
       accountName: '',
-      password: ''
+      password: '',
+      enterprise_id: '',
+      isLogin:true,
     };
   },
   mounted() {
@@ -64,7 +66,7 @@ export default {
       this.enterprise_id = JSON.parse(localStorage.enterprise_id)
       this.checked = JSON.parse(localStorage.checked)
     }else {
-        console.log("unchecked---")
+      console.log("unchecked---")
     }
   },
   methods:{
@@ -100,6 +102,13 @@ export default {
                 //清除本地缓存
                 localStorage.clear()
               }
+              //本地存储-----进入系统内需要使用
+              localStorage.setItem('userid',JSON.stringify(res.data.user.id))
+              localStorage.setItem('username',JSON.stringify(res.data.user.name))
+              localStorage.setItem('enterprise_id',JSON.stringify(res.data.user.enterprise_id))
+
+              // 命名的路由
+              this.$router.push({ name: 'Home'})
             }
             else if (res.status == 201){
               this.$message.error(res.msg);

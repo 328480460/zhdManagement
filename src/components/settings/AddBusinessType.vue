@@ -5,7 +5,7 @@
         <el-form-item label="*自定义名称">
           <el-input v-model="mould_name" ></el-input>
         </el-form-item>
-        <el-form-item label="*所述环节">
+        <el-form-item label="*所属环节">
           <el-select v-model="sub_link" clearable  placeholder="选择所属环节" style="width: 100%">
             <el-option label="收货信息" value="收货信息"></el-option>
             <el-option label="生产信息" value="生产信息"></el-option>
