@@ -5,7 +5,7 @@
       <div class="section-content">
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="*节点编号">
-            <el-input v-model="form.nodeNumber"></el-input>
+            <el-input v-model="form.nodeNumber" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="*节点名称">
             <el-input v-model="form.nodeName"></el-input>
@@ -135,44 +135,80 @@
         this.loadCustomDefineDetailData(val);
       },
       onSubmit() {
-        if(this.form.nodeNumber == ''||this.form.nodeName == ''||this.checkedSplittings.length == 0||this.form.nodeType == ''
-          ||this.form.nodeDepict == ''||this.form.nodeAddress == ''||this.form.contacts == ''||this.form.contactsPhone == ''){
-          this.$message.warning("请填写完整必填项!");
+        if(this.form.nodeNumber == ''){
+          this.$message.warning("请填写节点编号!");
+        }if(this.form.nodeName == ''){
+          this.$message.warning("请填写节点名称!");
+        }if(this.form.nodeAddress == ''){
+          this.$message.warning("请填写节点地址!");
         }else{
-          this.customDefineAttributeList.forEach((value, index) => {
-            var arr  =
-            {
-              "custom_id" :value.custom_id,
-              "data_value" :value.data_value,
-            }
-            this.newCustomFields .push(arr);
-          })
-          let params = {
-            id: this.$route.query.nodeId,
-            node_number: this.form.nodeNumber,
-            node_name: this.form.nodeName,
-            node_type_id: this.form.nodeType,
-            node_splitting: this.checkedSplittings.toString(),
-            node_depict: this.form.nodeDepict,
-            node_address: this.form.nodeAddress,
-            contacts: this.form.contacts,
-            contacts_phone: this.form.contactsPhone,
-            custom_mould_id: this.selectCustomDefineId,
-            nodeCustomList: this.newCustomFields
-          };
-          updateNode(params)
-            .then(res =>{
-              if (res.status == 200) {
-                this.$message.success("修改成功!");
-                this.$router.go(-1);
+          if(this.selectCustomDefineId){
+            this.customDefineAttributeList.forEach((value, index) => {
+              if(value.data_value){
+                var arr  =
+                {
+                  "custom_id" :value.custom_id,
+                  "data_value" :value.data_value,
+                }
+                this.newCustomFields .push(arr);
+                let params = {
+                  id: this.$route.query.nodeId,
+                  node_number: this.form.nodeNumber,
+                  node_name: this.form.nodeName,
+                  node_type_id: this.form.nodeType,
+                  node_splitting: this.checkedSplittings.toString(),
+                  node_depict: this.form.nodeDepict,
+                  node_address: this.form.nodeAddress,
+                  contacts: this.form.contacts,
+                  contacts_phone: this.form.contactsPhone,
+                  custom_mould_id: this.selectCustomDefineId,
+                  nodeCustomList: this.newCustomFields
+                };
+                updateNode(params)
+                  .then(res =>{
+                    if (res.status == 200) {
+                      this.$message.success("修改成功!");
+                      this.$router.go(-1);
+                    }else {
+                      this.$message.error(res.msg);
+                      console.log('updateNode--res--'+JSON.stringify(res));
+                    }
+                  })
+                  .catch(() => {
+                    this.$message.error("出错啦!");
+                  })
               }else {
-                this.$message.error(res.msg);
-                console.log('updateNode--res--'+JSON.stringify(res));
+                this.$message.warning("请填写自定义属性字段值!");
               }
             })
-            .catch(() => {
-              this.$message.error("出错啦!");
-            })
+          }else{
+            let params = {
+              id: this.$route.query.nodeId,
+              node_number: this.form.nodeNumber,
+              node_name: this.form.nodeName,
+              node_type_id: this.form.nodeType,
+              node_splitting: this.checkedSplittings.toString(),
+              node_depict: this.form.nodeDepict,
+              node_address: this.form.nodeAddress,
+              contacts: this.form.contacts,
+              contacts_phone: this.form.contactsPhone,
+              custom_mould_id: this.selectCustomDefineId,
+              nodeCustomList: this.newCustomFields
+            };
+            updateNode(params)
+              .then(res =>{
+                if (res.status == 200) {
+                  this.$message.success("修改成功!");
+                  this.$router.go(-1);
+                }else {
+                  this.$message.error(res.msg);
+                  console.log('updateNode--res--'+JSON.stringify(res));
+                }
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              })
+          }
         }
       },
       //节点分类查询
@@ -250,7 +286,7 @@
       },
       // 请求用户自定义模块详情
       loadCustomDefineDetailData(id) {
-        getCustomAttributeDetail({id: id})
+        getCustomAttributeDetail({id})
           .then(res => {
             this.customDefineAttributeList = res.data.customAttribute.customAttributeList;
             this.mergeCustomDefineAttributeList();

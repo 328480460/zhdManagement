@@ -97,8 +97,12 @@
             };
             createProductType(params)
               .then(res => {
-                this.$message.success("新增成功!");
-                this.getTypeList()
+                if(res.status == 200){
+                  this.$message.success("新增成功!");
+                  this.getTypeList()
+                }else {
+                  this.$message.error(res.msg);
+                }
               })
               .catch(() => {
                 this.$message.error("出错啦!");

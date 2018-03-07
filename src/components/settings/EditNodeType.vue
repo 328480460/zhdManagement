@@ -1,16 +1,16 @@
 <template>
-  <div id="producttype" >
-    <EditCustomTemplate :tableData='tableData' :type='type'></EditCustomTemplate>
+  <div id="nodetype" >
+    <EditCustomTemplate :tableData='tableData' :typetype='typetype'></EditCustomTemplate>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import EditCustomTemplate from "../commonComponents/EditCustomTemplate";
 export default {
-  name: 'producttype',
+  name: 'nodetype',
   data(){
     return{
-      type:2,
+      typetype:"2",
       tableData: [{
         column_chinese: '节点编码',
         data_type: '数字类型',
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style rel="stylesheet/less" lang='less' scoped>
-#producttype{
+#nodetype{
   min-height: 92%;
 }
 </style>

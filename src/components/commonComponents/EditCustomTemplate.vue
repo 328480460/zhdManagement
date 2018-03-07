@@ -103,7 +103,6 @@
     updateCustomAttribute,
     getCustomAttributeDetail,
   } from "../../assets/js/settings/ajax.js";
-  import { deepCopy } from "../../assets/js/api/util.js";
 
   export default {
     name: 'cuutomTemplate',
@@ -126,12 +125,17 @@
         type: Array,
         required: true
       },
+      typetype: {
+        type: String,
+        required: true
+      },
     },
     mounted() {
       let params ={
         "id":this.$route.query.typeId
       }
       this.initData(params);
+      console.log("type----"+JSON.stringify(this.typetype))
     },
     methods:{
       //本地增加字段
@@ -187,7 +191,7 @@
         //自定义属性关联查询接口判断
         var va = {
           id:rows.id,
-          type:this.type
+          type:this.typetype
         }
         getAttributeRelationState(va)
           .then(res => {

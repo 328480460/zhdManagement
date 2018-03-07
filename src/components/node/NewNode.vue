@@ -138,39 +138,71 @@ export default {
       }if(this.form.nodeAddress == ''){
         this.$message.warning("请填写节点地址!");
       }else{
-        this.customDefineAttributeList.forEach((value, index) => {
-          var arr  =
-          {
-            "custom_id" :value.custom_id,
-            "data_value" :value.data_value,
-          }
-          this.newCustomFields .push(arr);
-        })
-        let params = {
-          node_number: this.form.nodeNumber,
-          node_name: this.form.nodeName,
-          node_splitting: this.checkedSplittings.toString(),
-          node_type_id: this.form.nodeType,
-          node_depict: this.form.nodeDepict,
-          node_address: this.form.nodeAddress,
-          contacts: this.form.contacts,
-          contacts_phone: this.form.contactsPhone,
-          custom_mould_id: this.selectCustomDefineId,
-          nodeCustomList: this.newCustomFields
-        };
-        createNode(params)
-          .then(res =>{
-            if (res.status == 200) {
-              this.$message.success("添加成功!");
-              this.$router.go(-1);
+        if(this.selectCustomDefineId){
+          this.customDefineAttributeList.forEach((value, index) => {
+            if (value.data_value){
+              var arr  =
+              {
+                "custom_id" :value.custom_id,
+                "data_value" :value.data_value,
+              }
+              this.newCustomFields .push(arr);
+              let params = {
+                node_number: this.form.nodeNumber,
+                node_name: this.form.nodeName,
+                node_splitting: this.checkedSplittings.toString(),
+                node_type_id: this.form.nodeType,
+                node_depict: this.form.nodeDepict,
+                node_address: this.form.nodeAddress,
+                contacts: this.form.contacts,
+                contacts_phone: this.form.contactsPhone,
+                custom_mould_id: this.selectCustomDefineId,
+                nodeCustomList: this.newCustomFields
+              };
+              createNode(params)
+                .then(res =>{
+                  if (res.status == 200) {
+                    this.$message.success("添加成功!");
+                    this.$router.go(-1);
+                  }else{
+                    this.$message.error(res.msg);
+                    console.log('createNode--'+JSON.stringify(res));
+                  }
+                })
+                .catch(() => {
+                  this.$message.error("出错啦!");
+                })
             }else{
-              this.$message.error(res.msg);
-              console.log('createNode--'+JSON.stringify(res));
+              this.$message.warning("请填写自定义属性字段值!");
             }
           })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          })
+        }else {
+          let params = {
+            node_number: this.form.nodeNumber,
+            node_name: this.form.nodeName,
+            node_splitting: this.checkedSplittings.toString(),
+            node_type_id: this.form.nodeType,
+            node_depict: this.form.nodeDepict,
+            node_address: this.form.nodeAddress,
+            contacts: this.form.contacts,
+            contacts_phone: this.form.contactsPhone,
+            custom_mould_id: this.selectCustomDefineId,
+            nodeCustomList: this.newCustomFields
+          };
+          createNode(params)
+            .then(res =>{
+              if (res.status == 200) {
+                this.$message.success("添加成功!");
+                this.$router.go(-1);
+              }else{
+                this.$message.error(res.msg);
+                console.log('createNode--'+JSON.stringify(res));
+              }
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            })
+        }
       }
     },
     //节点分类查询

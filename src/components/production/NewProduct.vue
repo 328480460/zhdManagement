@@ -166,49 +166,80 @@ export default {
       }else if(this.form.productName == ''){
         this.$message.warning("请填写产品名称!");
       }else if(this.form.productType == ''){
-        this.$message.warning("请填写产品分类!");
+        this.$message.warning("请选择产品分类!");
       }else if(this.form.norms == ''){
-        this.$message.warning("请填写包装规格!");
+        this.$message.warning("请选择包装规格!");
       } else if(this.form.metering == ''){
         this.$message.warning("请填写计量单位数量!");
       } else if(this.form.metering_id == ''){
-        this.$message.warning("请填写计量单位!");
+        this.$message.warning("请选择标件或称重!");
       }else{
-        this.customDefineAttributeList.forEach((value, index) => {
-          var arr  =
-          {
-            "custom_id" :value.custom_id,
-            "data_value" :value.data_value,
-          }
-          this.newCustomFields .push(arr);
-        })
-        let params = {
-          product: this.form.productCode,
-          product_name: this.form.productName,
-          product_type_id: this.form.productType,
-          norms: this.form.norms,
-          metering: this.form.metering,
-          metering_id: this.form.metering_id,
-          custom_type_id: this.form.customType,
-          product_depict: this.form.productDesc,
-          brand_name: this.form.productBrand,
-          custom_mould_id: this.selectCustomDefineId,
-          customFields: this.newCustomFields
-        };
-        console.log("params------"+JSON.stringify(params))
-        saveProduct(params)
-          .then(res =>{
-            if (res.status == 200) {
-              console.log("res------"+JSON.stringify(res))
-              this.$message.success("添加成功!");
-              this.$router.go(-1);
-            }else{
-              this.$message.error(res.msg);
+        if(this.selectCustomDefineId){
+          this.customDefineAttributeList.forEach((value, index) => {
+            if (value.data_value) {
+//              console.log("data_value----"+JSON.stringify(value.data_value))
+              var arr  =
+              {
+                "custom_id" :value.custom_id,
+                "data_value" :value.data_value,
+              }
+              this.newCustomFields .push(arr);
+              let params = {
+                product: this.form.productCode,
+                product_name: this.form.productName,
+                product_type_id: this.form.productType,
+                norms: this.form.norms,
+                metering: this.form.metering,
+                metering_id: this.form.metering_id,
+                custom_type_id: this.form.customType,
+                product_depict: this.form.productDesc,
+                brand_name: this.form.productBrand,
+                custom_mould_id: this.selectCustomDefineId,
+                customFields: this.newCustomFields
+              };
+              saveProduct(params)
+                .then(res =>{
+                  if (res.status == 200) {
+                    this.$message.success("添加成功!");
+                    this.$router.go(-1);
+                  }else{
+                    this.$message.error(res.msg);
+                  }
+                })
+                .catch(() => {
+                  this.$message.error("出错啦!");
+                })
+            }else {
+              this.$message.warning("请填写自定义属性字段值!");
             }
           })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          })
+        } else{
+          let params = {
+            product: this.form.productCode,
+            product_name: this.form.productName,
+            product_type_id: this.form.productType,
+            norms: this.form.norms,
+            metering: this.form.metering,
+            metering_id: this.form.metering_id,
+            custom_type_id: this.form.customType,
+            product_depict: this.form.productDesc,
+            brand_name: this.form.productBrand,
+            custom_mould_id: this.selectCustomDefineId,
+            customFields: this.newCustomFields
+          };
+          saveProduct(params)
+            .then(res =>{
+              if (res.status == 200) {
+                this.$message.success("添加成功!");
+                this.$router.go(-1);
+              }else{
+                this.$message.error(res.msg);
+              }
+            })
+            .catch(() => {
+              this.$message.error("出错啦!");
+            })
+        }
       }
     },
     //选择的产品分类--系统默认提供
