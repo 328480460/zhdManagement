@@ -1,6 +1,6 @@
 <template>
   <div id="businesstype">
-    <EditCustomTemplate :tableData='tableData'></EditCustomTemplate>
+    <EditCustomTemplate :tableData='tableData' :typetype='typetype'></EditCustomTemplate>
   </div>
 </template>
 

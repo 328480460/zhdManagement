@@ -1,6 +1,6 @@
 <template>
   <div id="producttype">
-    <EditCustomTemplate :tableData='tableData' :type='type'></EditCustomTemplate>
+    <EditCustomTemplate :tableData='tableData' :typetype='typetype'></EditCustomTemplate>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ export default {
   name: 'producttype',
   data(){
     return{
-      type:1,
+      typetype:"1",
       tableData: [
         {
           column_chinese: '产品编码',
