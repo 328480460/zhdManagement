@@ -79,10 +79,10 @@
           </div>
         </div>
       </div>
-      </div>
-      <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
     </div>
+    <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
   </div>
+  <!-- </div> -->
 </template>
 
 <script type="text/ecmascript-6">

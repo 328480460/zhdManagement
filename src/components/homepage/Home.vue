@@ -4,16 +4,19 @@
       <div class="logo-wrapper">
         <img src="../../assets/image/logo_03.png" alt="logo" class="logo">
       </div>
+
       <div class="main-menu">
-        <div class="main-menu-item" v-for="(first,key) in menu" :key="key"
-                                    :class="{'active': currentTabInfo.main.id === first.id}"
-                                    >
-          <div class="main-menu-item-name" @click.self="turnPage(first.id)"><i class="icon-font" :class="first.icon" ></i>{{first.name}}</div>
+        <div class="main-menu-item" v-for="(first,key) in menu" 
+          :key="key" :class="{'active': currentTabInfo.main.id === first.id}">
+
+          <div class="main-menu-item-name" @click.self="turnPage(first.id)">
+            <i class="icon-font" :class="first.icon" ></i>{{first.name}}
+          </div>
+
           <div class="second-menu" v-if="first.children">
             <div class="title">{{first.name}}中心</div>
-            <div class="second-menu-item" v-for="(second, key) in first.children" :key="key"
-                                          :class="{'active': currentTabInfo.second.id === second.id}"
-                                          >
+
+            <div class="second-menu-item" v-for="(second, key) in first.children" :key="key" :class="{'active': currentTabInfo.second.id === second.id}" >
               <div class="second-menu-item-name" @click.self="turnPage(second.id)">{{second.name}} </div>
               <div class="third-menu" v-if="!Object.keys(extraTabInfo).length">
                 <div class="third-menu-item-wrapper" >
@@ -24,9 +27,12 @@
                   </div>
                 </div>
               </div>
-              <div class="extra-page-tab-wrapper" v-if="Object.keys(extraTabInfo).length"><ExtraPageTab :tabInfo='extraTabInfo' @turnPage='turnPage'/></div>
+              <div class="extra-page-tab-wrapper" v-if="Object.keys(extraTabInfo).length">
+                <ExtraPageTab :tabInfo='extraTabInfo' @turnPage='turnPage'/>
+              </div>
             </div>
           </div>
+          
           <div class="summary" v-else>
 
           </div>
@@ -56,7 +62,9 @@
 
       <router-view @openExtraPage='openExtraPage'/>
     </div>
-    <div class="pages-wrapper welcome" v-else><router-view @openExtraPage='openExtraPage'/></div>
+    <div class="pages-wrapper welcome" v-else>
+      <router-view @openExtraPage='openExtraPage'/>
+    </div>
   </div>
 </template>
 

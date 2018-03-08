@@ -139,14 +139,14 @@
           });
       },
       //编辑分类
-      editProduct(index, row) {
+      editProduct(index, row) {    
         //“编辑分类”弹框内容
         this.$prompt('自定义分类名称：', '编辑自定义分类', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputValue:row.type_name
         }).then(({ value }) => {
-          if( value == null){
+          if( value == null){            
             this.judge()
           }else {
               /*分类修改接口*/

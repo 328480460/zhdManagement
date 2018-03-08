@@ -95,12 +95,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {
-    getDetailCode,
-  } from "../../assets/js/trace/ajax.js";
-export default {
-  name: "traceCodeQuery",
-  created() {
+  import { getDetailCode } from "../../assets/js/trace/ajax.js";
+  export default {
+    name: "traceCodeQuery",
+    created() {
   },
   data() {
     return {
