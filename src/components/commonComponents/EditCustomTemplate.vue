@@ -127,7 +127,7 @@
       },
       typetype: {
         type: String,
-        required: true
+        required: false
       },
     },
     mounted() {
@@ -135,7 +135,7 @@
         "id":this.$route.query.typeId
       }
       this.initData(params);
-      console.log("type----"+JSON.stringify(this.typetype))
+//      console.log("Template--type----"+JSON.stringify(this.typetype))
     },
     methods:{
       //本地增加字段
@@ -256,11 +256,10 @@
         getCustomAttributeDetail(params)
           .then(res => {
             var customAttribute = res.data.customAttribute
-            //“业务类型”
+            //“业务类型”特殊判断
             if(customAttribute.custom_mould_type == 3){
               this.custom_mould_type = 3
               this.custom_type3 = true
-//              var sub_link =customAttribute.sub_link;
               this.sub_link =customAttribute.sub_link;
               if(this.sub_link == "生产信息"){
                 this.type = 3
@@ -269,6 +268,7 @@
               }else if(this.sub_link == "收货信息"){
                 this.type = 5
               }
+//              console.log("业务--type----"+JSON.stringify(this.type))
             }
             this.mould_name = customAttribute.mould_name;
             this.customAttributeList = customAttribute.customAttributeList;
