@@ -40,7 +40,6 @@
               <el-radio label="称重"></el-radio>
             </el-radio-group>
           </el-form-item>
-
           <el-form-item label="自定义分类">
             <el-select v-model="form.customType" clearable  placeholder="无" width="50px" >
               <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
@@ -147,7 +146,7 @@
             { required: true, message: '请填写产品名称', trigger: 'blur' }
           ],
           productType: [
-            { message: '请选择产品分类', trigger: 'change' }
+            { required: true, message: '请选择产品分类', trigger: 'blur' }
           ],
           norms: [
             { required: true, message: '请选择包装规格', trigger: 'change' }
