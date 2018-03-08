@@ -3,15 +3,15 @@
     <div class="receive-info">
       <h6 class="title">节点信息</h6>
       <div class="section-content">
-        <el-form ref="form" :model="form" label-width="120px">
-          <el-form-item label="*节点编号">
+        <el-form ref="form" :rules="rules" :model="form" label-width="120px">
+          <el-form-item label="节点编号"  prop="nodeNumber">
             <el-input v-model="form.nodeNumber" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="*节点名称">
+          <el-form-item label="节点名称" prop="nodeName">
             <el-input v-model="form.nodeName"></el-input>
           </el-form-item>
           <el-form-item label="节点分类">
-            <el-select v-model="form.nodeType" clearable  placeholder="选择节点分类" width="50px" >
+            <el-select v-model="form.nodeType" clearable  placeholder="无" width="50px" >
               <el-option  v-for="item in nodeTypeLists" :key="item.id" :label="item.type_name"  :value="item.id" >
               </el-option>
             </el-select>
@@ -24,12 +24,8 @@
           <el-form-item label="节点描述">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
           </el-form-item>
-        </el-form>
-      </div>
-      <h6 class="title">联系人信息</h6>
-      <div class="section-content">
-        <el-form label-width="120px">
-          <el-form-item label="*节点地址：">
+          <h6 class="title" style="margin-bottom: 20px">联系人信息</h6>
+          <el-form-item label="节点地址：" prop="nodeAddress">
             <el-input v-model="form.nodeAddress"></el-input>
           </el-form-item>
           <el-form-item label="联系人：">
@@ -45,7 +41,7 @@
         <div class="content">
           <div class="demo-input-suffix">
             <div class="lable">自定义属性</div>
-            <el-select clearable v-model="selectCustomDefineId" placeholder="请选择" @change="changeselect">
+            <el-select clearable v-model="selectCustomDefineId" placeholder="无" @change="changeselect">
               <el-option
                 v-for="item in customDefineList"
                 :key="item.id"
@@ -64,7 +60,7 @@
           </div>
         </div>
       </div>
-      <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
+      <el-button class="bt-save" type="primary" @click="onSubmit('form')">保存</el-button>
     </div>
   </div>
   </div>
@@ -115,6 +111,17 @@
         customDefineAttributeList: [],
         customFields:[],
         newCustomFields:[],
+        rules: {
+          nodeNumber: [
+            { required: true, message: '请填写节点编号', trigger: 'blur' }
+          ],
+          nodeName: [
+            { required: true, message: '请填写节点名称', trigger: 'blur' }
+          ],
+          nodeAddress: [
+            { required: true, message: '请填写节点地址', trigger: 'blur' }
+          ],
+        }
       }
     },
     mounted(){
@@ -134,82 +141,79 @@
         }
         this.loadCustomDefineDetailData(val);
       },
-      onSubmit() {
-        if(this.form.nodeNumber == ''){
-          this.$message.warning("请填写节点编号!");
-        }if(this.form.nodeName == ''){
-          this.$message.warning("请填写节点名称!");
-        }if(this.form.nodeAddress == ''){
-          this.$message.warning("请填写节点地址!");
-        }else{
-          if(this.selectCustomDefineId){
-            this.customDefineAttributeList.forEach((value, index) => {
-              if(value.data_value){
-                var arr  =
-                {
-                  "custom_id" :value.custom_id,
-                  "data_value" :value.data_value,
-                }
-                this.newCustomFields .push(arr);
-                let params = {
-                  id: this.$route.query.nodeId,
-                  node_number: this.form.nodeNumber,
-                  node_name: this.form.nodeName,
-                  node_type_id: this.form.nodeType,
-                  node_splitting: this.checkedSplittings.toString(),
-                  node_depict: this.form.nodeDepict,
-                  node_address: this.form.nodeAddress,
-                  contacts: this.form.contacts,
-                  contacts_phone: this.form.contactsPhone,
-                  custom_mould_id: this.selectCustomDefineId,
-                  nodeCustomList: this.newCustomFields
-                };
-                updateNode(params)
-                  .then(res =>{
-                    if (res.status == 200) {
-                      this.$message.success("修改成功!");
-                      this.$router.go(-1);
-                    }else {
-                      this.$message.error(res.msg);
-                      console.log('updateNode--res--'+JSON.stringify(res));
-                    }
-                  })
-                  .catch(() => {
-                    this.$message.error("出错啦!");
-                  })
-              }else {
-                this.$message.warning("请填写自定义属性字段值!");
-              }
-            })
-          }else{
-            let params = {
-              id: this.$route.query.nodeId,
-              node_number: this.form.nodeNumber,
-              node_name: this.form.nodeName,
-              node_type_id: this.form.nodeType,
-              node_splitting: this.checkedSplittings.toString(),
-              node_depict: this.form.nodeDepict,
-              node_address: this.form.nodeAddress,
-              contacts: this.form.contacts,
-              contacts_phone: this.form.contactsPhone,
-              custom_mould_id: this.selectCustomDefineId,
-              nodeCustomList: this.newCustomFields
-            };
-            updateNode(params)
-              .then(res =>{
-                if (res.status == 200) {
-                  this.$message.success("修改成功!");
-                  this.$router.go(-1);
+      onSubmit(form) {
+        this.$refs[form].validate((valid) => {
+          if (valid) {
+            if(this.selectCustomDefineId){
+              this.customDefineAttributeList.forEach((value, index) => {
+                if(value.data_value){
+                  var arr  =
+                  {
+                    "custom_id" :value.custom_id,
+                    "data_value" :value.data_value,
+                  }
+                  this.newCustomFields .push(arr);
+                  let params = {
+                    id: this.$route.query.nodeId,
+                    node_number: this.form.nodeNumber,
+                    node_name: this.form.nodeName,
+                    node_type_id: this.form.nodeType,
+                    node_splitting: this.checkedSplittings.toString(),
+                    node_depict: this.form.nodeDepict,
+                    node_address: this.form.nodeAddress,
+                    contacts: this.form.contacts,
+                    contacts_phone: this.form.contactsPhone,
+                    custom_mould_id: this.selectCustomDefineId,
+                    nodeCustomList: this.newCustomFields
+                  };
+                  updateNode(params)
+                    .then(res =>{
+                      if (res.status == 200) {
+                        this.$message.success("修改成功!");
+                        this.$router.go(-1);
+                      }else {
+                        this.$message.error(res.msg);
+                      }
+                    })
+                    .catch(() => {
+                      this.$message.error("出错啦!");
+                    })
                 }else {
-                  this.$message.error(res.msg);
-                  console.log('updateNode--res--'+JSON.stringify(res));
+                  this.$message.warning("请填写自定义属性字段值!");
                 }
               })
-              .catch(() => {
-                this.$message.error("出错啦!");
-              })
+            }else{
+              let params = {
+                id: this.$route.query.nodeId,
+                node_number: this.form.nodeNumber,
+                node_name: this.form.nodeName,
+                node_type_id: this.form.nodeType,
+                node_splitting: this.checkedSplittings.toString(),
+                node_depict: this.form.nodeDepict,
+                node_address: this.form.nodeAddress,
+                contacts: this.form.contacts,
+                contacts_phone: this.form.contactsPhone,
+                custom_mould_id: this.selectCustomDefineId,
+                nodeCustomList: this.newCustomFields
+              };
+              updateNode(params)
+                .then(res =>{
+                  if (res.status == 200) {
+                    this.$message.success("修改成功!");
+                    this.$router.go(-1);
+                  }else {
+                    this.$message.error(res.msg);
+                  }
+                })
+                .catch(() => {
+                  this.$message.error("出错啦!");
+                })
+            }
+          } else {
+            console.log('error submit!!');
+            return false;
           }
-        }
+        });
       },
       //节点分类查询
       getNodetupelist(){
@@ -328,9 +332,13 @@
     min-height: 92%;
     background-color: #fff;
     .section-content {
-      width: 500px;
+      /*width: 500px;*/
+      /*margin-left: 200px;*/
       margin-top: 20px;
-      margin-left: 190px;
+      .el-form-item{
+        width: 500px;
+        margin-left: 200px;
+      }
     }
     .receive-info {
       width: 96%;

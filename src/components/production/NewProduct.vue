@@ -12,14 +12,12 @@
           </el-form-item>
           <el-form-item label="产品分类" prop="productType">
             <el-cascader
-              v-model="form.productType"
               :options="systemDefaultType"
               @change="handleChange"
               placeholder="可搜索"
               :props="props"
               :show-all-levels="false"
               filterable
-              clearable
               change-on-select
             ></el-cascader>
           </el-form-item>
@@ -60,7 +58,7 @@
         <div class="content">
           <div class="demo-input-suffix">
             <div class="lable">自定义属性</div>
-            <el-select clearable v-model="selectCustomDefineId" placeholder="请选择">
+            <el-select clearable v-model="selectCustomDefineId" placeholder="无">
               <el-option
                 v-for="item in customDefineList"
                 :key="item.id"
@@ -182,7 +180,7 @@ export default {
       this.$refs[form].validate((valid) => {
         if (valid) {
           if(this.form.metering_id == ''){
-            this.$message.warning("请选择标件或称重!");
+            this.$message.warning("请选择“标件”或“称重”!");
           }else{
             if(this.selectCustomDefineId){
               this.customDefineAttributeList.forEach((value, index) => {
