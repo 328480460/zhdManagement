@@ -139,7 +139,7 @@ export default {
           { required: true, message: '请填写产品名称', trigger: 'blur' }
         ],
         productType: [
-          { required: true, message: '请选择产品分类', trigger: 'change' }
+          { required: true, message: '请选择产品分类', trigger: 'blur' }
         ],
         norms: [
           { required: true, message: '请选择包装规格', trigger: 'change' }

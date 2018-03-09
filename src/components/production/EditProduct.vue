@@ -190,9 +190,6 @@
             if(this.form.metering_id == ''){
               this.$message.warning("请选择“标件”或“称重”!");
             }
-//            else if(this.form.productType == ''){
-//              this.$message.warning("请选择“产品分类”!");
-//            }
             else{
               if(this.selectCustomDefineId){
                 this.customDefineAttributeList.forEach((value, index) => {

@@ -389,28 +389,6 @@ export default {
         cursor: pointer;
         margin: 10px 5px 10px 20px;
       }
-      .user_toggle{
-        position:absolute;
-        right: 10px;
-        float: right;
-        z-index: 1;
-        background: white;
-        table {
-          height: 40px;
-          text-align: left;
-          width: 120px;
-          border: 2px solid #eeeeee;
-          tr {
-            td {
-              cursor: pointer;
-              font-weight: normal;
-              line-height: 40px;
-              padding-left: 15px;
-              border-bottom: 2px solid #efefef;
-            }
-          }
-        }
-      }
     }
     &.welcome {
       top: 0;
