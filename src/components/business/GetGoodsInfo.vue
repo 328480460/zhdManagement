@@ -4,10 +4,11 @@
       <el-button type="primary" size="medium"  @click="newGetGoodsInfo">新建收货信息</el-button>
       <el-button type="primary" size="medium" class="btn-search">导出</el-button>
     </div>
+    <el-form :model="search" :rules="rules" ref="search">
     <div class="option-wrapper">
       <el-row class="demo-autocomplete">
         <el-col :span="2"><div class="sub-title">信息编号</div></el-col>
-        <el-col :span="4"><el-input placeholder="请输入信息编号"  v-model="search.infoNo"></el-input></el-col>
+        <el-col :span="4"><el-input placeholder="请输入信息编号" prop="serialNumber"  v-model="search.infoNo"></el-input></el-col>
         <el-col :span="2"><div class="sub-title">收货日期</div></el-col>
         <el-col :span="6">
           <el-date-picker v-model="search.time" type="daterange"
@@ -38,7 +39,7 @@
         <span @click="clearConditions" class="span-clear">清空筛选条件</span>
       </el-row>
     </div>
-
+    </el-form>
     <el-table class="el-table"
               :data="dataList"
               style="width: 100%"
@@ -116,7 +117,9 @@ export default {
         time: "",
         currentNode: "",
         resourceNode: "",
-        productName: ""
+        productName: "",
+
+        serialNumber:""
       },
       currentPage: 1,
       pageSize: 10,
@@ -153,7 +156,12 @@ export default {
         ]
       },
       thisNodeOption: [],
-      sourceNodedOption: []
+      sourceNodedOption: [],
+      rules:{
+        serialNumber:[
+          { required: true, message: '请输入信息编号', trigger: 'blur' }
+        ]        
+      }
     };
   },
   mounted() {

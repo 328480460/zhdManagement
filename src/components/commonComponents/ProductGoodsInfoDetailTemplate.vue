@@ -1,5 +1,6 @@
 <template>
     <div id="getGoodsInfoDetailTemp">
+      <el-form :model="productInfoForm" :rules="productInfoRules" ref="productInfoForm" label-width="100px">
         <div class="receive-info">
             <h6 class="title">生产信息</h6>
             <div class="content">
@@ -8,36 +9,40 @@
                    <div class="infoNo-code">{{productionNum}}</div>
                 </div>
                 <div class="demo-input-suffix">
-                    <div class="lable">生产日期</div>
-                    <el-date-picker :disabled="!edit" v-model="time" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
+                  <el-form-item label="生产日期" prop="productionTime">
+                    <el-date-picker v-model="productInfoForm.productionTime" type="date" placeholder="选择生产日期"> </el-date-picker>
+                  </el-form-item>
                 </div>
-                <div class="demo-input-suffix">
-                    <div class="lable">当前节点</div>
-                        <el-select :disabled="!edit" v-model="currnetNodeId" placeholder="请选择">
-                            <el-option
-                            v-for="item in thisNodeOption"
-                            :key="item.id"
-                            :label="item.node_name"
-                            :value="item.id">
-                            </el-option>
-                        </el-select>
+                <div class="demo-input-suffix">                  
+                    <el-form-item label="当前节点" prop="currentNode">
+                      <el-select v-model="productInfoForm.currentNode" placeholder="请选择">
+                        <el-option v-for="item in thisNodeOption"
+                        :key="item.id"
+                        :label="item.node_name"
+                        :value="item.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
                 </div>
             </div>
         </div>
+      
+        
         <!--  投入品 -->
         <div class="product-info">
           <h6 class="title">产品信息</h6>
           <div class="content">
             <div class="demo-input-suffix">
-                <div class="lable">投入品</div>
-                    <el-select :disabled="!edit" v-model="selectProductionIn" placeholder="选择产品"  @change='changeHandleIn'>
-                        <el-option
-                        v-for="item in productTypeList"
-                        :key="item.id"
-                        :label="item.product_name"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>
+                <el-form-item label="投入品" prop="inputsProduct">
+                  <el-select v-model="productInfoForm.inputsProduct" placeholder="请选择投入品"  @change='changeHandleIn'>
+                    <el-option
+                    v-for="item in productTypeList"
+                    :key="item.id"
+                    :label="item.product_name"
+                    :value="item.id">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
             </div>
           </div>
           <div class="product-list-wrapper" v-show="productGoodsIn.length">
@@ -53,10 +58,10 @@
               </tr>
               <tr v-for="(item, index) in productGoodsIn" :key="index">
                 <td>{{item.product_name}}</td>
-                <td>{{item.product_num}}</td>
+                <td>{{item.product}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量" @change="numberChange(index,$event)"></el-input></td>
                 <td>{{item.metering_name}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProductionIn(item, index)"></i></td>
               </tr>
@@ -64,15 +69,16 @@
           </div>
           <div class="content">
             <div class="demo-input-suffix">
-                <div class="lable">成品</div>
-                    <el-select :disabled="!edit" v-model="selectProductionOut" placeholder="选择产品" @change='changeHandleOut'>
-                        <el-option
-                        v-for="item in productTypeList"
-                        :key="item.id"
-                        :label="item.product_name"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>
+                <el-form-item label="成品" prop="finishedProduct">
+                  <el-select v-model="productInfoForm.finishedProduct" placeholder="请选择成品" @change='changeHandleOut'>
+                    <el-option
+                    v-for="item in productTypeList"
+                    :key="item.id"
+                    :label="item.product_name"
+                    :value="item.id">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
             </div>
           </div>
           <div class="product-list-wrapper" v-show="productGoodsOut.length">
@@ -91,7 +97,7 @@
                 <td>{{item.product_num}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量" @change="numberChange(index,$event)"></el-input></td>
                 <td>{{item.metering_name}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProductionOut(item, index)"></i></td>
               </tr>
@@ -102,7 +108,7 @@
           <h6 class="title">自定义属性</h6>
           <div class="content">
             <div class="demo-input-suffix">
-                <div class="lable">自定义属性</div>
+                <div class="custom-attribute">自定义属性</div>
                 <el-select  :disabled="!edit" v-model="selectCustomDefineId" placeholder="请选择">
                     <el-option
                     v-for="item in customDefineList"
@@ -126,8 +132,9 @@
         </div>
         <div class="btn-wrapper">
           <div class="btn" v-if="!edit" @click="editPage">编辑</div>
-          <div class="btn" v-if="edit" @click="saveData">保存</div>
+          <div class="btn" v-if="edit" @click="saveData('productInfoForm')">保存</div>
         </div>
+      </el-form>
     </div>
 </template>
 
@@ -180,6 +187,27 @@ export default {
       productGoodsIn: this.productListIn,
       // 成品产品列表
       productGoodsOut: this.productListOut,
+
+      productInfoForm:{
+        productionTime:"",
+        currentNode:"",
+        inputsProduct:"",
+        finishedProduct:""
+      },
+      productInfoRules: {
+        productionTime: [
+          { required: true, message: '选择生产日期', trigger: 'change' }
+        ],
+        currentNode:[
+          { required: true, message: "请选择当前节点", trigger:'change' }
+        ],
+        inputsProduct:[
+          { required: true, message: "请选择投入品", trigger:'change' }
+        ],
+        finishedProduct:[
+          { required: true, message: "请选择成品", trigger:'change' }
+        ]
+      }
     };
   },
   props: {
@@ -348,35 +376,69 @@ export default {
     editPage() {
       this.$emit('editPage');
     },
-    saveData() {
-      if(!this.time) {
-        this.$message.warning('请选择日期');
-        return
+    numberChange(index,event){
+      let reg = /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/;       
+      if(this.productGoodsIn[index].receipt_num && !reg.test(this.productGoodsIn[index].receipt_num)){
+        this.$message.warning("输入格式不正确,请从新输入");
+        this.productGoodsIn[index].receipt_num = "";
+        return;
       }
-      if(!this.currnetNodeId) {
-        this.$message.warning('请选择当前节点');
-        return
+      if(this.productGoodsOut[index].receipt_num && !reg.test(this.productGoodsOut[index].receipt_num)){
+        this.$message.warning("输入格式不正确,请从新输入");
+        this.productGoodsOut[index].receipt_num = "";
+        return;
       }
-      if(!this.productGoodsIn.length) {
-        this.$message.warning('请添加投入品');
-        return
-      }
-      if(!this.productGoodsOut.length) {
-        this.$message.warning('请添加产出品');
-        return
-      }
-      let data = {
-        id: this.id,
-        this_node_id: this.currnetNodeId,
-        production_date: this.time,
-        production_num: this.productionNum,
-        custom_mould_id: this.selectCustomDefineId,
-        productionOutProductList: this.formatProduction(this.productGoodsOut),
-        productionInProductList: this.formatProduction(this.productGoodsIn),
-        productionCustomList: this.customDefineAttributeList
-      };
-      console.log(this.formatProduction(this.productGoodsOut))
-      this.$emit('saveData', data)
+    },
+    saveData(formName) {
+      this.$refs[formName].validate((valid) => {        
+        if (valid) {
+          for(let i=0,len=this.productGoodsIn.length;i<len;i++){
+            if(!this.productGoodsIn[i].product_batch_num){
+              this.$message.warning('请添加产品批次号');
+              return;
+            }
+            if(!this.productGoodsIn[i].product_num){
+              this.$message.warning('请添加产品序列号');
+              return;
+            }
+            if(!this.productGoodsIn[i].receipt_num){
+              this.$message.warning('请添加产品数量');
+              return;
+            }
+          } 
+          for(let i=0,len=this.productGoodsOut.length;i<len;i++){
+            if(!this.productGoodsOut[i].product_batch_num){
+              this.$message.warning('请添加产品批次号');
+              return;
+            }
+            if(!this.productGoodsOut[i].product_num){
+              this.$message.warning('请添加产品序列号');
+              return;
+            }
+            if(!this.productGoodsOut[i].receipt_num){
+              this.$message.warning('请添加产品数量');
+              return;
+            }
+          } 
+          let data = {
+            id: this.id,
+            this_node_id: this.currnetNodeId,
+            production_date: this.time,
+            production_num: this.productionNum,
+            custom_mould_id: this.selectCustomDefineId,
+            productionOutProductList: this.formatProduction(this.productGoodsOut),
+            productionInProductList: this.formatProduction(this.productGoodsIn),
+            productionCustomList: this.customDefineAttributeList
+          };
+          console.log(this.formatProduction(this.productGoodsOut))
+          this.$emit('saveData', data)
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
+     
     }
   },
   watch: {
@@ -488,6 +550,18 @@ export default {
   .infoNo {
     flex: 0 0 120px;
   }
+}
+
+.custom-attribute{
+    text-align: right;
+    vertical-align: middle;
+    font-size: 14px;
+    color: #606266;
+    width: 100px;
+    line-height: 40px;
+    padding: 0 12px 0 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 </style>
 

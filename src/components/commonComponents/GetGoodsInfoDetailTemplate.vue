@@ -1,5 +1,6 @@
 <template>
-    <div id="getGoodsInfoDetailTemp">
+    <div id="getGoodsInfoDetailTemp">      
+       <el-form ref="getThingsForm" :rules="getThingsRules" :model="getThingsForm" label-width="100px">
         <div class="receive-info">
             <h6 class="title">收货信息</h6>
             <div class="content">
@@ -7,49 +8,45 @@
                    <div class="infoNo">信息编号</div>
                    <div class="infoNo-code">{{receiptNum}}</div>
                 </div>
-                <div class="demo-input-suffix">
-                    <div class="lable">收货日期</div>
-                    <el-date-picker :disabled="!edit" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
-                </div>
-                <div class="demo-input-suffix">
-                    <div class="lable">当前节点</div>
-                        <el-select :disabled="!edit" v-model="currnetNodeId" placeholder="请选择">
-                            <el-option
+                <el-form-item label="收货日期" prop="getThingsTime">
+                  <el-date-picker v-model="getThingsForm.getThingsTime" type="date" placeholder="选择日期"> </el-date-picker>
+                </el-form-item>
+                <el-form-item label="当前节点" prop="currentNode">
+                  <el-select v-model="getThingsForm.currentNode" placeholder="请选择">
+                    <el-option
                             v-for="item in thisNodeOption"
                             :key="item.id"
                             :label="item.node_name"
                             :value="item.id">
                             </el-option>
-                        </el-select>
-                </div>
-                <div class="demo-input-suffix">
-                    <div class="lable">来源节点</div>
-                    <el-select :disabled="!edit" v-model="sourceNodeId" placeholder="请选择">
-                        <el-option
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="来源节点" prop="fromNode">
+                  <el-select v-model="getThingsForm.fromNode" placeholder="请选择">
+                    <el-option
                         v-for="item in sourceNodedOption"
                         :key="item.id"
                         :label="item.node_name"
                         :value="item.id">
                         </el-option>
-                    </el-select>
-                </div>
+                  </el-select>
+                </el-form-item>
             </div>
         </div>
         <div class="product-info">
           <h6 class="title">产品信息</h6>
           <div class="content">
-            <div class="demo-input-suffix">
-                <div class="lable">添加产品</div>
-                    <el-select :disabled="!edit" v-model="selectProduction" placeholder="选择产品" @change='changeHandle'>
-                        <el-option
-                        v-for="item in productTypeList"
-                        :key="item.id"
-                        :label="item.product_name"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>
-            </div>
-          </div>
+            <el-form-item label="添加产品" prop="addProduct">
+              <el-select v-model="getThingsForm.addProduct" placeholder="选择产品"  @change='changeHandle'>
+                <el-option
+                    v-for="item in productTypeList"
+                    :key="item.id"
+                    :label="item.product_name"
+                    :value="item.id">
+                    </el-option>
+              </el-select>
+            </el-form-item>
+          </div>    
           <div class="product-list-wrapper" v-show="receiveProductList.length">
             <table>
               <tr>
@@ -66,7 +63,7 @@
                 <td>{{item.product}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入收货数量"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入收货数量" @change="numberChange(index,$event)"></el-input></td>
                 <td>{{item.norms}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProduction(item, index)"></i></td>
               </tr>
@@ -77,7 +74,7 @@
           <h6 class="title">自定义属性</h6>
           <div class="content">
             <div class="demo-input-suffix">
-                <div class="lable">自定义属性</div>
+                <div class="custom-attribute">自定义属性</div>
                 <el-select clearable  :disabled="!edit" v-model="selectCustomDefineId" placeholder="请选择">
                     <el-option
                     v-for="item in customDefineList"
@@ -87,7 +84,7 @@
                    >
                     </el-option>
                 </el-select>
-            </div>
+            </div>        
           </div>
           <div class="attribute-wrapper" v-show="selectCustomDefineId">
             <div class="content">
@@ -101,8 +98,9 @@
         </div>
         <div class="btn-wrapper">
           <div class="btn" v-if="!edit" @click="editPage">编辑</div>
-          <div class="btn" v-if="edit" @click="saveData">保存</div>
+          <div class="btn" v-if="edit" @click="saveData('getThingsForm')">保存</div>
         </div>
+        </el-form>
     </div>
 </template>
 
@@ -156,7 +154,34 @@ export default {
       // 时间
       time: this.receiptDate,
       // 收货产品列表
-      receiveProductList: this.productList
+      receiveProductList: this.productList,
+
+      
+      getThingsForm: {
+        getThingsTime: "",
+        currentNode:"",
+        fromNode:"",
+        addProduct:"",
+        customProps:""
+      },
+      getThingsRules: {
+        getThingsTime: [
+          { required: true, message: '请选择收货日期', trigger: 'blur' }
+        ],
+        currentNode:[
+          {required: true, message: '请选择当前节点', trigger: 'change'}
+        ],
+        fromNode:[
+          {required: true, message: '请选择来源节点', trigger: 'change'}
+        ],
+        addProduct:[
+          {required:true,message:'请添加产品',trigger:'change'}
+        ],
+        customProps:[
+          {required:true,message:'请选择',trigger:'change'}
+        ]
+      }
+
     };
   },
   props: {
@@ -325,39 +350,56 @@ export default {
     },
     deleProduction(item, index) {
       this.receiveProductList.splice(index, 1);
+      // console.log(this.receiveProductList.length);
+      if(this.receiveProductList.length == 0){
+        this.getThingsForm.addProduct = "";
+      }
     },
     editPage() {
       this.$emit("editPage");
+    },    
+    numberChange(index,event){
+      let reg = /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/; 
+      if(!reg.test(this.receiveProductList[index].receipt_num)){
+        this.$message.warning("输入格式不正确,请从新输入");
+        this.receiveProductList[index].receipt_num = "";
+        return;
+      }
     },
-    saveData() {
-      // console.log(this.currnetNode)
-      if(!this.time) {
-        this.$message.warning('请选择日期');
-        return
-      }
-      if(!this.currnetNodeId) {
-        this.$message.warning('请选择当前节点');
-        return
-      }
-      if(!this.sourceNodeId) {
-        this.$message.warning('请选择来源节点');
-        return
-      }
-      if(!this.productList.length) {
-        this.$message.warning('请添加产品');
-        return
-      }
-      let data = {
-        id: this.id,
-        this_node_id: this.currnetNodeId,
-        source_noded_id: this.sourceNodeId,
-        receipt_date: this.time,
-        receipt_num: this.receiptNum,
-        custom_mould_id: this.selectCustomDefineId,
-        productList: this.receiveProductList,
-        customFields: this.customDefineAttributeList
-      };
-      this.$emit("saveData", data);
+    saveData(formName) {     
+      this.$refs[formName].validate((valid) => {           
+        if (valid) {   
+          for(let i=0,len=this.receiveProductList.length;i<len;i++){
+            if(!this.receiveProductList[i].product_batch_num){
+              this.$message.warning('请添加产品批次号');
+              return;
+            }           
+            if(!this.receiveProductList[i].product_num){
+              this.$message.warning('请添加产品序列号');
+              return;
+            }
+            if(!this.receiveProductList[i].receipt_num){
+              this.$message.warning('请添加产品数量');
+              return;
+            }
+          } 
+          let data = {
+            id: this.id,
+            this_node_id: this.currnetNodeId,
+            source_noded_id: this.sourceNodeId,
+            receipt_date: this.time,
+            receipt_num: this.receiptNum,
+            custom_mould_id: this.selectCustomDefineId,
+            productList: this.receiveProductList,
+            customFields: this.customDefineAttributeList
+          };
+          this.$emit("saveData", data);
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+     
     }
   },
   watch: {
@@ -470,6 +512,25 @@ export default {
   .infoNo {
     flex: 0 0 120px;
   }
+}
+
+
+.el-date-editor.el-input{
+  width: 217px;
+}
+.item-input{
+  margin-bottom: 0;
+}
+.custom-attribute{
+    text-align: right;
+    vertical-align: middle;
+    font-size: 14px;
+    color: #606266;
+    width: 100px;
+    line-height: 40px;
+    padding: 0 12px 0 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 </style>
 

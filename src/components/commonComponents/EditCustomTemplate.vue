@@ -5,7 +5,7 @@
         <el-form-item label="*自定义名称">
           <el-input v-model="mould_name" ></el-input>
         </el-form-item>
-        <el-form-item label="*所述环节" v-show="custom_type3">
+        <el-form-item label="*所属环节" v-show="custom_type3">
           <el-select v-model="sub_link" clearable  placeholder="选择所属环节" style="width: 100%">
             <el-option label="收货信息" value="收货信息"></el-option>
             <el-option label="生产信息" value="生产信息"></el-option>
@@ -103,7 +103,6 @@
     updateCustomAttribute,
     getCustomAttributeDetail,
   } from "../../assets/js/settings/ajax.js";
-  import { deepCopy } from "../../assets/js/api/util.js";
 
   export default {
     name: 'cuutomTemplate',
@@ -126,12 +125,17 @@
         type: Array,
         required: true
       },
+      typetype: {
+        type: String,
+        required: false
+      },
     },
     mounted() {
       let params ={
         "id":this.$route.query.typeId
       }
       this.initData(params);
+//      console.log("Template--type----"+JSON.stringify(this.typetype))
     },
     methods:{
       //本地增加字段
@@ -187,7 +191,7 @@
         //自定义属性关联查询接口判断
         var va = {
           id:rows.id,
-          type:this.type
+          type:this.typetype
         }
         getAttributeRelationState(va)
           .then(res => {
@@ -252,11 +256,10 @@
         getCustomAttributeDetail(params)
           .then(res => {
             var customAttribute = res.data.customAttribute
-            //“业务类型”
+            //“业务类型”特殊判断
             if(customAttribute.custom_mould_type == 3){
               this.custom_mould_type = 3
               this.custom_type3 = true
-//              var sub_link =customAttribute.sub_link;
               this.sub_link =customAttribute.sub_link;
               if(this.sub_link == "生产信息"){
                 this.type = 3
@@ -265,6 +268,7 @@
               }else if(this.sub_link == "收货信息"){
                 this.type = 5
               }
+//              console.log("业务--type----"+JSON.stringify(this.type))
             }
             this.mould_name = customAttribute.mould_name;
             this.customAttributeList = customAttribute.customAttributeList;

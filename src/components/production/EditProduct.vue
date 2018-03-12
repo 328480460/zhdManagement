@@ -3,14 +3,15 @@
     <div class="receive-info">
       <h6 class="title">产品信息</h6>
       <div class="section-content">
-        <el-form ref="form" :model="form" label-width="120px">
-          <el-form-item label="*产品编号">
-            <el-input v-model="form.productCode"></el-input>
+        <el-form ref="form" :rules="rules" :model="form" label-width="120px">
+          <el-form-item label="产品编号" prop="productCode">
+            <!--{{form.productCode}}-->
+            <el-input v-model="form.productCode" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="*产品名称">
+          <el-form-item label="产品名称" prop="productName">
             <el-input v-model="form.productName"></el-input>
           </el-form-item>
-          <el-form-item label="*产品分类">
+          <el-form-item label="产品分类" prop="productType">
             <el-cascader
               :options="systemDefaultType"
               @change="handleChange"
@@ -19,17 +20,16 @@
               :props="props"
               :show-all-levels="false"
               filterable
-              clearable
               change-on-select
             ></el-cascader>
           </el-form-item>
-          <el-form-item label="*包装规格">
+          <el-form-item label="包装规格" prop="norms">
             <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
             </el-select>
             </el-form-item>
-          <el-form-item label="*计量单位">
+          <el-form-item label="计量单位" prop="metering">
             <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
             <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
@@ -40,7 +40,6 @@
               <el-radio label="称重"></el-radio>
             </el-radio-group>
           </el-form-item>
-
           <el-form-item label="自定义分类">
             <el-select v-model="form.customType" clearable  placeholder="无" width="50px" >
               <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
@@ -60,7 +59,7 @@
         <div class="content">
           <div class="demo-input-suffix">
             <div class="lable">自定义属性</div>
-            <el-select clearable v-model="selectCustomDefineId" placeholder="请选择" @change="changeselect">
+            <el-select clearable v-model="selectCustomDefineId" placeholder="无" @change="changeselect">
               <el-option
                 v-for="item in customDefineList"
                 :key="item.id"
@@ -139,6 +138,23 @@
         customFields:[],
         newCustomFields:[],
         customMouldId:"",
+        rules: {
+          productCode: [
+            { required: true, message: '请填写产品编号', trigger: 'blur' }
+          ],
+          productName: [
+            { required: true, message: '请填写产品名称', trigger: 'blur' }
+          ],
+          productType: [
+            { required: true, message: '请选择产品分类', trigger: 'blur' }
+          ],
+          norms: [
+            { required: true, message: '请选择包装规格', trigger: 'change' }
+          ],
+          metering: [
+            { required: true, message: '请选择计量单位数量', trigger: 'change' }
+          ],
+        }
       };
     },
     mounted(){
@@ -168,55 +184,90 @@
             this.$message.error("出错啦!");
           });
       },
-      onSubmit() {
-        if(this.form.productCode == ''){
-          this.$message.warning("请填写产品编号!");
-        }else if(this.form.productName == ''){
-          this.$message.warning("请填写产品名称!");
-        }else if(this.form.productType == ''){
-          this.$message.warning("请填写产品分类!");
-        }else if(this.form.norms == ''){
-          this.$message.warning("请填写包装规格!");
-        } else if(this.form.metering == ''){
-          this.$message.warning("请填写计量单位数量!");
-        } else if(this.form.metering_id == ''){
-          this.$message.warning("请填写计量单位!");
-        }else{
-          this.customDefineAttributeList.forEach((value, index) => {
-            var arr  =
-            {
-              "custom_id" :value.custom_id,
-              "data_value" :value.data_value,
+      onSubmit(form) {
+        this.$refs[form].validate((valid) => {
+          if (valid){
+            if(this.form.metering_id == ''){
+              this.$message.warning("请选择“标件”或“称重”!");
             }
-            this.newCustomFields .push(arr);
-          })
-          let params = {
-            id: this.$route.query.productId,
-            product: this.form.productCode,
-            product_name: this.form.productName,
-            product_type_id: this.form.productType,
-            metering: this.form.metering,
-            norms: this.form.norms,
-            metering_id: this.form.metering_id,
-            custom_type_id: this.form.customType,
-            product_depict: this.form.productDesc,
-            brand_name: this.form.productBrand,
-            custom_mould_id: this.selectCustomDefineId,
-            //需要替换为选择的
-            customFields: this.newCustomFields
-          };
-//        console.log("submit!保存修改产品信息----"+JSON.stringify(params));
-          updateProduct(params)
-            .then(res =>{
-              if (res.status == 200) {
-                this.$message.success("产品修改成功!");
-                this.$router.go(-1);
+//            else if(this.form.productType == ''){
+//              this.$message.warning("请选择“产品分类”!");
+//            }
+            else{
+              if(this.selectCustomDefineId){
+                this.customDefineAttributeList.forEach((value, index) => {
+                  if (value.data_value) {
+                    var arr  =
+                    {
+                      "custom_id" :value.custom_id,
+                      "data_value" :value.data_value,
+                    }
+                    this.newCustomFields .push(arr);
+                    let params = {
+                      id: this.$route.query.productId,
+                      product: this.form.productCode,
+                      product_name: this.form.productName,
+                      product_type_id: this.form.productType,
+                      metering: this.form.metering,
+                      norms: this.form.norms,
+                      metering_id: this.form.metering_id,
+                      custom_type_id: this.form.customType,
+                      product_depict: this.form.productDesc,
+                      brand_name: this.form.productBrand,
+                      custom_mould_id: this.selectCustomDefineId,
+                      customFields: this.newCustomFields
+                    };
+                    updateProduct(params)
+                      .then(res =>{
+                        if (res.status == 200) {
+                          this.$message.success("产品修改成功!");
+                          this.$router.go(-1);
+                        }else{
+                          this.$message.error(res.msg);
+                        }
+                      })
+                      .catch(() => {
+                        this.$message.error("出错啦!");
+                      })
+                  }else {
+                    this.$message.warning("请填写自定义属性字段值!");
+                  }
+                })
+              }else{
+                let params = {
+                  id: this.$route.query.productId,
+                  product: this.form.productCode,
+                  product_name: this.form.productName,
+                  product_type_id: this.form.productType,
+                  metering: this.form.metering,
+                  norms: this.form.norms,
+                  metering_id: this.form.metering_id,
+                  custom_type_id: this.form.customType,
+                  product_depict: this.form.productDesc,
+                  brand_name: this.form.productBrand,
+                  custom_mould_id: this.selectCustomDefineId,
+                  customFields: this.newCustomFields
+                };
+                updateProduct(params)
+                  .then(res =>{
+                    if (res.status == 200) {
+                      this.$message.success("产品修改成功!");
+                      this.$router.go(-1);
+                    }else{
+                      this.$message.error(res.msg);
+                    }
+                  })
+                  .catch(() => {
+                    this.$message.error("出错啦!");
+                  })
               }
-            })
-            .catch(() => {
-              this.$message.error("出错啦!");
-            })
-        }
+            }
+          }else {
+            return false;
+          }
+
+
+        });
       },
       handleChange(value) {
         this.form.productType =value[value.length - 1]
@@ -235,7 +286,6 @@
       getProductDetail(params){
         getProductDetail(params)
           .then(res =>{
-//            console.log("---productDetail---"+JSON.stringify(res))
             var productDetail = res.data.productDetail
             this.form.productCode = productDetail. product;
             this.form.productName = productDetail.product_name;
@@ -249,7 +299,6 @@
             this.selectCustomDefineId= productDetail. custom_mould_id;
 //            this.customDefineAttributeList = productDetail. customFields;
             this.productCustomList = productDetail. customFields;
-
             if(productDetail. custom_mould_id){
               //请求用户自定义模块详情
               this.loadCustomDefineDetailData(productDetail. custom_mould_id)
@@ -324,11 +373,13 @@
         });
       },
       productTypeShow(){
-        var productTypeName = this.$route.query.productTypeId
-        var third = productTypeName.substring(0,8)
-        var second = productTypeName.substring(0,5)
-        var first = productTypeName.substring(0,2)
-        this.productTypeSelected.push(first,second,third,productTypeName);
+        var productType = this.$route.query.productTypeId
+        if(productType){
+          var third = productType.substring(0,8)
+          var second = productType.substring(0,5)
+          var first = productType.substring(0,2)
+          this.productTypeSelected.push(first,second,third,productType);
+        }
       },
       initData(params){
         //产品回显

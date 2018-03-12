@@ -1,5 +1,6 @@
 <template>
     <div id="getGoodsInfoDetailTemp">
+      <el-form :model="sendMsgForm" :rules="sendMsgRules" ref="sendMsgForm" label-width="100px">
         <div class="receive-info">
             <h6 class="title">发货日期</h6>
             <div class="content">
@@ -7,31 +8,34 @@
                    <div class="infoNo">信息编号</div>
                    <div class="infoNo-code">{{invoiceNum}}</div>
                 </div> 
-                <div class="demo-input-suffix">
-                    <div class="lable">发货日期</div>
-                    <el-date-picker :disabled="!edit" v-model="time" type="date" placeholder="选择日期"></el-date-picker>
+                <div class="demo-input-suffix">                   
+                  <el-form-item label="发货日期" prop="sendTime">
+                    <el-date-picker v-model="sendMsgForm.sendTime" type="date" placeholder="选择发货日期"> </el-date-picker>
+                  </el-form-item>
                 </div>
                 <div class="demo-input-suffix">
-                    <div class="lable">当前节点</div>
-                        <el-select :disabled="!edit" v-model="currnetNodeId" placeholder="请选择">
-                            <el-option
-                            v-for="item in thisNodeOption"
-                            :key="item.id"
-                            :label="item.node_name"
-                            :value="item.id">
-                            </el-option>
-                        </el-select>
+                  <el-form-item label="当前节点" prop="currentNode">
+                    <el-select v-model="sendMsgForm.currentNode" placeholder="请选择">
+                      <el-option
+                      v-for="item in thisNodeOption"
+                      :key="item.id"
+                      :label="item.node_name"
+                      :value="item.id">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>                    
                 </div>
                 <div class="demo-input-suffix">
-                    <div class="lable">流向节点</div>
-                    <el-select :disabled="!edit" v-model="nextNodeId" placeholder="请选择">
+                    <el-form-item label="流向节点" prop="flowtNode">
+                      <el-select v-model="sendMsgForm.flowtNode" placeholder="请选择">
                         <el-option
                         v-for="item in flowNodeOption"
                         :key="item.id"
                         :label="item.node_name"
                         :value="item.id">
                         </el-option>
-                    </el-select>
+                      </el-select>
+                    </el-form-item>
                 </div>
             </div>
         </div>
@@ -39,15 +43,16 @@
           <h6 class="title">产品信息</h6>
           <div class="content">
             <div class="demo-input-suffix">
-                <div class="lable">添加产品</div>
-                    <el-select :disabled="!edit" v-model="selectProduction" placeholder="选择产品"  @change='changeHandle'>
-                        <el-option
-                        v-for="item in productTypeList"
-                        :key="item.id"
-                        :label="item.product_name"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>
+                <el-form-item label="添加产品" prop="productMsg">
+                  <el-select v-model="sendMsgForm.productMsg" placeholder="选择产品"  @change='changeHandle'>
+                    <el-option
+                    v-for="item in productTypeList"
+                    :key="item.id"
+                    :label="item.product_name"
+                    :value="item.id">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
             </div>
           </div>
           <div class="product-list-wrapper" v-show="sendProductList.length">
@@ -66,7 +71,7 @@
                 <td>{{item.product}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.invoice_num" placeholder="请输入发货数量"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.invoice_num" placeholder="请输入发货数量" @change="numberChange(index,$event)"></el-input></td>
                 <td>{{item.norms}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProduction(item, index)"></i></td>
               </tr>
@@ -77,7 +82,7 @@
           <h6 class="title">自定义属性</h6>
           <div class="content">
             <div class="demo-input-suffix">
-                <div class="lable">自定义属性</div>
+                <div class="custom-attribute">自定义属性</div>
                 <el-select  :disabled="!edit" v-model="selectCustomDefineId" placeholder="请选择">
                     <el-option
                     v-for="item in customDefineList"
@@ -101,8 +106,9 @@
         </div>
         <div class="btn-wrapper">
           <div class="btn" v-if="!edit" @click="editPage">编辑</div>
-          <div class="btn" v-if="edit" @click="saveData">保存</div>
+          <div class="btn" v-if="edit" @click="saveData('sendMsgForm')">保存</div>
         </div>
+      </el-form>        
     </div>
 </template>
 
@@ -156,7 +162,29 @@ export default {
       // 时间
       time: this.date,
       // 收货产品列表
-      sendProductList: this.productList
+      sendProductList: this.productList,
+
+
+      sendMsgForm:{
+        sendTime:"",
+        currentNode:"",
+        flowtNode:"",
+        productMsg:""
+      },
+      sendMsgRules: {
+        sendTime: [
+          { required: true, message: '选择发货日期', trigger: 'change' }
+        ],
+        currentNode:[
+          { required: true, message: "请选择当前节点", trigger:'change' }
+        ],
+        flowtNode:[
+          { required: true, message: "请选择流向节点", trigger:'change' }
+        ],
+        productMsg:[
+          { required: true, message: "请添加产品", trigger:'change' }
+        ]
+      }
     };
   },
   props: {
@@ -327,34 +355,49 @@ export default {
     editPage() {
       this.$emit('editPage');
     },
-    saveData() {
-      if(!this.time) {
-        this.$message.warning('请选择日期');
-        return
+    numberChange(index,event){
+      console.log(index)
+      let reg = /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/; 
+      if(!reg.test(this.sendProductList[index].invoice_num)){
+        this.$message.warning("输入格式不正确,请从新输入");
+        this.sendProductList[index].invoice_num = "";
+        return;
       }
-      if(!this.currnetNodeId) {
-        this.$message.warning('请选择当前节点');
-        return
-      }
-      if(!this.nextNodeId) {
-        this.$message.warning('请选择流向节点');
-        return
-      }
-      if(!this.productList.length) {
-        this.$message.warning('请添加产品');
-        return
-      }
-      let data = {
-        id: this.id,
-        this_node_id: this.currnetNodeId,
-        flow_to_id: this.nextNodeId,
-        invoice_date: this.time,
-        invoice_num: this.invoiceNum,
-        custom_mould_id: this.selectCustomDefineId,
-        productList: this.sendProductList,
-        customFields: this.customDefineAttributeList
-      };
-      this.$emit("saveData", data);
+    },
+    saveData(formName) {   
+      this.$refs[formName].validate((valid) => {       
+        if (valid) {
+          for(let i=0,len=this.sendProductList.length;i<len;i++){
+            if(!this.sendProductList[i].product_batch_num){
+              this.$message.warning('请添加产品批次号');
+              return;
+            }
+            if(!this.sendProductList[i].product_num){
+              this.$message.warning('请添加产品序列号');
+              return;
+            }
+            if(!this.sendProductList[i].invoice_num){
+              this.$message.warning('请添加产品数量');
+              return;
+            }
+          } 
+          let data = {
+            id: this.id,
+            this_node_id: this.currnetNodeId,
+            flow_to_id: this.nextNodeId,
+            invoice_date: this.time,
+            invoice_num: this.invoiceNum,
+            custom_mould_id: this.selectCustomDefineId,
+            productList: this.sendProductList,
+            customFields: this.customDefineAttributeList
+          };
+          this.$emit("saveData", data);
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+      
     }
   },
   watch: {
@@ -466,6 +509,18 @@ export default {
   .infoNo {
     flex: 0 0 120px;
   }
+}
+
+.custom-attribute{
+    text-align: right;
+    vertical-align: middle;
+    font-size: 14px;
+    color: #606266;
+    width: 100px;
+    line-height: 40px;
+    padding: 0 12px 0 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 </style>
 

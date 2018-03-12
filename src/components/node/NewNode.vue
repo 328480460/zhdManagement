@@ -3,11 +3,11 @@
     <div class="receive-info">
       <h6 class="title">节点信息</h6>
       <div class="section-content">
-        <el-form ref="form" :model="form" label-width="120px">
-          <el-form-item label="*节点编号：">
+        <el-form ref="form" :rules="rules" :model="form" label-width="120px">
+          <el-form-item label="节点编号：" prop="nodeNumber" >
             <el-input v-model="form.nodeNumber"></el-input>
           </el-form-item>
-          <el-form-item label="*节点名称：">
+          <el-form-item label="节点名称：" prop="nodeName">
             <el-input v-model="form.nodeName"></el-input>
           </el-form-item>
           <el-form-item label="节点分类：">
@@ -16,22 +16,16 @@
               </el-option>
             </el-select>
           </el-form-item>
-
           <el-form-item label="节点类型：">
             <el-checkbox-group v-model="checkedSplittings" @change="handleCheckedCitiesChange">
               <el-checkbox v-for="item in splittingLists" :label="item.id" :key="item.id">{{item.type_name}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-
           <el-form-item label="节点描述：">
             <el-input type="textarea" v-model="form.nodeDepict"></el-input>
           </el-form-item>
-        </el-form>
-      </div>
-      <h6 class="title">联系人信息</h6>
-      <div class="section-content">
-        <el-form label-width="120px">
-          <el-form-item label="*节点地址：">
+          <h6 class="title" style="margin-bottom: 20px">联系人信息</h6>
+          <el-form-item label="节点地址：" prop="nodeAddress">
             <el-input v-model="form.nodeAddress"></el-input>
           </el-form-item>
           <el-form-item label="联系人：">
@@ -47,7 +41,7 @@
         <div class="content">
           <div class="demo-input-suffix">
             <div class="lable">自定义属性</div>
-            <el-select clearable v-model="selectCustomDefineId" placeholder="请选择">
+            <el-select clearable v-model="selectCustomDefineId" placeholder="无">
               <el-option
                 v-for="item in customDefineList"
                 :key="item.id"
@@ -66,7 +60,7 @@
           </div>
         </div>
         </div>
-      <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
+      <el-button class="bt-save" type="primary" @click="onSubmit('form')">保存</el-button>
     </div>
   </div>
 </template>
@@ -111,6 +105,17 @@ export default {
       customList:[],
       newCustomFields:[],
       customMouldId:"",
+      rules: {
+        nodeNumber: [
+          { required: true, message: '请填写节点编号', trigger: 'blur' }
+        ],
+        nodeName: [
+          { required: true, message: '请填写节点名称', trigger: 'blur' }
+        ],
+        nodeAddress: [
+          { required: true, message: '请填写节点地址', trigger: 'blur' }
+        ],
+      }
     }
   },
   mounted() {
@@ -130,48 +135,77 @@ export default {
       this.checkedSplittings  = value
       console.log("handleCheckedCitiesChange---"+this.checkedSplittings)
     },
-    onSubmit() {
-      if(this.form.nodeNumber == ''){
-        this.$message.warning("请填写节点编号!");
-      }if(this.form.nodeName == ''){
-        this.$message.warning("请填写节点名称!");
-      }if(this.form.nodeAddress == ''){
-        this.$message.warning("请填写节点地址!");
-      }else{
-        this.customDefineAttributeList.forEach((value, index) => {
-          var arr  =
-          {
-            "custom_id" :value.custom_id,
-            "data_value" :value.data_value,
+    onSubmit(form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          if(this.selectCustomDefineId){
+            this.customDefineAttributeList.forEach((value, index) => {
+              if (value.data_value){
+                var arr  =
+                {
+                  "custom_id" :value.custom_id,
+                  "data_value" :value.data_value,
+                }
+                this.newCustomFields .push(arr);
+                let params = {
+                  node_number: this.form.nodeNumber,
+                  node_name: this.form.nodeName,
+                  node_splitting: this.checkedSplittings.toString(),
+                  node_type_id: this.form.nodeType,
+                  node_depict: this.form.nodeDepict,
+                  node_address: this.form.nodeAddress,
+                  contacts: this.form.contacts,
+                  contacts_phone: this.form.contactsPhone,
+                  custom_mould_id: this.selectCustomDefineId,
+                  nodeCustomList: this.newCustomFields
+                };
+                createNode(params)
+                  .then(res =>{
+                    if (res.status == 200) {
+                      this.$message.success("添加成功!");
+                      this.$router.go(-1);
+                    }else{
+                      this.$message.error(res.msg);
+                    }
+                  })
+                  .catch(() => {
+                    this.$message.error("出错啦!");
+                  })
+              }else{
+                this.$message.warning("请填写自定义属性字段值!");
+              }
+            })
+          }else {
+            let params = {
+              node_number: this.form.nodeNumber,
+              node_name: this.form.nodeName,
+              node_splitting: this.checkedSplittings.toString(),
+              node_type_id: this.form.nodeType,
+              node_depict: this.form.nodeDepict,
+              node_address: this.form.nodeAddress,
+              contacts: this.form.contacts,
+              contacts_phone: this.form.contactsPhone,
+              custom_mould_id: this.selectCustomDefineId,
+              nodeCustomList: this.newCustomFields
+            };
+            createNode(params)
+              .then(res =>{
+                if (res.status == 200) {
+                  this.$message.success("添加成功!");
+                  this.$router.go(-1);
+                }else{
+                  this.$message.error(res.msg);
+                }
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              })
           }
-          this.newCustomFields .push(arr);
-        })
-        let params = {
-          node_number: this.form.nodeNumber,
-          node_name: this.form.nodeName,
-          node_splitting: this.checkedSplittings.toString(),
-          node_type_id: this.form.nodeType,
-          node_depict: this.form.nodeDepict,
-          node_address: this.form.nodeAddress,
-          contacts: this.form.contacts,
-          contacts_phone: this.form.contactsPhone,
-          custom_mould_id: this.selectCustomDefineId,
-          nodeCustomList: this.newCustomFields
-        };
-        createNode(params)
-          .then(res =>{
-            if (res.status == 200) {
-              this.$message.success("添加成功!");
-              this.$router.go(-1);
-            }else{
-              this.$message.error(res.msg);
-              console.log('createNode--'+JSON.stringify(res));
-            }
-          })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          })
-      }
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     //节点分类查询
     getNodetupelist(){
@@ -244,7 +278,6 @@ export default {
           }
         });
       });
-      // console.log(this.customDefineAttributeList)
     },
     initData(){
       //节点分类查询
@@ -265,14 +298,12 @@ export default {
   min-height: 92%;
   background-color: #fff;
   .section-content {
-    width: 500px;
+    /*width: 500px;*/
+    /*margin-left: 200px;*/
     margin-top: 20px;
-    margin-left: 200px;
-  }
-  .custom-define-info {
-    .receive-info;
-    .el-input {
-      width: 217px;
+    .el-form-item{
+      width: 500px;
+      margin-left: 200px;
     }
   }
   .receive-info {
