@@ -59,10 +59,7 @@ export default {
   mounted() {
     const pointLine = new PointLine();
     if(JSON.stringify(localStorage.checked) != null){
-        // console.log("checked---"+JSON.stringify(localStorage.checked))
-      var userid = JSON.stringify(JSON.parse(localStorage.userid))
       this.accountName = JSON.parse(localStorage.account)
-      // this.password = JSON.parse(localStorage.password)
       this.enterprise_id = JSON.parse(localStorage.enterprise_id)
       this.checked = JSON.parse(localStorage.checked)
     }else {
@@ -80,7 +77,7 @@ export default {
         let param = {
           account: this.accountName,
           password: this.password,
-          enterprise_id:1
+          enterprise_id:1//企业id
         }
         login(param)
           .then(res => {
@@ -88,9 +85,6 @@ export default {
               //userid存本地
               localStorage.setItem('userid',JSON.stringify(res.data.user.id));
               sessionStorage.setItem('isLogin', 1);
-              // console.log("login的userid---"+JSON.stringify(res.data.user.id))
-              // 命名的路由
-              this.$router.push({ name: 'Home'})
 
               //记住账号
               if(this.checked == true){
