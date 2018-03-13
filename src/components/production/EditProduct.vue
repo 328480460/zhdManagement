@@ -5,7 +5,6 @@
       <div class="section-content">
         <el-form ref="form" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="产品编号" prop="productCode">
-            <!--{{form.productCode}}-->
             <el-input v-model="form.productCode" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="产品名称" prop="productName">

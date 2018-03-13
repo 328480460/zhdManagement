@@ -84,25 +84,6 @@ export default {
     };
   },
   methods: {
-    toggle(){
-      this.userItemToggle = !this.userItemToggle;
-    },
-    exit(){
-      logout()
-        .then(res => {
-          console.log("logout-----"+JSON.stringify(res))
-          if (res.status == 200){
-            this.$message.success("退出");
-            sessionStorage.setItem('isLogin', 0);
-            this.$router.push({path: '/'})
-          } else{
-            this.$message.error(res.msg);
-          }
-        })
-        .catch(() => {
-          this.$message.error("出错啦!");
-        });
-    },
     turnPage(id) {
       // 关闭额外tab
       this.extraTabInfo = {};
