@@ -28,7 +28,19 @@
             </el-select>
            </el-form-item>
           <el-form-item label="计量单位" prop="metering">
-            <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
+
+          <el-radio v-model="form.measuringUnit" label="标件" value="标件"></el-radio>
+          <el-input  v-model="form.metering" type="number" style="margin:0 0 10px 10px;width:100px;"></el-input>  
+          <el-select v-model="form.norms" placeholder="未选择" style="margin:0 50px 10px 10px;width:100px;">
+            <el-option v-for="item in normsTypeList" :key="item.id" :label="item.metering" :value="item.metering"> </el-option>
+          </el-select>
+          <el-radio v-model="form.measuringUnit" label="称重" value="称重"></el-radio>
+          <el-select v-model="form.norms" placeholder="未选择" style="margin-left:10px;width:100px;">
+            <el-option v-for="item in normsTypeList" :key="item.id" :label="item.tables_name" :value="item.tables_name"> </el-option>
+          </el-select>
+
+            
+            <!-- <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
             <el-select v-model="form.norms" clearable  placeholder="未选择" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
@@ -36,7 +48,7 @@
             <el-radio-group v-model="form.metering_id">
               <el-radio label="标件" value="标件"></el-radio>
               <el-radio label="称重" value="称重"></el-radio>
-            </el-radio-group>
+            </el-radio-group> -->
           </el-form-item>
           <el-form-item label="自定义分类">
             <el-select v-model="form.customType" clearable  placeholder="请选择" width="50px" >
@@ -108,6 +120,7 @@ export default {
         productDesc: "",
         productBrand: "",
         custom_mould_id:"",
+        measuringUnit:"标件"
       },
       //规格列表
       normsTypeList:[],
@@ -146,7 +159,7 @@ export default {
         ],
         metering: [
           { required: true, message: '请选择计量单位数量', trigger: 'change' }
-        ],
+        ]
       }
     };
   },

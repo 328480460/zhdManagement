@@ -32,47 +32,16 @@
       </el-row>
     </div>
 
-    <el-table class="el-table"
-              :data="productList"
-    >
-      <el-table-column class="table-column"
-                       prop="product"
-                       label="产品编码"
-    >
-    </el-table-column>
-      <el-table-column class="table-column"
-                       prop="product_name"
-                       label="产品名称"
-      >
-      </el-table-column>
-      <el-table-column class="table-column"
-                       prop="product_type_name"
-                       label="产品分类"
-      >
-      </el-table-column>
-      <el-table-column class="table-column"
-                       prop="custom_type_name"
-                       label="自定义分类"
-      >
-      </el-table-column>
-      <el-table-column class="table-column"
-                       prop="norms"
-                       label="单位"
-      >
-      </el-table-column>
-      <el-table-column class="table-column"
-                       label="操作"
-      >
+    <el-table class="el-table" :data="productList">
+      <el-table-column class="table-column" prop="product" label="产品编码"></el-table-column>
+      <el-table-column class="table-column" prop="product_name" label="产品名称"></el-table-column>
+      <el-table-column class="table-column" prop="product_type_name" label="产品分类"></el-table-column>
+      <el-table-column class="table-column" prop="custom_type_name" label="自定义分类"></el-table-column>
+      <el-table-column class="table-column" prop="norms" label="单位"></el-table-column>
+      <el-table-column class="table-column" label="操作">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            @click="editProduct(scope.$index, scope.row)">编辑</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            style="margin-left: 50px"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button size="mini" type="text" @click="editProduct(scope.$index, scope.row)">编辑</el-button>
+          <el-button size="mini" type="text" style="margin-left: 50px" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -244,7 +213,8 @@ export default {
         .then(res => {
           this.totalcount = res.data.totalcount;
           this.productList = res.data.productList;
-//          console.log("productList---"+JSON.stringify(this.productList))
+        //  console.log("productList---"+JSON.stringify(this.productList[0]))   
+          console.log(this.productList[0])               
         })
         .catch(() => {
           this.$message.error("出错啦!");

@@ -80,7 +80,7 @@ export default {
         let param = {
           account: this.accountName,
           password: this.password,
-          enterprise_id:1
+          enterprise_id:'55e559de-5b18-46e2-b2cb-a74d7ac755ac' //企业ID 后期可能改为下拉框选择
         }
         login(param)
           .then(res => {
