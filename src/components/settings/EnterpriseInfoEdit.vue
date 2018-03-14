@@ -2,8 +2,8 @@
   <div id="enterprise-edit">
     <div class="default-info-wrapper">
       <div class="section-content">
-        <el-form :model="form" ref="form" label-width="120px">
-          <el-form-item label="企业名称：">
+        <el-form :model="form" :rules="rules" ref="form" label-width="120px">
+          <el-form-item label="企业名称：" prop="name">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="机构类型：">{{form.type}}
@@ -11,7 +11,7 @@
           <el-form-item label="主体信息：" >{{form.certificate}}
             <el-button type="text" class="br_text">立即认证</el-button>
           </el-form-item>
-          <el-form-item label="所在地区：">
+          <el-form-item label="所在地区："  prop="area">
             <!--<el-cascader  :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader>-->
             <el-input v-model="form.area" style="margin-top: 20px"></el-input>
           </el-form-item>
@@ -24,14 +24,14 @@
           <el-form-item label="企业简介：">
             <el-input v-model="form.intro" type="textarea" ></el-input>
           </el-form-item>
-          <el-form-item label="联系人姓名：">
+          <el-form-item label="联系人姓名：" prop="contact">
             <el-input v-model="form.contact"></el-input>
           </el-form-item>
-          <el-form-item label="联系人手机号：">
+          <el-form-item label="联系人手机号：" prop="phonenum">
             <el-input v-model="form.phonenum"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm" >保存</el-button>
+            <el-button type="primary" @click="submitForm('form')" >保存</el-button>
           </el-form-item>
 
         </el-form>
@@ -68,6 +68,27 @@ export default {
           contact: '',
           phonenum: ''
         },
+        rules: {
+          name: [
+            { required: true, message: '请填写企业名称', trigger: 'blur' }
+          ],
+          area: [
+            { required: true, message: '请填写所属地区', trigger: 'blur' }
+          ],
+          contact: [
+            { required: true, message: '请填写联系人姓名', trigger: 'blur' }
+          ],
+          phonenum: [
+            { required: true, message: '请填写联系人电话', trigger: 'blur' },
+            {validator:function(rule,value,callback){
+              if(/^1[34578]\d{9}$/.test(value) == false){
+                callback(new Error("请输入正确的手机号"));
+              }else{
+                callback();
+              }
+            }, trigger: 'blur'}
+          ],
+        }
       }
     },
   mounted(){
@@ -101,32 +122,36 @@ export default {
        * 企业信息修改接口
        * @param form
          */
-      submitForm() {
-        let params = {
-          enterprise_id:this.$route.query.enterprise_id,
-          address: this.form.area,
-          enterprise_name: this.form.name,
-          enterprise_type: this.form.type,
-          certificate: this.form.certificate,
+      submitForm(form) {
+        this.$refs[form].validate((valid) => {
+          if (valid){
+            let params = {
+              enterprise_id:this.$route.query.enterprise_id,
+              address: this.form.area,
+              enterprise_name: this.form.name,
+              enterprise_type: this.form.type,
+              certificate: this.form.certificate,
 //          creat_date: this.form.date,
-          enterprise_logo: "http://fsdf.jpg",
-          introduction: this.form.intro,
-          contact: this.form.contact,
-          contact_phone: this.form.phonenum,
-        };
-        /**
-         * 企业信息修改接口
-         */
-        updateEnterprise(params)
-          .then(res =>{
-            if (res.status == 200) {
-              this.$message.success("修改成功!");
-              this.$router.go(-1);
-            }
-          })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          })
+              enterprise_logo: "http://fsdf.jpg",
+              introduction: this.form.intro,
+              contact: this.form.contact,
+              contact_phone: this.form.phonenum,
+            };
+            //企业信息修改接口
+            updateEnterprise(params)
+              .then(res =>{
+                if (res.status == 200) {
+                  this.$message.success("修改成功!");
+                  this.$router.go(-1);
+                }
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              })
+          }else {
+            return false;
+          }
+        });
       },
     }
 };

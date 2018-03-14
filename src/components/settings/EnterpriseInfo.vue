@@ -65,7 +65,6 @@ export default {
     },
   mounted(){
     var enterprise_id = JSON.parse(localStorage.enterprise_id)
-    console.log("enterprise_id--"+enterprise_id)
 
     let params ={
       enterprise_id:JSON.parse(localStorage.enterprise_id)

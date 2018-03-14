@@ -37,6 +37,7 @@ export default {
     data() {
       return{
         form: {
+          id: '',
           account: '',
           name: '',
           password: '',
@@ -53,18 +54,15 @@ export default {
   },
     methods: {
       initData(params){
-        /**
-         * 企业详情查询
-         */
+        //企业详情查询接口
         getEmployeeDetail(params)
           .then(res =>{
-//            console.log("员工详情---"+JSON.stringify(res))
             let employee = res.data.employee
             this.form.account = employee. account;
             this.form.name = employee. name;
             this.form.password = employee.contacts;
-            this.form.password = employee.contacts;
             this.form.role_id = employee. role_id;
+            this.form.id = employee. id;
           })
           .catch(() => {
             this.$message.error("出错啦!");
@@ -76,7 +74,7 @@ export default {
           page: "accountSettingEdit",
           name: "编辑账号信息",
           id: "03020102",
-          query: { id: 1 },
+          query: { id: this.form.id },
         });
       }
     }

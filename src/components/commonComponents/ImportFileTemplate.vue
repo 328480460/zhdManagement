@@ -102,6 +102,8 @@
             .then(function (response) {
               if(response.status == 200){
                 FileSaver.saveAs(response.data, that.templateValue+'.xlsx')
+              }else{
+                this.$message.error(response.msg);
               }
             }).catch(function (error) {
             console.log("error下载模板---"+error)

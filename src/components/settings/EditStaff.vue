@@ -2,42 +2,23 @@
   <div id="editstaff">
     <div class="default-info-wrapper">
       <div class="section-content">
-        <el-form :model="form" ref="form" label-width="120px">
-          <el-form-item label="账号：">{{form.account}}
+        <el-form :model="form":rules="rules" ref="form" label-width="120px">
+          <el-form-item label="账号："  prop="account">{{form.account}}
           </el-form-item>
-          <el-form-item label="员工姓名：">
+          <el-form-item label="员工姓名："  prop="name">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item label="联系方式：">
+          <el-form-item label="联系方式："  prop="contacts">
             <el-input v-model="form.contacts"></el-input>
           </el-form-item>
-          <el-form-item label="角色：">
-            <el-select v-model="form.custom_mould_id" placeholder="无">
+          <el-form-item label="角色：" >
+            <el-select v-model="form.role_id" placeholder="无">
               <el-option v-for="item in roleList" :key="item.id" :label="item.role_name"  :value="item.id"></el-option>
             </el-select>
           </el-form-item>
 
-          <!--<el-form-item label="允许访问的节点：">-->
-            <!--<el-select-->
-              <!--v-model="value9"-->
-              <!--multiple-->
-              <!--filterable-->
-              <!--remote-->
-              <!--reserve-keyword-->
-              <!--placeholder="请搜索已有节点名称"-->
-              <!--:remote-method="remoteMethod"-->
-              <!--:loading="loading">-->
-              <!--<el-option-->
-                <!--v-for="item in options"-->
-                <!--:key="item.id"-->
-                <!--:label="item.node_name"-->
-                <!--:value="item.id">-->
-              <!--</el-option>-->
-            <!--</el-select>-->
-          <!--</el-form-item>-->
-
           <el-form-item>
-            <el-button type="primary" @click="onSubmit" >保存</el-button>
+            <el-button type="primary" @click="onSubmit('form')" >保存</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -66,60 +47,66 @@ export default {
           name: '',
           role_id: '',
         },
-
         value9: [],
         options: [],
         nodeList: [],
-        loading: false
+        loading: false,
+        rules: {
+          account: [
+            { required: true, message: '请填写账号', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请填写密码', trigger: 'blur' }
+          ],
+          name: [
+            { required: true, message: '请填写员工姓名', trigger: 'blur' }
+          ],
+          contacts: [
+            { required: true, message: '请填写联系方式', trigger: 'blur' },
+            {validator:function(rule,value,callback){
+              if(/^1[34578]\d{9}$/.test(value) == false){
+                callback(new Error("请输入正确的手机号"));
+              }else{
+                callback();
+              }
+            }, trigger: 'blur'}
+          ],
+        }
       }
     },
   mounted(){
-
     let params = {
       pagenum: 1,
       pagesize: 10,
     };
     this.initData(params);
-
   },
     methods: {
-//      remoteMethod(query) {
-//        if (query !== '') {
-//          this.loading = true;
-//          setTimeout(() => {
-//            this.loading = false;
-//            this.options = this.nodeList.filter(item => {
-//              return item.node_name.toLowerCase()
-//                  .indexOf(query.toLowerCase()) > -1;
-//            });
-//          }, 200);
-//        } else {
-//          this.options = [];
-//        }
-//      },
-      onSubmit() {
-        let params = {
-          id: this.$route.query.staffId,
-          account: this.form.account,
-          name: this.form.name,
-          contacts: this.form.contacts,
-          role_id: this.form.role_id,
-        };
-        /**
-         * 员工信息修改接口
-         */
-        updateEmployee(params)
-          .then(res =>{
-            console.log("updateEmployee---"+JSON.stringify(res))
-            if (res.status == 200) {
-              this.$message.success("修改成功!");
-              this.$router.go(-1);
-            }
-          })
-          .catch(() => {
-            this.$message.error("出错啦!");
-          })
-
+      onSubmit(form) {
+        this.$refs[form].validate((valid) => {
+          if (valid){
+            let params = {
+              id: this.$route.query.staffId,
+              account: this.form.account,
+              name: this.form.name,
+              contacts: this.form.contacts,
+              role_id: this.form.role_id,
+            };
+            //员工信息修改接口
+            updateEmployee(params)
+              .then(res =>{
+                if (res.status == 200) {
+                  this.$message.success("修改成功!");
+                  this.$router.go(-1);
+                }
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              })
+          }else {
+            return false;
+          }
+        });
       },
       initData(params){
         let id = {
