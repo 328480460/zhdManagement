@@ -5,7 +5,7 @@
 const develop = 'http://47.92.149.109:7108/mockjsdata/2';
 /*本地测试地址*/
 const test = 'http://192.168.1.198:8764/meatWebServer';//test  张力
-const test2 = 'http://192.168.1.198:8764/meatWebServer';//test2  张力
+const test2 = 'http://192.168.1.198:8764/meatWebServer';//test2  刘高阳
 // const test = 'http://192.168.1.222:8764/meatWebServer';//test  张力
 // const test2 = "http://192.168.1.222:8764/meatWebServer";//test2  刘高阳
 

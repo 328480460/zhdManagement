@@ -26,21 +26,21 @@
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
             </el-select>
-           </el-form-item> 
+           </el-form-item>
 
            <el-form-item label="计量单位" class="item-star">
               <el-radio v-model="form.metering_id" label="标件"></el-radio>
               <el-form-item prop="metering" class="block-state">
-                <el-input type="text" v-model="form.metering" min="0"></el-input>  
-              </el-form-item>              
+                <el-input type="text" v-model="form.metering" min="0"></el-input>
+              </el-form-item>
               <el-form-item prop="quality" class="block-state">
                 <el-select v-model="form.quality" placeholder="选择单位" clearable>
                   <el-option v-for="item in standardPartsList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
-                </el-select> 
-              </el-form-item> 
+                </el-select>
+              </el-form-item>
               <el-form-item class="block-state">
-                <el-input type="text" v-model="form.norms"></el-input>  
-              </el-form-item>                  
+                <el-input type="text" v-model="form.norms"></el-input>
+              </el-form-item>
               <el-radio v-model="form.metering_id" label="称重"></el-radio>
               <el-form-item prop="quality_id" class="block-state weighing-select">
                  <el-select v-model="form.quality_id" placeholder="选择单位" clearable>
@@ -112,7 +112,7 @@ export default {
         callback()
       }
       if(Boolean(this.form.metering_id === "标件")){
-        let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;  
+        let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
         if(!reg.test(value)){
           return callback(new Error("格式不正确"))
         }
@@ -121,7 +121,7 @@ export default {
         } else{
           callback();
         }
-      }      
+      }
     };
     var check2 = (rule, value, callback) => {
       if(Boolean(this.form.metering_id === "称重")){
@@ -133,19 +133,19 @@ export default {
         } else{
           callback();
         }
-      }       
+      }
     };
     var check3 = (rule, value, callback) => {
-      if(Boolean(this.form.metering_id === "标件")){       
+      if(Boolean(this.form.metering_id === "标件")){
         callback();
-      } 
+      }
       if(Boolean(this.form.metering_id === "称重")){
         if(!value){
           return callback(new Error('请选择计量单位'));
         } else{
           callback();
         }
-      }      
+      }
     };
     return {
       showMetering:true,
@@ -210,7 +210,7 @@ export default {
         ],
         metering:[
           {validator: check1,trigger:'change'}
-        ], 
+        ],
         quality:[
           {validator: check2,trigger:'change'}
         ],
@@ -232,7 +232,7 @@ export default {
       this.loadCustomDefineDetailData(newVal);
     }
   },
-  methods: {    
+  methods: {
     //包装规格查询
     getNormsTypeList(){
       let params = {
@@ -245,7 +245,7 @@ export default {
         .catch(() => {
           this.$message.error("出错啦!");
         });
-    },    
+    },
     // 标件单位查询
     getStandardParts(){
       let params = {
@@ -253,7 +253,7 @@ export default {
       };
       getlist(params)
         .then(res => {
-          this.standardPartsList = res.data.typeTablesList;         
+          this.standardPartsList = res.data.typeTablesList;
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -266,14 +266,14 @@ export default {
       };
       getlist(params)
         .then(res => {
-          this.weighingList = res.data.typeTablesList;         
+          this.weighingList = res.data.typeTablesList;
         })
         .catch(() => {
           this.$message.error("出错啦!");
         });
-    },  
-    onSubmit(form) {   
-        this.$refs[form].validate((valid) => {            
+    },
+    onSubmit(form) {
+        this.$refs[form].validate((valid) => {
         if (valid) {
            if(this.selectCustomDefineId){
               this.customDefineAttributeList.forEach((value, index) => {
@@ -306,7 +306,7 @@ export default {
                     quality_id:sendQuality,
                   };
                   saveProduct(params)
-                    .then(res =>{                      
+                    .then(res =>{
                       if (res.status == 200) {
                         this.$message.success("添加成功!");
                         this.$router.go(-1);
@@ -355,8 +355,8 @@ export default {
                 .catch(() => {
                   this.$message.error("出错啦!");
                 })
-            }       
-         
+            }
+
         } else {
           return false;
         }
@@ -445,7 +445,7 @@ export default {
         });
       });
       // console.log(this.customDefineAttributeList)
-    },    
+    },
     initData() {
       //查询“产品分类-系统默认提供”列表
       this.systemDefaultTypeLists()
@@ -511,7 +511,7 @@ export default {
   display: inline-block;
   .el-input,.el-select{
     width: 105px;
-  }  
+  }
 }
 .weighing-select{
   margin-top: 20px;

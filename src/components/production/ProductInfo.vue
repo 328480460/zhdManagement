@@ -32,12 +32,12 @@
       </el-row>
     </div>
 
-    <el-table class="el-table" :data="productList" style="text-align:center;">
+    <el-table class="el-table" :data="productList">
       <el-table-column class="table-column" prop="product" label="产品编码"></el-table-column>
       <el-table-column class="table-column" prop="product_name" label="产品名称"></el-table-column>
       <el-table-column class="table-column" prop="product_type_name" label="产品分类"></el-table-column>
       <el-table-column class="table-column" prop="custom_type_name" label="自定义分类"></el-table-column>
-      <el-table-column class="table-column" prop="norms" label="单位"></el-table-column>
+      <el-table-column class="table-column" prop="norms" label="包装规格/计量单位"></el-table-column>
       <el-table-column class="table-column" label="操作">
         <template slot-scope="scope">
           <el-button size="mini" type="text" @click="editProduct(scope.$index, scope.row)">编辑</el-button>
@@ -205,12 +205,12 @@ export default {
         pagesize: this.pageSize,
         createdate_start: this.ajaxSearch.time[0],
         createdate_end: this.ajaxSearch.time[1]
-      };      
+      };
       this.getDataAjax(params);
     },
     getDataAjax(params) {
        getProductList(params)
-        .then(res => {              
+        .then(res => {
           this.totalcount = res.data.totalcount;
           this.productList = res.data.productList;
           for(let i=0,len=this.productList.length;i<len;i++){
@@ -219,7 +219,7 @@ export default {
             }else{
               this.productList[i].norms = `${this.productList[i].norms}(${this.productList[i].quality_id})`
             }
-          }   
+          }
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -304,11 +304,6 @@ export default {
     margin-top: 2px;
   }
 }
-</style>
-<style>
-.el-table tr th{
-  text-align: center;
-} 
 </style>
 
 
