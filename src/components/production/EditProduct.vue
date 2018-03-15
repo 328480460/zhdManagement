@@ -23,32 +23,35 @@
             ></el-cascader>
           </el-form-item>
           <el-form-item label="包装规格" prop="norms">
-            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
+            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" @change="normsChange">
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
               </el-option>
             </el-select>
-            </el-form-item>
-
-            <el-form-item label="计量单位" class="item-star">
-              <el-radio v-model="form.metering_id" label="标件"></el-radio>
-              <el-form-item prop="metering" class="block-state">
-                <el-input type="text" v-model="form.metering" min="0"></el-input>  
-              </el-form-item>              
-              <el-form-item prop="quality" class="block-state">
-                <el-select v-model="form.quality" placeholder="选择单位" clearable>
-                  <el-option v-for="item in standardPartsList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
-                </el-select> 
-              </el-form-item>            
-              <el-form-item class="block-state">
-                <el-input type="text" v-model="form.norms"></el-input>  
-              </el-form-item>        
-              <el-radio v-model="form.metering_id" label="称重"></el-radio>
-              <el-form-item prop="quality_id" class="block-state weighing-select">
-                 <el-select v-model="form.quality_id" placeholder="选择单位" clearable>
-                  <el-option v-for="item in weighingList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
-                </el-select>
-              </el-form-item>
           </el-form-item>
+
+             <el-form-item label="计量单位" class="item-star">
+              <el-radio v-model="form.metering_id" label="标件"></el-radio>
+              <el-radio v-model="form.metering_id" label="称重"></el-radio>
+              <el-form-item>
+                <el-form-item prop="metering" class="block-state" v-show="form.metering_id=='标件'">
+                  <el-input type="text" v-model="form.metering"></el-input>  
+                </el-form-item>              
+                <el-form-item prop="quality" class="block-state" v-show="form.metering_id=='标件'">
+                  <el-select v-model="form.quality" placeholder="选择单位" clearable>
+                    <el-option v-for="item in standardPartsList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
+                  </el-select> 
+                </el-form-item> 
+                <el-form-item class="block-state" v-show="form.metering_id=='标件'">
+                  <el-input type="text" v-model="linkageUnit" disabled></el-input>  
+                </el-form-item>                  
+                
+                <el-form-item prop="quality_id" class="block-state weighing-select" v-show="form.metering_id=='称重'">
+                  <el-select v-model="form.quality_id" placeholder="选择单位" clearable>
+                    <el-option v-for="item in weighingList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-form-item>              
+            </el-form-item>
 
           <el-form-item label="自定义分类">
             <el-select v-model="form.customType" clearable  placeholder="无" width="50px" >
@@ -117,6 +120,9 @@
           let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;  
           if(!reg.test(value)){
             return callback(new Error("格式不正确"))
+          }
+          if(value == 0){
+            return callback(new Error("数量不能为零"))
           }
           if(!value){
             return callback(new Error("请填写计量单位"));
@@ -196,6 +202,9 @@
         customFields:[],
         newCustomFields:[],
         customMouldId:"",
+        // 计量单位 联动单位
+        linkageUnit:"",
+
         rules: {
           productCode: [
             { required: true, message: '请填写产品编号', trigger: 'blur' }
@@ -274,6 +283,13 @@
             this.$message.error("出错啦!");
           });
       },  
+      normsChange(){
+        if(this.form.norms){
+          this.linkageUnit = "/"+this.form.norms;
+        }else{
+          this.linkageUnit = "";
+        }      
+      },
       onSubmit(form) {
         this.$refs[form].validate((valid) => {
           if (valid){
@@ -411,6 +427,11 @@
             }else{
               this.form.quality_id = productDetail.quality_id;
             }
+            if(this.form.norms){
+              this.linkageUnit = "/"+this.form.norms;
+            }else{
+              this.linkageUnit = "";
+            }  
             if(productDetail. custom_mould_id){
               //请求用户自定义模块详情
               this.loadCustomDefineDetailData(productDetail. custom_mould_id)
@@ -566,9 +587,6 @@
   .el-input,.el-select{
     width: 105px;
   }  
-}
-.weighing-select{
-  margin-top: 20px;
 }
 </style>
 <style rel="stylesheet/less" lang='less'>
