@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-    <el-button class="bt-save" type="primary" @click="onSubmit">保存</el-button>
+    <el-button class="bt-save" type="primary" @click="onSubmit('form')">保存</el-button>
   </div>
   <!-- </div> -->
 </template>

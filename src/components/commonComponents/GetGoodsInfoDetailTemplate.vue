@@ -9,10 +9,10 @@
                    <div class="infoNo-code">{{receiptNum}}</div>
                 </div>
                 <el-form-item label="收货日期" prop="getThingsTime">
-                  <el-date-picker v-model="getThingsForm.getThingsTime" type="date" placeholder="选择日期"> </el-date-picker>
+                  <el-date-picker :disabled="!edit" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="getThingsForm.getThingsTime" type="date" placeholder="选择日期"> </el-date-picker>
                 </el-form-item>
                 <el-form-item label="当前节点" prop="currentNode">
-                  <el-select v-model="getThingsForm.currentNode" placeholder="请选择">
+                  <el-select :disabled="!edit" v-model="getThingsForm.currentNode" placeholder="请选择">
                     <el-option
                             v-for="item in thisNodeOption"
                             :key="item.id"
@@ -22,7 +22,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="来源节点" prop="fromNode">
-                  <el-select v-model="getThingsForm.fromNode" placeholder="请选择">
+                  <el-select :disabled="!edit" v-model="getThingsForm.fromNode" placeholder="请选择">
                     <el-option
                         v-for="item in sourceNodedOption"
                         :key="item.id"
@@ -36,8 +36,8 @@
         <div class="product-info">
           <h6 class="title">产品信息</h6>
           <div class="content">
-            <el-form-item label="添加产品" prop="addProduct">
-              <el-select v-model="getThingsForm.addProduct" placeholder="选择产品"  @change='changeHandle'>
+            <el-form-item label="添加产品" prop="addProduct" class="item-star">
+              <el-select :disabled="!edit" v-model="getThingsForm.addProduct" placeholder="选择产品"  @change='changeHandle'>
                 <el-option
                     v-for="item in productTypeList"
                     :key="item.id"
@@ -89,7 +89,7 @@
           <div class="attribute-wrapper" v-show="selectCustomDefineId">
             <div class="content">
               <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
-                <div class="lable">{{item.column_chinese}}</div>
+                <div class="custom-attribute">{{item.column_chinese}}</div>
                 <!-- <el-cascader v-if="/产地/.test(item.column_chinese)" :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader> -->
                 <el-input :disabled="!edit" v-model="item.data_value" placeholder="请输入内容"></el-input>
               </div>
@@ -122,19 +122,34 @@ export default {
     this.loadCustomDefineData();
   },
   data() {
-    return {
+    var checkAddProduct = (rule, value, callback) => {
+      if(this.receiveProductList.length<=0){
+        callback(new Error("请选择产品"))
+      }else{
+        callback();
+      }
+    };
+    return {      
+      getThingsForm: {
+        getThingsTime: this.receiptDate,
+        currentNode:"",
+        fromNode:"",
+        addProduct:"",
+        customProps:""
+      },
       // 当前节点可选列表
       thisNodeOption: [],
       // 当前选中的当前节点
       currnetNode: "",
       // 当前选中的当前节点ID
-      currnetNodeId: "",
+      // currnetNodeId: "",
       // 来源节点可选列表
       sourceNodedOption: [],
       // 当前选中的来源节点
       sourceNode: "",
       // 当前选中的来源节点ID
-      sourceNodeId: "",
+      // sourceNodeId: "",
+      // this.getThingsForm.fromNode
       // 所有产品类型列表
       productTypeList: [],
       // 当前选中产品类型
@@ -152,18 +167,9 @@ export default {
       // 选中的城市
       selectedCity: ["110000", "110000", "110000"],
       // 时间
-      time: this.receiptDate,
+      // time: "",
       // 收货产品列表
       receiveProductList: this.productList,
-
-      
-      getThingsForm: {
-        getThingsTime: "",
-        currentNode:"",
-        fromNode:"",
-        addProduct:"",
-        customProps:""
-      },
       getThingsRules: {
         getThingsTime: [
           { required: true, message: '请选择收货日期', trigger: 'blur' }
@@ -175,7 +181,7 @@ export default {
           {required: true, message: '请选择来源节点', trigger: 'change'}
         ],
         addProduct:[
-          {required:true,message:'请添加产品',trigger:'change'}
+          {validator: checkAddProduct,trigger:'change'}
         ],
         customProps:[
           {required:true,message:'请选择',trigger:'change'}
@@ -314,7 +320,8 @@ export default {
         // console.log(value, this.sourceNodedId);
         if (value.id == this.sourceNodedId) {
           this.sourceNode = value.node_name;
-          this.sourceNodeId = value.id;
+          // this.sourceNodeId = value.id;
+          this.getThingsForm.fromNode = value.id;
         }
       });
     },
@@ -324,7 +331,8 @@ export default {
         // console.log(value, this.thisNodeId);
         if (value.id == this.thisNodeId) {
           this.currnetNode = value.node_name;
-          this.currnetNodeId = value.id;
+          // this.currnetNodeId = value.id;
+          this.getThingsForm.currentNode = value.id;
         }
       });
     },
@@ -366,7 +374,7 @@ export default {
         return;
       }
     },
-    saveData(formName) {     
+    saveData(formName) {    
       this.$refs[formName].validate((valid) => {           
         if (valid) {   
           for(let i=0,len=this.receiveProductList.length;i<len;i++){
@@ -385,14 +393,17 @@ export default {
           } 
           let data = {
             id: this.id,
-            this_node_id: this.currnetNodeId,
-            source_noded_id: this.sourceNodeId,
-            receipt_date: this.time,
+            // this_node_id: this.currnetNodeId,
+            this_node_id:this.getThingsForm.currentNode,
+            // source_noded_id: this.sourceNodeId,
+            source_noded_id:this.getThingsForm.fromNode,
+            // receipt_date: this.time,
+            receipt_date:this.getThingsForm.getThingsTime,
             receipt_num: this.receiptNum,
             custom_mould_id: this.selectCustomDefineId,
             productList: this.receiveProductList,
             customFields: this.customDefineAttributeList
-          };
+          };   
           this.$emit("saveData", data);
         } else {
           console.log('error submit!!');
@@ -534,3 +545,14 @@ export default {
 }
 </style>
 
+<style rel="stylesheet/less" lang='less'>
+.item-star{
+  .el-form-item__label{
+    &:before{
+      content: '*';
+      color: #f56c6c;
+      margin-right: 4px;
+    }
+  }
+}
+</style>

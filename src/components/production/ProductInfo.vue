@@ -32,7 +32,7 @@
       </el-row>
     </div>
 
-    <el-table class="el-table" :data="productList">
+    <el-table class="el-table" :data="productList" style="text-align:center;">
       <el-table-column class="table-column" prop="product" label="产品编码"></el-table-column>
       <el-table-column class="table-column" prop="product_name" label="产品名称"></el-table-column>
       <el-table-column class="table-column" prop="product_type_name" label="产品分类"></el-table-column>
@@ -41,7 +41,7 @@
       <el-table-column class="table-column" label="操作">
         <template slot-scope="scope">
           <el-button size="mini" type="text" @click="editProduct(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="text" style="margin-left: 50px" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button size="mini" type="text" style="margin-left: 20px" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -205,16 +205,21 @@ export default {
         pagesize: this.pageSize,
         createdate_start: this.ajaxSearch.time[0],
         createdate_end: this.ajaxSearch.time[1]
-      };
+      };      
       this.getDataAjax(params);
     },
     getDataAjax(params) {
        getProductList(params)
-        .then(res => {
+        .then(res => {              
           this.totalcount = res.data.totalcount;
           this.productList = res.data.productList;
-        //  console.log("productList---"+JSON.stringify(this.productList[0]))   
-          console.log(this.productList[0])               
+          for(let i=0,len=this.productList.length;i<len;i++){
+            if(this.productList[i].metering){
+              this.productList[i].norms = `${this.productList[i].norms}(${this.productList[i].metering}${this.productList[i].quality_id}/${this.productList[i].norms})`
+            }else{
+              this.productList[i].norms = `${this.productList[i].norms}(${this.productList[i].quality_id})`
+            }
+          }   
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -300,3 +305,10 @@ export default {
   }
 }
 </style>
+<style>
+.el-table tr th{
+  text-align: center;
+} 
+</style>
+
+

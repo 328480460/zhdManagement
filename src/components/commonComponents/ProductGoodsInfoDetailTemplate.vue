@@ -10,12 +10,12 @@
                 </div>
                 <div class="demo-input-suffix">
                   <el-form-item label="生产日期" prop="productionTime">
-                    <el-date-picker v-model="productInfoForm.productionTime" type="date" placeholder="选择生产日期"> </el-date-picker>
+                    <el-date-picker :disabled="!edit" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="productInfoForm.productionTime" type="date" placeholder="选择生产日期"> </el-date-picker>
                   </el-form-item>
                 </div>
                 <div class="demo-input-suffix">                  
                     <el-form-item label="当前节点" prop="currentNode">
-                      <el-select v-model="productInfoForm.currentNode" placeholder="请选择">
+                      <el-select :disabled="!edit" v-model="productInfoForm.currentNode" placeholder="请选择">
                         <el-option v-for="item in thisNodeOption"
                         :key="item.id"
                         :label="item.node_name"
@@ -33,8 +33,8 @@
           <h6 class="title">产品信息</h6>
           <div class="content">
             <div class="demo-input-suffix">
-                <el-form-item label="投入品" prop="inputsProduct">
-                  <el-select v-model="productInfoForm.inputsProduct" placeholder="请选择投入品"  @change='changeHandleIn'>
+                <el-form-item label="投入品" prop="inputsProduct"  class="item-star">
+                  <el-select  :disabled="!edit" v-model="productInfoForm.inputsProduct" placeholder="请选择投入品"  @change='changeHandleIn'>
                     <el-option
                     v-for="item in productTypeList"
                     :key="item.id"
@@ -61,7 +61,7 @@
                 <td>{{item.product}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量" @change="numberChange(index,$event)"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量" @change="goodsInChange(index,$event)"></el-input></td>
                 <td>{{item.metering_name}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProductionIn(item, index)"></i></td>
               </tr>
@@ -69,8 +69,8 @@
           </div>
           <div class="content">
             <div class="demo-input-suffix">
-                <el-form-item label="成品" prop="finishedProduct">
-                  <el-select v-model="productInfoForm.finishedProduct" placeholder="请选择成品" @change='changeHandleOut'>
+                <el-form-item label="成品" prop="finishedProduct"  class="item-star">
+                  <el-select :disabled="!edit" v-model="productInfoForm.finishedProduct" placeholder="请选择成品" @change='changeHandleOut'>
                     <el-option
                     v-for="item in productTypeList"
                     :key="item.id"
@@ -97,7 +97,7 @@
                 <td>{{item.product_num}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量" @change="numberChange(index,$event)"></el-input></td>
+                <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量" @change="goodsOutChange(index,$event)"></el-input></td>
                 <td>{{item.metering_name}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProductionOut(item, index)"></i></td>
               </tr>
@@ -123,7 +123,7 @@
           <div class="attribute-wrapper" v-show="selectCustomDefineId">
             <div class="content">
               <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
-                <div class="lable">{{item.column_chinese}}</div>
+                <div class="custom-attribute">{{item.column_chinese}}</div>
                 <!-- <el-cascader v-if="/产地/.test(item.column_chinese)" :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader> -->
                 <el-input :disabled="!edit" v-model="item.data_value" placeholder="请输入内容"></el-input>
               </div>
@@ -156,19 +156,33 @@ export default {
     this.loadCustomDefineData();
   },
   data() {
+    var checkInputsProduct = (rule, value, callback) => {
+      if(this.productGoodsIn.length<=0){
+        callback(new Error("请选择投入品"))
+      }else{
+        callback();
+      }
+    };
+    var checkFinishedProduct = (rule, value, callback) => {
+      if(this.productGoodsOut.length<=0){
+        callback(new Error("请选择成品"))
+      }else{
+        callback();
+      }
+    };
     return {
       // 当前节点可选列表
       thisNodeOption: [],
       // 当前选中的当前节点
       currnetNode: '',
       // 当前选中的当前节点ID
-      currnetNodeId: "",
+      // currnetNodeId: "",
       // 所有产品类型列表
       productTypeList: [],
       // 当前选中投入品类型
-      selectProductionIn: "",
+      // selectProductionIn: "",
       // 当前选中产出品类型
-      selectProductionOut: "",
+      // selectProductionOut: "",
       // 用户自定义模块可选列表
       customDefineList: [],
       // 当前用户选中自定义模块
@@ -182,14 +196,14 @@ export default {
       // 选中的城市
       selectedCity: ["110000", "110000", "110000"],
       // 时间
-      time: this.productDate,
+      // time: this.productDate,
       // 投入品产品列表
       productGoodsIn: this.productListIn,
       // 成品产品列表
       productGoodsOut: this.productListOut,
 
       productInfoForm:{
-        productionTime:"",
+        productionTime:this.productDate,
         currentNode:"",
         inputsProduct:"",
         finishedProduct:""
@@ -202,10 +216,10 @@ export default {
           { required: true, message: "请选择当前节点", trigger:'change' }
         ],
         inputsProduct:[
-          { required: true, message: "请选择投入品", trigger:'change' }
+          { validator: checkInputsProduct, trigger:'change' }
         ],
         finishedProduct:[
-          { required: true, message: "请选择成品", trigger:'change' }
+          { validator: checkFinishedProduct, trigger:'change' }
         ]
       }
     };
@@ -327,7 +341,8 @@ export default {
         // console.log(value, this.thisNodeId);
         if(value.id == this.thisNodeId) {
           this.currnetNode = value.node_address;
-          this.currnetNodeId = value.id;
+          // this.currnetNodeId = value.id;
+          this.productInfoForm.currentNode = value.id;
         }
       })
     },
@@ -357,7 +372,8 @@ export default {
       })
       // console.log(newProduction)
       this.productGoodsIn.unshift(deepCopy(...newProduction));
-      this.selectProductionIn = '';
+      // this.selectProductionIn = '';
+      // this.productInfoForm.inputsProduct = '';
     },
     changeHandleOut(id) {
       let newProduction = this.productTypeList.filter((value, index) => {
@@ -365,7 +381,8 @@ export default {
       })
       // console.log(newProduction)
       this.productGoodsOut.unshift(deepCopy(...newProduction));
-      this.selectProductionOut = '';
+      // this.selectProductionOut = '';
+      // this.productInfoForm.finishedProduct = '';
     },
     deleProductionIn(item, index) {
       this.productGoodsIn.splice(index, 1);
@@ -376,17 +393,24 @@ export default {
     editPage() {
       this.$emit('editPage');
     },
-    numberChange(index,event){
-      let reg = /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/;       
-      if(this.productGoodsIn[index].receipt_num && !reg.test(this.productGoodsIn[index].receipt_num)){
-        this.$message.warning("输入格式不正确,请从新输入");
-        this.productGoodsIn[index].receipt_num = "";
-        return;
-      }
-      if(this.productGoodsOut[index].receipt_num && !reg.test(this.productGoodsOut[index].receipt_num)){
-        this.$message.warning("输入格式不正确,请从新输入");
-        this.productGoodsOut[index].receipt_num = "";
-        return;
+    goodsInChange(index){
+      let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
+      if( this.productGoodsIn.length>0 ){  
+        if(!reg.test(this.productGoodsIn[index].receipt_num) ){
+          this.$message.warning("输入格式不正确,请从新输入");
+          this.productGoodsIn[index].receipt_num = "";
+          return;
+        }       
+      } 
+    },
+    goodsOutChange(index){
+      let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
+      if(this.productGoodsOut.length>0){
+         if(!reg.test(this.productGoodsOut[index].receipt_num)){
+          this.$message.warning("输入格式不正确,请从新输入");
+          this.productGoodsOut[index].receipt_num = "";
+          return;
+        }
       }
     },
     saveData(formName) {
@@ -422,8 +446,10 @@ export default {
           } 
           let data = {
             id: this.id,
-            this_node_id: this.currnetNodeId,
-            production_date: this.time,
+            // this_node_id: this.currnetNodeId,
+            this_node_id: this.productInfoForm.currentNode,
+            // production_date: this.time,
+            production_date:this.productInfoForm.productionTime,
             production_num: this.productionNum,
             custom_mould_id: this.selectCustomDefineId,
             productionOutProductList: this.formatProduction(this.productGoodsOut),
@@ -562,6 +588,18 @@ export default {
     padding: 0 12px 0 0;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+</style>
+
+<style  rel="stylesheet/less" lang="less">
+.item-star{
+  .el-form-item__label{
+    &:before{
+      content: '*';
+      color: #f56c6c;
+      margin-right: 4px;
+    }
+  }
 }
 </style>
 

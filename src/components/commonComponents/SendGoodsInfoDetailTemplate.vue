@@ -10,12 +10,12 @@
                 </div> 
                 <div class="demo-input-suffix">                   
                   <el-form-item label="发货日期" prop="sendTime">
-                    <el-date-picker v-model="sendMsgForm.sendTime" type="date" placeholder="选择发货日期"> </el-date-picker>
+                    <el-date-picker :disabled="!edit" v-model="sendMsgForm.sendTime" type="date" placeholder="选择发货日期"> </el-date-picker>
                   </el-form-item>
                 </div>
                 <div class="demo-input-suffix">
                   <el-form-item label="当前节点" prop="currentNode">
-                    <el-select v-model="sendMsgForm.currentNode" placeholder="请选择">
+                    <el-select :disabled="!edit" v-model="sendMsgForm.currentNode" placeholder="请选择">
                       <el-option
                       v-for="item in thisNodeOption"
                       :key="item.id"
@@ -27,7 +27,7 @@
                 </div>
                 <div class="demo-input-suffix">
                     <el-form-item label="流向节点" prop="flowtNode">
-                      <el-select v-model="sendMsgForm.flowtNode" placeholder="请选择">
+                      <el-select :disabled="!edit" v-model="sendMsgForm.flowtNode" placeholder="请选择">
                         <el-option
                         v-for="item in flowNodeOption"
                         :key="item.id"
@@ -43,8 +43,8 @@
           <h6 class="title">产品信息</h6>
           <div class="content">
             <div class="demo-input-suffix">
-                <el-form-item label="添加产品" prop="productMsg">
-                  <el-select v-model="sendMsgForm.productMsg" placeholder="选择产品"  @change='changeHandle'>
+                <el-form-item label="添加产品" prop="productMsg"  class="item-star">
+                  <el-select :disabled="!edit" v-model="sendMsgForm.productMsg" placeholder="选择产品"  @change='changeHandle'>
                     <el-option
                     v-for="item in productTypeList"
                     :key="item.id"
@@ -97,7 +97,7 @@
           <div class="attribute-wrapper" v-show="selectCustomDefineId">
             <div class="content">
               <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
-                <div class="lable">{{item.column_chinese}}</div>
+                <div class="custom-attribute">{{item.column_chinese}}</div>
                 <!-- <el-cascader v-if="/产地/.test(item.column_chinese)" :disabled="!edit" :options="cityDataList" change-on-select  v-model="selectedCity" ></el-cascader> -->
                 <el-input :disabled="!edit" v-model="item.data_value" placeholder="请输入内容"></el-input>
               </div>
@@ -130,23 +130,30 @@ export default {
     this.loadCustomDefineData();
   },
   data() {
+    var checkProductMsg = (rule, value, callback) => {
+      if(this.sendProductList.length<=0){
+        callback(new Error("请选择产品"))
+      }else{
+        callback();
+      }
+    };
     return {
       // 当前节点可选列表
       thisNodeOption: [],
       // 当前选中的当前节点
       currnetNode: '',
       // 当前选中的当前节点ID
-      currnetNodeId: '',
+      // currnetNodeId: '',
       // 来源节点可选列表
       flowNodeOption: [],
       // 当前选中的来源节点
       flowNode: '',
       // 当前选中的来源节点ID
-      nextNodeId: '',
+      // nextNodeId: '',
       // 所有产品类型列表
       productTypeList: [],
       // 当前选中产品类型
-      selectProduction: "",
+      // selectProduction: "",
       // 用户自定义模块可选列表
       customDefineList: [],
       // 当前用户选中自定义模块
@@ -160,13 +167,13 @@ export default {
       // 选中的城市
       selectedCity: ["110000", "110000", "110000"],
       // 时间
-      time: this.date,
+      // time: this.date,
       // 收货产品列表
       sendProductList: this.productList,
 
 
       sendMsgForm:{
-        sendTime:"",
+        sendTime:this.date,
         currentNode:"",
         flowtNode:"",
         productMsg:""
@@ -182,7 +189,7 @@ export default {
           { required: true, message: "请选择流向节点", trigger:'change' }
         ],
         productMsg:[
-          { required: true, message: "请添加产品", trigger:'change' }
+          { validator: checkProductMsg, trigger:'change' }
         ]
       }
     };
@@ -315,7 +322,8 @@ export default {
       this.flowNodeOption.forEach((value, index) => {
         if(value.id == this.flowNodeId) {
           this.flowNode = value.node_address;
-          this.nextNodeId = value.id;
+          // this.nextNodeId = value.id;
+          this.sendMsgForm.flowtNode = value.id;
         }
       })
     },
@@ -324,7 +332,8 @@ export default {
       this.thisNodeOption.forEach((value, index) => {
         if(value.id == this.thisNodeId) {
           this.currnetNode = value.node_address;
-          this.currnetNodeId = value.id;
+          // this.currnetNodeId = value.id;
+          this.sendMsgForm.currentNode = value.id;
         }
       })
     },
@@ -347,7 +356,8 @@ export default {
       })
       // console.log(newProduction)
       this.sendProductList.unshift(deepCopy(...newProduction));
-      this.selectProduction = '';
+      // this.selectProduction = '';
+      // this.sendMsgForm.productMsg = '';
     },
     deleProduction(item, index) {
       this.sendProductList.splice(index, 1);
@@ -356,8 +366,7 @@ export default {
       this.$emit('editPage');
     },
     numberChange(index,event){
-      console.log(index)
-      let reg = /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/; 
+      let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/; 
       if(!reg.test(this.sendProductList[index].invoice_num)){
         this.$message.warning("输入格式不正确,请从新输入");
         this.sendProductList[index].invoice_num = "";
@@ -383,9 +392,12 @@ export default {
           } 
           let data = {
             id: this.id,
-            this_node_id: this.currnetNodeId,
-            flow_to_id: this.nextNodeId,
-            invoice_date: this.time,
+            // this_node_id: this.currnetNodeId,
+            this_node_id: this.sendMsgForm.currentNode,
+            // flow_to_id: this.nextNodeId,
+            flow_to_id:this.sendMsgForm.flowtNode,
+            // invoice_date: this.time,
+            invoice_date:this.sendMsgForm.sendTime,
             invoice_num: this.invoiceNum,
             custom_mould_id: this.selectCustomDefineId,
             productList: this.sendProductList,
@@ -412,6 +424,17 @@ export default {
 };
 </script>
 
+<style rel="stylesheet/less" lang='less'>
+.item-star{
+  .el-form-item__label{
+    &:before{
+      content: '*';
+      color: #f56c6c;
+      margin-right: 4px;
+    }
+  }
+}
+</style>
 <style rel="stylesheet/less" lang="less" scoped>
 #getGoodsInfoDetailTemp {
   padding: 10px;
