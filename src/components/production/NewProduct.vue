@@ -29,18 +29,21 @@
            </el-form-item> 
 
            <el-form-item label="计量单位" class="item-star">
-              <el-radio v-model="form.metering_id" @change="radioChange" label="标件"></el-radio>
+              <el-radio v-model="form.metering_id" label="标件"></el-radio>
               <el-form-item prop="metering" class="block-state">
                 <el-input type="text" v-model="form.metering" min="0"></el-input>  
               </el-form-item>              
-              <el-form-item prop="quality" class="block-state standard-parts-select">
-                <el-select v-model="form.quality" placeholder="未选择" clearable>
+              <el-form-item prop="quality" class="block-state">
+                <el-select v-model="form.quality" placeholder="选择单位" clearable>
                   <el-option v-for="item in standardPartsList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
                 </el-select> 
-              </el-form-item>                   
-              <el-radio v-model="form.metering_id" @change="radioChange" label="称重"></el-radio>
-              <el-form-item prop="weighing" class="block-state weighing-select">
-                 <el-select v-model="form.quality_id" placeholder="未选择" clearable>
+              </el-form-item> 
+              <el-form-item class="block-state">
+                <el-input type="text" v-model="form.norms"></el-input>  
+              </el-form-item>                  
+              <el-radio v-model="form.metering_id" label="称重"></el-radio>
+              <el-form-item prop="quality_id" class="block-state weighing-select">
+                 <el-select v-model="form.quality_id" placeholder="选择单位" clearable>
                   <el-option v-for="item in weighingList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
                 </el-select>
               </el-form-item>
@@ -426,10 +429,7 @@ export default {
         });
       });
       // console.log(this.customDefineAttributeList)
-    },
-    radioChange(){      
-      // this.isDisabled = !this.isDisabled;
-    },
+    },    
     initData() {
       //查询“产品分类-系统默认提供”列表
       this.systemDefaultTypeLists()
@@ -493,12 +493,8 @@ export default {
 .block-state{
   display: inline-block;
   .el-input,.el-select{
-    margin-right:15px;
-    width: 100px;
+    width: 105px;
   }  
-}
-.standard-parts-select{
-  margin-right: 50px;
 }
 .weighing-select{
   margin-top: 20px;

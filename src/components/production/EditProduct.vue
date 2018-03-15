@@ -29,7 +29,28 @@
               </el-option>
             </el-select>
             </el-form-item>
-          <el-form-item label="计量单位" prop="metering">
+
+            <el-form-item label="计量单位" class="item-star">
+              <el-radio v-model="form.metering_id" label="标件"></el-radio>
+              <el-form-item prop="metering" class="block-state">
+                <el-input type="text" v-model="form.metering" min="0"></el-input>  
+              </el-form-item>              
+              <el-form-item prop="quality" class="block-state">
+                <el-select v-model="form.quality" placeholder="选择单位" clearable>
+                  <el-option v-for="item in standardPartsList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
+                </el-select> 
+              </el-form-item>            
+              <el-form-item class="block-state">
+                <el-input type="text" v-model="form.norms"></el-input>  
+              </el-form-item>        
+              <el-radio v-model="form.metering_id" label="称重"></el-radio>
+              <el-form-item prop="quality_id" class="block-state weighing-select">
+                 <el-select v-model="form.quality_id" placeholder="选择单位" clearable>
+                  <el-option v-for="item in weighingList" :key="item.id" :label="item.type_name" :value="item.type_name"> </el-option>
+                </el-select>
+              </el-form-item>
+          </el-form-item>
+          <!-- <el-form-item label="计量单位" prop="metering">
             <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
             <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
               <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
@@ -39,7 +60,7 @@
               <el-radio label="标件"></el-radio>
               <el-radio label="称重"></el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="自定义分类">
             <el-select v-model="form.customType" clearable  placeholder="无" width="50px" >
               <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
@@ -99,6 +120,46 @@
   export default {
     name: "editProduct",
     data() {
+      var check1 = (rule, value, callback) => {
+        if(Boolean(this.form.metering_id === "称重")){
+          callback()
+        }
+        if(Boolean(this.form.metering_id === "标件")){
+          let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;  
+          if(!reg.test(value)){
+            return callback(new Error("格式不正确"))
+          }
+          if(!value){
+            return callback(new Error("请填写计量单位"));
+          } else{
+            callback();
+          }
+        }      
+      };
+      var check2 = (rule, value, callback) => {
+        if(Boolean(this.form.metering_id === "称重")){
+          callback()
+        }
+        if(Boolean(this.form.metering_id === "标件")){
+          if(!value){
+            return callback(new Error("请选择计量单位"));
+          } else{
+            callback();
+          }
+        }       
+      };
+      var check3 = (rule, value, callback) => {
+        if(Boolean(this.form.metering_id === "标件")){       
+          callback();
+        } 
+        if(Boolean(this.form.metering_id === "称重")){
+          if(!value){
+            return callback(new Error('请选择计量单位'));
+          } else{
+            callback();
+          }
+        }      
+      };
       return {
         form: {
           productCode: "",
@@ -107,7 +168,9 @@
           customType: "",
           norms: "",
           metering: "",
-          metering_id: "",
+          metering_id: "标件",
+          quality:'',
+          quality_id:'',
           productDesc: "",
           productBrand: "",
           custom_mould:"",
@@ -122,6 +185,9 @@
         productTypeSelected: [],
         //规格列表
         normsTypeList:[],
+        //单位列表
+        standardPartsList:[],
+        weighingList:[],
         //产品分类--系统默认提供
         systemDefaultType:[],
         //自定义分类列表
@@ -151,9 +217,15 @@
           norms: [
             { required: true, message: '请选择包装规格', trigger: 'change' }
           ],
-          metering: [
-            { required: true, message: '请选择计量单位数量', trigger: 'change' }
+          metering:[
+            {validator: check1,trigger:'change'}
+          ], 
+          quality:[
+            {validator: check2,trigger:'change'}
           ],
+          quality_id:[
+            {validator: check3,trigger:'change'}
+          ]
         }
       };
     },
@@ -184,17 +256,36 @@
             this.$message.error("出错啦!");
           });
       },
+      // 标件单位查询
+      getStandardParts(){
+        let params = {
+          tables_name: "quality",
+        };
+        getlist(params)
+          .then(res => {
+            this.standardPartsList = res.data.typeTablesList; 
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
+      },
+      // 称重单位查询
+      getWeighing(){
+        let params = {
+          tables_name: "quality",
+        };
+        getlist(params)
+          .then(res => {
+            this.weighingList = res.data.typeTablesList;         
+          })
+          .catch(() => {
+            this.$message.error("出错啦!");
+          });
+      },  
       onSubmit(form) {
         this.$refs[form].validate((valid) => {
           if (valid){
-            if(this.form.metering_id == ''){
-              this.$message.warning("请选择“标件”或“称重”!");
-            }
-//            else if(this.form.productType == ''){
-//              this.$message.warning("请选择“产品分类”!");
-//            }
-            else{
-              if(this.selectCustomDefineId){
+             if(this.selectCustomDefineId){
                 this.customDefineAttributeList.forEach((value, index) => {
                   if (value.data_value) {
                     var arr  =
@@ -203,6 +294,13 @@
                       "data_value" :value.data_value,
                     }
                     this.newCustomFields .push(arr);
+                    let sendQuality = null;
+                    if(this.form.metering_id == "标件"){
+                      sendQuality = this.form.quality;
+                    }else{
+                      sendQuality = this.form.quality_id;
+                      this.form.metering = '';
+                    }
                     let params = {
                       id: this.$route.query.productId,
                       product: this.form.productCode,
@@ -215,7 +313,8 @@
                       product_depict: this.form.productDesc,
                       brand_name: this.form.productBrand,
                       custom_mould_id: this.selectCustomDefineId,
-                      customFields: this.newCustomFields
+                      customFields: this.newCustomFields,
+                      quality_id:sendQuality
                     };
                     updateProduct(params)
                       .then(res =>{
@@ -234,6 +333,13 @@
                   }
                 })
               }else{
+                let sendQuality = null;
+                if(this.form.metering_id == "标件"){
+                  sendQuality = this.form.quality;                  
+                }else{
+                  sendQuality = this.form.quality_id;
+                  this.form.metering = '';
+                }
                 let params = {
                   id: this.$route.query.productId,
                   product: this.form.productCode,
@@ -246,7 +352,8 @@
                   product_depict: this.form.productDesc,
                   brand_name: this.form.productBrand,
                   custom_mould_id: this.selectCustomDefineId,
-                  customFields: this.newCustomFields
+                  customFields: this.newCustomFields,
+                  quality_id:sendQuality
                 };
                 updateProduct(params)
                   .then(res =>{
@@ -261,7 +368,6 @@
                     this.$message.error("出错啦!");
                   })
               }
-            }
           }else {
             return false;
           }
@@ -285,7 +391,7 @@
       //产品详情接口
       getProductDetail(params){
         getProductDetail(params)
-          .then(res =>{
+          .then(res =>{            
             var productDetail = res.data.productDetail
             this.form.productCode = productDetail. product;
             this.form.productName = productDetail.product_name;
@@ -299,6 +405,11 @@
             this.selectCustomDefineId= productDetail. custom_mould_id;
 //            this.customDefineAttributeList = productDetail. customFields;
             this.productCustomList = productDetail. customFields;
+            if(this.form.metering_id == "标件"){
+              this.form.quality = productDetail.quality_id;
+            }else{
+              this.form.quality_id = productDetail.quality_id;
+            }
             if(productDetail. custom_mould_id){
               //请求用户自定义模块详情
               this.loadCustomDefineDetailData(productDetail. custom_mould_id)
@@ -392,6 +503,9 @@
         this.selectTypes()
         //查询规格列表
         this.getNormsTypeList();
+        //查询单位列表
+        this.getStandardParts();
+        this.getWeighing();
         //查询自定义属性列表
         this.getCustomAttributeList();
       },
@@ -441,4 +555,24 @@
       margin-left: 400px;
     }
   }
+.block-state{
+  display: inline-block;
+  .el-input,.el-select{
+    width: 105px;
+  }  
+}
+.weighing-select{
+  margin-top: 20px;
+}
+</style>
+<style rel="stylesheet/less" lang='less'>
+.item-star{
+  .el-form-item__label{
+    &:before{
+      content: '*';
+      color: #f56c6c;
+      margin-right: 4px;
+    }
+  }
+}
 </style>
