@@ -89,25 +89,6 @@ export default {
     };
   },
   methods: {
-    toggle(){
-      this.userItemToggle = !this.userItemToggle;
-    },
-    exit(){
-      logout()
-        .then(res => {
-          console.log("logout-----"+JSON.stringify(res))
-          if (res.status == 200){
-            this.$message.success("退出");
-            sessionStorage.setItem('isLogin', 0);
-            this.$router.push({path: '/'})
-          } else{
-            this.$message.error(res.msg);
-          }
-        })
-        .catch(() => {
-          this.$message.error("出错啦!");
-        });
-    },
     turnPage(id) {
       // 关闭额外tab
       this.extraTabInfo = {};
@@ -393,28 +374,6 @@ export default {
       .icon{
         cursor: pointer;
         margin: 10px 5px 10px 20px;
-      }
-      .user_toggle{
-        position:absolute;
-        right: 10px;
-        float: right;
-        z-index: 1;
-        background: white;
-        table {
-          height: 40px;
-          text-align: left;
-          width: 120px;
-          border: 2px solid #eeeeee;
-          tr {
-            td {
-              cursor: pointer;
-              font-weight: normal;
-              line-height: 40px;
-              padding-left: 15px;
-              border-bottom: 2px solid #efefef;
-            }
-          }
-        }
       }
     }
     &.welcome {

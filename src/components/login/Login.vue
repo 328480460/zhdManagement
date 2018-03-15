@@ -59,10 +59,7 @@ export default {
   mounted() {
     const pointLine = new PointLine();
     if(JSON.stringify(localStorage.checked) != null){
-        // console.log("checked---"+JSON.stringify(localStorage.checked))
-      var userid = JSON.stringify(JSON.parse(localStorage.userid))
       this.accountName = JSON.parse(localStorage.account)
-      // this.password = JSON.parse(localStorage.password)
       this.enterprise_id = JSON.parse(localStorage.enterprise_id)
       this.checked = JSON.parse(localStorage.checked)
     }else {

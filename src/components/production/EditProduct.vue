@@ -5,7 +5,6 @@
       <div class="section-content">
         <el-form ref="form" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="产品编号" prop="productCode">
-            <!--{{form.productCode}}-->
             <el-input v-model="form.productCode" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="产品名称" prop="productName">
@@ -50,17 +49,7 @@
                 </el-select>
               </el-form-item>
           </el-form-item>
-          <!-- <el-form-item label="计量单位" prop="metering">
-            <el-input style="width: 100px;" type="number" v-model="form.metering"></el-input>
-            <el-select v-model="form.norms" clearable  placeholder="选择规格" width="50px" >
-              <el-option  v-for="item in normsTypeList" :key="item.id" :label="item.type_name"  :value="item.type_name" >
-              </el-option>
-            </el-select>
-            <el-radio-group v-model="form.metering_id">
-              <el-radio label="标件"></el-radio>
-              <el-radio label="称重"></el-radio>
-            </el-radio-group>
-          </el-form-item> -->
+
           <el-form-item label="自定义分类">
             <el-select v-model="form.customType" clearable  placeholder="无" width="50px" >
               <el-option  v-for="item in customTypeList" :key="item.id" :label="item.type_name"  :value="item.id" >
@@ -161,20 +150,23 @@
         }      
       };
       return {
+        showMetering:true,
         form: {
           productCode: "",
           productName: "",
           productType: "",
           customType: "",
           norms: "",
+          quality: "",
+          quality_id: "",
           metering: "",
           metering_id: "标件",
-          quality:'',
-          quality_id:'',
           productDesc: "",
           productBrand: "",
           custom_mould:"",
           custom_mould_id:"",
+          radio1:"",
+          radio2:"",
         },
         props: {
           value: 'id',
@@ -183,7 +175,7 @@
         },
         //产品分类回显
         productTypeSelected: [],
-        //规格列表
+        //包装规格列表
         normsTypeList:[],
         //单位列表
         standardPartsList:[],
@@ -243,7 +235,7 @@
         }
         this.loadCustomDefineDetailData(val);
       },
-      //节点分类查询
+      //包装规格列表查询
       getNormsTypeList(){
         let params = {
           tables_name: "norms",
@@ -308,6 +300,7 @@
                       product_type_id: this.form.productType,
                       metering: this.form.metering,
                       norms: this.form.norms,
+                      quality: this.form.quality,
                       metering_id: this.form.metering_id,
                       custom_type_id: this.form.customType,
                       product_depict: this.form.productDesc,
@@ -347,6 +340,7 @@
                   product_type_id: this.form.productType,
                   metering: this.form.metering,
                   norms: this.form.norms,
+                  quality_id: this.form. quality,
                   metering_id: this.form.metering_id,
                   custom_type_id: this.form.customType,
                   product_depict: this.form.productDesc,
@@ -371,12 +365,18 @@
           }else {
             return false;
           }
-
-
         });
       },
       handleChange(value) {
         this.form.productType =value[value.length - 1]
+      },
+      //选择“标件”“称重”
+      radioChange(value) {
+        if(value == "称重"){
+          this.showMetering = false
+        }else{
+          this.showMetering = true
+        }
       },
       //“产品分类-系统默认提供”列表
       systemDefaultTypeLists(){
@@ -398,6 +398,7 @@
             this.form.productType = productDetail.product_type_id;
             this.form.customType = productDetail.custom_type_id;
             this.form.norms = productDetail.norms;
+            this.form.quality = productDetail.quality_id;
             this.form.metering = productDetail.metering;
             this.form.metering_id = productDetail.metering_id;
             this.form.productDesc = productDetail. product_depict;
@@ -413,6 +414,11 @@
             if(productDetail. custom_mould_id){
               //请求用户自定义模块详情
               this.loadCustomDefineDetailData(productDetail. custom_mould_id)
+            }
+            if(this.form.metering_id == "称重"){
+              this.showMetering = false
+            }else{
+              this.showMetering = true
             }
           })
           .catch(() => {
@@ -493,7 +499,7 @@
         }
       },
       initData(params){
-        //产品回显
+        //产品分类回显
         this.productTypeShow()
         //查询产品详情
         this.getProductDetail(params)
@@ -501,7 +507,7 @@
         this.systemDefaultTypeLists()
         //查询“自定义分类”列表
         this.selectTypes()
-        //查询规格列表
+        //查询包装规格列表
         this.getNormsTypeList();
         //查询单位列表
         this.getStandardParts();

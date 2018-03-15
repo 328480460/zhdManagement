@@ -148,11 +148,14 @@ export default {
       }      
     };
     return {
+      showMetering:true,
       form: {
         productCode: "",
         productName: "",
         productType: "",
         norms: "",
+        quality: "",
+        quality_id: "",
         metering: "",
         metering_id: "标件",
         quality:'',
@@ -197,10 +200,13 @@ export default {
           { required: true, message: '请填写产品名称', trigger: 'blur' }
         ],
         productType: [
-          { required: true, message: '请选择产品分类', trigger: 'change' }
+          { required: true, message: '请选择产品分类', trigger: 'blur' }
         ],
         norms: [
-          { required: true, message: '请选择包装规格', trigger: 'change' }
+          { required: true, message: '请选择包装规格', trigger: 'change' },
+        ],
+        metering_id: [
+          { required: true, message: '请选择标件或称重', trigger: 'change' },
         ],
         metering:[
           {validator: check1,trigger:'change'}
@@ -289,6 +295,7 @@ export default {
                     product_name: this.form.productName,
                     product_type_id: this.form.productType,
                     norms: this.form.norms,
+                    quality_id: this.form. quality,
                     metering: this.form.metering,
                     metering_id: this.form.metering_id,
                     custom_type_id: this.form.customType,
@@ -326,6 +333,7 @@ export default {
                 product_name: this.form.productName,
                 product_type_id: this.form.productType,
                 norms: this.form.norms,
+                quality_id: this.form. quality,
                 metering: this.form.metering,
                 metering_id: this.form.metering_id,
                 custom_type_id: this.form.customType,
@@ -357,6 +365,14 @@ export default {
     //选择的产品分类--系统默认提供
     handleChange(value) {
       this.form.productType =value[value.length - 1]
+    },
+    //选择“标件”“称重”
+    radioChange(value) {
+      if(value == "称重"){
+        this.showMetering = false
+      }else{
+        this.showMetering = true
+      }
     },
     //“产品分类-系统默认提供”列表
     systemDefaultTypeLists(){
@@ -442,6 +458,7 @@ export default {
       this.getWeighing();
       //查询自定义属性列表
       this.getCustomAttributeList();
+
     }
   }
 };

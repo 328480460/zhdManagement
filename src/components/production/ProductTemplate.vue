@@ -3,10 +3,7 @@
       <div class="btn-list">
         <el-button type="primary" size="medium"  @click="newTemplate">新增产品模板</el-button>
       </div>
-
       <el-table class="el-table"
-                border
-                stripe
                 :data="templatespro"
       >
         <el-table-column class="table-column"
@@ -22,9 +19,23 @@
               size="mini"
               type="text"
               @click="editProduct">编辑</el-button>
+
+            <el-popover
+              ref="popover4"
+              placement="left"
+              width="400"
+              trigger="click">
+                <!--预览手机-->
+                <!--<PreviewProductTemplate></PreviewProductTemplate>-->
+              <el-table>
+                <el-table-column width="150" property="date" label="日期"></el-table-column>
+              </el-table>
+            </el-popover>
+
             <el-button
               size="mini"
               type="text"
+              v-popover:popover4
               style="margin-left: 50px;margin-right: 50px"
               @click="preview">预览</el-button>
             <el-button
@@ -40,6 +51,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import PreviewProductTemplate from '../commonComponents/PreviewProductTemplate.vue';
     export default {
       name: "protemplate",
       created() {
@@ -58,7 +70,6 @@
 //            name: '其他模板'
 //          }
           ],
-
         }
       },
       methods: {
@@ -92,12 +103,25 @@
           });
         },
         preview(){
+//          this.open()
           console.log("“产品模板”预览")
         },
         editProduct(){
           console.log("“产品模板”编辑")
         },
+//        open() {
+//          this.$alert(
+//            '<div><PreviewProductTemplate></PreviewProductTemplate></div>', {
+//            dangerouslyUseHTMLString: true,
+//            showClose:false,
+//            showConfirmButton:false,
+//            closeOnClickModal:true
+//          });
+//        }
 
+      },
+      components: {
+        PreviewProductTemplate
       }
     };
 </script>
@@ -110,7 +134,6 @@
   background-color: #fff;
   .el-table{
     width: 100%;
-    text-align: center;
     margin-top: 24px;
   }
 
