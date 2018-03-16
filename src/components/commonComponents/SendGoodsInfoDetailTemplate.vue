@@ -357,7 +357,7 @@ export default {
       // console.log(newProduction)
       this.sendProductList.unshift(deepCopy(...newProduction));
       // this.selectProduction = '';
-      // this.sendMsgForm.productMsg = '';
+      this.sendMsgForm.productMsg = '';
     },
     deleProduction(item, index) {
       this.sendProductList.splice(index, 1);

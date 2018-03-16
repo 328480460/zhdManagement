@@ -58,7 +58,7 @@
               </tr>
               <tr v-for="(item, index) in productGoodsIn" :key="index">
                 <td>{{item.product_name}}</td>
-                <td>{{item.product}}</td>
+                <td>{{item.product_num}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.receipt_num" placeholder="请输入数量" @change="goodsInChange(index,$event)"></el-input></td>
@@ -368,12 +368,12 @@ export default {
     },
     changeHandleIn(id) {
       let newProduction = this.productTypeList.filter((value, index) => {
-        return value.id === id;
+        return value.id === id;        
       })
       // console.log(newProduction)
       this.productGoodsIn.unshift(deepCopy(...newProduction));
       // this.selectProductionIn = '';
-      // this.productInfoForm.inputsProduct = '';
+      this.productInfoForm.inputsProduct = '';
     },
     changeHandleOut(id) {
       let newProduction = this.productTypeList.filter((value, index) => {
@@ -382,7 +382,7 @@ export default {
       // console.log(newProduction)
       this.productGoodsOut.unshift(deepCopy(...newProduction));
       // this.selectProductionOut = '';
-      // this.productInfoForm.finishedProduct = '';
+      this.productInfoForm.finishedProduct = '';
     },
     deleProductionIn(item, index) {
       this.productGoodsIn.splice(index, 1);
@@ -456,7 +456,6 @@ export default {
             productionInProductList: this.formatProduction(this.productGoodsIn),
             productionCustomList: this.customDefineAttributeList
           };
-          console.log(this.formatProduction(this.productGoodsOut))
           this.$emit('saveData', data)
         } else {
           console.log('error submit!!');

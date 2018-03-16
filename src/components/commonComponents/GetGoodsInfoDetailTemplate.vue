@@ -153,7 +153,7 @@ export default {
       // 所有产品类型列表
       productTypeList: [],
       // 当前选中产品类型
-      selectProduction: "",
+      // selectProduction: "",
       // 用户自定义模块可选列表
       customDefineList: [],
       // 当前用户选中自定义模块
@@ -354,7 +354,8 @@ export default {
         return value.id === id;
       })
       this.receiveProductList.unshift(deepCopy(...newProduction));
-      this.selectProduction = '';
+      // this.selectProduction = '';
+      this.getThingsForm.addProduct = "";
     },
     deleProduction(item, index) {
       this.receiveProductList.splice(index, 1);

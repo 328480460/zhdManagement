@@ -69,7 +69,7 @@
       <el-table-column class="table-column"
                        prop="productList"
                        label="产品内容"
-      >
+      >    
       </el-table-column>
       <el-table-column class="table-column"
                        label="操作"
@@ -244,10 +244,10 @@ export default {
       this.getProductList();
     },
     // format  产品字段
-    formatProductList(productGoodsList) {
+    formatProductList(productGoodsList) {      
       productGoodsList.forEach(element => {
         let _productionList = "";
-        let productList = element.productList;
+        let productList = element.productList;        
         productList.forEach((ele, index) => {
           _productionList += `${ele["product_name"]}(${ele["product"]})-`
           _productionList += `${ele["product_batch_num"]}-`;

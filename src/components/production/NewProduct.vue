@@ -67,11 +67,13 @@
         </el-form>
       </div>
 
-      <div class="receive-info">
+      
+    </div>
+    <div class="receive-info">
         <h6 class="title">自定义属性</h6>
         <div class="content">
           <div class="demo-input-suffix">
-            <div class="lable">自定义属性</div>
+            <div class="el-form-item__label" style="width:120px;">自定义属性</div>
             <el-select clearable v-model="selectCustomDefineId" placeholder="无">
               <el-option
                 v-for="item in customDefineList"
@@ -85,14 +87,13 @@
         <div class="attribute-wrapper" v-show="selectCustomDefineId">
           <div class="content">
             <div class="demo-input-suffix" v-for="(item, key) in customDefineAttributeList" :key="key">
-              <div class="lable">{{item.column_chinese}}</div>
+              <div class="el-form-item__label" style="width:154px;">{{item.column_chinese}}</div>
               <el-input  v-model="item.data_value" placeholder="请输入内容"></el-input>
             </div>
           </div>
         </div>
       </div>
       <el-button class="bt-save" type="primary" @click="onSubmit('form')">保存</el-button>
-    </div>
   </div>
 </template>
 
@@ -499,7 +500,7 @@ export default {
     .content {
       margin-left: 200px;
       margin-top: 10px;
-      width: 460px;
+      width: 500px;
       .demo-input-suffix {
         display: flex;
         margin-top: 10px;
