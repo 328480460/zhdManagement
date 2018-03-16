@@ -24,7 +24,7 @@
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="role_id"
+                       prop="role_name"
                        label="角色"
       >
       </el-table-column>

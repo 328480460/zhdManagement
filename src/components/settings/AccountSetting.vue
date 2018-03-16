@@ -54,14 +54,14 @@ export default {
   },
     methods: {
       initData(params){
-        //企业详情查询接口
+        //员工/账号详情查询接口
         getEmployeeDetail(params)
           .then(res =>{
             let employee = res.data.employee
             this.form.account = employee. account;
             this.form.name = employee. name;
             this.form.password = employee.contacts;
-            this.form.role_id = employee. role_id;
+            this.form.role_id = employee. role_name;
             this.form.id = employee. id;
           })
           .catch(() => {

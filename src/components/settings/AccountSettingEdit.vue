@@ -12,7 +12,7 @@
           <el-form-item label="联系方式：" prop="contacts">
             <el-input v-model="form.contacts"></el-input>
           </el-form-item>
-          <el-form-item label="角色：">{{form.role_id}}
+          <el-form-item label="角色：">{{form.role_name}}
           </el-form-item>
 
           <el-form-item>
@@ -41,6 +41,7 @@ export default {
           account: '',
           name: '',
           contacts: '',
+          role_name: '',
           role_id: '',
         },
         rules: {
@@ -81,6 +82,7 @@ export default {
             this.form.account = employee. account;
             this.form.name = employee. name;
             this.form.contacts = employee. contacts;
+            this.form.role_name = employee. role_name;
             this.form.role_id = employee. role_id;
           })
           .catch(() => {

@@ -15,7 +15,7 @@
           <el-form-item label="联系方式："  prop="contacts">
             <el-input v-model="form.contacts"></el-input>
           </el-form-item>
-          <el-form-item label="角色：">
+          <el-form-item label="角色：" prop="role_id">
             <el-select v-model="form.role_id" placeholder="无" >
               <el-option v-for="item in roleList" :key="item.id" :label="item.role_name"  :value="item.id"></el-option>
             </el-select>
@@ -75,6 +75,9 @@ export default {
                 callback();
               }
             }, trigger: 'blur'}
+          ],
+          role_id: [
+            { required: true, message: '请选择角色', trigger: 'change' },
           ],
         }
       }
