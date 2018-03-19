@@ -40,7 +40,6 @@ export default {
         });
     },
     saveData(data) {
-      console.log(data);
       updateProduction(data)
         .then(res => {
           if (res.status == 200) {
