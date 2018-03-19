@@ -394,7 +394,7 @@ export default {
       this.$emit('editPage');
     },
     goodsInChange(index){
-      let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
+      let reg = /^(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
       if( this.productGoodsIn.length>0 ){  
         if(!reg.test(this.productGoodsIn[index].receipt_num) ){
           this.$message.warning("输入格式不正确,请从新输入");
@@ -404,7 +404,7 @@ export default {
       } 
     },
     goodsOutChange(index){
-      let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
+      let reg = /^(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
       if(this.productGoodsOut.length>0){
          if(!reg.test(this.productGoodsOut[index].receipt_num)){
           this.$message.warning("输入格式不正确,请从新输入");
