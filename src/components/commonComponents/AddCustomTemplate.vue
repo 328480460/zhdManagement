@@ -104,6 +104,7 @@
         data_type:'',
         id_required:'',
         addDatas:[],
+        newAddDatas:[],
       }
     },
     props: {
@@ -142,7 +143,34 @@
             "data_type" :this.data_type,
             "id_required" :this.id_required,
           }
-          this.addDatas .push(arr);
+          //展示的自定义字段数据
+          this.addDatas.push(arr);
+
+          //每一个都加到该数组
+//          this.newAddDatas.push(arr);
+
+//          var hash = [];
+//          for (var i = 0, elem; (elem = this.newAddDatas[i]) != null; i++) {
+//            if (!hash[elem]) {
+//              this.addDatas.push(elem);
+//              hash[elem] = true;
+//              return this.addDatas;
+//            }else {
+//              this.$message.error("已添加该字段名称!");
+//            }
+//          }
+
+//          for(var i = 0; i < this.newAddDatas.length; i++){
+//            if (this.addDatas.indexOf(this.newAddDatas[i]) == -1) {
+//              this.addDatas.push(this.newAddDatas[i]);
+//              console.log("this.addDatas---"+JSON.stringify(this.addDatas))
+//            }
+//            else {
+//              this.$message.error("已添加该字段名称!");
+//              console.log("else---"+JSON.stringify(this.addDatas))
+//            }
+//          }
+//          return this.addDatas;
         }
       },
       //删除单条的“自定义字段”
@@ -165,6 +193,8 @@
               if (res.status == 200) {
                 this.$message.success("添加成功!");
                 this.$router.go(-1);
+              }else {
+                this.$message.error(res.msg);
               }
             })
             .catch(() => {

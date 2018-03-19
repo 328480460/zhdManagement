@@ -88,7 +88,6 @@ export default {
       },
       handleDelete(index, row) {
         this.delete(index, row);
-        console.log("1要删除的那条信息---"+JSON.stringify(row))
       },
       delete(index, row) {
         this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {

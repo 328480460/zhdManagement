@@ -76,11 +76,6 @@ export const getColumnInfo = function(params) {
   let url = ENVIRNMENTTEST + '/getColumnInfo';
   return ajaxPost(url,params)
 }
-// 自定义属性修改
-export const updateCustomAttribute = function(params) {
-  let url = ENVIRNMENTTEST + '/updateCustomAttribute';
-  return ajaxPost(url,params)
-}
 // 自定义属性关联查询
 export const getAttributeRelationState = function(params) {
   let url = ENVIRNMENTTEST + '/getAttributeRelationState';
@@ -99,6 +94,11 @@ export const saveCustomAttributes = function(params) {
 // 自定义属性删除
 export const deleteCustomAttribute = function(params) {
   let url = ENVIRNMENTTEST + '/deleteCustomAttribute';
+  return ajaxPost(url,params)
+}
+// 自定义属性修改
+export const updateCustomAttribute = function(params) {
+  let url = ENVIRNMENTTEST + '/updateCustomAttribute';
   return ajaxPost(url,params)
 }
 // 自定义属性详情
