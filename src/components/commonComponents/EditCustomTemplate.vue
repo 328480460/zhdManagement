@@ -1,12 +1,12 @@
 <template>
   <div id="cuutomTemplate">
     <div class="batch-left">
-      <el-form ref="form" label-width="100px">
-        <el-form-item label="*自定义名称">
-          <el-input v-model="mould_name" ></el-input>
+      <el-form ref="form" :rules="rules" :model="form" label-width="100px">
+        <el-form-item label="自定义名称" prop="mould_name">
+          <el-input v-model="form.mould_name" ></el-input>
         </el-form-item>
-        <el-form-item label="*所属环节" v-show="custom_type3">
-          <el-select v-model="sub_link" clearable  placeholder="选择所属环节" style="width: 100%">
+        <el-form-item label="所属环节" v-show="custom_type3" prop="sub_link">
+          <el-select v-model="form.sub_link" placeholder="选择所属环节" style="width: 100%">
             <el-option label="收货信息" value="收货信息"></el-option>
             <el-option label="生产信息" value="生产信息"></el-option>
             <el-option label="发货信息" value="发货信息"></el-option>
@@ -32,7 +32,7 @@
           <div class="weather-required">
             <el-checkbox v-model="checked">是否为必填</el-checkbox>
           </div>
-          <el-button type="primary" size="medium" class="btn-search" @click="add">增加字段</el-button>
+          <el-button type="primary" size="medium" class="btn-search" @click="add('form')">增加字段</el-button>
         </div>
       </div>
     </div>
@@ -63,15 +63,14 @@
         <el-table-column
         >
           <template slot-scope="scope">
-            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, scope.row)"
-            ></i>
+            <i class="el-icon-remove" style="color: #990000" @click="deleteRow(scope.$index, scope.row)"></i>
           </template>
         </el-table-column>
         <el-table-column
           label="字段名称"
         >
           <template slot-scope="scope">
-            <el-input v-model="scope.row.column_chinese"></el-input>
+            <el-input v-model="scope.row.column_chinese" ></el-input>
           </template>
         </el-table-column>
         <el-table-column
@@ -107,17 +106,39 @@
   export default {
     name: 'cuutomTemplate',
     data(){
+      var check = (rule, value, callback) => {
+        if(this.custom_type3 == true){
+          if(!value){
+            return callback(new Error("请选择所属环节"));
+          } else{
+            callback()
+          }
+        }else{
+          callback()
+        }
+      };
       return{
+        form:{
+          mould_name:'',
+          sub_link:'',
+        },
         checked:false,
         custom_type3:false,
-        mould_name:'',
         column_name:'',
         column_chinese:'',
         data_type:'',
         id_required:'',
+        isRepeat:'',
         custom_mould_type:'',
         customAttributeList:[],
-        sub_link:'',
+        rules: {
+          mould_name: [
+            { required: true, message: '请填写自定义名称', trigger: 'blur' }
+          ],
+          sub_link: [
+            {required: true, validator: check,trigger: 'change' }
+          ],
+        }
       }
     },
     props: {
@@ -135,73 +156,50 @@
         "id":this.$route.query.typeId
       }
       this.initData(params);
-//      console.log("Template--type----"+JSON.stringify(this.typetype))
     },
     methods:{
       //本地增加字段
-      add(){
-        if(this.custom_mould_type == 3){
-              if(this.sub_link == ''){
-                this.$message.warning("请选择“所述环节”！");
-              } else if(this.column_name == ''){
-                this.$message.warning("请输入“字段名称”！");
-              }else if(this.data_type == ''){
-                this.$message.warning("请选择“字段类型”！");
-              } else{
-                //判断checked
-                if(this.checked == true){
-                  this.id_required = 1
-                }else  if(this.checked == false){
-                  this.id_required = 0
-                }
-                //添加的字段
-                var arr  =
-                {
-                  "column_chinese" :this.column_name,
-                  "column_english" :"",
-                  "data_type" :this.data_type,
-                  "id_required" :this.id_required,
-                }
-
-                this.customAttributeList .push(arr);
+      add(form){
+        this.$refs[form].validate((valid) => {
+          if (valid){
+            if(this.column_name == ''){
+              this.$message.warning("请输入“字段名称”！");
+            }else if(this.data_type == ''){
+              this.$message.warning("请选择“字段类型”！");
+            } else{
+              //判断checked
+              if(this.checked == true){
+                this.id_required = 1
+              }else  if(this.checked == false){
+                this.id_required = 0
               }
-        }
-        else{
-                if(this.column_name == ''){
-                  this.$message.warning("请输入“字段名称”！");
-                }else if(this.data_type == ''){
-                  this.$message.warning("请选择“字段类型”！");
-                } else{
-                  //判断checked
-                  if(this.checked == true){
-                    this.id_required = 1
-                  }else  if(this.checked == false){
-                    this.id_required = 0
-                  }
-                //添加的字段
-                  var arr  =
-                  {
-                    "column_chinese" :this.column_name,
-                    "column_english" :"",
-                    "data_type" :this.data_type,
-                    "id_required" :this.id_required,
-                  }
-                  this.customAttributeList.unshift(arr);
-                  outer:
-                    for(var i=0;i<this.customAttributeList.length;i++){
-                      for(var j=i+1;j<this.customAttributeList.length;j++){
-                        if(this.customAttributeList[i].column_chinese === this.customAttributeList[j].column_chinese){
-                          this.customAttributeList.splice(i,1);
-                          i--;
-                          this.$message.error("已添加过该字段名称!");
-                          break outer;
-                        }else{
-                          this.$message.success("添加成功！");
-                        }
-                      }
+              //添加的字段
+              var arr  =
+              {
+                "column_chinese" :this.column_name,
+                "column_english" :"",
+                "data_type" :this.data_type,
+                "id_required" :this.id_required,
+              }
+              this.customAttributeList.unshift(arr);
+              outer:
+                for(var i=0;i<this.customAttributeList.length;i++){
+                  for(var j=i+1;j<this.customAttributeList.length;j++){
+                    if(this.customAttributeList[i].column_chinese === this.customAttributeList[j].column_chinese){
+                      this.customAttributeList.splice(i,1);
+                      i--;
+                      this.$message.error("已添加过该字段名称!");
+                      break outer;
+                    }else{
+                      this.$message.success("添加成功！");
                     }
-              }
-        }
+                  }
+                }
+            }
+          }else {
+            return false;
+          }
+        });
       },
       deleteRow(index, rows){
         //自定义属性关联查询接口判断
@@ -241,30 +239,41 @@
       },
       //自定义属性修改接口
       update(){
-        if(this.mould_name == ''){
-          this.$message.warning("请输入“自定义名称”！");
-        }else if(this.addDatas == ''){
-          this.$message.warning("请添加自定义字段！");
+        if(this.customAttributeList == ''){
+          this.$message.warning("请添加自定义字段信息！");
         }else {
-          var isRepeat = false;//判断自定义字段名称是否有重复
           outer:
           for(var i=0;i<this.customAttributeList.length;i++){
-            for(var j=i+1;j<this.customAttributeList.length;j++){
-              if(this.customAttributeList[i].column_chinese === this.customAttributeList[j].column_chinese){
-                isRepeat = true;//有重复
-                break outer;
+            if(this.customAttributeList.length == 1){
+              if(this.customAttributeList[i].column_chinese == ''){
+                this.isRepeat = 1;//字段名称为空
               }else{
-                isRepeat = false;//没有重复
+                this.isRepeat = 3;//字段名称没有重复，可保存
+              }
+            }else {
+              for(var j=i+1;j<this.customAttributeList.length;j++){
+                if(this.customAttributeList[i].column_chinese == ''){
+                  this.isRepeat = 1;//字段名称为空
+                }else if(this.customAttributeList[i].column_chinese === this.customAttributeList[j].column_chinese){
+                  this.isRepeat = 2;//字段名称有重复
+                  break outer;
+                }else{
+                  this.isRepeat = 3;//字段名称没有重复，可保存
+                }
               }
             }
           }
-          if(isRepeat == false){
+          if(this.isRepeat == 1){
+            this.$message.error("字段名称不可以为空!");
+          }else if(this.isRepeat == 2){
+            this.$message.error("字段名称不可以重复!");
+          }else if(this.isRepeat == 3){
             var customAttribute  = {
               mould_id :this.$route.query.typeId,
               customAttributeList :this.customAttributeList,
               custom_mould_type :this.custom_mould_type,
-              mould_name :this.mould_name,
-              sub_link:this.sub_link
+              mould_name :this.form.mould_name,
+              sub_link:this.form.sub_link
             }
             updateCustomAttribute(customAttribute)
               .then(res => {
@@ -278,8 +287,6 @@
               .catch(() => {
                 this.$message.error("出错啦!");
               });
-          }else {
-            this.$message.error("字段名称不可以重复!");
           }
         }
       },
@@ -292,16 +299,16 @@
             if(customAttribute.custom_mould_type == 3){
               this.custom_mould_type = 3
               this.custom_type3 = true
-              this.sub_link =customAttribute.sub_link;
-              if(this.sub_link == "生产信息"){
-                this.type = 3
-              }else if(this.sub_link == "发货信息"){
-                this.type = 4
-              }else if(this.sub_link == "收货信息"){
-                this.type = 5
+              this.form.sub_link =customAttribute.sub_link;
+              if(this.form.sub_link == "生产信息"){
+                this.typetype = 3
+              }else if(this.form.sub_link == "发货信息"){
+                this.typetype = 4
+              }else if(this.form.sub_link == "收货信息"){
+                this.typetype = 5
               }
             }
-            this.mould_name = customAttribute.mould_name;
+            this.form.mould_name = customAttribute.mould_name;
             this.customAttributeList = customAttribute.customAttributeList;
           })
           .catch(() => {
