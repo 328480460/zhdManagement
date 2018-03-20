@@ -366,7 +366,7 @@ export default {
       this.$emit('editPage');
     },
     numberChange(index,event){
-      let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/; 
+      let reg = /^(?:[1-9]\d*|0)(?:\.\d{1,2})?$/; 
       if(!reg.test(this.sendProductList[index].invoice_num)){
         this.$message.warning("输入格式不正确,请从新输入");
         this.sendProductList[index].invoice_num = "";

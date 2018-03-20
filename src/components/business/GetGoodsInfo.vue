@@ -65,7 +65,7 @@
                        prop="source_node_name"
                        label="来源节点"
       >
-      </el-table-column>
+      </el-table-column>     
       <el-table-column class="table-column"
                        prop="productList"
                        label="产品内容"
@@ -255,7 +255,7 @@ export default {
         });
         
         element.productList = _productionList;
-      });
+      });      
       return productGoodsList;
     },
     initData(params) {
