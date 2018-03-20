@@ -104,7 +104,6 @@
         data_type:'',
         id_required:'',
         addDatas:[],
-        newAddDatas:[],
       }
     },
     props: {
@@ -136,6 +135,7 @@
           }else  if(this.checked == false){
             this.id_required = 0
           }
+          //添加的字段
           var arr  =
           {
             "column_chinese" :this.column_name,
@@ -145,32 +145,18 @@
           }
           //展示的自定义字段数据
           this.addDatas.push(arr);
+          for(var i=0;i<this.addDatas.length;i++){
+            for(var j=i+1;j<this.addDatas.length;j++){
+              if(this.addDatas[i].column_chinese === this.addDatas[j].column_chinese){
+                this.addDatas.splice(i,1);
+                i--;
+                this.$message.error("已添加过该字段名称!");
+              }else{
+                this.$message.success("添加成功！");
+              }
+            }
+          }
 
-          //每一个都加到该数组
-//          this.newAddDatas.push(arr);
-
-//          var hash = [];
-//          for (var i = 0, elem; (elem = this.newAddDatas[i]) != null; i++) {
-//            if (!hash[elem]) {
-//              this.addDatas.push(elem);
-//              hash[elem] = true;
-//              return this.addDatas;
-//            }else {
-//              this.$message.error("已添加该字段名称!");
-//            }
-//          }
-
-//          for(var i = 0; i < this.newAddDatas.length; i++){
-//            if (this.addDatas.indexOf(this.newAddDatas[i]) == -1) {
-//              this.addDatas.push(this.newAddDatas[i]);
-//              console.log("this.addDatas---"+JSON.stringify(this.addDatas))
-//            }
-//            else {
-//              this.$message.error("已添加该字段名称!");
-//              console.log("else---"+JSON.stringify(this.addDatas))
-//            }
-//          }
-//          return this.addDatas;
         }
       },
       //删除单条的“自定义字段”
@@ -191,7 +177,7 @@
           saveCustomAttributes(customAttribute)
             .then(res => {
               if (res.status == 200) {
-                this.$message.success("添加成功!");
+                this.$message.success("保存成功!");
                 this.$router.go(-1);
               }else {
                 this.$message.error(res.msg);

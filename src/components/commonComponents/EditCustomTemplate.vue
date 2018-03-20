@@ -154,6 +154,7 @@
                 }else  if(this.checked == false){
                   this.id_required = 0
                 }
+                //添加的字段
                 var arr  =
                 {
                   "column_chinese" :this.column_name,
@@ -161,11 +162,12 @@
                   "data_type" :this.data_type,
                   "id_required" :this.id_required,
                 }
+
                 this.customAttributeList .push(arr);
               }
         }
         else{
-              if(this.column_name == ''){
+                if(this.column_name == ''){
                   this.$message.warning("请输入“字段名称”！");
                 }else if(this.data_type == ''){
                   this.$message.warning("请选择“字段类型”！");
@@ -176,6 +178,7 @@
                   }else  if(this.checked == false){
                     this.id_required = 0
                   }
+                //添加的字段
                   var arr  =
                   {
                     "column_chinese" :this.column_name,
@@ -183,7 +186,20 @@
                     "data_type" :this.data_type,
                     "id_required" :this.id_required,
                   }
-                  this.customAttributeList .push(arr);
+                  this.customAttributeList.unshift(arr);
+                  outer:
+                    for(var i=0;i<this.customAttributeList.length;i++){
+                      for(var j=i+1;j<this.customAttributeList.length;j++){
+                        if(this.customAttributeList[i].column_chinese === this.customAttributeList[j].column_chinese){
+                          this.customAttributeList.splice(i,1);
+                          i--;
+                          this.$message.error("已添加过该字段名称!");
+                          break outer;
+                        }else{
+                          this.$message.success("添加成功！");
+                        }
+                      }
+                    }
               }
         }
       },
@@ -230,25 +246,41 @@
         }else if(this.addDatas == ''){
           this.$message.warning("请添加自定义字段！");
         }else {
-          var customAttribute  = {
-            mould_id :this.$route.query.typeId,
-            customAttributeList :this.customAttributeList,
-            custom_mould_type :this.custom_mould_type,
-            mould_name :this.mould_name,
-            sub_link:this.sub_link
-          }
-          updateCustomAttribute(customAttribute)
-            .then(res => {
-              if (res.status == 200) {
-                this.$message.success("添加成功!");
-                this.$router.go(-1);
+          var isRepeat = false;//判断自定义字段名称是否有重复
+          outer:
+          for(var i=0;i<this.customAttributeList.length;i++){
+            for(var j=i+1;j<this.customAttributeList.length;j++){
+              if(this.customAttributeList[i].column_chinese === this.customAttributeList[j].column_chinese){
+                isRepeat = true;//有重复
+                break outer;
               }else{
-                this.$message.error(res.msg);
+                isRepeat = false;//没有重复
               }
-            })
-            .catch(() => {
-              this.$message.error("出错啦!");
-            });
+            }
+          }
+          if(isRepeat == false){
+            var customAttribute  = {
+              mould_id :this.$route.query.typeId,
+              customAttributeList :this.customAttributeList,
+              custom_mould_type :this.custom_mould_type,
+              mould_name :this.mould_name,
+              sub_link:this.sub_link
+            }
+            updateCustomAttribute(customAttribute)
+              .then(res => {
+                if (res.status == 200) {
+                  this.$message.success("保存成功!");
+                  this.$router.go(-1);
+                }else{
+                  this.$message.error(res.msg);
+                }
+              })
+              .catch(() => {
+                this.$message.error("出错啦!");
+              });
+          }else {
+            this.$message.error("字段名称不可以重复!");
+          }
         }
       },
       //自定义属性详情
@@ -268,7 +300,6 @@
               }else if(this.sub_link == "收货信息"){
                 this.type = 5
               }
-//              console.log("业务--type----"+JSON.stringify(this.type))
             }
             this.mould_name = customAttribute.mould_name;
             this.customAttributeList = customAttribute.customAttributeList;
