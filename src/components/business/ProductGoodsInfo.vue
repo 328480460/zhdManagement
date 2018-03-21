@@ -52,31 +52,57 @@
       <el-table-column class="table-column"
                        prop="production_num"
                        label="信息编号"
+                       align="center"
+                       width="120"
     >
     </el-table-column>
       <el-table-column class="table-column"
                        prop="production_date"
                        label="生产日期"
+                       align="center"
+                       width="120"
                        sortable
       >
       </el-table-column>
       <el-table-column class="table-column"
                        prop="node_name"
                        label="当前节点"
+                       align="center"
       >
       </el-table-column>
       <el-table-column class="table-column"
                        prop="productionInProductList"
                        label="投入品"
+                       align="center"
+                       width="240"
       >
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <p>共计{{scope.row.productionInProductList.length}}条,可点击详情查看</p>
+            <div slot="reference" >
+              <span>{{scope.row.productionInProductList[0]}}{{scope.row.productionInProductList.length>1?"...":""}}</span>
+            </div>
+          </el-popover>    
+        </template>
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="productionOutProductList"
                        label="成品"
+                       align="center"
+                       width="240"
       >
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <p>共计{{scope.row.productionOutProductList.length}}条,可点击详情查看</p>
+            <div slot="reference" >
+              <span>{{scope.row.productionOutProductList[0]}}{{scope.row.productionOutProductList.length>1?"...":""}}</span>
+            </div>
+          </el-popover>    
+        </template>
       </el-table-column>
       <el-table-column class="table-column"
                        label="操作"
+                       align="center"
+                       width="100"
       >
         <template slot-scope="scope">
           <el-button
@@ -243,8 +269,8 @@ export default {
     // format 投入品 productionInProductList 和 产出品 productionOutProductList字段
     formatOutInProductList(productGoodsList) {
       productGoodsList.forEach(element => {
-        let _productionOutProductList = "";
-        let _productionInProductList = "";
+        let _productionOutProductList = "",outArr=[];
+        let _productionInProductList = "",inArr=[];
         let productionInProductList = element.productionInProductList;
         let productionOutProductList = element.productionOutProductList;
 
@@ -259,8 +285,14 @@ export default {
           _productionOutProductList += `${ele["product_num"]} `;
         });
 
-        element.productionInProductList = _productionInProductList;
-        element.productionOutProductList = _productionOutProductList;
+        // element.productionInProductList = _productionInProductList;
+        // element.productionOutProductList = _productionOutProductList;
+        inArr = _productionInProductList.split(" ");
+        inArr.length>1?inArr.pop():inArr;        
+        element.productionInProductList = inArr;
+        outArr = _productionOutProductList.split(" ");
+        outArr.length>1?outArr.pop():outArr;        
+        element.productionOutProductList = outArr;
       });
       return productGoodsList;
     },
@@ -355,6 +387,31 @@ export default {
   .el-table {
     width: 100%;
     margin-top: 24px;
+  }
+}
+</style>
+<style rel="stylesheet/less" lang='less'>
+.el-table{
+  .sort-caret {
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    position: absolute;
+    left: 7px;    
+  }
+  .sort-caret.ascending {
+    border-bottom-color: #ccc;
+    top: 5px;
+  }
+  .ascending .sort-caret.ascending {
+    border-bottom-color: #28B505;
+  }
+  .sort-caret.descending {
+    border-top-color: #ccc;
+    bottom: 7px;
+  }
+  .descending .sort-caret.descending {
+    border-top-color: #28B505;
   }
 }
 </style>

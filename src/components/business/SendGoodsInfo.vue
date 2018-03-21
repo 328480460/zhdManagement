@@ -52,31 +52,47 @@
       <el-table-column class="table-column"
                        prop="invoice_num"
                        label="信息编号"
+                       align="center"
+                       width="120"
     >
     </el-table-column>
       <el-table-column class="table-column"
                        prop="invoice_date"
                        label="发货日期"
+                       align="center"
+                       width="120"
                        sortable
       >
       </el-table-column>
       <el-table-column class="table-column"
                        prop="this_node_name"
                        label="当前节点"
+                       align="center"
       >
       </el-table-column>
       <el-table-column class="table-column"
                        prop="flow_to_name"
                        label="流向节点"
+                       align="center"
       >
       </el-table-column>
       <el-table-column class="table-column"
-                       prop="productList"
                        label="产品内容"
+                       align="center"
+                       width="240"
       >
+         <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <p>共计{{scope.row.productList.length}}条,可点击详情查看</p>
+            <div slot="reference" >
+              <span>{{scope.row.productList[0]}}{{scope.row.productList.length>1?"...":""}}</span>
+            </div>
+          </el-popover>    
+        </template>
       </el-table-column>
       <el-table-column class="table-column"
                        label="操作"
+                       width="100"
       >
         <template slot-scope="scope">
           <el-button
@@ -244,7 +260,7 @@ export default {
     // format  产品字段
     formatProductList(productGoodsList) {
       productGoodsList.forEach(element => {
-        let _productionList = "";
+        let _productionList = "",dataArr=[];
         let productList = element.productList;
 
         productList.forEach((ele, index) => {
@@ -253,7 +269,10 @@ export default {
           _productionList += `${ele["product_num"]} `;
         });
         
-        element.productList = _productionList;
+        // element.productList = _productionList;
+        dataArr = _productionList.split(" ");
+        dataArr.length>1?dataArr.pop():dataArr;        
+        element.productList = dataArr;
       });
       return productGoodsList;
     },
@@ -305,7 +324,7 @@ export default {
     getDataAjax(params) {
       getInvoiceList(params)
         .then(res => {
-          this.dataList = this.formatProductList(res.data.invoiceList);
+          this.dataList = this.formatProductList(res.data.invoiceList);         
           this.totalcount = res.data.totalcount;
         })
         .catch(() => {
@@ -355,6 +374,31 @@ export default {
   .el-table {
     width: 100%;
     margin-top: 24px;
+  }
+}
+</style>
+<style rel="stylesheet/less" lang='less'>
+.el-table{
+  .sort-caret {
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    position: absolute;
+    left: 7px;    
+  }
+  .sort-caret.ascending {
+    border-bottom-color: #ccc;
+    top: 5px;
+  }
+  .ascending .sort-caret.ascending {
+    border-bottom-color: #28B505;
+  }
+  .sort-caret.descending {
+    border-top-color: #ccc;
+    bottom: 7px;
+  }
+  .descending .sort-caret.descending {
+    border-top-color: #28B505;
   }
 }
 </style>
