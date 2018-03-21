@@ -239,7 +239,6 @@ export default {
     //产品自定义分类列表查询接口
     getListProductType() {
       let params = {
-        // custom_mould_type: 1,
         pagenum: 1,
         pagesize: 20,
       };
