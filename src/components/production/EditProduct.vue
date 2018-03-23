@@ -325,6 +325,14 @@
         this.$refs[form].validate((valid) => {
           if (valid){
              if(this.selectCustomDefineId){
+               for(let i=0,len=this.customDefineAttributeList.length;i<len;i++){
+                if(this.customDefineAttributeList[i].id_required){
+                  if(!this.customDefineAttributeList[i].data_value){
+                    this.$message.warning(this.customDefineAttributeList[i].column_chinese+"是必填项");
+                    return;
+                  }    
+                }
+              }
                 this.customDefineAttributeList.forEach((value, index) => {
                   this.id_required = value.id_required
                   if(value.id_required == 1 && value.data_value == ""){//必选项且无值

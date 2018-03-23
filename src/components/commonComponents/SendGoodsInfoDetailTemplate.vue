@@ -71,7 +71,10 @@
                 <td>{{item.product}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
-                <td><el-input class="input-box" :disabled="!edit" v-model="item.invoice_num" placeholder="请输入发货数量" @change="numberChange(index,$event)"></el-input></td>
+                <td>
+                  <span v-if="item.product_num">1</span>
+                  <el-input v-if="!item.product_num" class="input-box" :disabled="!edit" v-model="item.invoice_num" placeholder="请输入发货数量" @change="numberChange(index,$event)"></el-input>
+                </td>
                 <td>{{item.norms}}</td>
                 <td><i class="el-icon-close icon-font" v-show="edit" @click="deleProduction(item, index)"></i></td>
               </tr>
@@ -381,15 +384,17 @@ export default {
               this.$message.warning('请添加产品批次号');
               return;
             }
-            if(!this.sendProductList[i].product_num){
-              this.$message.warning('请添加产品序列号');
-              return;
-            }
-            if(!this.sendProductList[i].invoice_num){
-              this.$message.warning('请添加产品数量');
-              return;
-            }
           } 
+          if(this.selectCustomDefineId){
+            for(let i=0,len=this.customDefineAttributeList.length;i<len;i++){
+              if(this.customDefineAttributeList[i].id_required){
+                if(!this.customDefineAttributeList[i].data_value){
+                  this.$message.warning(this.customDefineAttributeList[i].column_chinese+"是必填项");
+                  return;
+                }    
+              }
+            }
+          }
           let data = {
             id: this.id,
             // this_node_id: this.currnetNodeId,

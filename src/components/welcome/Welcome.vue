@@ -181,8 +181,7 @@ export default {
 .general-wrapper {
   float: left;
   padding: 10px 20px;
-  /*background-color: #c0c4cc12;*/
-  background-color: #FBFBFB;
+  background-color: #f9f9f9;
   width: 80%;
   .section {
     box-sizing: border-box;

@@ -43,7 +43,6 @@ export default {
         });
     },
     saveData(data) {
-      console.log(data);
       updateReceipt(data)
         .then(res => {
           if (res.status == 200) {
