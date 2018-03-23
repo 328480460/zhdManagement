@@ -240,7 +240,7 @@ export default {
     getListProductType() {
       let params = {
         pagenum: 1,
-        pagesize: 20,
+        pagesize: 100,
       };
       getListProductType(params)
         .then(res => {

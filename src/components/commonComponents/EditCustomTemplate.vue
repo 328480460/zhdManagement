@@ -370,7 +370,6 @@
           .btn-search {
             background-color: transparent;
             color: #03b150;
-            margin-left: 8.33333%;
             border-radius: 15px;
             margin-top: 20px;
             margin-left: 40%;

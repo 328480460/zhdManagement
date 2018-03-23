@@ -6,7 +6,7 @@
       </div>
 
       <div class="main-menu">
-        <div class="main-menu-item" v-for="(first,key) in menu" 
+        <div class="main-menu-item" v-for="(first,key) in menu"
           :key="key" :class="{'active': currentTabInfo.main.id === first.id}">
 
           <div class="main-menu-item-name" @click.self="turnPage(first.id)">
@@ -32,7 +32,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="summary" v-else>
 
           </div>
@@ -308,7 +308,6 @@ export default {
   }
   .third-menu {
     display: none;
-    background-color: #f2f2f2;
     position: fixed;
     z-index: 98;
     left: 251px;
@@ -335,7 +334,6 @@ export default {
     }
   }
   .extra-page-tab-wrapper {
-    background-color: #f2f2f2;
     position: fixed;
     z-index: 98;
     left: 251px;

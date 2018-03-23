@@ -245,27 +245,30 @@
       getNodeDetail(params){
         getDetailNode(params)
           .then(res =>{
-            let node = res.data.node
-            this.form.nodeNumber = node. node_number;
-            this.form.nodeName = node. node_name;
-            this.form.nodeType = node. node_type_id;
-            this.form.nodeDepict = node. node_depict;
-            this.form.nodeAddress = node. node_address;
-            this.form.contacts = node. contacts;
-            this.form.contactsPhone = node. contacts_phone;
-            this.selectCustomDefineId= node. custom_mould_id;
-//            this.customDefineAttributeList = node. nodeCustomList;
-            this.nodeCustomList = node. nodeCustomList;
+            if (res.status == 200){
+              let node = res.data.node
+              this.form.nodeNumber = node. node_number;
+              this.form.nodeName = node. node_name;
+              this.form.nodeType = node. node_type_id;
+              this.form.nodeDepict = node. node_depict;
+              this.form.nodeAddress = node. node_address;
+              this.form.contacts = node. contacts;
+              this.form.contactsPhone = node. contacts_phone;
+              this.selectCustomDefineId= node. custom_mould_id;
+              this.nodeCustomList = node. nodeCustomList;
 
-            if(node. node_splitting != null){
-              //回显节点类型
-              this.checkedSplittings = node. node_splitting.split(",")
-            }else{
-              console.log("--没有node_splitting--"+JSON.stringify(node. node_splitting))
-            }
-            //请求用户自定义模块详情
-            if(node. custom_mould_id){
-              this.loadCustomDefineDetailData(node.custom_mould_id)
+              if(node. node_splitting != null){
+                //回显节点类型
+                this.checkedSplittings = node. node_splitting.split(",")
+              }else{
+                console.log("--没有node_splitting--"+JSON.stringify(node. node_splitting))
+              }
+              //请求用户自定义模块详情
+              if(node. custom_mould_id){
+                this.loadCustomDefineDetailData(node.custom_mould_id)
+              }
+            }else {
+              this.$message.error(res.msg);
             }
           })
           .catch(() => {

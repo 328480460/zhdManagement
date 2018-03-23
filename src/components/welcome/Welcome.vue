@@ -14,19 +14,19 @@
           <div class="box-wrapper">
             <div class="box-item">
               <div class="name">产品数量</div>
-              <div class="num">18<span class="unit">个</span></div>
+              <div class="num">{{product_num}}<span class="unit">个</span></div>
             </div>
             <div class="box-item">
               <div class="name">节点数量</div>
-              <div class="num">25<span class="unit">个</span></div>
+              <div class="num">{{node_num}}<span class="unit">个</span></div>
             </div>
             <div class="box-item">
               <div class="name">文档数量</div>
-              <div class="num">20<span class="unit">个</span></div>
+              <div class="num">{{file_num}}<span class="unit">个</span></div>
             </div>
             <div class="box-item">
               <div class="name">数据量</div>
-              <div class="num">15324<span class="unit">个</span></div>
+              <div class="num">{{data_num}}<span class="unit">个</span></div>
             </div>
           </div>
         </div>
@@ -54,8 +54,19 @@
 import echarts from "echarts";
 import User from '../userCenter/User';
 import SlideRight from '../welcome/SlideRight.vue';
+import {
+  getViewCount,
+} from "../../assets/js/welcome/ajax.js";
 
 export default {
+  data() {
+    return {
+      product_num:'',
+      node_num:'',
+      file_num:'',
+      data_num:'',
+    };
+  },
   mounted() {
     var myChart = echarts.init(document.getElementById("echars"));
     this.$nextTick(() => {
@@ -90,6 +101,7 @@ export default {
         ]
       });
     });
+    this.initData();
   },
   methods:{
     newGetGoodsInfo() {
@@ -124,9 +136,26 @@ export default {
         id: "030101",
       });
     },
-  },
-  data() {
-    return {};
+    getViewCount(){
+      getViewCount()
+        .then(res => {
+          if (res.status == 200){
+            this.product_num = res.data.viewBean.product_num
+            this.node_num = res.data.viewBean.node_num
+            this.file_num = res.data.viewBean.file_num
+            this.data_num = res.data.viewBean.data_num
+          }else {
+            this.$message.error(res.msg);
+          }
+        })
+        .catch(() => {
+          this.$message.error("出错啦!");
+        });
+    },
+    initData(){
+      // 概况数据查询接口
+      this.getViewCount()
+    }
   },
   components: {
     User,
@@ -227,7 +256,7 @@ export default {
       margin-top: 10px;
       .func-item {
         cursor: pointer;
-        width: 10%;
+        width: 20%;
         height: 40px;
         line-height: 40px;
         font-size: 14px;
