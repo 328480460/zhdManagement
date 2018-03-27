@@ -9,80 +9,52 @@
 
     <div class="content">
 <!--"1"是选中；“0”是未选-->
-      <div v-for="item in menuList">
-        <el-table
-          :data="item.menuList"
-        >
-          <el-table-column
-            :label="item.menu"
-            prop="menu">
-          </el-table-column>
-          <el-table-column
-            label="查看"
-            width="50"
-          >
-          </el-table-column>
-          <el-table-column
-            type="selection"
-          >
-          </el-table-column>
-          <el-table-column
-            label="编辑"
-            width="50"
-          >
-          </el-table-column>
-          <el-table-column
-            type="selection"
-          >
-          </el-table-column>
-          <el-table-column
-            label="全选"
-            width="50"
-          >
-          </el-table-column>
-          <el-table-column
-            type="selection"
-          >
-          </el-table-column>
-        </el-table>
-      </div>
+      <div v-for="item in menuList.slice(1)">
+            <el-table
+              ref="table"
+              :data="item.menuList"
+              @selection-change="selsChange"
+              @row-click="handleCurrentChange"
+              :row-key="getRowKeys"
+            >
+              <el-table-column
+                :label="item.menu"
+                prop="menu">
+              </el-table-column>
 
-      <!--<el-table-->
-        <!--:data="menuList"-->
-        <!--:default-expand-all="true"-->
-       <!--&gt;-->
-        <!--<el-table-column type="expand">-->
-              <!--<template scope="props">-->
-                <!--<el-table-->
-                  <!--:data="props.row.menuList"-->
-                <!--&gt;-->
-                  <!--<el-table-column-->
-                    <!--:label="props.row.menu"-->
-                    <!--prop="menu">-->
+
+
+              <el-table-column
+                label="查看"
+                width="50"
+              >
+              </el-table-column>
+              <el-table-column
+                type="selection"
+              >
+              </el-table-column>
+                  <!--<el-table-column label="查看" width="50">-->
+                    <!--<template slot-scope="scope">-->
+                      <!--<el-checkbox @click="handleSee(scope.$index, scope.row)"></el-checkbox>-->
+                    <!--</template>-->
                   <!--</el-table-column>-->
-                  <!--<el-table-column-->
-                    <!--label="查看"-->
-                    <!--width="120"-->
-                  <!--&gt;-->
-                  <!--</el-table-column>-->
-                  <!--<el-table-column-->
-                    <!--label="编辑"-->
-                    <!--width="120"-->
-                  <!--&gt;-->
-                  <!--</el-table-column>-->
-                  <!--<el-table-column-->
-                    <!--label="全选"-->
-                    <!--width="120"-->
-                    <!--type="selection"-->
-                  <!--&gt;-->
-                  <!--</el-table-column>-->
-                <!--</el-table>-->
-              <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-        <!--&gt;-->
-        <!--</el-table-column>-->
-      <!--</el-table>-->
+              <el-table-column label="编辑" width="50">
+                <template slot-scope="scope">
+                  <el-checkbox  @click="handleEdit(scope.$index, scope.row)"></el-checkbox>
+                </template>
+              </el-table-column>
+
+              <el-table-column
+                label="全选"
+                width="50"
+              >
+              </el-table-column>
+              <el-table-column
+                type="selection"
+              >
+              </el-table-column>
+            </el-table>
+      </div>
 
     </div>
 
@@ -103,15 +75,56 @@ export default {
       form:{
         role_name:'',
       },
+      checkAll: false,
+      isIndeterminate: true,
+      checked: false,
       menuList: [],
+      menuListSecond: [],
+      multipleSelection: [],
     }
   },
   mounted() {
     this.initData();
   },
   methods:{
+    handleCheckAllChange(val) {
+      this.menuList = val ? !this.bindsee : this.bindsee;
+      this.isIndeterminate = false;
+    },
+    handleSee(index, row) {
+//      console.log("---handleSee--"+JSON.stringify(index, row))
+    },
+    handleEdit(index, row) {
+//      console.log("---handleEdit--"+JSON.stringify(index, row))
+    },
+  // 获取row的key值
+      getRowKeys(row) {
+        return row.id;
+      },
+    handleCurrentChange(row, event, column) {
+      console.log("---row--"+JSON.stringify(row.id))
+      console.log("---event--"+JSON.stringify(event.isTrusted))
+    },
+    selsChange(rows){
+//      console.log("handle-----"+JSON.stringify(val))
+      if (rows) {
+        rows.forEach(row => {
+          if (row) {
+            var arr  =
+            {
+              "menu_id" :row.id,
+              "see" :1,
+              "edit" :1,
+            }
+            this.multipleSelection.push(arr)
+//          this.$refs.table.toggleRowSelection(row);
+          }
+        });
+        console.log("multipleSelection-----"+JSON.stringify(this.multipleSelection))
+      }
+    },
 
-//    createRole(){
+    createRole(){
 //      let params ={
 //        role_name: this.form.role_name,
 //      }
@@ -131,14 +144,21 @@ export default {
 //            this.$message.error("出错啦!");
 //          })
 //      }
-//    },
+    },
     //角色菜单查询查询
     getListMenu() {
       getListMenu()
         .then(res => {
-//          console.log("getListMenu----"+JSON.stringify(res.status))
-          this.menuList = res.data.menuList;
-
+          if(res.status == 200){
+            this.menuList = res.data.menuList;
+            for(let i = 0;i < this.menuList.length;i++ ){
+              for(let j = 0;j < this.menuList[i].menuList.length;j++ ){
+                this.menuListSecond.push(this.menuList[i].menuList[j])
+              }
+            }
+          }else {
+            this.$message.error(res.msg);
+          }
         })
         .catch(() => {
           this.$message.error("出错啦!");
@@ -178,7 +198,6 @@ export default {
     .demo-table-expand{
       float: left;
     }
-
   }
 
 }
