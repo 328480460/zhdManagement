@@ -31,16 +31,16 @@
               <el-checkbox  @click="handleEdit(scope.$index, scope.row)"></el-checkbox>
             </template>
           </el-table-column>
-
-          <el-table-column
-            label="全选"
-            width="50"
-          >
-          </el-table-column>
-          <el-table-column
-            type="selection"
-          >
-          </el-table-column>
+，
+          <!--<el-table-column-->
+            <!--label="全选"-->
+            <!--width="50"-->
+          <!--&gt;-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+            <!--type="selection"-->
+          <!--&gt;-->
+          <!--</el-table-column>-->
         </el-table>
       </div>
 
@@ -113,6 +113,7 @@ export default {
       }
     },
     editRole(){
+      this.$message.error("正在进行中，尽请期待!");
 //      let params ={
 //        id : this.$route.query.roleId,
 //        role_name: this.form.role_name,
