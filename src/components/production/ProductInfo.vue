@@ -71,6 +71,7 @@ export default {
   name: "productinfo",
   data() {
     return {
+      menu: JSON.parse(localStorage.getItem("menu")),
       customListCount: 0,
       productList: [],
       customTypeList: [],
@@ -133,27 +134,54 @@ export default {
   },
   methods: {
     newProduct() {
-      this.$emit("openExtraPage", {
-        node: "production",
-        page: "newProduct",
-        name: "新建产品",
-        id: "01010101",
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "production"){
+          if(element.menuList[0].menuList[0].edit == 1){
+             this.$emit("openExtraPage", {
+              node: "production",
+              page: "newProduct",
+              name: "新建产品",
+              id:"697a81d9-7bc0-4856-acd4-81f35ef460e8"
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })     
     },
     editProduct(index, row) {
-      this.$emit("openExtraPage", {
-        node: "production",
-        page: "editProduct",
-        name: "编辑产品",
-        id: "01010102",
-        query: {
-          productId: row.id,
-          productTypeId: row.product_type_id,
-        },
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "production"){
+          if(element.menuList[0].menuList[0].edit == 1){
+             this.$emit("openExtraPage", {
+              node: "production",
+              page: "editProduct",
+              name: "编辑产品",
+              id:"9b4cacda-a034-44e1-a69c-f7d73c2ffdeb",
+              query: {
+                productId: row.id,
+                productTypeId: row.product_type_id,
+              },
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })       
     },
     handleDelete(index, row) {
-      this.delete(index,row);
+       this.menu.forEach((element,index)=>{
+        if(element.node == "production"){
+          if(element.menuList[0].menuList[0].edit == 1){
+             this.delete(index,row);
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })       
     },
     delete(index, row) {
       this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {

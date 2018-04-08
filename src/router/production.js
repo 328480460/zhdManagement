@@ -18,7 +18,7 @@ export default[
                 page: "productInfo",
                 node: 'production',
                 name: "产品信息",
-                id: "010101"
+                id: "a8388dc2-79e6-4719-bc2d-1d24d57a2326"
             }
         }
     },
@@ -31,7 +31,7 @@ export default[
                 page: "productType",
                 node: 'production',
                 name: "产品分类",
-                id: "010102"
+                id:"f8c274b2-897d-48f3-99de-27ff9c392540"
             }
         }
     },
@@ -45,7 +45,7 @@ export default[
                 page: "newProduct",
                 node: 'production',
                 name: "新增产品",
-                id: "01010101"
+                id:"697a81d9-7bc0-4856-acd4-81f35ef460e8"
             }
         }
     },
@@ -59,7 +59,7 @@ export default[
                 page: "editProduct",
                 node: 'production',
                 name: "编辑产品",
-                id: "01010102"
+                id:"9b4cacda-a034-44e1-a69c-f7d73c2ffdeb"
             }
         }
     },
@@ -73,7 +73,7 @@ export default[
                 page: "batchImportPro",
                 node: 'production',
                 name: "批量导入",
-                id: "010201"
+                id:"48a8168b-6ebb-4913-ba42-106c8b6d2e6b"
             }
         }
     },
@@ -87,7 +87,7 @@ export default[
                 page: "historiesPro",
                 node: 'production',
                 name: "历史记录",
-                id: "010202"
+                id:"08536a73-52ca-4fa0-b487-0df764c00a7d"
             }
         }
     },
@@ -101,7 +101,7 @@ export default[
                 page: "productTemplate",
                 node: 'production',
                 name: "产品模板页",
-                id: "010301"
+                id: "cc50267a-9083-483b-93f8-de7ada2d0104"
             }
         }
     },
@@ -115,7 +115,7 @@ export default[
                 page: "metarialManagement",
                 node: 'production',
                 name: "历史记录",
-                id: "010302"
+                id: "f81e2b29-dd3e-4897-86ea-a7cc41ee230b"
             }
         }
     }

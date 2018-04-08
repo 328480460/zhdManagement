@@ -10,7 +10,7 @@ export default[
                 page: "welcome",
                 node: 'welcome',
                 name: "概述",
-                id: "00"
+                id:"11dcd5d7-19c6-4189-8606-058b321284ff"
             }
         }
     }

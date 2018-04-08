@@ -46,6 +46,7 @@ export default {
     },
     data() {
       return{
+        menu: '',
         // 城市列表数据
         cityDataList: cityData,
         // 选中的城市
@@ -70,6 +71,7 @@ export default {
       enterprise_id:JSON.parse(localStorage.enterprise_id)
     }
     this.initData(params);
+    this.menu = JSON.parse(localStorage.getItem("menu"));
   },
     methods: {
       initData(params){
@@ -94,13 +96,22 @@ export default {
       },
 
       editPage() {
-        this.$emit("openExtraPage", {
-          node: "settings",
-          page: "enterpriseInfoEdit",
-          name: "编辑企业信息",
-          id: "03010102",
-          query: { enterprise_id: 1 },
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.menuList[0].menuList[0].edit == 1){
+              this.$emit("openExtraPage", {
+                node: "settings",
+                page: "enterpriseInfoEdit",
+                name: "编辑企业信息",
+                id:"0cfefd56-a1ae-53ab-bf2d-9e9ced0a6fc8",
+                query: { enterprise_id: 1 },
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })         
       }
     }
 };

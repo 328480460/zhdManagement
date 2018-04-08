@@ -103,17 +103,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {
-    getListNode,
-    deleteNode,
-    getlist
-  } from "../../assets/js/node/ajax.js";
+  import {getListNode,deleteNode,getlist} from "../../assets/js/node/ajax.js";
   import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
-    name: "",
-    created() {
-    },
+    name: "", 
     mounted(){
       let params = {
         node_number: "",
@@ -125,9 +119,11 @@ export default {
       };
       this.initData(params);
       this.ajaxSearch = deepCopy(this.search);
+      this.menu = JSON.parse(localStorage.getItem("menu"));
     },
     data() {
       return {
+        menu: '',
         totalcount: 123,
         search: {
           nodeNumber: "",
@@ -148,21 +144,40 @@ export default {
     },
     methods: {
       newNode() {
-        this.$emit("openExtraPage", {
-          node: 'node',
-          page: "newNode",
-          name: "添加节点",
-          id: "02010101"
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "node"){
+            if(element.menuList[0].menuList[0].edit == 1){
+              this.$emit("openExtraPage", {
+                node: 'node',
+                page: "newNode",
+                name: "添加节点",
+                id:"f0869847-ff06-44b4-b3bf-bee23f17decd"
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })         
       },
       nodeDetails(index, row) {
-        this.$emit("openExtraPage", {
-          node:"node",
-          page: "nodeDetails",
-          name: "节点详情",
-          id: "02010102",
-          query: { nodeId: row.id },
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "node"){
+            if(element.menuList[0].menuList[0].edit == 1){
+              this.$emit("openExtraPage", {
+                node:"node",
+                page: "nodeDetails",
+                name: "节点详情",
+                id:"0308fb0c-9581-4d29-9ab8-3c211eae9068",
+                query: { nodeId: row.id },
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })    
+        
       },
       clearConditions(){
         this.search.nodeNumber = "";
@@ -234,7 +249,16 @@ export default {
         this.getNodeList();
       },
       handleDelete(index, row) {
-        this.delete(index,row)
+        this.menu.forEach((element,index)=>{
+          if(element.node == "node"){
+            if(element.menuList[0].menuList[0].edit == 1){
+              this.delete(index,row)
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })         
       },
       delete(index,row) {
         this.$confirm('此操作将删除该节点信息, 是否继续?', '提示', {

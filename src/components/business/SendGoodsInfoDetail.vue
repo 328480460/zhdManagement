@@ -43,7 +43,7 @@ export default {
         node: "business",
         page: "editSendGoodsInfoDetail",
         name: "编辑发货信息",
-        id: "05030103",
+        id:'98cbed70-68b2-4a91-959b-7124c7714c30',
         query: {id: this.routerQuery.id}
       });
     }

@@ -26,9 +26,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {
-    getEmployeeDetail,
-  } from "../../assets/js/settings/ajax.js";
+  import { getEmployeeDetail } from "../../assets/js/settings/ajax.js";
 
 export default {
     name: "account",
@@ -36,6 +34,7 @@ export default {
     },
     data() {
       return{
+        menu: '',
         form: {
           id: '',
           account: '',
@@ -51,6 +50,7 @@ export default {
       "id":JSON.parse(localStorage.userid)
     }
     this.initData(params);
+    this.menu = JSON.parse(localStorage.getItem("menu"));
   },
     methods: {
       initData(params){
@@ -69,13 +69,22 @@ export default {
           })
       },
       editPage() {
-        this.$emit("openExtraPage", {
-          node: "settings",
-          page: "accountSettingEdit",
-          name: "编辑账号信息",
-          id: "03020102",
-          query: { id: this.form.id },
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.menuList[1].menuList[0].edit == 1){
+              this.$emit("openExtraPage", {
+                node: "settings",
+                page: "accountSettingEdit",
+                name: "编辑账号信息",
+                id:'7fd4a788-bc0b-58f5-91a1-d64d53559bc5',
+                query: { id: this.form.id },
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })         
       }
     }
 };

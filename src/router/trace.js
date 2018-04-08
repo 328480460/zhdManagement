@@ -12,7 +12,7 @@ export default[
           page: "chainSynthesis",
           node: 'trace',
           name: "链条合成",
-          id: "030101"
+          id:"7b9e89b5-cd0e-57a3-a2d7-82bb03544239"
         }
       }
     },
@@ -25,11 +25,11 @@ export default[
           page: "traceCodeQuery",
           node: 'trace',
           name: "溯源查询",
-          id: "030201"
+          id:"0be7169e-0398-5fca-b051-9ec5cc9aba8f"
         }
       }
     },
-    { //追溯-追溯码管理
+    { //追溯-申请溯源码
       path : 'trace/traceCodeApplay',
       component : TraceCodeApplay,
       name: 'traceCodeApplay',
@@ -37,8 +37,8 @@ export default[
         pageInfo: {
           page: "traceCodeApplay",
           node: 'trace',
-          name: "追溯码管理",
-          id: "030301"
+          name: "申请溯源码",
+          id:"9fa24960-bed2-4b95-8894-986e533d0829"
         }
       }
     },

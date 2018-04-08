@@ -44,7 +44,7 @@ export default {
         node: "business",
         page: "EditProductGoodsInfoDetail",
         name: "编辑生产信息",
-        id: "05020103",
+        id:'3fb06e18-2a47-489e-ba4f-22bbe1e9c980',
         query: {id: this.routerQuery.id}
       });
     }

@@ -58,7 +58,7 @@
               </tr>
               <tr v-for="(item, index) in productGoodsIn" :key="index">
                 <td>{{item.product_name}}</td>
-                <td>{{item.product_num}}</td>
+                <td>{{item.product}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
                 <td>
@@ -97,7 +97,7 @@
               </tr>
               <tr v-for="(item, index) in productGoodsOut" :key="index">
                 <td>{{item.product_name}}</td>
-                <td>{{item.product_num}}</td>
+                <td>{{item.product}}</td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_batch_num" placeholder="请输入产品批次号"></el-input></td>
                 <td><el-input class="input-box" :disabled="!edit" v-model="item.product_num" placeholder="请输入产品序列号"></el-input></td>
                 <td>

@@ -26,7 +26,7 @@ export default[
                 page: "getGoodsInfo",
                 node: 'business',
                 name: "收货信息",
-                id: "040101"
+                id:"7872662a-3097-4d0e-8d54-cd88f095ff96"
             }
         }
     },
@@ -39,7 +39,7 @@ export default[
                 page: "newGetGoodsInfo",
                 node: 'business',
                 name: "新建收货信息",
-                id: "04010101"
+                id:"5fdec987-991e-440c-9dda-51c8ec953236"
             }
         }
     },
@@ -52,7 +52,7 @@ export default[
                 page: "getGoodsInfoDetail",
                 node: 'business',
                 name: "收货信息详情",
-                id: "04010102"
+                id:"97728609-9717-48d9-92ff-1d7bcc48dfa2"
             }
         }
     },
@@ -65,7 +65,7 @@ export default[
                 page: "editGetGoodsInfoDetail",
                 node: 'business',
                 name: "编辑收货信息",
-                id: "04010103"
+                id:'97728609-9717-48d9-92ff-1d7bcc48dfa2'
             }
         }
     },
@@ -79,7 +79,7 @@ export default[
                 page: "productGoodsInfo",
                 node: 'business',
                 name: "生产信息",
-                id: "040201"
+                id:"6124d127-1342-4e4d-8b79-c2b2a9846605"
             }
         }
     },
@@ -93,7 +93,7 @@ export default[
                 page: "newProductGoodsInfo",
                 node: 'business',
                 name: "新建生产信息",
-                id: "04020101"
+                id:"a5c6039e-d90d-40a3-9b63-612816d1f05a"
             }
         }
     },
@@ -107,7 +107,7 @@ export default[
                 page: "productGoodsInfoDetail",
                 node: 'business',
                 name: "生产信息详情",
-                id: "04020102"
+                id:"3fb06e18-2a47-489e-ba4f-22bbe1e9c980"
             }
         }
     },
@@ -121,7 +121,7 @@ export default[
                 page: "editProductGoodsInfoDetail",
                 node: 'business',
                 name: "编辑生产信息",
-                id: "04020103"
+                id:'3fb06e18-2a47-489e-ba4f-22bbe1e9c980'
             }
         }
     },
@@ -135,7 +135,7 @@ export default[
                 page: "sendGoodsInfo",
                 node: 'business',
                 name: "发货信息",
-                id: "040301"
+                id:"1fca8fb3-3009-463f-8957-28d6aa7492d1"
             }
         }
     },
@@ -149,7 +149,7 @@ export default[
                 page: "newSendGoodsInfo",
                 node: 'business',
                 name: "新建发货信息",
-                id: "04030101"
+                id:"fdae82e8-0904-4adb-9d7f-63cf8f65e60d"
             }
         }
     },
@@ -163,7 +163,7 @@ export default[
                 page: "sendGoodsInfoDetail",
                 node: 'business',
                 name: "发货信息详情",
-                id: "04030102"
+                id:"98cbed70-68b2-4a91-959b-7124c7714c30"
             }
         }
     },
@@ -177,7 +177,7 @@ export default[
                 page: "editSendGoodsInfoDetail",
                 node: 'business',
                 name: "编辑发货信息",
-                id: "04030103"
+                id:'98cbed70-68b2-4a91-959b-7124c7714c30'
             }
         }
     },
@@ -191,7 +191,7 @@ export default[
                 page: "multiImport",
                 node: 'business',
                 name: "批量导入",
-                id: "040401"
+                id:"ae9babbf-223a-5bc3-be72-07c1076da2bd"
             }
         }
     },
@@ -205,11 +205,11 @@ export default[
                 page: "importHistoryBusiness",
                 node: 'business',
                 name: "历史记录",
-                id: "040402"
+                id:"4d117c31-107e-4981-a728-324d87ee0213"
             }
         }
     },
-    //业务-FTP同步-FTP配置
+    //业务-FTP同步-FTP同步
     {
         path : 'business/FTPSync',
         component : FTPSync,
@@ -218,8 +218,8 @@ export default[
             pageInfo: {
                 page: "FTPSync",
                 node: 'business',
-                name: "FTP配置",
-                id: "040501"
+                name: "FTP同步",
+                id:"9c1fe9e6-fcd6-5dab-bbcb-1a6019f7b95c"
             }
         }
     },
@@ -233,7 +233,7 @@ export default[
                 page: "FTPHistoryBusiness",
                 node: 'business',
                 name: "历史记录",
-                id: "040502"
+                id:"3ca8480e-7930-4cc2-93ce-68a9be08b00d"
             }
         }
     },
@@ -246,8 +246,8 @@ export default[
         pageInfo: {
           page: "systemInsert",
           node: 'business',
-          name: "历史记录",
-          id: "040601"
+          name: "系统对接",
+            id:"6beb7533-2d8d-5383-80e9-4315381b94d6"
         }
       }
     },

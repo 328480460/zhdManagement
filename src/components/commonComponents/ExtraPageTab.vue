@@ -1,6 +1,6 @@
 <template>
   <div id="extraPageTab">
-    <div class="third-tab active" @click.self="turnPage">{{tabInfo.thirdTab.name}}</div>
+    <div class="third-tab active" @click.self="turnPage">{{tabInfo.thirdTab.menu}}</div>
     <span class="separator">/</span>
     <div class="extra-tab">{{tabInfo.extraTab.name}}</div>
   </div>

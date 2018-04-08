@@ -42,11 +42,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {
-    getCustomAttributeList,
-    deleteCustomAttribute,
-  } from "../../assets/js/settings/ajax.js";
-  import { deepCopy } from "../../assets/js/api/util.js";
+import { getCustomAttributeList,deleteCustomAttribute } from "../../assets/js/settings/ajax.js";
+import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
     name: "quality",
@@ -54,6 +51,7 @@ export default {
     },
     data() {
       return{
+        menu: JSON.parse(localStorage.getItem("menu")),
         totalcount: 0,
         currentPage: 1,
         pageSize: 10,
@@ -70,24 +68,51 @@ export default {
     },
     methods: {
       newQuality() {
-        this.$emit("openExtraPage", {
-          node: "settings",
-          page: "addQualityProblem",
-          name: "添加质量问题",
-          id: "03040501",
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.children[3].children[4].edit == 1){            
+              this.$emit("openExtraPage", {
+                node: "settings",
+                page: "addQualityProblem",
+                name: "添加质量问题",
+                id: "03040501",
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })  
       },
       handleEdit(index, row) {
-        this.$emit("openExtraPage", {
-          node: "settings",
-          page: "editQualityProblem",
-          name: "修改质量问题",
-          id: "03040502",
-          query: { typeId: row.id },
-        });
+         this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.children[3].children[4].edit == 1){            
+              this.$emit("openExtraPage", {
+                node: "settings",
+                page: "editQualityProblem",
+                name: "修改质量问题",
+                id: "03040502",
+                query: { typeId: row.id },
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        }) 
       },
       handleDelete(index, row) {
-        this.delete(index,row);
+         this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.children[3].children[4].edit == 1){            
+              this.delete(index,row);
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })         
       },
       delete(index,row) {
         this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {

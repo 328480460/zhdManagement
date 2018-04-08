@@ -43,7 +43,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {login} from "../../assets/js/login/ajax.js";
+import {login,roles} from "../../assets/js/login/ajax.js";
 import PointLine from '../../assets/js/login/canvas.js';
 export default {
   name: 'login',
@@ -65,9 +65,12 @@ export default {
     }else {
       console.log("unchecked---")
     }
+    if(localStorage.getItem("menu")){
+      localStorage.setItem("menu","");
+    }
   },
   methods:{
-    loginBt(){
+    loginBt(){ 
       if(this.accountName == ''){
           this.warn1()
       }else if(this.password == ''){
@@ -85,9 +88,18 @@ export default {
             if (res.status == 200){
               //userid存本地
               localStorage.setItem('userid',JSON.stringify(res.data.user.id));
-              sessionStorage.setItem('isLogin', 1);
-              // 命名的路由
-              this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})
+              sessionStorage.setItem('isLogin', 1);   
+              
+              let data = {
+                id:"183720b7-fc35-4497-9f1f-d8626fe4a050"
+              };
+              roles(data).then((res)=>{  
+                localStorage.setItem("menu",JSON.stringify(res.data.role.menuList))
+                // 命名的路由
+                this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})                
+              }).catch(()=>{
+                console.log(res.msg)
+              })
 
               //记住密码
               if(this.checked == true){

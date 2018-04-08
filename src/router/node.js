@@ -15,7 +15,7 @@ export default [
         page: "nodeInfo",
         node: "node",
         name: "节点管理",
-        id: "020101"
+        id:"b660d0a9-e94c-542a-ab5c-8ff56aa0cf61"
       }
     }
   },
@@ -29,7 +29,7 @@ export default [
         page: "newNode",
         node: "node",
         name: "添加节点",
-        id: "02010101"
+        id:"f0869847-ff06-44b4-b3bf-bee23f17decd"
       }
     }
   },
@@ -43,7 +43,7 @@ export default [
         page: "nodeDetails",
         node: "node",
         name: "节点详情",
-        id: "02010102"
+        id:"0308fb0c-9581-4d29-9ab8-3c211eae9068"
       }
     }
   },
@@ -57,7 +57,7 @@ export default [
         page: "batchImportNode",
         node: "node",
         name: "批量导入",
-        id: "020201"
+        id:"23fa58a2-cb03-5c9f-a7c5-8f6bdb103f30"
       }
     }
   },
@@ -70,8 +70,8 @@ export default [
       pageInfo: {
         page: "historiesNode",
         node: "node",
-        name: "批量导入",
-        id: "020202"
+        name: "历史记录",
+        id:"fc9a2562-61f3-489a-b754-acc4ea21006d"
       }
     }
   }

@@ -1,70 +1,80 @@
 <template>
-  <div id="home">
+  <div id="home">    
     <div class="left-menu">
+      <!-- logo -->
       <div class="logo-wrapper">
         <img src="../../assets/image/logo_03.png" alt="logo" class="logo">
       </div>
-
-      <div class="main-menu">
-        <div class="main-menu-item" v-for="(first,key) in menu" 
-          :key="key" :class="{'active': currentTabInfo.main.id === first.id}">
-
+      <div class="main-menu">  
+        <!-- 一级菜单 -->
+          <div class="main-menu-item" v-for="(first,key) in menu" :key="key" v-if="first.see == 1" 
+            :class="{'active': currentTabInfo.main.id === first.id}">
           <div class="main-menu-item-name" @click.self="turnPage(first.id)">
-            <i class="icon-font" :class="first.icon" ></i>{{first.name}}
+            <i class="icon-font" :class="first.icon" ></i>{{first.menu}}
           </div>
-
-          <div class="second-menu" v-if="first.children">
-            <div class="title">{{first.name}}中心</div>
-
-            <div class="second-menu-item" v-for="(second, key) in first.children" :key="key" :class="{'active': currentTabInfo.second.id === second.id}" >
-              <div class="second-menu-item-name" @click.self="turnPage(second.id)">{{second.name}} </div>
-              <div class="third-menu" v-if="!Object.keys(extraTabInfo).length">
-                <div class="third-menu-item-wrapper" >
-                  <div class="third-menu-item" v-for="(third, key) in second.children" :key="key"
-                                               :class="{'active': currentTabInfo.third.id === third.id}"
-                                               @click.self="turnPage(third.id)">
-                    {{third.name}}
+          <!-- 二级菜单 -->
+          <div class="second-menu" v-if="first.menuList != 0">
+            <div class="title">{{first.menu}}中心</div>
+            <div v-for="(second, key) in first.menuList" :key="key">
+              <div class="second-menu-item" v-if="second.see == 1" :class="{'active': currentTabInfo.second.id === second.id}" >
+                <div class="second-menu-item-name" @click.self="turnPage(second.id)">{{second.menu}} </div>
+                <!-- 三级菜单 -->
+                <div class="third-menu" v-if="!Object.keys(extraTabInfo).length">
+                  <div class="third-menu-item-wrapper" >                      
+                    <div class="third-menu-item"  v-for="(third, key) in second.menuList" :key="key" v-if="third.see == 1"
+                      :class="{'active': currentTabInfo.third.id === third.id}"
+                      @click.self="turnPage(third.id)">{{third.menu}} 
+                    </div>
                   </div>
+                </div>                
+                <div class="extra-page-tab-wrapper" v-if="Object.keys(extraTabInfo).length">
+                  <ExtraPageTab :tabInfo='extraTabInfo' @turnPage='turnPage'/>
                 </div>
               </div>
-              <div class="extra-page-tab-wrapper" v-if="Object.keys(extraTabInfo).length">
-                <ExtraPageTab :tabInfo='extraTabInfo' @turnPage='turnPage'/>
-              </div>
-            </div>
-          </div>
-          
-          <div class="summary" v-else>
-
-          </div>
+            </div>            
+          </div>          
         </div>
       </div>
-    </div>
-    <div class="user-commonality" v-if="currentTab !== '00' ">
+    </div>       
+    <div class="user-commonality" v-if="currentTab !== '11dcd5d7-19c6-4189-8606-058b321284ff' ">
       <User ></User>
     </div>
-    <div class="pages-wrapper" v-if="currentTab !== '00' ">
+    <div class="pages-wrapper" v-if="currentTab !== '11dcd5d7-19c6-4189-8606-058b321284ff' ">
       <router-view @openExtraPage='openExtraPage'/>
     </div>
     <div class="pages-wrapper welcome" v-else>
       <router-view @openExtraPage='openExtraPage'/>
-    </div>
-  </div>
+    </div>    
+  </div>  
 </template>
 
 <script type="text/ecmascript-6">
 import ExtraPageTab from "../commonComponents/ExtraPageTab";
 import User from '../userCenter/User';
-import { menu } from "./config";
 import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
-  name: "home",
-  created() {
+  name: "home",  
+  created() {      
     // 刷新跳转对应的路由
-    // console.log(this.$route.meta);
-    let tabId = this.$route.meta.pageInfo.id;
-    if (tabId.length > 6) {
-      this.initMenu(this.$route.meta.pageInfo);
+    let tabId = this.$route.meta.pageInfo.id,arr=[]; 
+    this.menu.forEach((ele,index)=>{   
+      if(ele.menuList.length>0){
+        ele.menuList.forEach((ele)=>{
+          if(ele.menuList.length>0){
+            ele.menuList.forEach((ele)=>{
+              if(ele.menuList && ele.menuList.length>0){
+                ele.menuList.forEach((ele)=>{
+                  arr.push(ele.id)
+                })
+              }
+            })
+          }
+        })
+      }
+    }) 
+    if(arr.includes(tabId)){
+      this.initMenu(tabId);
       this.$nextTick(() => {
         let query = JSON.parse(sessionStorage.getItem("freshQuery"));
         let extraTabInfo = deepCopy(this.$route.meta.pageInfo);
@@ -73,10 +83,10 @@ export default {
       }, 100);
     }
     this.currentTab = tabId;
-  },
+  },   
   data() {
     return {
-      menu: menu,
+      menu:JSON.parse(localStorage.getItem("menu")),
       currentTab: "", // 当前tab页面的id
       currentTabInfo: {
         // 当前一级二级三级页面的id
@@ -87,123 +97,316 @@ export default {
       curretPage: "", // 当前page页面
       extraTabInfo: {}
     };
-  },
+  },    
   methods: {
     turnPage(id) {
       // 关闭额外tab
       this.extraTabInfo = {};
       this.currentTab = id;
     },
-    // 初始化menuList 和 获取当前选中的tab
-    initMenu(tabId) {
-      let mainId = tabId.length >= 2 ? tabId.slice(0, 2) : "01";
-      let secId = tabId.length >= 4 ? tabId.slice(0, 4) : mainId + "01";
-      let thdId = tabId.length >= 6 ? tabId.slice(0, 6) : secId + "01";
-      this.currentTabInfo.main = { id: mainId };
-      this.currentTabInfo.second = { id: secId };
-      this.currentTabInfo.third = { id: thdId };
+    // 初始化menuList 和 获取当前选中的tab 
+    initMenu(tabId) {   
+      let main='',second='',third = ''; 
+      this.menu.forEach((ele,index)=>{
+        if(ele.id === this.menu[0].id){
+           main = ele.id;
+        }else if(ele.id == tabId){          
+          main = ele.id ;
+          second = ele.menuList[0].id ;
+          third = ele.menuList[0].menuList[0].id ;
+        }else{
+          ele.menuList.forEach((ele2,index2)=>{
+            if(ele2.id == tabId){
+              main = ele2.parent_menu_id ;
+              second = ele2.id ;
+              third = ele2.menuList[0].id ;
+            }else{
+              ele2.menuList.forEach((ele3,index3)=>{
+                if(ele3.id == tabId){      
+                  second = ele3.parent_menu_id ;
+                  third = ele3.id ;
+                  this.menu.forEach((ele,index)=>{
+                    ele.menuList.forEach((ele,index)=>{
+                      if(ele.id == second){
+                        main = ele.parent_menu_id ;
+                      }
+                    })
+                  })
+                }else{
+                  if(ele3.menuList && ele3.menuList.length>0){
+                    ele3.menuList.forEach((ele4,index4)=>{
+                      if(ele4.id === tabId){
+                        third = ele4.parent_menu_id
+                        this.menu.forEach((ele,index)=>{
+                          ele.menuList.forEach((ele,index)=>{
+                            ele.menuList.forEach((ele,index)=>{
+                              if(ele.id === third){
+                                second = ele.parent_menu_id
+                              }
+                            })
+                          })
+                        })                        
+                        this.menu.forEach((ele,index)=>{
+                          ele.menuList.forEach((ele,index)=>{
+                            if(ele.id === second){
+                              main = ele.parent_menu_id
+                            }
+                          })
+                        })
+                      }
+                    })
+                  }
+                }
+              })
+            }
+          })
+        }
+      })
+      this.currentTabInfo.main = { id:main };
+      this.currentTabInfo.second = { id:second };
+      this.currentTabInfo.third = { id:third };
     },
-    initPage(tabId) {
+    initPage(tabId) {       
       // 判断是否是欢迎页面
-      if(tabId === '00') {
+      if(tabId === '11dcd5d7-19c6-4189-8606-058b321284ff') {
         this.$router.push({
           path: "/home/welcome"
         });
-        return;
+        return
       }
-      if (tabId.length >= 8) {
-        return;
+      let arr=[];
+      this.menu.forEach((ele,index)=>{   
+        if(ele.menuList.length>0){
+          ele.menuList.forEach((ele)=>{
+            if(ele.menuList.length>0){
+              ele.menuList.forEach((ele)=>{
+                if(ele.menuList && ele.menuList.length>0){
+                  ele.menuList.forEach((ele)=>{
+                    arr.push(ele.id)
+                  })
+                }
+              })
+            }
+          })
+        }
+      })      
+      if(arr.includes(tabId)){
+        return
       }
-      let pageId = tabId.length === 2 ? `${tabId}0101` : tabId.length === 4 ? `${tabId}01` : tabId
-      let currentMainItem = this.getMenuItem(tabId.slice(0, 2));
-      this.curretPage = this.getMenuItem(pageId).page;
+      let currentMainItem = this.getMenuNode(tabId);
+      this.curretPage = this.getCurrPage(tabId);
       this.$router.push({
-        path: "/home/" + currentMainItem["node"] + "/" + this.curretPage
-      });
-
+        path: "/home/" + currentMainItem + "/" + this.curretPage
+      });     
     },
-    openExtraPage(extraPageInfo) {
+    openExtraPage(extraPageInfo) { 
       this.extraTabInfo = {};
-      this.extraTabInfo.thirdTab = this.getMenuItem(extraPageInfo.id);
+      this.extraTabInfo.thirdTab = this.getThirdTabMsg(extraPageInfo.id);
       this.extraTabInfo.extraTab = extraPageInfo;
-      let query = extraPageInfo.query ? extraPageInfo.query : {};
+      let query = extraPageInfo.query ? extraPageInfo.query : {}; 
       sessionStorage.setItem("freshQuery", JSON.stringify(query));
       this.$router.push({
         path: `/home/${extraPageInfo.node}/${extraPageInfo.page}`,
         query: query
-      });
+      });      
     },
-    getMenuItem(tabId) {
-      if (tabId.length % 2 !== 0) {
-        throw Error("必须是偶数");
-      }
-      if (tabId.length === 2) {
-        let mainId = tabId.slice(0, 2);
-        let menuItem = '';
-        this.menu.forEach((value, index) => {
-          if(value.id === mainId) {
-            menuItem = value
+    // 获取跳转页node名称
+    getMenuNode(tabId) {
+      let mainNode= '';
+      // 通过id判断是否在第一级
+      this.menu.forEach((ele)=>{        
+        if(ele.id === tabId){
+          mainNode = ele.node;
+        }
+      })
+      // 通过id判断是否在第二级
+      this.menu.forEach((ele)=>{
+        if(ele.menuList && ele.menuList.length>0){
+          ele.menuList.forEach((ele)=>{
+            if(ele.id === tabId){       
+              this.menu.forEach((val)=>{
+                if(val.id === ele.parent_menu_id){
+                  mainNode = val.node;                  
+                }
+              })
+           }
+          })
+        }
+      })
+      // 通过id判断是否在第三级
+      this.menu.forEach((ele)=>{
+        ele.menuList.forEach((ele)=>{
+          if(ele.menuList && ele.menuList.length>0){
+            ele.menuList.forEach((ele)=>{
+              if(ele.id === tabId){    
+                  let m = '';
+                  this.menu.forEach((val)=>{                    
+                    val.menuList.forEach((val)=>{
+                      if(val.id === ele.parent_menu_id){
+                        m = val.parent_menu_id;
+                      }                   
+                    })
+                    if(m){
+                      this.menu.forEach((value)=>{                        
+                        if(value.id === m){
+                          mainNode = value.node; 
+                        }                     
+                      })                       
+                    }                    
+                  })
+              }
+            })
           }
         })
-        return menuItem;
-      }
-      if (tabId.length === 4) {
-        let mainId = tabId.slice(0, 2);
-        let secId = tabId.slice(0, 4);
-        let menuItem = '';
-        this.menu.forEach((value, index) => {
-          if (value.id === mainId) {
-            value.children.forEach((value, index) => {
-              if(value.id === secId) {
-                menuItem = value
-              }
-            });
-          }
-        });
-        return menuItem;
-      }
-      if (tabId.length >= 6) {
-        let mainId = tabId.slice(0, 2);
-        let secId = tabId.slice(0, 4);
-        let thdId = tabId.slice(0, 6);
-        let menuItem = '';
-        this.menu.forEach((value, index) => {
-          if (value.id === mainId) {
-            value.children.forEach((value, index) => {
-              if (value.id === secId) {
-                value.children.forEach((value, index) => {
-                  if(value.id === thdId) {
-                    menuItem = value
+      })
+      // 通过id判断是否在第四级
+      this.menu.forEach((ele)=>{
+        ele.menuList.forEach((ele)=>{
+          ele.menuList.forEach((ele)=>{
+            if(ele.menuList && ele.menuList.length>0){
+              ele.menuList.forEach((ele)=>{
+                if(ele.id === tabId){ 
+                      let a = '',b = '', c = '';                     
+                      c = ele.parent_menu_id;
+                      if(c){
+                        this.menu.forEach((ele,index)=>{
+                          ele.menuList.forEach((ele,index)=>{
+                            ele.menuList.forEach((ele,index)=>{
+                              if(ele.id === c){
+                                b = ele.parent_menu_id
+                              }
+                            })
+                          })
+                        })
+                      }
+                      if(b){
+                        this.menu.forEach((ele,index)=>{
+                          ele.menuList.forEach((ele,index)=>{
+                            if(ele.id === b){
+                              a = ele.parent_menu_id;
+                            }
+                          })
+                        })
+                      }
+                      if(a){
+                        this.menu.forEach((ele,index)=>{
+                          if(ele.id === a){
+                            mainNode = ele.node
+                          }
+                        })
+                      }
+                }
+              })
+            }
+          })
+        })
+      
+      
+      })
+      return mainNode;       
+    },
+    // 获取跳转页page
+    getCurrPage(tabId){
+      let currPage = '';
+      this.menu.forEach((val,index)=>{
+        if(val.id === tabId && val.menuList.length>0){
+          currPage = val.menuList[0].menuList[0].page
+        }else{
+          val.menuList.forEach((val,index)=>{
+            if(val.id === tabId && val.menuList.length>0){
+              currPage = val.menuList[0].page
+            }else{
+              val.menuList.forEach((val,index)=>{
+                if(val.id === tabId){
+                  currPage = val.page;
+                }else{
+                  if(val.menuList && val.menuList.length>0){
+                    val.menuList.forEach((val,index)=>{
+                      if(val.id === tabId){
+                        currPage = val.page
+                      }
+                    })
                   }
-                });
-              }
-            });
-          }
-        });
-        return menuItem;
+                }                
+              })
+            }            
+          })
+        }        
+      })
+      return currPage;
+    },
+    // 获取三级菜单信息
+    getThirdTabMsg(thirdTabId){
+      let result = '', dataId='';      
+      this.menu.forEach((ele,index)=>{       
+        if(ele.menuList.length>0){// 第二级查找          
+          ele.menuList.forEach((ele,index)=>{            
+            if(ele.menuList.length>0){// 第三级查找              
+              ele.menuList.forEach((ele,index)=>{                
+                if(ele.menuList && ele.menuList.length>0){// 第四级查找                  
+                  ele.menuList.forEach((ele,index)=>{
+                    if( ele.id === thirdTabId){     
+                      dataId = ele.parent_menu_id
+                    }             
+                  })
+                }                
+              })
+            }              
+          })
+        }
+      })
+      if(dataId){
+        this.menu.forEach((ele,index)=>{       
+        if(ele.menuList.length>0){// 第二级查找          
+          ele.menuList.forEach((ele,index)=>{            
+            if(ele.menuList.length>0){// 第三级查找              
+              ele.menuList.forEach((ele,index)=>{                
+                if(ele.id === dataId){
+                  result = ele
+                }               
+              })
+            }              
+          })
+        }
+      })
       }
+      return result;
     }
   },
   watch: {
     currentTab(newVal) {
-      this.initMenu(newVal);
       this.initPage(newVal);
+      this.initMenu(newVal);      
     },
-    $route(to, from) {
-      // console.log(to);
-      let tabId = to.meta.pageInfo.id;
-      if (tabId.length > 6) {
-        this.initMenu(to.meta.pageInfo);
+    $route(to, from) { 
+      let tabId = to.meta.pageInfo.id,arr=[]; 
+      this.menu.forEach((ele,index)=>{   
+        if(ele.menuList.length>0){
+          ele.menuList.forEach((ele)=>{
+            if(ele.menuList.length>0){
+              ele.menuList.forEach((ele)=>{
+                if(ele.menuList && ele.menuList.length>0){
+                  ele.menuList.forEach((ele)=>{
+                    arr.push(ele.id)
+                  })
+                }
+              })
+            }
+          })
+        }
+      }) 
+      if(arr.includes(tabId)){
+        this.initMenu(tabId);
         this.$nextTick(() => {
           this.extraTabInfo = {};
-          this.extraTabInfo.thirdTab = this.getMenuItem(tabId);
+          this.extraTabInfo.thirdTab = this.getThirdTabMsg(tabId);
           this.extraTabInfo.extraTab = to.meta.pageInfo;
         }, 100);
       } else {
         // 关闭额外tab
         this.extraTabInfo = {};
       }
-      this.currentTab = tabId;
+      this.currentTab = tabId;     
     }
   },
   components: {

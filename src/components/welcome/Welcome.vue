@@ -55,7 +55,7 @@ import echarts from "echarts";
 import User from '../userCenter/User';
 import SlideRight from '../welcome/SlideRight.vue';
 
-export default {
+export default {    
   mounted() {
     var myChart = echarts.init(document.getElementById("echars"));
     this.$nextTick(() => {
@@ -90,39 +90,81 @@ export default {
         ]
       });
     });
+    this.menu = JSON.parse(localStorage.getItem("menu"));        
+  },
+  data(){
+    return{
+      menu:''
+    }
   },
   methods:{
-    newGetGoodsInfo() {
-      this.$emit("openExtraPage", {
-        node: "business",
-        page: "newGetGoodsInfo",
-        name: "新建收货信息",
-        id: "05010101"
-      });
+    newGetGoodsInfo() {  
+      this.menu.forEach((element,index)=>{
+        if(element.node == "business"){
+          if(element.menuList[0].menuList[0].edit == 1){
+            this.$emit("openExtraPage", {
+              node: "business",
+              page: "newGetGoodsInfo",
+              name: "新建收货信息",
+              id:"5fdec987-991e-440c-9dda-51c8ec953236"
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })      
     },
     newProduct() {
-      this.$emit("openExtraPage", {
-        node: "production",
-        page: "newProduct",
-        name: "新建产品",
-        id: "01010101",
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "production"){
+          if(element.menuList[0].menuList[0].edit == 1){
+            this.$emit("openExtraPage", {
+              node: "production",
+              page: "newProduct",
+              name: "新建产品",
+              id:"697a81d9-7bc0-4856-acd4-81f35ef460e8"
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })  
     },
     newNode() {
-      this.$emit("openExtraPage", {
-        node: 'node',
-        page: "newNode",
-        name: "添加节点",
-        id: "02010101"
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "node"){
+          if(element.menuList[0].menuList[0].edit == 1){
+            this.$emit("openExtraPage", {
+              node: 'node',
+              page: "newNode",
+              name: "添加节点",
+              id:"f0869847-ff06-44b4-b3bf-bee23f17decd"
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })       
     },
     chainSynthesis() {
-      this.$emit("openExtraPage", {
-        node: 'trace',
-        page: "chainSynthesis",
-        name: "链条合成",
-        id: "030101",
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "trace"){
+          if(element.menuList[0].menuList[0].edit == 1){
+             this.$emit("openExtraPage", {
+              node: 'trace',
+              page: "chainSynthesis",
+              name: "链条合成",
+              id:"7b9e89b5-cd0e-57a3-a2d7-82bb03544239"
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })
     },
   },
   data() {

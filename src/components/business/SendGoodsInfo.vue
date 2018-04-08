@@ -131,6 +131,7 @@ import { deepCopy } from "../../assets/js/api/util.js";
 export default {
   data() {
     return {
+      menu: '',
       totalcount: 0,
       dataList: [],
       search: {
@@ -192,50 +193,79 @@ export default {
     };
     this.initData(params);
     this.ajaxSearch = deepCopy(this.search);
+    this.menu = JSON.parse(localStorage.getItem("menu"));
   },
   methods: {
     newGetGoodsInfo() {
-      this.$emit("openExtraPage", {
-        node: "business",
-        page: "newSendGoodsInfo",
-        name: "新建发货信息",
-        id: "05030101"
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "settings"){
+          if(element.menuList[2].menuList[0].edit == 1){            
+            this.$emit("openExtraPage", {
+              node: "business",
+              page: "newSendGoodsInfo",
+              name: "新建发货信息",
+              id:'fdae82e8-0904-4adb-9d7f-63cf8f65e60d'
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      }) 
     },
     sendGoodsInfoDetail(item) {
-      this.$emit("openExtraPage", {
-        page: "sendGoodsInfoDetail",
-        node: "business",
-        name: "发货信息详情",
-        id: "05030102",
-        query: { id: item.id }
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "settings"){
+          if(element.menuList[2].menuList[0].edit == 1){            
+            this.$emit("openExtraPage", {
+              page: "sendGoodsInfoDetail",
+              node: "business",
+              name: "发货信息详情",
+              id:"98cbed70-68b2-4a91-959b-7124c7714c30",
+              query: { id: item.id }
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })       
     },
     handleDelete(index, item) {
-      this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          /*删除接口*/
-          deleteInvoice({ id: item.id }).then(res => {
-            if (res.status == 200) {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
+      this.menu.forEach((element,index)=>{
+        if(element.node == "settings"){
+          if(element.menuList[2].menuList[0].edit == 1){            
+            this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+              .then(() => {
+                /*删除接口*/
+                deleteInvoice({ id: item.id }).then(res => {
+                  if (res.status == 200) {
+                    this.$message({
+                      type: "success",
+                      message: "删除成功!"
+                    });
+                    // 重新请求当前页当前条件数据
+                    this.getProductList();
+                  }
+                });
+              })
+              .catch(() => {
+                this.$message({
+                  type: "info",
+                  message: "已取消删除"
+                });
               });
-              // 重新请求当前页当前条件数据
-              this.getProductList();
-            }
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      }) 
+      
     },
     searchConditions(current) {
       this.ajaxSearch = deepCopy(this.search);

@@ -42,10 +42,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {
-  getCustomAttributeList,
-  deleteCustomAttribute,
-} from "../../assets/js/settings/ajax.js";
+import { getCustomAttributeList, deleteCustomAttribute } from "../../assets/js/settings/ajax.js";
 import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
@@ -54,6 +51,7 @@ export default {
     },
     data() {
       return{
+        menu: '',
         totalcount: 0,
         currentPage: 1,
         pageSize: 10,
@@ -67,27 +65,55 @@ export default {
         pagesize: 10,
       };
       this.initData(params);
+      this.menu = JSON.parse(localStorage.getItem("menu"))
     },
     methods: {
       newDocumentType() {
-        this.$emit("openExtraPage", {
-          node: "settings",
-          page: "addDocumentType",
-          name: "新建文档类型",
-          id: "03040401",
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.menuList[3].menuList[3].edit == 1){            
+              this.$emit("openExtraPage", {
+                node: "settings",
+                page: "addDocumentType",
+                name: "新建文档类型",
+                id:'c37e8107-9906-49ea-af8a-ddaf89cd843f'
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })  
       },
       handleEdit(index, row) {
-        this.$emit("openExtraPage", {
-          node: "settings",
-          page: "editDocumentType",
-          name: "修改文档类型",
-          id: "03040402",
-          query: { typeId: row.id },
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.menuList[3].menuList[3].edit == 1){            
+              this.$emit("openExtraPage", {
+                node: "settings",
+                page: "editDocumentType",
+                name: "修改文档类型",
+                id: "03040402",
+                query: { typeId: row.id },
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })
       },
       handleDelete(index, row) {
-        this.delete(index,row);
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.menuList[3].menuList[3].edit == 1){            
+             this.delete(index,row);
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })        
       },
       delete(index,row) {
         this.$confirm("此操作将删除该产品信息, 是否继续?", "提示", {

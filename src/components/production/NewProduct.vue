@@ -323,7 +323,7 @@ export default {
                     custom_mould_id: this.selectCustomDefineId,
                     customFields: this.newCustomFields,
                     quality_id:sendQuality,
-                  };
+                  };                  
                   saveProduct(params)
                     .then(res =>{
                       if (res.status == 200) {

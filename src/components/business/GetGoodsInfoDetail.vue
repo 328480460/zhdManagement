@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      detailDataInfo: "",
+      detailDataInfo: "", 
       routerQuery: this.$route.query
     };
   },
@@ -48,7 +48,7 @@ export default {
         node: "business",
         page: "editGetGoodsInfoDetail",
         name: "编辑收货信息",
-        id: "05010103",
+        id:'97728609-9717-48d9-92ff-1d7bcc48dfa2',
         query: {id: this.routerQuery.id}
       });
     }

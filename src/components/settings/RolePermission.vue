@@ -42,16 +42,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {
-    getListRole,
-    deleteRole,
-  } from "../../assets/js/settings/ajax.js";
+import { getListRole, deleteRole } from "../../assets/js/settings/ajax.js";
+
 export default {
     name: "role",
     created() {
     },
     data() {
       return{
+        menu: '',
         totalcount: 0,
         currentPage: 1,
         pageSize: 10,
@@ -65,15 +64,25 @@ export default {
         pagesize: 10,
       };
       this.initData(params);
+      this.menu = JSON.parse(localStorage.getItem("menu"));
     },
     methods: {
       newRole() {
-        this.$emit("openExtraPage", {
-          node: 'settings',
-          page: "addRole",
-          name: "添加角色",
-          id: "03030201"
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.menuList[2].menuList[1].edit == 1){            
+              this.$emit("openExtraPage", {
+                node: 'settings',
+                page: "addRole",
+                name: "添加角色",
+                id:"fe772bb1-035e-43f4-b3e2-52ab71dc6fe0"
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })  
       },
       initData(params) {
         this.getDataAjax(params)
@@ -102,16 +111,34 @@ export default {
           });
       },
       handleEdit(index, row) {
-        this.$emit("openExtraPage", {
-          node:"settings",
-          page: "editRole",
-          name: "修改角色",
-          id: "03030202",
-          query: { roleId: row.id },
-        });
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.menuList[2].menuList[1].edit == 1){            
+              this.$emit("openExtraPage", {
+                node:"settings",
+                page: "editRole",
+                name: "修改角色",
+                id:'ec257842-ab86-4efb-a0d8-9daa8543cb6a',
+                query: { roleId: row.id },
+              });
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        })         
       },
       handleDelete(index, row) {
-        this.delete(index, row)
+        this.menu.forEach((element,index)=>{
+          if(element.node == "settings"){
+            if(element.menuList[2].menuList[1].edit == 1){            
+              this.delete(index, row)
+            }else{
+              this.$message('权限不足,请联系管理员')
+              return
+            }
+          }
+        }) 
       },
       delete(index, row) {
         this.$confirm('此操作将删除该角色信息, 是否继续?', '提示', {

@@ -64,10 +64,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {
-  getEmployeeList,
-  deleteEmployee
-} from "../../assets/js/settings/ajax.js";
+import { getEmployeeList, deleteEmployee } from "../../assets/js/settings/ajax.js";
 
 export default {
   name: "staff",
@@ -75,6 +72,7 @@ export default {
   },
   data() {
     return{
+      menu:'',
       totalcount: 0,
       employees: [],
       currentPage: 1,
@@ -90,15 +88,25 @@ export default {
       pagesize: 10,
     };
     this.initData(params);
+    this.menu = JSON.parse(localStorage.getItem("menu"));
   },
   methods: {
     newStaff() {
-      this.$emit("openExtraPage", {
-        node: 'settings',
-        page: "addStaff",
-        name: "添加员工",
-        id: "03030101"
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "settings"){
+          if(element.menuList[2].menuList[0].edit == 1){
+            this.$emit("openExtraPage", {
+              node: 'settings',
+              page: "addStaff",
+              name: "添加员工",
+              id:"ee64a024-a4aa-4b12-8234-6b465a7887b6"
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })       
     },
     initData(params) {
       this.getDataAjax(params);
@@ -125,16 +133,34 @@ export default {
         });
     },
     handleEdit(index, row) {
-      this.$emit("openExtraPage", {
-        node:"settings",
-        page: "editStaff",
-        name: "修改员工信息",
-        id: "03030102",
-        query: { staffId: row.id },
-      });
+      this.menu.forEach((element,index)=>{
+        if(element.node == "settings"){
+          if(element.children[2].children[0].edit == 1){
+            this.$emit("openExtraPage", {
+              node:"settings",
+              page: "editStaff",
+              name: "修改员工信息",
+              id: "03030102",
+              query: { staffId: row.id },
+            });
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })      
     },
     handleDelete(index, row) {
-      this.delete(index, row)
+      this.menu.forEach((element,index)=>{
+        if(element.node == "settings"){
+          if(element.children[2].children[0].edit == 1){
+            this.delete(index, row)
+          }else{
+            this.$message('权限不足,请联系管理员')
+            return
+          }
+        }
+      })      
     },
     delete(index, row) {
       this.$confirm('此操作将删除该员工信息, 是否继续?', '提示', {
