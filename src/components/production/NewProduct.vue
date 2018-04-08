@@ -283,7 +283,7 @@ export default {
         this.linkageUnit = "";
       }
     },
-    onSubmit(form) {     
+    onSubmit(form) {
         this.$refs[form].validate((valid) => {
         if (valid) {
            if(this.selectCustomDefineId){
@@ -292,7 +292,7 @@ export default {
                   if(!this.customDefineAttributeList[i].data_value){
                     this.$message.warning(this.customDefineAttributeList[i].column_chinese+"是必填项");
                     return;
-                  }    
+                  }
                 }
               }
               this.customDefineAttributeList.forEach((value, index) => {
@@ -314,7 +314,6 @@ export default {
                     product_name: this.form.productName,
                     product_type_id: this.form.productType,
                     norms: this.form.norms,
-                    quality_id: this.form. quality,
                     metering: this.form.metering,
                     metering_id: this.form.metering_id,
                     custom_type_id: this.form.customType,
@@ -352,7 +351,6 @@ export default {
                 product_name: this.form.productName,
                 product_type_id: this.form.productType,
                 norms: this.form.norms,
-                quality_id: this.form. quality,
                 metering: this.form.metering,
                 metering_id: this.form.metering_id,
                 custom_type_id: this.form.customType,

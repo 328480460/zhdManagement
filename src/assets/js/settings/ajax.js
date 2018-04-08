@@ -62,6 +62,11 @@ export const  getDetailRole  = function(params) {
     let url = ENVIRNMENTTEST2 + '/Role/getDetailRole';
     return ajaxPost(url,params)
 }
+// 角色菜单查询查询
+export const  getListMenu  = function(params) {
+    let url = ENVIRNMENTTEST2 + '/menu/getListMenu';
+    return ajaxPost(url,params)
+}
 
 // 节点列表查询接口
 export const getListNode = function(params) {

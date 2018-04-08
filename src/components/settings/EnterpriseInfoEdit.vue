@@ -22,7 +22,7 @@
             <el-button type="text" class="br_text">修改</el-button>
           </el-form-item>
           <el-form-item label="企业简介：">
-            <el-input v-model="form.intro" type="textarea" ></el-input>
+            <el-input v-model="form.intro" type="textarea" autosize></el-input>
           </el-form-item>
           <el-form-item label="联系人姓名：" prop="contact">
             <el-input v-model="form.contact"></el-input>

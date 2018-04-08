@@ -93,10 +93,10 @@ export default {
               let data = {
                 id:"183720b7-fc35-4497-9f1f-d8626fe4a050"
               };
-              roles(data).then((res)=>{  
-                localStorage.setItem("menu",JSON.stringify(res.data.role.menuList))
+              roles(data).then((res)=>{   
+                localStorage.setItem("menu",JSON.stringify(res.data.role.menuList))                
                 // 命名的路由
-                this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})                
+                this.$router.push({ name: 'Home', params: { userId: 'userIdTest' }})            
               }).catch(()=>{
                 console.log(res.msg)
               })
@@ -115,9 +115,6 @@ export default {
               localStorage.setItem('userid',JSON.stringify(res.data.user.id))
               localStorage.setItem('username',JSON.stringify(res.data.user.name))
               localStorage.setItem('enterprise_id',JSON.stringify(res.data.user.enterprise_id))
-
-              // 命名的路由
-              this.$router.push({ name: 'Home'})
             }
             else if (res.status == 201){
               this.$message.error(res.msg);

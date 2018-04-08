@@ -54,10 +54,10 @@ import User from '../userCenter/User';
 import { deepCopy } from "../../assets/js/api/util.js";
 
 export default {
-  name: "home",  
-  created() {      
-    // 刷新跳转对应的路由
-    let tabId = this.$route.meta.pageInfo.id,arr=[]; 
+  name: "home", 
+  created() {   
+    // 刷新跳转对应的路由    
+    let tabId = this.$route.meta.pageInfo.id,arr=[];  
     this.menu.forEach((ele,index)=>{   
       if(ele.menuList.length>0){
         ele.menuList.forEach((ele)=>{
@@ -83,7 +83,7 @@ export default {
       }, 100);
     }
     this.currentTab = tabId;
-  },   
+  }, 
   data() {
     return {
       menu:JSON.parse(localStorage.getItem("menu")),
@@ -511,7 +511,6 @@ export default {
   }
   .third-menu {
     display: none;
-    background-color: #f2f2f2;
     position: fixed;
     z-index: 98;
     left: 251px;
@@ -538,7 +537,6 @@ export default {
     }
   }
   .extra-page-tab-wrapper {
-    background-color: #f2f2f2;
     position: fixed;
     z-index: 98;
     left: 251px;
