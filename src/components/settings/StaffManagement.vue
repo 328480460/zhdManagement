@@ -135,7 +135,7 @@ export default {
     handleEdit(index, row) {
       this.menu.forEach((element,index)=>{
         if(element.node == "settings"){
-          if(element.children[2].children[0].edit == 1){
+          if(element.menuList[2].menuList[0].edit == 1){
             this.$emit("openExtraPage", {
               node:"settings",
               page: "editStaff",
@@ -153,7 +153,7 @@ export default {
     handleDelete(index, row) {
       this.menu.forEach((element,index)=>{
         if(element.node == "settings"){
-          if(element.children[2].children[0].edit == 1){
+          if(element.menuList[2].menuList[0].edit == 1){
             this.delete(index, row)
           }else{
             this.$message('权限不足,请联系管理员')
